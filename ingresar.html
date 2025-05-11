@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Ingresar</title>
+        <link rel="stylesheet" href="style.css"><!--linkeado el archivo de css-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    </head>
+<body>
+    <header><!--Encabezado de la página-->
+        <div class="headerUbicacion">
+            <select id="selectorSucursales" class="form-select"  aria-label="Default select example">
+                <option selected>Sucursal</option>
+                <option value="1">Parque Chacabuco</option><!--SE TIENE QUE AGREGAR SUCURSAL POR BBDD-->  
+                <option value="2">Sucursal 2</option><!--IHNABILITADA-->
+            </select>
+            <div class="icoRedes">
+                <a target="_blank" href="https://www.instagram.com/ovejanegra.pc/"><img src="/OvejaNegra/img/ico_facebook.png" alt="icono de facebook"></a>
+                <a target="_blank" href="https://www.instagram.com/ovejanegra.pc/"><img src="/OvejaNegra/img/ico_instagram.png" alt="icono de instagram"></a>
+            </div>
+        </div>
+        <div class="headerNavegacion">
+            <nav><!--Contenedor de la barra de navegación-->
+                <ol class="listNavIzq">
+                    <li><a href="menu.html">Menú</a></li>
+                    <li><a href="reservas.html">Reservas</a></li>
+                    <li><a href="promociones.html">Promos y combos</a></li>
+                </ol>
+            </nav>
+            <div class="logoNav">
+                <a href="index.html"><img class= "imgLogo" src="/OvejaNegra/img/logo.png" alt="Logo Oveja Negra"></a><!--a href enlaza un link a la imagen-->
+            </div>
+            <nav>
+                <ol class="listNavDer">
+                    <li><a href="tiendaDePuntos.html">Tienda de puntos</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li>
+                        <div class="dropdown">
+                            <button id="botonIngresar" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                              Ingresar
+                            </button>
+                            <ul id="contenidoBotonIngresar" class="dropdown-menu">
+                                <li><a class="dropdown-item" onclick="mostrarFormulario('botonCliente')">Cliente</a></li>
+                                <li><a class="dropdown-item" onclick="mostrarFormulario('botonEmpleado')">Empleado</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </header>
+    <main class="mainIngreso">
+        <div class="contenedorFormulario">
+            <div id="cliente" style="display: none;"> 
+                <section class="iniciarSesion">
+                    <h1>Iniciar Sesion</h1>
+                    <form method="post" action=""><!--Recopila los datos y los envia al servidor-->
+                        <fieldset>
+                            <label for="dni-usuario-login">DNI: 
+                                <input id="dni-usuario-login" name="dni-usuario-login" type="number" placeholder="00000000" min="6000000" max="99999999" required>
+                            </label>
+                            <label for="contraseña-usuario-login">Contraseña: 
+                                <input id="contraseña-usuario-login" name="contraseña-usuario-login" type="password" pattern="[a-z0-5]{8,}" required>
+                                <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
+                            </label>
+                        </fieldset>
+                        <input type="submit" value="Acceder" />
+                    </form>   
+                </section>
+                    
+                <section class="registrarse">
+                    <h1>Registrarse</h1>
+                    <form method="post" action=""> <!--Recopila los datos y los envia al servidor-->
+                        <fieldset>
+                            <label for="nombre-usuario">Nombre/s:* 
+                                <input id="nombre-usuario" name="nombre-usuario" type="text" required>
+                            </label>
+                            <label for="apellido-usuario">Apellido/s:* 
+                                <input id="apellido-usuario" name="apellido-usuario" type="text" required>
+                            </label>
+                            <label for="dni-usuario-registro">DNI:* 
+                                <input id="dni-usuario-registro" name="dni-usuario-registro" type="number" placeholder="00000000" min="1000000" max="99999999" required>
+                            </label>
+                        </fieldset>
+                        <fieldset>
+                            <label for="fecha-nacimiento">Fecha de nacimiento:
+                                <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+                            </label>
+                        </fieldset>
+                        <fieldset>
+                            <label for="telefono-usuario-registro">Telefono:* 
+                                <input id="telefono-usuario-registro" name="telefono-usuario-registro" type="number" placeholder="1100000000" min="1000000000" max="99999999" required>
+                            </label>
+                            <label for="email-usuario">Email:* 
+                                <input id="email-usuario" name="email-usuario" type="email" required />
+                            </label>
+                            <label for="contraseñausuario-registro">Contraseña:* 
+                                <input id="contraseñausuario-registro" name="contraseña-usuario-registro" type="password" pattern="[a-z0-5]{8,}" required>
+                            </label>
+                        </fieldset>
+                        <input type="submit" value="Registrarse"/>
+                    </form>
+                </section>
+            </div>
+            
+            <div id="empleado" style="display: none;">
+                <section class="iniciarSesion">
+                    <h1>Iniciar Sesion</h1>
+                    <form method="post" action=""><!--Recopila los datos y los envia al servidor-->
+                        <fieldset>
+                            <label for="usuario-empleado">DNI: 
+                                <input id="usuario-empleado" name="usuario-empleado" type="number" placeholder="00000000" min="1000000" max="99999999" required>
+                            </label>
+                            <label for="contraseña-empleado">Contraseña: 
+                                <input id="contraseña-empleado" name="contraseña-empleado" type="password" pattern="[a-z0-5]{8,}" required>
+                                <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
+                            </label>
+                        </fieldset>
+                        <input type="submit" value="Acceder"/>
+                    </form>   
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="footerEnlaces">
+            <img class="logoNav" src="/OvejaNegra/img/logo.png" alt="logo Oveja Negra">
+            <div class="listasFooter">
+                <ol>
+                    <h5>Institucional</h5>
+                    <li><a href="nosotros.html">Quienes somos</a></li>
+                    <li><a href="menu.html">Menú</a></li>
+                    <li><a href="reservas.html">Reservas</a></li>
+                    <li><a href="promociones.html">Promociones</a></li>
+                    <li><a href="tiendaDePuntos.html">Tienda de puntos</a></li>
+                </ol>
+                <ol>
+                    <h5>Cliente</h5>
+                    <li><a class="dropdown-item" onclick="mostrarFormulario('botonCliente')">Ingresar</a></li>
+                    <li><a href="">Mis reservas</a></li>
+                </ol>
+                <ol>
+                    <h5>Empleado</h5>
+                    <li><a class="dropdown-item" onclick="mostrarFormulario('botonEmpleado')">Ingresar</a></li>
+                    <li><a href="">Mis reservas</a></li>
+                </ol>
+                <ol>
+                    <h5>Servicios</h5>
+                    <li><a href="Nosotros.html">Nuestros Locales</a></li>
+                </ol>
+            </div>
+        </div>
+        <div class="footerDerechos">
+            <h6>© 2025 ovejanegra derechos de autor</h6>
+        </div>
+    </footer>
+<script src="../OvejaNegra/funciones.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+</body>
+</html>

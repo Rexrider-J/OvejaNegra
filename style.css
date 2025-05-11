@@ -1,0 +1,542 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Special+Gothic+Condensed+One&display=swap');
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0; /* Elimina márgenes */
+    padding: 0; /* Elimina rellenos */
+    background-color: white; /* Color de fondo */
+}
+/*INDEX*/
+/*HEADER*/
+header {
+    width: 100%;
+    height: 180px;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-rows: 30px 150px; /* 2 filas, ajustadas */
+    grid-template-columns: 100%; /* 1 columna */
+    align-items: center;
+    text-align: center;
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+}
+
+.headerUbicacion{
+    display: grid;
+    height: 100%;
+    grid-template-rows: 100%; 
+    grid-template-columns: 1fr 1fr;
+    background-image: url("../OvejaNegra/img/turquesa.png");
+    background-size: cover;
+    padding-left: 15%;
+    padding-right: 15%;
+    align-items: center;
+    text-align: center;
+    color:black;
+}
+#selectorSucursales{
+    background-color: transparent;
+    width:max-content;
+    border-color: transparent;
+    font-size: 20px;
+    font-weight: bold;
+}
+#selectorSucursales option{
+    background-color: rgb(3, 175, 219);
+    font-size: 18px;
+}
+.icoRedes{
+    text-align: right;
+}
+.icoRedes img{
+    width: 4%;
+}
+.headerNavegacion{
+    display: grid;
+    height: 100%;
+    grid-template-rows: 100%; /*Cantidad de filas y su tamaño*/
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center; 
+    text-align: center;
+    background-color: #000000;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+.listNavIzq, .listNavDer {
+    list-style: none; /* Elimina numeración */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+.listNavIzq {
+    justify-content: flex-start; /* Alinea a la izquierda */
+}
+#botonIngresar{
+    font-size: 20px;
+    background-color: transparent;
+    border-color:transparent;
+}
+#contenidoBotonIngresar{
+    background-color: rgb(111, 202, 191);
+}
+#contenidoBotonIngresar a{
+    color: black;
+}
+.listNavDer {
+    justify-content: flex-end; /* Alinea a la derecha */
+}
+.logoNav{
+    justify-items: center;
+    align-items: center;
+    border-radius: 50%;
+}
+.imgLogo{
+    width: 23%;
+}
+/*MAIN*/
+main{
+    height: 1200px;
+    margin: 0;
+    padding: 0;
+    display: grid; /* crea la grilla */
+    grid-template-rows: 560px 100px 500px; /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
+    grid-template-columns: 100%; /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
+    align-items: center; /* alinea el centro en eje Y (vertical) */
+    text-align: center; /* alinea el centro en eje X el texto */
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.subtituloIndex h2{
+    margin:0;
+    font-size: 35px;
+    font-weight: bold;
+    height: 100%;
+}
+.fotosDestacadas{
+    margin: 0;
+    padding: 0;
+    display: grid; /* crea la grilla */
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    align-content: center; /* alinea el centro en eje Y (vertical) */
+    text-align: center; /* alinea el centro en eje X el texto */
+    padding-left: 15%;
+    padding-right: 15%;
+}
+.fotosDestacadas img{
+    width: 100%;
+    height: 350px;
+}
+.card-text{
+    text-align: justify;
+    font-size: 16px;
+}
+/*FOOTER*/
+footer{
+    display: grid;
+    width: 100%;
+    height: 340px;
+    grid-template-rows: 290px 50px; /*Cantidad de filas y su tamaño*/
+    grid-template-columns: 100%;
+    align-content: center;
+    text-align: center;
+}
+.footerEnlaces{
+    height: 100%;
+    padding-left: 15%;
+    padding-right: 15%;
+    padding-top: 2%;
+    padding-bottom: 3%;
+
+    display: grid; /* crea la grilla */
+    grid-template-columns: 20% 80%; /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
+    text-align: center; /* alinea el centro en eje X el texto */
+    align-items: center;
+    justify-items:center;
+
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-style: normal;
+    background-image: url("../OvejaNegra/img/turquesa.png");
+    background-size: cover;
+}
+.footerEnlaces a, .listCategorias a, .headerNavegacion a{
+    text-decoration: none; /*Quita el subrayado de los enlaces*/
+    font-weight: 400;
+    font-size: 20px;
+    color:white;
+}
+.footerEnlaces img{
+    width: 35%;
+}
+.listasFooter{
+    display: grid;
+    width: 100%;
+    height: 80%;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    justify-items: end;
+}
+.listasFooter ol{
+    text-decoration: none; /*Quita el subrayado de los enlaces*/
+    list-style: none;
+    padding: 0;
+}
+.listasFooter li,h5{
+    text-align: justify;
+}
+.footerDerechos{
+    display: flex;
+    align-items: center;       /* centra verticalmente */
+    justify-content: flex-start; /* alinea a la izquierda horizontalmente */
+    height: 100%;
+    background-color: #000000;
+}
+.footerDerechos h6{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 14px;
+    margin: 0;
+    color: white;
+}
+/*MENU*/
+/*MAIN*/
+#mainMenu, #mainPromos{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: grid; /* crea la grilla */
+    grid-template-rows: 70px auto; /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/align-items: center; /* alinea el centro en eje Y (vertical) */
+    text-align: center; /* alinea el centro en eje X el texto */
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.navCategoria{
+    width: 100%;
+    height: 100%;
+    text-align: center; 
+    align-content: center;
+    background-image: url("../OvejaNegra/img/turquesa.png");
+    background-size: cover;
+}
+.listCategorias{
+    list-style: none;/*Para que no aparezca la numeración, solo el texto ordenado*/
+    display: grid; /*Tambien se despliega como grilla dentro de la grilla*/
+    grid-template-rows: 100%; 
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /*Dentro del espacio donde está la lista, cada fr es un elemento de la lista y 1 en este caso, es el espacio que ocupará cada elemento*/
+    margin:0; 
+    padding:0;
+}
+#mainPromos .listCategorias{
+   grid-template-columns: 1fr 1fr; 
+}
+.elMenu{
+    width: 100%;
+    padding-left: 15%;
+    padding-right: 15%;
+    display: grid;
+    grid-template-rows: repeat(12, auto); /* 12 secciones iguales */
+    grid-template-columns: 100%;
+    align-items: center; 
+    justify-items: center;
+}
+section{
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 100%;
+    align-content: center;
+    text-align: center;
+}
+.listProductos{
+    max-width:100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas fijas */
+    align-content: center;
+    text-align: center;
+    padding: 0;
+}
+.listProductos img{
+    border-radius: 50%;
+    width:150px;
+    height: 150px;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+}
+.listProductos h2{
+    align-items: center;
+    text-align: center;
+}
+.tituloCategoria{
+    text-align: center;
+    align-content: center;
+    border-bottom: 1px solid #000000;
+    border-top: 1px solid #000000;
+    font-size: 20px;
+    margin:2rem;
+}
+/*NOSOTROS*/
+/*MAIN*/
+.mainNosotros{
+    width: 100%;
+    height: 2400px;
+    margin: 0;
+    padding: 0;
+    display: grid; /* crea la grilla */
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 100%; 
+    align-items: center; /* alinea el centro en eje Y (vertical) */
+    text-align: center; /* alinea el centro en eje X el texto */
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.presentacion, .mision, .vision{
+    width: 100%;
+    height: 800px;
+    display: grid; /* crea la grilla */
+    grid-template-rows: 100%; /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
+    grid-template-columns: 1fr 1fr; /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
+    align-items: center; /* alinea el centro en eje Y (vertical) */
+    text-align: justify;
+    font-size: 25px;
+}
+.imagenNosotros{
+    width: 953px;
+    height: 800px;
+}
+.textoPresentacion{
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.subtitulosNosotros{
+    text-align: center;
+    font-size: 100px;
+    margin: 0;
+}
+.mision{
+    background-image: url("../OvejaNegra/img/turquesa.png");
+    background-size: cover;
+    color:white;
+}
+/*INGRESO*/
+/*MAIN*/
+.mainIngreso {
+    width: 100%;
+    height: auto; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    padding: 0;
+    margin: 0;
+    background-image: url("../OvejaNegra/img/Fotos/Ingresar/fondoIngreso.jpg");
+    background-size: cover;
+}
+.contenedorFormulario {
+    width: 100%;
+    margin: 3% 15%; /* 5% arriba/abajo, 15% izquierda/derecha */
+    background: rgba(255, 255, 255, 0.3); /* blanco translúcido */
+    backdrop-filter: blur(10px);          /* desenfoque del fondo */
+    border-radius: 10px;
+
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+}
+#cliente{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+#empleado{
+    height: 50vh;
+}
+#cliente .iniciarSesion , #cliente .registrarse, #empleado .iniciarSesion{
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+
+    display: grid;
+    grid-template-rows: 12% 88%;
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: #4d2513;
+    padding-bottom: 3em;
+}
+#cliente legend, #empleado legend{
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+#cliente .iniciarSesion, #empleado .iniciarSesion{
+    background-color: white;
+}
+#empleado .iniciarSesion{
+    align-items: center;
+    padding-top: 2rem;
+}
+#cliente .registrarse{
+    background-image:url("/OvejaNegra/img/Fotos/Ingresar/registrarse.png");
+    background-size:cover;
+}
+#cliente h1,#empleado h1{
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    height: 100%;          
+    margin: 0;            
+    font-weight: bold;
+}
+#cliente form, #empleado form{
+    width: 50vh;
+    height: auto;
+    max-width: 500px;
+    min-width: 300px;
+    margin: 0 auto;
+    padding-top: 1em;
+    align-items: start;
+}
+#cliente label, #empleado label{
+    display: block;
+    margin: 0.5rem 5%;
+    text-align: left;
+}
+#cliente input, #empleado input{
+    margin: 10px 0 0 0;
+    width: 100%;
+    min-height: 2em;
+
+    background-color:transparent;
+    border-top:none;
+    border-right:none;
+    border-left:none;
+    border-bottom: 1px solid #4d2513;
+    color: #000000;
+    font-size: 16px;
+}
+#cliente input[type="date"]{
+    display: block;
+    width: 100%;
+    margin: 10px 0 0 0;
+    min-height: 2em;
+    border-radius: 8px;
+    color: white;
+
+    font-size: 1.1rem;
+    background-color: #4d2513;
+    border-color: black;
+}
+#cliente input[type="submit"], #empleado input[type="submit"]{
+    display: block;
+    width: 60%;
+    margin: 1em auto;
+    height: 2em;
+    font-size: 1.1rem;
+    background-color: #4d2513;
+    border-color: black;
+    color: white;
+    border-radius: 8px;
+    min-width: 300px;
+}
+#cliente fieldset, #empleado fieldset{
+    border: none;
+}
+/*Quitar las fechas de arriba y abajo por defecto en los input type number*/
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/*Reservas*/
+/*MAIN*/
+#mainReservas {
+    width: 100%;
+    height: 80vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    padding: 0;
+    margin: 0;
+    background-image: url("../OvejaNegra/img/Fotos/Reservas/fondoReservas.png");
+    background-size: cover;
+}
+.contenedorReservas {
+    width: 100%;
+    margin: 3% 15%; /* 5% arriba/abajo, 15% izquierda/derecha */
+    background: rgba(255, 255, 255, 0.3); /* blanco translúcido */
+    backdrop-filter: blur(10px);          /* desenfoque del fondo */
+    border-radius: 10px;
+
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    justify-content: center;
+    align-items: center;
+
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: #4d2513;
+}
+#seleccionDeReserva{
+    width: 100%;
+    max-width: 500px;
+    display: grid;
+    gap: 2rem;
+    padding: 2rem;
+}
+#tituloReservas h1{
+    display: flex;
+    justify-content: center; 
+    align-items: center;   
+    height: 100%;          
+    margin: 0;            
+    font-weight: bold;
+}
+#dropdownReservas{
+    width: 100%;
+    background-color: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    padding: 7px;
+    display: flex;
+    text-align:left;
+    justify-content: space-between;
+    align-items: center;
+
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    color: #4d2513;
+}
+#opcionesDropdownReserva{
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+}
+#opcionesDropdownReserva a{
+    color: #4d2513;
+}
