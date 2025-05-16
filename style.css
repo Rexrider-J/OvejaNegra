@@ -467,7 +467,7 @@ input[type=number]::-webkit-outer-spin-button {
 /*MAIN*/
 #mainReservas {
     width: 100%;
-    height: 80vh; 
+    height: auto; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -503,7 +503,7 @@ input[type=number]::-webkit-outer-spin-button {
     gap: 2rem;
     padding: 2rem;
 }
-#tituloReservas h1{
+.tituloReservas h1{
     display: flex;
     justify-content: center; 
     align-items: center;   
@@ -542,4 +542,20 @@ input[type=number]::-webkit-outer-spin-button {
 }
 #datosDeReserva{
     display: none;
+}
+#datosDeReserva{
+    gap: 2em;
+}
+#referenciaLocal img {
+    width: 70vh;
+    border-radius: 10px;
+}
+#reservarMesa{
+    background-color: #ffffff;
+    border-radius: 10px;
+    display:grid;
+    height: 50vh;
+    grid-template-rows: 10% 75% 15%; 
+    align-items: center;
+    text-align: center;
 }
