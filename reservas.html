@@ -10,8 +10,8 @@
 <body>
     <header><!--Encabezado de la página-->
         <div class="headerUbicacion">
-            <select id="selectorSucursales" class="form-select"  aria-label="Default select example">
-                <option selected>Sucursal</option>
+            <select id="selectorSucursales" class="form-select"  onchange="guardarSeleccionSucursal(this.value)">
+                <option value="" selected>Sucursal</option>
                 <option value="1">Parque Chacabuco</option><!--SE TIENE QUE AGREGAR SUCURSAL POR BBDD-->  
                 <option value="2">Sucursal 2</option><!--IHNABILITADA-->
             </select>
@@ -52,25 +52,22 @@
     </header>
     <main id="mainReservas">
         <div class="contenedorReservas">
-            <div id="seleccionDeReserva">
+            <section id="seleccionSucursalDeReserva">
                 <div id="tituloReservas">
                     <h1 >Reservas</h1>
                 </div>
-                <div class="dropdown">
-                    <button id="dropdownReservas" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Seleccioná a qué local te gustaría ir
-                    </button>
-                    <ul id="opcionesDropdownReserva" class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" >Oveja Negra Parque Chacabuco - Emilio Mitre 1296</a></li>
-                        <li><a class="dropdown-item" href="#">Sucursal 2</a></li>
-                    </ul>    
-                </div>
-            </div>
-            <div id="datosDeReserva" >
+                <select id="dropdownReservas" class="form-select"  aria-label="Default select example">
+                    <option value="" selected>Seleccioná a qué local te gustaría ir</option>
+                    <option value="1" >Oveja Negra Parque Chacabuco - Emilio Mitre 1296</option>
+                    <option value="2">Sucursal 2</option>
+                </select>
+                <input type="button" value="Continuar" onclick="mostrarDatosDeReserva()"/>
+            </section>
+            <section id="datosDeReserva" >
                 <div id="diseñoLocal">
                     <img src="" alt="local Oveja Negra">
                 </div>
-            </div>
+            </section>
         </div>
     </main>
     <footer>

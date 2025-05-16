@@ -442,7 +442,7 @@ section{
     background-color: #4d2513;
     border-color: black;
 }
-#cliente input[type="submit"], #empleado input[type="submit"]{
+#cliente input[type="submit"], #empleado input[type="submit"], #seleccionSucursalDeReserva input[type="button"]{
     display: block;
     width: 60%;
     margin: 1em auto;
@@ -496,7 +496,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 18px;
     color: #4d2513;
 }
-#seleccionDeReserva{
+#seleccionSucursalDeReserva{
     width: 100%;
     max-width: 500px;
     display: grid;
@@ -539,4 +539,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 #opcionesDropdownReserva a{
     color: #4d2513;
+}
+#datosDeReserva{
+    display: none;
 }

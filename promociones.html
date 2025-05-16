@@ -10,8 +10,8 @@
 <body>
     <header><!--Encabezado de la página-->
         <div class="headerUbicacion">
-            <select id="selectorSucursales" class="form-select"  aria-label="Default select example">
-                <option selected>Sucursal</option>
+            <select id="selectorSucursales" class="form-select"  onchange="guardarSeleccionSucursal(this.value)">
+                <option value="" selected>Sucursal</option>
                 <option value="1">Parque Chacabuco</option><!--SE TIENE QUE AGREGAR SUCURSAL POR BBDD-->  
                 <option value="2">Sucursal 2</option><!--IHNABILITADA-->
             </select>

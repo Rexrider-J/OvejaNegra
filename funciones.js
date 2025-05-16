@@ -26,3 +26,47 @@ function mostrarFormulario(tipo) {
       document.getElementById("empleado").style.display = "grid";
     }
 }
+/*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
+function mostrarDatosDeReserva() {
+  const select = document.getElementById('dropdownReservas');
+  const seleccion = select.value;
+  /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
+  if (seleccion === "") {
+    alert("Debe seleccionar una sucursal antes de continuar.");
+    return;
+  }
+
+  // Ocultar primera sección
+  document.getElementById('seleccionSucursalDeReserva').style.display = 'none';
+
+  // Mostrar segunda sección
+  document.getElementById('datosDeReserva').style.display = 'grid';
+}
+
+// Guarda la sucursal seleccionada
+function guardarSeleccionSucursal(valor) {
+  sessionStorage.setItem('sucursalSeleccionada', valor);
+
+  //Si se encuentra en la pagina reservas, tambien actualizar el valor de dropdown si se cambia el valor del selectoSucursal en la misma pagina
+  const dropdown = document.getElementById('dropdownReservas');
+  if (dropdown) {
+    dropdown.value = valor;
+  }
+}
+// Al cargar la página, recupera el valor de la selección guardada
+document.addEventListener("DOMContentLoaded", function () {
+  const valorGuardado = sessionStorage.getItem('sucursalSeleccionada');
+  if (!valorGuardado) return;
+
+  // Aplica el valor guardado al select del header de la pagina en la que se ubique
+  const selector = document.getElementById('selectorSucursales');
+  if (selector) {
+    selector.value = valorGuardado;
+  }
+
+  // Aplica al dropdown de reservas si se encuentra en la pagina pero solo cuando carga la pagina
+  const dropdown = document.getElementById('dropdownReservas');
+  if (dropdown) {
+    dropdown.value = valorGuardado;
+  }
+});
