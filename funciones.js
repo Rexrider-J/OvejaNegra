@@ -70,3 +70,16 @@ document.addEventListener("DOMContentLoaded", function () {
     dropdown.value = valorGuardado;
   }
 });
+
+//Calendario externo Flatpickr//
+document.addEventListener("DOMContentLoaded", function () {
+  flatpickr("#calendarioReservas", {
+    inline: true,                      //Para que el calendario sea siempre visible
+    dateFormat: "Y-m-d",
+    minDate: "today",
+    disable: ["2025-05-10", "2025-05-25"], // Fechas bloqueadas
+    onChange: function(selectedDates, dateStr, instance) {
+      console.log("Fecha seleccionada:", dateStr);
+    }
+  });
+});

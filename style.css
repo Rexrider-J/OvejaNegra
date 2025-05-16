@@ -559,3 +559,7 @@ input[type=number]::-webkit-outer-spin-button {
     align-items: center;
     text-align: center;
 }
+#calendarioReservas .flatpickr-calendar {
+  max-width: 300px;
+  font-size: 16px;
+}
