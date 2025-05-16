@@ -550,16 +550,44 @@ input[type=number]::-webkit-outer-spin-button {
     width: 70vh;
     border-radius: 10px;
 }
-#reservarMesa{
+#reservarMesa {
     background-color: #ffffff;
     border-radius: 10px;
-    display:grid;
-    height: 50vh;
-    grid-template-rows: 10% 75% 15%; 
+    display: grid;
+    grid-template-rows: auto auto auto;
     align-items: center;
     text-align: center;
+    padding: 2em;
+    gap: 2em;
 }
-#calendarioReservas .flatpickr-calendar {
-  max-width: 300px;
-  font-size: 16px;
+#formFechaDatosReserva{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+#calendarioReservas {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+.flatpickr-calendar.inline {
+  width: 100% !important;
+  max-width: 700px !important;
+  font-size: 16px !important;
+  position: static !important; /* Evita que se posicione como absoluto */
+}
+
+.flatpickr-rContainer {
+    display: grid !important;
+    grid-template-rows: auto auto;
+    width: 700px;
+    text-align: justify;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+.flatpickr-days{
+    background-color: red;
+    width: 100%;
 }
