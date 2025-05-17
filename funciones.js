@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function () {
     dateFormat: "Y-m-d",
     locale: "es",             //Permite que este en español
     minDate: "today",
-    disable: ["2025-05-10", "2025-05-25"], // Fechas bloqueadas
     onChange: function(selectedDates, dateStr, instance) {
       console.log("Fecha seleccionada:", dateStr);
     }

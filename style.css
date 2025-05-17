@@ -566,20 +566,22 @@ input[type=number]::-webkit-outer-spin-button {
     align-items: center;
     gap: 20px;
 }
+
+/*CAMBIOS CALENDARIO*/
 #calendarioReservas {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
 }
+/*Es la clase del calendario completo*/
 .flatpickr-calendar.inline {
-  width: 100% !important;
-  max-width: 700px !important;
-  font-size: 16px !important;
-  position: static !important; /* Evita que se posicione como absoluto */
+  width: 100%;
+  max-width: 700px;
+  font-size: 16px;
 }
-
+/*Es el contenedor del conjunto de dias, la grilla de dias y los dias*/
 .flatpickr-rContainer {
-    display: grid !important;
+    display: grid;
     grid-template-rows: auto auto;
     width: 700px;
     text-align: justify;
@@ -587,7 +589,23 @@ input[type=number]::-webkit-outer-spin-button {
     align-content: center;
     text-align: center;
 }
+/*Es el contenedor de .dayContainer*/
 .flatpickr-days{
-    background-color: red;
-    width: 100%;
+    width: 100% !important; /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
 }
+/*Es la grilla que contiene todos los numeros en columnas y filas*/
+.dayContainer{
+    width: 100% !important; /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
+    max-width: 700px !important; /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
+    row-gap: 10px;
+}
+/*Es la clase que comparten todos los numeros*/
+.flatpickr-day{
+    max-width: 700px !important;
+}
+/*La clase que contiene el dia que es seleccionado*/
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
+    background:rgb(42, 194, 250) !important;
+    border-color:rgb(42, 194, 250)!important;
+}
+/*FIN CAMBIOS CALENDARIO*/
