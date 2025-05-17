@@ -77,8 +77,8 @@
                             <div id="calendarioReservas"></div>
                         </form>
                         <fieldset>
-                            <label for="horaReserva">Hora
-                                <select id="horaReserva" name="horaReserva" class="form-control">
+                            <label for="horaReserva">Hora<!--se muestran los horarios disponibles para la fecha seleccionada-->
+                                <select id="horaReserva" name="horaReserva" class="form-control" required>
                                     <option value="" selected>Seleccione hora de reserva</option>
                                     <option value="1">11:00</option>
                                     <option value="2">12:00</option>
@@ -92,10 +92,46 @@
                                     <option value="10">20:00</option>
                                 </select>
                             </label>
+                            <label for="cantPersonasReserva">Cantidad de personas
+                                <select id="cantPersonasReserva" name="cantPersonasReserva" class="form-control" required>
+                                    <option value="" selected>¿Cuantas personas asistirán?</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </label>
+                            <label for="mesaReserva">Mesas <!--En base a la disponibilidad del establecimiento y cant perosnas, se mostraran las mesas disponibles -->
+                                <select id="mesaReserva" name="mesaReserva" class="form-control" required>
+                                    <option value="" selected>Seleccione la mesa</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="5">6</option>
+                                    <option value="5">1A</option>
+                                    <option value="5">2A</option>
+                                    <option value="5">3A</option>
+                                    <option value="5">4A</option>
+                                </select>
+                            </label>
+                            <label for="observacionesReserva">Comentarios
+                                <textarea id="observacionesReserva" name="observacionesReserva" rows="3" cols="30" placeholder="Comentario que desee realizar..."></textarea>
+                            </label>
                         </fieldset>
                     </div>
+                    <div id="notaImportanteReserva">
+                        <strong>Importante:</strong>
+                        <p>El tiempo de tolerancia es de 15 minutos, pasado ese tiempo la reserva quedara anulada.</p>
+                        <p>Para ser ubicados deberá estar presente el 50% del grupo.</p>
+                        <p>No se permiten mascostas.</p>
+                        <p>El DNI asignado al empleado para tomar la reserva debe coincidir con el DNI ingresado en la reserva.</p>
+                    </div>
                     <div>
-                        Observaciones
+                        <input type="button" value="Volver"/>
+                        <input type="submit" value="Continuar"/>
                     </div>
                 </div>
             </section>

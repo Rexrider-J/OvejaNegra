@@ -542,8 +542,6 @@ input[type=number]::-webkit-outer-spin-button {
 }
 #datosDeReserva{
     display: none;
-}
-#datosDeReserva{
     gap: 2em;
 }
 #referenciaLocal img {
@@ -561,10 +559,13 @@ input[type=number]::-webkit-outer-spin-button {
     gap: 2em;
 }
 #formFechaDatosReserva{
-    display: flex;
+    display: grid;
+    grid-template-columns: 60% 40%;
     justify-content: center;
     align-items: center;
     gap: 20px;
+    padding-left: 5px;
+    padding-right: 30px;
 }
 
 /*CAMBIOS CALENDARIO*/
@@ -609,3 +610,34 @@ input[type=number]::-webkit-outer-spin-button {
     border-color:rgb(42, 194, 250)!important;
 }
 /*FIN CAMBIOS CALENDARIO*/
+#formFechaDatosReserva label{
+    width: 100%;
+    display: block;
+    margin: 0.5rem 5%;
+    text-align: left; 
+}
+#formFechaDatosReserva textarea{
+    width: 100%;
+    margin: 10px 0 0 0;
+
+    background-color: #ffffff;
+    border-color: #dedede;
+    border-radius: 5px;
+    color: #000000;
+}
+#notaImportanteReserva{
+    background-color: #66c6e7;
+    border-radius: 5px;
+    padding: 4px 18px;
+    color: white;
+    text-align: start;
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+}
+#notaImportanteReserva p{
+    margin: 0;
+    font-size: 18px;
+}
+#notaImportanteReserva strong{
+    font-size: 20px;
+}
