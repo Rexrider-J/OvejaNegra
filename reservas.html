@@ -74,6 +74,7 @@
                     </div>
                     <div id="formFechaDatosReserva">
                         <form method="post" action="">
+                            <input type="text" id="fechaReserva" hidden>
                             <div id="calendarioReservas"></div>
                         </form>
                         <fieldset>
@@ -102,7 +103,7 @@
                                     <option value="5">5</option>
                                 </select>
                             </label>
-                            <label for="mesaReserva">Mesas <!--En base a la disponibilidad del establecimiento y cant perosnas, se mostraran las mesas disponibles -->
+                            <label for="mesaReserva">Mesas *Mirar plano del local* <!--En base a la disponibilidad del establecimiento y cant perosnas, se mostraran las mesas disponibles -->
                                 <select id="mesaReserva" name="mesaReserva" class="form-control" required>
                                     <option value="" selected>Seleccione la mesa</option>
                                     <option value="1">1</option>
@@ -129,11 +130,14 @@
                         <p>No se permiten mascostas.</p>
                         <p>El DNI asignado al empleado para tomar la reserva debe coincidir con el DNI ingresado en la reserva.</p>
                     </div>
-                    <div>
-                        <input type="button" value="Volver"/>
-                        <input type="submit" value="Continuar"/>
+                    <div class="botonesReserva">
+                        <input type="button" value="Volver" onclick="volverSeleccionSucursalReserva()"/>
+                        <input type="submit" value="Continuar" onclick="mostrarSeleccionSucursalReserva()"/>
                     </div>
                 </div>
+            </section>
+            <section id="confirmacionReserva">
+                confirmación
             </section>
         </div>
     </main>

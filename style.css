@@ -641,3 +641,26 @@ input[type=number]::-webkit-outer-spin-button {
 #notaImportanteReserva strong{
     font-size: 20px;
 }
+.botonesReserva{
+    display:flex;
+    gap:50%;
+} 
+.botonesReserva input{
+    display:inline-flex;
+    width: 60%;
+    margin: 1em auto;
+    height: 2em;
+    font-size: 1.1rem;
+    background-color: #4d2513;
+    border-color: #000000;
+    color: white;
+    border-radius: 8px;
+    min-width: 300px;
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+#confirmacionReserva{
+    display: none;
+    gap: 2em;
+}
