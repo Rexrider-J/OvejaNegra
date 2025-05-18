@@ -29,7 +29,7 @@ header {
     height: 100%;
     grid-template-rows: 100%; 
     grid-template-columns: 1fr 1fr;
-    background-image: url("../img/turquesa.png");
+    background-image: url("img/turquesa.png");
     background-size: cover;
     padding-left: 15%;
     padding-right: 15%;
@@ -162,7 +162,7 @@ footer{
 
     font-family: "Special Gothic Condensed One", sans-serif;
     font-style: normal;
-    background-image: url("../img/turquesa.png");
+    background-image: url("img/turquesa.png");
     background-size: cover;
 }
 .footerEnlaces a, .listCategorias a, .headerNavegacion a{
@@ -221,7 +221,7 @@ footer{
     height: 100%;
     text-align: center; 
     align-content: center;
-    background-image: url("../img/turquesa.png");
+    background-image: url("img/turquesa.png");
     background-size: cover;
 }
 .listCategorias{
@@ -325,7 +325,7 @@ section{
     margin: 0;
 }
 .mision{
-    background-image: url("../img/turquesa.png");
+    background-image: url("img/turquesa.png");
     background-size: cover;
     color:white;
 }
@@ -342,7 +342,7 @@ section{
     font-weight: 400;
     padding: 0;
     margin: 0;
-    background-image: url("../img/Fotos/Ingresar/fondoIngreso.jpg");
+    background-image: url("img/Fotos/Ingresar/fondoIngreso.jpg");
     background-size: cover;
 }
 .contenedorFormulario {
@@ -392,7 +392,7 @@ section{
     padding-top: 2rem;
 }
 #cliente .registrarse{
-    background-image:url("../img/Fotos/Ingresar/registrarse.png");
+    background-image:url("img/Fotos/Ingresar/registrarse.png");
     background-size:cover;
 }
 #cliente h1,#empleado h1{
@@ -475,7 +475,7 @@ input[type=number]::-webkit-outer-spin-button {
 
     padding: 0;
     margin: 0;
-    background-image: url("../img/Fotos/Reservas/fondoReservas.png");
+    background-image: url("img/Fotos/Reservas/fondoReservas.png");
     background-size: cover;
 }
 .contenedorReservas {
