@@ -625,7 +625,7 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 5px;
     color: #000000;
 }
-#notaImportanteReserva{
+.notaImportanteReserva{
     background-color: #66c6e7;
     border-radius: 5px;
     padding: 4px 18px;
@@ -634,11 +634,11 @@ input[type=number]::-webkit-outer-spin-button {
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
 }
-#notaImportanteReserva p{
+.notaImportanteReserva p{
     margin: 0;
     font-size: 18px;
 }
-#notaImportanteReserva strong{
+.notaImportanteReserva strong{
     font-size: 20px;
 }
 .botonesReserva{
@@ -663,4 +663,33 @@ input[type=number]::-webkit-outer-spin-button {
 #confirmacionReserva{
     display: none;
     gap: 2em;
+    padding: 20px;
+}
+#imagenConfirmacionReservas{
+    display: flex;
+    text-align: start;
+    padding: 2em;
+    background-color: #ffffff;
+    border-radius: 10px;
+    gap: 20px;
+}
+#imagenConfirmacionReservas h1{
+    text-align: center;
+    width: 100%;
+}
+#confirmacionReserva .imgLogo{
+    width: 10vh;
+    border-radius: 50%;
+}
+#mostrarDatosReserva{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    height: flex;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
 }
