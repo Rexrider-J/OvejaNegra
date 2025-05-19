@@ -28,13 +28,19 @@ function mostrarFormulario(tipo) {
 }
 /*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
 function mostrarDatosDeReserva() {
-  const select = document.getElementById("dropdownReservas");
-  const seleccion = select.value;
+  const sucursalSelect = document.getElementById("dropdownReservas");
+  const sucursalSeleccionada = sucursalSelect.value;
+  const sucursalSeleccionadaNombre = sucursalSelect.options[sucursalSelect.selectedIndex].text;
+
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
-  if (seleccion === "") {
+  if (sucursalSeleccionada === "") {
     alert("Debe seleccionar una sucursal antes de continuar.");
     return;
   }
+
+  /*Guardo los valores en el sessionStorage*/
+  sessionStorage.setItem("sucursalValor", sucursalSeleccionada);
+  sessionStorage.setItem("sucursalNombre", sucursalSeleccionadaNombre);
 
   /* Ocultar primera sección*/
   document.getElementById("seleccionSucursalDeReserva").style.display = "none";
@@ -129,8 +135,10 @@ function mostrarSeleccionSucursalReserva() {
   /*Guardar observacion dada por el usuario*/
   const Observacion = document.getElementById("observacionesReserva");
   const ObservacionDada = Observacion.value;
+  sessionStorage.setItem("ObservacionDada", ObservacionDada);
 
   /*Insertar los datos en la siguiente pagina de confirmación*/
+  document.getElementById("sucursalSeleccionada").textContent = sessionStorage.getItem("sucursalNombre");
   document.getElementById("fechaSeleccionada").textContent = fechaSeleccionada;
   document.getElementById("horaSeleccionada").textContent = horaSeleccionada;
   document.getElementById("cantPersonasSeleccionada").textContent = personasSeleccionadas + " persona/s";
@@ -159,7 +167,26 @@ function volverSeleccionDatosReserva() {
   /* Mostrar datos reserva*/
   document.getElementById("datosDeReserva").style.display = "grid";
 }
-function mostrarFinalizoReserva(){
+function enviarReserva(){
+  /* Recupera los datos desde sessionStorage y campos*/
+  const sucursal = sessionStorage.getItem("sucursalSeleccionada");
+  const fecha = document.getElementById("fechaReserva").value;
+  const hora = document.getElementById("horaReserva").value;
+  const cantidad = document.getElementById("cantPersonasReserva").value;
+  const mesa = document.getElementById("mesaReserva").value;
+  const observaciones = document.getElementById("observacionesReserva").value;
+
+  // Asignar al formulario oculto
+  const form = document.getElementById("formReservaFinal");
+  form.elements["sucursal"].value = sucursal;
+  form.elements["fecha"].value = fecha;
+  form.elements["hora"].value = hora;
+  form.elements["cantidad"].value = cantidad;
+  form.elements["mesa"].value = mesa;
+  form.elements["observaciones"].value = observaciones;
+
+  form.submit(); // Enviar el formulario
+
   /* Ocultar confirmación de reserva*/
   document.getElementById("confirmacionReserva").style.display = "none";
 

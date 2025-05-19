@@ -59,10 +59,12 @@
                 </div>
                 <select id="dropdownReservas" class="form-select"  aria-label="Default select example">
                     <option value="" selected>Seleccioná a qué local te gustaría ir</option>
-                    <option value="1" >Oveja Negra Parque Chacabuco - Emilio Mitre 1296</option>
-                    <option value="2">Sucursal 2</option>
+                    <option value="1" name="Oveja Negra Parque Chacabuco - Emilio Mitre 1296">Oveja Negra Parque Chacabuco - Emilio Mitre 1296</option>
+                    <option value="2"name="Sucursal 2">Sucursal 2</option>
                 </select>
-                <input type="submit" value="Continuar" onclick="mostrarDatosDeReserva()"/>
+                <div>
+                    <input type="submit" value="Continuar" onclick="mostrarDatosDeReserva()"/>
+                </div>
             </section>
             <section id="datosDeReserva" >
                 <div id="referenciaLocal">
@@ -143,6 +145,7 @@
                     <h1>Confirma tu reserva</h1>
                 </div>
                 <div id="mostrarDatosReserva">
+                    <p><strong>Sucursal: </strong><span id="sucursalSeleccionada"></span></p>
                     <p><strong>Fecha: </strong><br><span id="fechaSeleccionada"></span></p>
                     <p><strong>Hora: </strong><br><span id="horaSeleccionada"></span></p>
                     <p><strong>Cantidad de personas: </strong><br><span id="cantPersonasSeleccionada"></span></p>
@@ -159,8 +162,16 @@
                 </div>
                 <div class="botonesReserva">
                     <input type="button" value="Volver" onclick="volverSeleccionDatosReserva()"/>
-                    <input type="submit" value="Completar reserva" onclick="mostrarFinalizoReserva()"/>
+                    <input type="submit" value="Completar reserva" onclick="enviarReserva()"/>
                 </div>
+                <form id="formReservaFinal" method="post" action="procesar_reserva.php" style="display: none;">
+                    <input type="hidden" name="sucursal">
+                    <input type="hidden" name="fecha">
+                    <input type="hidden" name="hora">
+                    <input type="hidden" name="cantidad">
+                    <input type="hidden" name="mesa">
+                    <input type="hidden" name="observaciones">
+                </form>
             </section>
             <section id="finalizoReserva">
                 <div id="imagenFinalizacionReservas">

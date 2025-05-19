@@ -442,7 +442,7 @@ section{
     background-color: #4d2513;
     border-color: black;
 }
-#cliente input[type="submit"], #empleado input[type="submit"], #seleccionSucursalDeReserva input[type="button"]{
+#cliente input[type="submit"], #empleado input[type="submit"], #seleccionSucursalDeReserva input[type="submit"]{
     display: block;
     width: 60%;
     margin: 1em auto;
