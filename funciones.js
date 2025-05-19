@@ -83,6 +83,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+/*Cada vez que el usuario precione una tecla dentro del textarea observacionesReserva, si es un caracter especial no lo permite incluir*/
+document.getElementById('observacionesReserva').addEventListener('keydown', function (e) {
+  /*brinda el caracter que se intenta ingresar*/
+  const tecla = e.key;
+  /*Se definen los caracteres permitidos en las letrasPermitidas*/
+  const letrasPermitidas = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]$/;
+  /*Si la tecla no esta en letrasPermitidas, ni es un espacio, un delete, un arrowLeft(flecha izquierda) o arrowRight(flecha derecha) no se permite que se escriba*/
+  if (!letrasPermitidas.test(tecla) && tecla !== 'Backspace' && tecla !== 'Delete' && tecla !== 'ArrowLeft' && tecla !== 'ArrowRight') {
+    /* bloquea la tecla para que no se escriba*/
+    e.preventDefault(); 
+  }
+});
 
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {
@@ -121,7 +133,7 @@ function mostrarSeleccionSucursalReserva() {
   /*Insertar los datos en la siguiente pagina de confirmación*/
   document.getElementById("fechaSeleccionada").textContent = fechaSeleccionada;
   document.getElementById("horaSeleccionada").textContent = horaSeleccionada;
-  document.getElementById("cantPersonasSeleccionada").textContent = personasSeleccionadas;
+  document.getElementById("cantPersonasSeleccionada").textContent = personasSeleccionadas + " persona/s";
   document.getElementById("mesaSeleccionada").textContent = mesaSeleccionada;
   document.getElementById("ObservacionDada").textContent = ObservacionDada;
 
@@ -146,4 +158,11 @@ function volverSeleccionDatosReserva() {
 
   /* Mostrar datos reserva*/
   document.getElementById("datosDeReserva").style.display = "grid";
+}
+function mostrarFinalizoReserva(){
+  /* Ocultar confirmación de reserva*/
+  document.getElementById("confirmacionReserva").style.display = "none";
+
+  /* Mostrar datos reserva*/
+  document.getElementById("finalizoReserva").style.display = "grid";
 }

@@ -478,7 +478,7 @@ input[type=number]::-webkit-outer-spin-button {
     background-image: url("img/Fotos/Reservas/fondoReservas.png");
     background-size: cover;
 }
-.contenedorReservas {
+.contenedorRealizarReservas {
     width: 100%;
     margin: 3% 15%; /* 5% arriba/abajo, 15% izquierda/derecha */
     background: rgba(255, 255, 255, 0.3); /* blanco translúcido */
@@ -625,11 +625,15 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 5px;
     color: #000000;
 }
+#errorObservaciones{
+    color:rgb(171, 171, 171);
+    font-size: 15px;
+}
 .notaImportanteReserva{
     background-color: #66c6e7;
     border-radius: 5px;
     padding: 4px 18px;
-    color: white;
+    color: #6f4634;
     text-align: start;
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
@@ -638,17 +642,17 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
     font-size: 18px;
 }
-.notaImportanteReserva strong{
+.notaImportanteReserva h5{
     font-size: 20px;
 }
 .botonesReserva{
-    display:flex;
-    gap:50%;
-} 
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+}
 .botonesReserva input{
     display:inline-flex;
-    width: 60%;
-    margin: 1em auto;
     height: 2em;
     font-size: 1.1rem;
     background-color: #4d2513;
@@ -660,24 +664,35 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     font-size: 18px;
 }
-#confirmacionReserva{
-    display: none;
-    gap: 2em;
-    padding: 20px;
+.botonesReserva input[type="button"] {
+  justify-content: flex-start;
 }
-#imagenConfirmacionReservas{
-    display: flex;
-    text-align: start;
-    padding: 2em;
+.botonesReserva input[type="submit"] {
+  justify-content: flex-end;
+}
+#confirmacionReserva, #finalizoReserva{
     background-color: #ffffff;
     border-radius: 10px;
-    gap: 20px;
+    display: none;
+    padding: 2em;
+    gap: 2em;
 }
-#imagenConfirmacionReservas h1{
+#imagenConfirmacionReservas, #imagenFinalizacionReservas{
+    background-image: url("/img/turquesa.png");
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+    text-align: start;
+    padding: 2em;
+}
+#imagenConfirmacionReservas h1, #imagenFinalizacionReservas h1{
+    align-content: center;
     text-align: center;
     width: 100%;
+    font-weight: bold;
+    color: #ffffff;
 }
-#confirmacionReserva .imgLogo{
+#confirmacionReserva .imgLogo, #imagenFinalizacionReservas .imgLogo{
     width: 10vh;
     border-radius: 50%;
 }
@@ -688,8 +703,24 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
     font-size: 20px;
     text-align: center;
-    
-    background-color: white;
-    border-radius: 10px;
-    padding: 20px;
+    padding: 40px;
+}
+#textoFinalizoReserva{
+    text-align:center;
+    font-size: 23px;
+    padding: 0px 100px;
+}
+#finalizoReserva .botonFinalizar{
+    display: block;
+    width: 30%;
+    margin: 1em auto;
+    height: 2em;
+    font-size: 1.1rem;
+    background-color: #4d2513;
+    border-color: black;
+    color: white;
+    border-radius: 8px;
+    min-width: 300px;
+    align-content: center;
+    text-decoration: none; 
 }

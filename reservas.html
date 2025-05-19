@@ -52,7 +52,7 @@
         </div>
     </header>
     <main id="mainReservas">
-        <div class="contenedorReservas">
+        <div class="contenedorRealizarReservas">
             <section id="seleccionSucursalDeReserva">
                 <div class="tituloReservas">
                     <h1 >Reservas</h1>
@@ -62,7 +62,7 @@
                     <option value="1" >Oveja Negra Parque Chacabuco - Emilio Mitre 1296</option>
                     <option value="2">Sucursal 2</option>
                 </select>
-                <input type="button" value="Continuar" onclick="mostrarDatosDeReserva()"/>
+                <input type="submit" value="Continuar" onclick="mostrarDatosDeReserva()"/>
             </section>
             <section id="datosDeReserva" >
                 <div id="referenciaLocal">
@@ -81,26 +81,26 @@
                             <label for="horaReserva">Hora<!--se muestran los horarios disponibles para la fecha seleccionada-->
                                 <select id="horaReserva" name="horaReserva" class="form-control" required>
                                     <option value="" selected>Seleccione hora de reserva</option>
-                                    <option value="11:00">11:00</option>
-                                    <option value="12:00">12:00</option>
-                                    <option value="13:00">13:00</option>
-                                    <option value="14:00">14:00</option>
-                                    <option value="15:00">15:00</option>
-                                    <option value="16:00">16:00</option>
-                                    <option value="17:00">17:00</option>
-                                    <option value="18:00">18:00</option>
-                                    <option value="19:00">19:00</option>
-                                    <option value="20:00">20:00</option>
+                                    <option value="11:00:00">11:00</option>
+                                    <option value="12:00:00">12:00</option>
+                                    <option value="13:00:00">13:00</option>
+                                    <option value="14:00:00">14:00</option>
+                                    <option value="15:00:00">15:00</option>
+                                    <option value="16:00:00">16:00</option>
+                                    <option value="17:00:00">17:00</option>
+                                    <option value="18:00:00">18:00</option>
+                                    <option value="19:00:00">19:00</option>
+                                    <option value="20:00:00">20:00</option>
                                 </select>
                             </label>
                             <label for="cantPersonasReserva">Cantidad de personas
                                 <select id="cantPersonasReserva" name="cantPersonasReserva" class="form-control" required>
                                     <option value="" selected>¿Cuantas personas asistirán?</option>
-                                    <option value="Una persona">1</option>
-                                    <option value="2 personas">2</option>
-                                    <option value="3 personas">3</option>
-                                    <option value="4 personas">4</option>
-                                    <option value="5 personas">5</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
                                 </select>
                             </label>
                             <label for="mesaReserva">Mesas *Mirar plano del local* <!--En base a la disponibilidad del establecimiento y cant perosnas, se mostraran las mesas disponibles -->
@@ -119,12 +119,13 @@
                                 </select>
                             </label>
                             <label for="observacionesReserva">Comentarios
-                                <textarea id="observacionesReserva" name="observacionesReserva" rows="3" cols="30" placeholder="Comentario que desee realizar..."></textarea>
+                                <textarea id="observacionesReserva" name="observacionesReserva" rows="3" cols="30" placeholder="Comentario que desee realizar..." maxlength="255"></textarea>
+                                <p id="errorObservaciones">Solo se permiten letras (sin números ni símbolos) y hasta 255 caracteres.</p>
                             </label>
                         </fieldset>
                     </div>
                     <div class="notaImportanteReserva">
-                        <strong>Importante:</strong>
+                        <h5>Importante:</h5>
                         <p>El tiempo de tolerancia es de 15 minutos, pasado ese tiempo la reserva quedara anulada.</p>
                         <p>Para ser ubicados deberá estar presente el 50% del grupo.</p>
                         <p>No se permiten mascostas.</p>
@@ -149,16 +150,37 @@
                     <p><strong>descripcion de la mesa: </strong><br><span ></span></p> <!--Aca se inserta los datos de la base de datos-->
                     <p><strong>Observaciones: </strong><br><span id="ObservacionDada"></span></p> 
                 </div>
-                <div class="botonesReserva">
-                    <input type="button" value="Volver" onclick="volverSeleccionDatosReserva()"/>
-                    <input type="submit" value="Completar reserva"/>
-                </div>
                 <div class="notaImportanteReserva">
-                    <strong>Importante:</strong>
+                    <h5>Importante:</h5>
                     <p>El tiempo de tolerancia es de 15 minutos, pasado ese tiempo la reserva quedara anulada.</p>
                     <p>Para ser ubicados deberá estar presente el 50% del grupo.</p>
                     <p>No se permiten mascostas.</p>
                     <p>El DNI asignado al empleado para tomar la reserva debe coincidir con el DNI ingresado en la reserva.</p>
+                </div>
+                <div class="botonesReserva">
+                    <input type="button" value="Volver" onclick="volverSeleccionDatosReserva()"/>
+                    <input type="submit" value="Completar reserva" onclick="mostrarFinalizoReserva()"/>
+                </div>
+            </section>
+            <section id="finalizoReserva">
+                <div id="imagenFinalizacionReservas">
+                    <img class= "imgLogo" src="img/logo.png" alt="Logo Oveja Negra">
+                    <h1>¡Gracias por reservar con nosotros!</h1>
+                </div>
+                <div id="textoFinalizoReserva">
+                    <p>La reserva fue realizada con exito, en breve llevará un mail a la direccion <strong>(direccion del usuario)</strong> con toda la información de la misma.</p>
+                    <p>Recuerde que debe asistir con dni al local y nuestro tiempo de tolerancia es de <strong>15 minutos</strong>, pasado ese tiempo su reserva quedará <strong>anulada</strong>.</p>
+                    <p>Si desea visualizar, modificar o cancelar su reserva puede hacerlo desde su perfil desde la sección "Mis reservas".</p>
+                </div>
+                    <div class="notaImportanteReserva">
+                    <h5>Importante:</h5>
+                    <p>El tiempo de tolerancia es de 15 minutos, pasado ese tiempo la reserva quedara anulada.</p>
+                    <p>Para ser ubicados deberá estar presente el 50% del grupo.</p>
+                    <p>No se permiten mascostas.</p>
+                    <p>El DNI asignado al empleado para tomar la reserva debe coincidir con el DNI ingresado en la reserva.</p>
+                </div>
+                <div>
+                    <a href="index.html" class="botonFinalizar">Finalizar</a>
                 </div>
             </section>
         </div>
