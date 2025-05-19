@@ -110,9 +110,12 @@ function mostrarSeleccionSucursalReserva() {
     alert("Debe seleccionar una fecha antes de continuar.");
     return;
   }
+  sessionStorage.setItem("fechaSeleccionada", fechaSeleccionada);
 
   const horaSelect = document.getElementById("horaReserva");
   const horaSeleccionada = horaSelect.value;
+  sessionStorage.setItem("horaSeleccionada", horaSeleccionada);
+
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (horaSeleccionada === "") {
     alert("Debe seleccionar un horario antes de continuar.");
@@ -120,13 +123,18 @@ function mostrarSeleccionSucursalReserva() {
   }
   const personasSelect = document.getElementById("cantPersonasReserva");
   const personasSeleccionadas = personasSelect.value;
+  sessionStorage.setItem("personasSeleccionadas", personasSeleccionadas);
+
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (personasSeleccionadas === "") {
     alert("Debe indicar la cantidad de personas antes de continuar.");
     return;
   }
+
   const mesaSelect = document.getElementById("mesaReserva");
   const mesaSeleccionada = mesaSelect.value;
+  sessionStorage.setItem("mesaSeleccionada", mesaSeleccionada);
+
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (mesaSeleccionada === "") {
     alert("Debe seleccionar una mesa antes de continuar.");
@@ -139,11 +147,11 @@ function mostrarSeleccionSucursalReserva() {
 
   /*Insertar los datos en la siguiente pagina de confirmación*/
   document.getElementById("sucursalSeleccionada").textContent = sessionStorage.getItem("sucursalNombre");
-  document.getElementById("fechaSeleccionada").textContent = fechaSeleccionada;
-  document.getElementById("horaSeleccionada").textContent = horaSeleccionada;
-  document.getElementById("cantPersonasSeleccionada").textContent = personasSeleccionadas + " persona/s";
-  document.getElementById("mesaSeleccionada").textContent = mesaSeleccionada;
-  document.getElementById("ObservacionDada").textContent = ObservacionDada;
+  document.getElementById("fechaSeleccionada").textContent = sessionStorage.getItem("fechaSeleccionada");
+  document.getElementById("horaSeleccionada").textContent = sessionStorage.getItem("horaSeleccionada");
+  document.getElementById("cantPersonasSeleccionada").textContent = sessionStorage.getItem("personasSeleccionadas") + " persona/s";
+  document.getElementById("mesaSeleccionada").textContent = sessionStorage.getItem("mesaSeleccionada");
+  document.getElementById("ObservacionDada").textContent = sessionStorage.getItem("ObservacionDada");
 
   /* Ocultar primera sección*/
   document.getElementById("datosDeReserva").style.display = "none";
@@ -170,13 +178,13 @@ function volverSeleccionDatosReserva() {
 function enviarReserva(){
   /* Recupera los datos desde sessionStorage y campos*/
   const sucursal = sessionStorage.getItem("sucursalSeleccionada");
-  const fecha = document.getElementById("fechaReserva").value;
-  const hora = document.getElementById("horaReserva").value;
-  const cantidad = document.getElementById("cantPersonasReserva").value;
-  const mesa = document.getElementById("mesaReserva").value;
-  const observaciones = document.getElementById("observacionesReserva").value;
+  const fecha = sessionStorage.getItem("fechaReserva");
+  const hora = sessionStorage.getItem("horaReserva");
+  const cantidad = sessionStorage.getItem("cantPersonasReserva");
+  const mesa = sessionStorage.getItem("mesaReserva");
+  const observaciones = sessionStorage.getItem("observacionesReserva");
 
-  // Asignar al formulario oculto
+  /* Asignar al formulario oculto */
   const form = document.getElementById("formReservaFinal");
   form.elements["sucursal"].value = sucursal;
   form.elements["fecha"].value = fecha;
@@ -185,7 +193,7 @@ function enviarReserva(){
   form.elements["mesa"].value = mesa;
   form.elements["observaciones"].value = observaciones;
 
-  form.submit(); // Enviar el formulario
+  /*form.submit(); // Enviar el formulario
 
   /* Ocultar confirmación de reserva*/
   document.getElementById("confirmacionReserva").style.display = "none";

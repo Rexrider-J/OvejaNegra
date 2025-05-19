@@ -623,7 +623,7 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #ffffff;
     border-color: #dedede;
     border-radius: 5px;
-    color: #000000;
+    color: #212529;
 }
 #errorObservaciones{
     color:rgb(171, 171, 171);
