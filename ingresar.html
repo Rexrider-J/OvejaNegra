@@ -57,11 +57,14 @@
                     <h1>Iniciar Sesion</h1>
                     <form method="post" action=""><!--Recopila los datos y los envia al servidor-->
                         <fieldset>
-                            <label for="dni-usuario-login">DNI: 
-                                <input id="dni-usuario-login" name="dni-usuario-login" type="number" placeholder="00000000" min="6000000" max="99999999" required>
+                            <label for="email-usuario-login">Email: 
+                                <input id="email-usuario" name="email-usuario" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                            </label>
+                            <label for="dni-usuario-login" class="solo-numeros">DNI: 
+                                <input id="dni-usuario-login" name="dni-usuario-login" type="text" placeholder="00000000" min="6000000" max="99999999" maxlength="11" required>
                             </label>
                             <label for="contraseña-usuario-login">Contraseña: 
-                                <input id="contraseña-usuario-login" name="contraseña-usuario-login" type="password" pattern="[a-z0-5]{8,}" required>
+                                <input id="contraseña-usuario-login" name="contraseña-usuario-login" type="password" pattern="[a-z0-5]{8,}" maxlength="20" required>
                                 <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
                             </label>
                         </fieldset>
@@ -73,14 +76,14 @@
                     <h1>Registrarse</h1>
                     <form method="post" action=""> <!--Recopila los datos y los envia al servidor-->
                         <fieldset>
-                            <label for="nombre-usuario">Nombre/s:* 
-                                <input id="nombre-usuario" name="nombre-usuario" type="text" required>
+                            <label for="nombre-usuario" class="solo-letras">Nombre/s:* 
+                                <input id="nombre-usuario" name="nombre-usuario" type="text" maxlength="50" required>
                             </label>
-                            <label for="apellido-usuario">Apellido/s:* 
-                                <input id="apellido-usuario" name="apellido-usuario" type="text" required>
+                            <label for="apellido-usuario" class="solo-letras">Apellido/s:* 
+                                <input id="apellido-usuario" name="apellido-usuario" type="text" maxlength="50" required>
                             </label>
-                            <label for="dni-usuario-registro">DNI:* 
-                                <input id="dni-usuario-registro" name="dni-usuario-registro" type="number" placeholder="00000000" min="1000000" max="99999999" required>
+                            <label for="dni-usuario-registro" class="solo-numeros">DNI:* 
+                                <input id="dni-usuario-registro" name="dni-usuario-registro" type="text" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
                             </label>
                         </fieldset>
                         <fieldset>
@@ -89,14 +92,15 @@
                             </label>
                         </fieldset>
                         <fieldset>
-                            <label for="telefono-usuario-registro">Telefono: 
-                                <input id="telefono-usuario-registro" name="telefono-usuario-registro" type="number" placeholder="1100000000" min="1000000000" max="99999999" required>
+                            <label for="telefono-usuario-registro" class="solo-telefono">Telefono: 
+                                <input id="telefono-usuario-registro" name="telefono-usuario-registro" type="text" placeholder="+54 11 1234 5678" min="1000000000" max="99999999" maxlength="20" required>
                             </label>
                             <label for="email-usuario">Email:* 
-                                <input id="email-usuario" name="email-usuario" type="email" required />
+                                <input id="email-usuario" name="email-usuario" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
                             </label>
+                            <p id="errorEmail" style="color: red; display: none;">Email inválido</p>
                             <label for="contraseñausuario-registro">Contraseña:* 
-                                <input id="contraseñausuario-registro" name="contraseña-usuario-registro" type="password" pattern="[a-z0-5]{8,}" required>
+                                <input id="contraseñausuario-registro" name="contraseña-usuario-registro" type="password" pattern="[a-z0-5]{8,}" maxlength="20" required>
                             </label>
                         </fieldset>
                         <input type="submit" value="Registrarse"/>
@@ -109,11 +113,14 @@
                     <h1>Iniciar Sesion</h1>
                     <form method="post" action=""><!--Recopila los datos y los envia al servidor-->
                         <fieldset>
-                            <label for="usuario-empleado">DNI: 
-                                <input id="usuario-empleado" name="usuario-empleado" type="number" placeholder="00000000" min="1000000" max="99999999" required>
+                            <label for="email-empleado">Email: 
+                                <input id="email-usuario" name="email-usuario" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                            </label>
+                            <label for="usuario-empleado" class="solo-numeros">DNI: 
+                                <input id="usuario-empleado" name="usuario-empleado" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
                             </label>
                             <label for="contraseña-empleado">Contraseña: 
-                                <input id="contraseña-empleado" name="contraseña-empleado" type="password" pattern="[a-z0-5]{8,}" required>
+                                <input id="contraseña-empleado" name="contraseña-empleado" type="password" pattern="[a-z0-5]{8,}" maxlength="20" required>
                                 <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
                             </label>
                         </fieldset>

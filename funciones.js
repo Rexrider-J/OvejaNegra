@@ -89,19 +89,94 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
-/*Cada vez que el usuario precione una tecla dentro del textarea observacionesReserva, si es un caracter especial no lo permite incluir*/
-document.getElementById('observacionesReserva').addEventListener('keydown', function (e) {
-  /*brinda el caracter que se intenta ingresar*/
-  const tecla = e.key;
-  /*Se definen los caracteres permitidos en las letrasPermitidas*/
-  const letrasPermitidas = /^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]$/;
-  /*Si la tecla no esta en letrasPermitidas, ni es un espacio, un delete, un arrowLeft(flecha izquierda) o arrowRight(flecha derecha) no se permite que se escriba*/
-  if (!letrasPermitidas.test(tecla) && tecla !== 'Backspace' && tecla !== 'Delete' && tecla !== 'ArrowLeft' && tecla !== 'ArrowRight') {
-    /* bloquea la tecla para que no se escriba*/
-    e.preventDefault(); 
-  }
-});
+document.querySelectorAll('.solo-letras').forEach(function(campo) {
+  /*Evento para controlar las teclas que se presionan al escribir*/
+  campo.addEventListener('keydown', function(e) {
+    const tecla = e.key;
+    /*Permite letras (mayúsculas y minúsculas), tildes, ñ, Ñ, apóstrofe y espacio*/
+    const letrasPermitidas = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ' ]$/;
+    /*Teclas especiales que también permitimos: espacio, borrar, flecha izquierda y derecha, el tab y enter*/
+    const teclasEspeciales = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
 
+    /*Si la tecla no está permitida y no es especial, se bloquea la acción*/
+    if (!letrasPermitidas.test(tecla) && !teclasEspeciales.includes(tecla)) {
+      e.preventDefault();
+    }
+  });
+  /*Evento que se activa cuando cambia el contenido del campo coincluye pegar)*/
+  campo.addEventListener('input', function() {
+    /*Reemplaza cualquier caracter que no esté permitido por nada ''*/
+    campo.value = campo.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ' ]/g, '');
+  });
+
+  /*Evento que detecta cuando se intenta pegar texto en el campo*/
+  campo.addEventListener('paste', function(e) {
+    /* Obtiene el texto que se intenta pegar*/
+    const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
+    /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
+    if (/[^a-zA-ZáéíóúÁÉÍÓÚñÑ' ]/.test(textoPegado)) {
+      e.preventDefault();
+      alert('Solo se permiten letras, espacios y apóstrofes.');
+    }
+  });
+});
+document.querySelectorAll('.solo-numeros').forEach(function(campo) {
+  /*Permite solo números y tab, delete, enter y las fechas de direccion izquierda y derecha*/
+  campo.addEventListener('keydown', function(e) {
+    const tecla = e.key;
+    const numerosPermitidos = /^[0-9]$/;
+    const teclasEspeciales = ['Backspace','Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+
+    /*Si la tecla no está permitida y no es especial, se bloquea la acción*/
+    if (!numerosPermitidos.test(tecla) && !teclasEspeciales.includes(tecla)) {
+      e.preventDefault();
+    }
+  });
+  /* Limpia cualquier caracter no numérico en el input, útil para pegar o escribir de otras formas*/
+  campo.addEventListener('input', function() {
+    campo.value = campo.value.replace(/[^0-9]/g, '');
+  });
+
+  /* Bloquea pegar texto con caracteres no numéricos*/
+  campo.addEventListener('paste', function(e) {
+    /* Obtiene el texto que se intenta pegar*/
+    const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
+    /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
+    if (/[^0-9]/.test(textoPegado)) {
+      e.preventDefault();
+      alert('Solo se permiten números.');
+    }
+  });
+});
+/*Valida el numero de telefono en los formatos: */
+function validarTelefono() {
+  const tel = document.getElementById("telefono").value;
+  const regex = /^\+?[\d\s\-()]{7,15}$/;
+
+  if(regex.test(tel)) {
+    alert("Número válido");
+  } else {
+    alert("Número inválido");
+  }
+}
+/*Validad mail*/
+function validateEmail(email) {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  }
+
+  // Obtener el input y agregar el evento
+  const emailInput = document.getElementById('email');
+
+  emailInput.addEventListener('blur', function () {
+    const email = emailInput.value;
+
+    if (!validateEmail(email)) {
+      alert('El correo electrónico no es válido.');
+      emailInput.value = ''; // Borra el texto
+    }
+  });
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/

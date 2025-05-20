@@ -364,7 +364,7 @@ section{
     gap: 2rem;
 }
 #empleado{
-    height: 50vh;
+    height: auto;
 }
 #cliente .iniciarSesion , #cliente .registrarse, #empleado .iniciarSesion{
     width: 100%;
