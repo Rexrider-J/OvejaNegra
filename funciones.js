@@ -159,24 +159,32 @@ function validarTelefono() {
     alert("Número inválido");
   }
 }
-/*Validad mail*/
+// Validar formato de email
 function validateEmail(email) {
-    return email.match(
-      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    );
+  const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})$/;
+  return re.test(email);
+}
+// Función que se ejecuta al enviar el formulario
+function submitRegistrar(event) {
+  event.preventDefault(); // Evita que se envíe el formulario
+
+  const emailInput = document.getElementById('email-usuario-registro');
+  const email = emailInput.value.trim();
+
+  if (!validateEmail(email)) {
+    alert('El email es inválido. Por favor ingresa un email válido.');
+    emailInput.value = '';
+    emailInput.focus();
+    return false;
   }
 
-  // Obtener el input y agregar el evento
-  const emailInput = document.getElementById('email');
-
-  emailInput.addEventListener('blur', function () {
-    const email = emailInput.value;
-
-    if (!validateEmail(email)) {
-      alert('El correo electrónico no es válido.');
-      emailInput.value = ''; // Borra el texto
-    }
-  });
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+  return false;
+}
+// Agregar el listener una sola vez, cuando se cargue la página
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('form-registro').addEventListener('submit', submitRegistrar);
+});
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/

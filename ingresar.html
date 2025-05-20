@@ -74,12 +74,12 @@
                     
                 <section class="registrarse">
                     <h1>Registrarse</h1>
-                    <form method="post" action=""> <!--Recopila los datos y los envia al servidor-->
+                    <form id="form-registro"> <!--Recopila los datos y los envia al servidor. USAR action="#" CUANDO SE USE PHP-->
                         <fieldset>
-                            <label for="nombre-usuario" class="solo-letras">Nombre/s:* 
+                            <label for="nombre-usuario-registro" class="solo-letras">Nombre/s:* 
                                 <input id="nombre-usuario" name="nombre-usuario" type="text" maxlength="50" required>
                             </label>
-                            <label for="apellido-usuario" class="solo-letras">Apellido/s:* 
+                            <label for="apellido-usuario-registro" class="solo-letras">Apellido/s:* 
                                 <input id="apellido-usuario" name="apellido-usuario" type="text" maxlength="50" required>
                             </label>
                             <label for="dni-usuario-registro" class="solo-numeros">DNI:* 
@@ -92,15 +92,14 @@
                             </label>
                         </fieldset>
                         <fieldset>
-                            <label for="telefono-usuario-registro" class="solo-telefono">Telefono: 
+                            <label for="telefono-usuario-registro" class="solo-numeros">Telefono: 
                                 <input id="telefono-usuario-registro" name="telefono-usuario-registro" type="text" placeholder="+54 11 1234 5678" min="1000000000" max="99999999" maxlength="20" required>
                             </label>
-                            <label for="email-usuario">Email:* 
-                                <input id="email-usuario" name="email-usuario" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                            <label for="email-usuario-registro">Email:* 
+                                <input id="email-usuario-registro" name="email-usuario-registro" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
                             </label>
-                            <p id="errorEmail" style="color: red; display: none;">Email inválido</p>
-                            <label for="contraseñausuario-registro">Contraseña:* 
-                                <input id="contraseñausuario-registro" name="contraseña-usuario-registro" type="password" pattern="[a-z0-5]{8,}" maxlength="20" required>
+                            <label for="contraseña-usuario-registro">Contraseña:* 
+                                <input id="contraseña-usuario-registro" name="contraseña-usuario-registro" type="password" pattern="[a-z0-9]{8,}" maxlength="20" required>
                             </label>
                         </fieldset>
                         <input type="submit" value="Registrarse"/>
