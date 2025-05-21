@@ -342,7 +342,7 @@ section{
     font-weight: 400;
     padding: 0;
     margin: 0;
-    background-image: url("img/Fotos/Ingresar/fondoIngreso.jpg");
+    background-image: url("img/Fotos/Ingresar/fondoIngreso.png");
     background-size: cover;
 }
 .contenedorFormulario {
@@ -384,12 +384,15 @@ section{
     font-weight: 400;
     font-size: 18px;
 }
-#cliente .iniciarSesion, #empleado .iniciarSesion{
-    background-color: white;
-}
 #empleado .iniciarSesion{
+    background-image:url("img/Fotos/Ingresar/inicioSesionEmpleado.png");
+    background-size:cover;
     align-items: center;
     padding-top: 2rem;
+}
+#cliente .iniciarSesion{
+    background-image:url("img/Fotos/Ingresar/inicioSesion.png");
+    background-size:cover;
 }
 #cliente .registrarse{
     background-image:url("img/Fotos/Ingresar/registrarse.png");
