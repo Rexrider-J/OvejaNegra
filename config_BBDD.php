@@ -1,0 +1,15 @@
+<?php
+$host = "localhost"; // Dirección del servidor de base de datos (usualmente localhost)
+$usuario = "root"; // Usuario de la base de datos
+$contrasena = "";  // Contraseña del usuario (vacía si no se ha configurado)
+$base_de_datos = "oveja_negra"; // Nombre de la base de datos a la que se conectará
+
+// Crear una conexión a MySQL usando MySQLi
+$conn = new mysqli($host, $usuario, $contrasena, $base_de_datos);
+
+// Verificar si ocurrió un error en la conexión
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error); // Mostrar mensaje y detener ejecución si falla
+}
+?>
+
