@@ -159,32 +159,77 @@ function validarTelefono() {
     alert("Número inválido");
   }
 }
-// Validar formato de email
+/*Para validad el input date de la fecha de nacimiento en la parte de registrarse cliente*/
+document.addEventListener('DOMContentLoaded', () => {
+  const fechaInput = document.getElementById('fecha-nacimiento');
+  /*Se coloca el año actual y la fecha de hoy en variables*/
+  const hoy = new Date();
+  const añoActual = hoy.getFullYear();
+  /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/ 
+  /*Minimo 1921-01-01*/
+  const min = '1921-01-01';
+  /*Maximo el 31 de diciembre del año anterior*/
+  const max = `${añoActual - 1}-12-31`; 
+  /*Se colocan las variables en los valores maximos y minimos que puede tomar el input*/
+  fechaInput.min = min;
+  fechaInput.max = max;
+});
+/* Validar formato de email ejemplo@ejemplo.ejemplo*/
 function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})$/;
   return re.test(email);
 }
-// Función que se ejecuta al enviar el formulario
+/* Función que se ejecuta al enviar el formulario en el boton registrarse*/
 function submitRegistrar(event) {
-  event.preventDefault(); // Evita que se envíe el formulario
+  event.preventDefault(); // Evita que se envíe el formulario por ahora
 
   const emailInput = document.getElementById('email-usuario-registro');
   const email = emailInput.value.trim();
-
+  /*Si el formato es invalido aparece este cartel*/
   if (!validateEmail(email)) {
     alert('El email es inválido. Por favor ingresa un email válido.');
     emailInput.value = '';
     emailInput.focus();
     return false;
   }
-
+  /*Si el formato es valido aparece este cartel*/
   alert('Email válido. Los datos serían enviados al servidor (simulado).');
   return false;
 }
-// Agregar el listener una sola vez, cuando se cargue la página
-document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('form-registro').addEventListener('submit', submitRegistrar);
-});
+/*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion cliente*/
+function submitAccederCliente(event) {
+  event.preventDefault(); // Evita que se envíe el formulario por ahora
+
+  const emailInput = document.getElementById('email-usuario-login');
+  const email = emailInput.value.trim();
+  /*Si el formato es invalido aparece este cartel*/
+  if (!validateEmail(email)) {
+    alert('El email es inválido. Por favor ingresa un email válido.');
+    emailInput.value = '';
+    emailInput.focus();
+    return false;
+  }
+  /*Si el formato es valido aparece este cartel*/
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+  return false;
+}
+/*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion empleado*/
+function submitAccederEmpleado(event) {
+  event.preventDefault(); // Evita que se envíe el formulario por ahora
+
+  const emailInput = document.getElementById('email-empleado-login');
+  const email = emailInput.value.trim();
+  /*Si el formato es invalido aparece este cartel*/
+  if (!validateEmail(email)) {
+    alert('El email es inválido. Por favor ingresa un email válido.');
+    emailInput.value = '';
+    emailInput.focus();
+    return false;
+  }
+  /*Si el formato es valido aparece este cartel*/
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+  return false;
+}
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/

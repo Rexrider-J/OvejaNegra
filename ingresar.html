@@ -55,10 +55,10 @@
             <div id="cliente" style="display: none;"> 
                 <section class="iniciarSesion">
                     <h1>Iniciar Sesion</h1>
-                    <form method="post" action=""><!--Recopila los datos y los envia al servidor-->
+                    <form id="form-acceso-cliente"  onsubmit="return submitAccederCliente(event)"><!--Recopila los datos y los envia al servidor-->
                         <fieldset>
                             <label for="email-usuario-login">Email: 
-                                <input id="email-usuario" name="email-usuario" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                                <input id="email-usuario-login" name="email-usuario-login" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
                             </label>
                             <label for="dni-usuario-login" class="solo-numeros">DNI: 
                                 <input id="dni-usuario-login" name="dni-usuario-login" type="text" placeholder="00000000" min="6000000" max="99999999" maxlength="11" required>
@@ -68,13 +68,13 @@
                                 <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
                             </label>
                         </fieldset>
-                        <input type="submit" value="Acceder" />
+                        <input type="submit" value="Acceder"/>
                     </form>   
                 </section>
                     
                 <section class="registrarse">
                     <h1>Registrarse</h1>
-                    <form id="form-registro"> <!--Recopila los datos y los envia al servidor. USAR action="#" CUANDO SE USE PHP-->
+                    <form id="form-registro"  onsubmit="return submitRegistrar(event)"> <!--Recopila los datos y los envia al servidor. USAR action="#" CUANDO SE USE PHP-->
                         <fieldset>
                             <label for="nombre-usuario-registro" class="solo-letras">Nombre/s:* 
                                 <input id="nombre-usuario" name="nombre-usuario" type="text" maxlength="50" required>
@@ -110,16 +110,16 @@
             <div id="empleado" style="display: none;">
                 <section class="iniciarSesion">
                     <h1>Iniciar Sesion</h1>
-                    <form method="post" action=""><!--Recopila los datos y los envia al servidor-->
+                    <form id="form-acceso-empleado"  onsubmit="return submitAccederEmpleado(event)"><!--Recopila los datos y los envia al servidor-->
                         <fieldset>
-                            <label for="email-empleado">Email: 
-                                <input id="email-usuario" name="email-usuario" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                            <label for="email-empleado-login">Email: 
+                                <input id="email-empleado-login" name="email-empleado-login" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
                             </label>
-                            <label for="usuario-empleado" class="solo-numeros">DNI: 
-                                <input id="usuario-empleado" name="usuario-empleado" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                            <label for="usuario-empleado-login" class="solo-numeros">DNI: 
+                                <input id="usuario-empleado-login" name="usuario-empleado-login" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
                             </label>
-                            <label for="contraseña-empleado">Contraseña: 
-                                <input id="contraseña-empleado" name="contraseña-empleado" type="password" pattern="[a-z0-5]{8,}" maxlength="20" required>
+                            <label for="contraseña-empleado-login">Contraseña: 
+                                <input id="contraseña-empleado-login" name="contraseña-empleado-login" type="password" pattern="[a-z0-5]{8,}" maxlength="20" required>
                                 <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
                             </label>
                         </fieldset>
