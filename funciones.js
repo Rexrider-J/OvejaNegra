@@ -166,10 +166,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const hoy = new Date();
   const añoActual = hoy.getFullYear();
   /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/ 
-  /*Minimo 1921-01-01*/
-  const min = '1921-01-01';
-  /*Maximo el 31 de diciembre del año anterior*/
-  const max = `${añoActual - 1}-12-31`; 
+  /*Minimo (este año - 80) -01-01*/
+  const min = `${añoActual - 80}-01-01`;
+  /*Maximo el 31 de diciembre de (este año -14)*/
+  const max = `${añoActual - 14}-12-31`; 
   /*Se colocan las variables en los valores maximos y minimos que puede tomar el input*/
   fechaInput.min = min;
   fechaInput.max = max;
