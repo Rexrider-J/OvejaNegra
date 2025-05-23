@@ -128,26 +128,27 @@
                 </section>
             </div>
             <div id="olvideContrasenia" style="display: none">
-                <h1>Recuperar contraseña</h1>
-                <form id="recuperar-contraseña">
-                    <fieldset>
-                        <label for="email-empleado-login">Email: 
-                            <input id="email-empleado-login" name="email-empleado-login" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
-                        </label>
-                        <label for="dni-empleado-login" class="solo-numeros">DNI: 
-                            <input id="dni-empleado-login" name="dni-empleado-login" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
-                        </label>
-                    </fieldset>
-                    <fieldset>
-                        <label for="personal-account">
-                            <input id="personal-account" type="radio" name="account-type" class="inline" checked /> Cliente
-                        </label>
-                        <label for="business-account">
-                            <input id="business-account" type="radio" name="account-type" class="inline" /> Empleado
-                        </label>
-                    </fieldset>
-                    <input type="submit" value="Enviar"/>
-                </form>
+                <section class="recuperar-contrasenia">
+                    <h1>Recuperar contraseña</h1>
+                    <form id="form-recuperar">
+                        <fieldset>
+                            <label for="email-recuperar-contrasenia">Email: 
+                                <input id="email-recuperar-contrasenia" name="email-recuperar-contrasenia" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                            </label>
+                            <label for="dni-recuperar-contrasenia" class="solo-numeros">DNI: 
+                                <input id="dni-recuperar-contrasenia" name="dni-recuperar-contrasenia" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                            </label>
+                        </fieldset>
+                        <fieldset>
+                            <label for="cuenta-cliente" class="radio-buttom-estilo">
+                                <input id="cuenta-cliente" type="radio" name="tipo-cuenta" class="inline" checked /> Cliente
+                            </label>
+                            <label for="cuenta-empleado" class="radio-buttom-estilo">
+                                <input id="cuenta-empleado" type="radio" name="tipo-cuenta" class="inline" /> Empleado</label>
+                        </fieldset>
+                        <input type="submit" value="Enviar"/>
+                    </form> 
+                </section>
             </div>
         </div>
     </main>

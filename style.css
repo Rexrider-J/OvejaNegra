@@ -383,10 +383,10 @@ section{
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
 }
-#empleado{
+#empleado, #olvideContrasenia{
     height: auto;
 }
-#cliente .iniciarSesion , #cliente .registrarse, #empleado .iniciarSesion{
+#cliente .iniciarSesion , #cliente .registrarse, #empleado .iniciarSesion, #olvideContrasenia .recuperar-contrasenia {
     width: 100%;
     height: auto;
     border-radius: 10px;
@@ -418,7 +418,13 @@ section{
     background-image:url("img/Fotos/Ingresar/registrarse.png");
     background-size:cover;
 }
-#cliente h1,#empleado h1{
+#olvideContrasenia .recuperar-contrasenia{
+    background-image:url("img/Fotos/Ingresar/olvideContrasenia.png");
+    background-size:cover;
+    align-items: center;
+    padding-top: 2rem;
+}
+#cliente h1,#empleado h1, #olvideContrasenia h1{
     display: flex;
     justify-content: center; 
     align-items: center;   
@@ -426,7 +432,7 @@ section{
     margin: 0;            
     font-weight: bold;
 }
-#cliente form, #empleado form{
+#cliente form, #empleado form, #olvideContrasenia form{
     width: 50vh;
     height: auto;
     max-width: 500px;
@@ -435,12 +441,15 @@ section{
     padding-top: 1em;
     align-items: start;
 }
-#cliente label, #empleado label{
+#cliente label, #empleado label, #olvideContrasenia label{
     display: block;
     margin: 0.5rem 5%;
     text-align: left;
 }
-#cliente input, #empleado input{
+#olvideContrasenia .radio-buttom-estilo{
+    display: inline-block;
+}
+#cliente input, #empleado input, #olvideContrasenia input {
     margin: 10px 0 0 0;
     width: 100%;
     min-height: 2em;
@@ -452,6 +461,11 @@ section{
     border-bottom: 1px solid #4d2513;
     color: #000000;
     font-size: 16px;
+}
+#olvideContrasenia .inline{
+    width: unset;
+    margin: 0 0.5em 0 0;
+    vertical-align: middle;
 }
 #cliente a , #empleado a{
     text-decoration: none; 
@@ -469,7 +483,7 @@ section{
     background-color: #4d2513;
     border-color: black;
 }
-#cliente input[type="submit"], #empleado input[type="submit"], #seleccionSucursalDeReserva input[type="submit"]{
+#cliente input[type="submit"], #empleado input[type="submit"], #seleccionSucursalDeReserva input[type="submit"] , #olvideContrasenia input[type="submit"]{
     display: block;
     width: 60%;
     margin: 1em auto;
@@ -481,7 +495,7 @@ section{
     border-radius: 8px;
     min-width: 300px;
 }
-#cliente fieldset, #empleado fieldset{
+#cliente fieldset, #empleado fieldset , #olvideContrasenia fieldset{
     border: none;
 }
 /*Quitar las fechas de arriba y abajo por defecto en los input type number*/
