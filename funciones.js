@@ -171,7 +171,7 @@ function validarTelefono() {
 }
 /*Para validad el input date de la fecha de nacimiento en la parte de registrarse cliente*/
 document.addEventListener('DOMContentLoaded', () => {
-  const fechaInput = document.getElementById('fecha-nacimiento');
+  const fechaInput = document.getElementById('fecha-nacimiento-registro');
   /*Se coloca el año actual y la fecha de hoy en variables*/
   const hoy = new Date();
   const añoActual = hoy.getFullYear();
