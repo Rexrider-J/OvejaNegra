@@ -29,7 +29,9 @@ window.addEventListener("DOMContentLoaded", function () {
     } else if (hash === "#empleado" && divEmpleado) {
       divEmpleado.style.display = "grid";
     }
-  });
+  }
+);
+
 /*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
 function mostrarFormulario(tipo) {
     document.getElementById("cliente").style.display = "none";
