@@ -1,12 +1,19 @@
 /*MENU*/
 /*Es un boton para scrollear para arriba en menu*/
-window.addEventListener('scroll', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('btn-subir');
-  if (window.scrollY > 200) {
-    btn.style.display = 'block';
-  } else {
-    btn.style.display = 'none';
-  }
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      btn.style.display = 'block';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 });
 /*TODAS LAS PAGINAS*/
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
