@@ -161,7 +161,7 @@ function validarTelefono() {
 }
 /*Para validad el input date de la fecha de nacimiento en la parte de registrarse cliente*/
 document.addEventListener('DOMContentLoaded', () => {
-  const fechaInput = document.getElementById('fecha-nacimiento');
+  const fechaInput = document.getElementById('fecha-nacimiento-registro');
   /*Se coloca el año actual y la fecha de hoy en variables*/
   const hoy = new Date();
   const añoActual = hoy.getFullYear();
@@ -180,18 +180,44 @@ function validateEmail(email) {
   return re.test(email);
 }
 /* Función que se ejecuta al enviar el formulario en el boton registrarse*/
-function submitRegistrar(event) {
+function submitAccederEmpleado(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
 
-  const emailInput = document.getElementById('email-usuario-registro');
-  const email = emailInput.value.trim();
+  const email = document.getElementById('email-empleado-login').trim();
+  const dni = document.getElementById('dni-empleado-login').value.trim();
+  const contraseña = document.getElementById('contraseña-empleado-login').value.trim();
+
   /*Si el formato es invalido aparece este cartel*/
   if (!validateEmail(email)) {
     alert('El email es inválido. Por favor ingresa un email válido.');
-    emailInput.value = '';
-    emailInput.focus();
+    document.getElementById('email-usuario-login').focus();
     return false;
   }
+
+  /*Si el formato es valido aparece este cartel*/
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+
+    /*
+  // Cuando conecte con PHP, descomento esto:
+  fetch('ruta-a-tu-archivo.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      dni,
+      email,
+      contraseña
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert('Respuesta del servidor: ' + data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Hubo un error al enviar los datos.');
+  });
+  */
+
   /*Si el formato es valido aparece este cartel*/
   alert('Email válido. Los datos serían enviados al servidor (simulado).');
   return false;
@@ -200,34 +226,88 @@ function submitRegistrar(event) {
 function submitAccederCliente(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
 
-  const emailInput = document.getElementById('email-usuario-login');
-  const email = emailInput.value.trim();
+  const email = document.getElementById('email-usuario-login').trim();
+  const dni = document.getElementById('dni-usuario-registro').value.trim();
+  const contraseña = document.getElementById('contraseña-usuario-registro').value.trim();
+
   /*Si el formato es invalido aparece este cartel*/
   if (!validateEmail(email)) {
     alert('El email es inválido. Por favor ingresa un email válido.');
-    emailInput.value = '';
-    emailInput.focus();
+    document.getElementById('email-usuario-login').focus();
     return false;
   }
+
   /*Si el formato es valido aparece este cartel*/
   alert('Email válido. Los datos serían enviados al servidor (simulado).');
+
+    /*
+  // Cuando conecte con PHP, descomento esto:
+  fetch('ruta-a-tu-archivo.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      dni,
+      email,
+      contraseña
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert('Respuesta del servidor: ' + data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Hubo un error al enviar los datos.');
+  });
+  */
+
   return false;
 }
 /*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion empleado*/
-function submitAccederEmpleado(event) {
+function submitRegistrar(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
 
-  const emailInput = document.getElementById('email-empleado-login');
-  const email = emailInput.value.trim();
-  /*Si el formato es invalido aparece este cartel*/
+const nombre = document.getElementById('nombre-usuario-registro').value.trim();
+  const apellido = document.getElementById('apellido-usuario-registro').value.trim();
+  const dni = document.getElementById('dni-usuario-registro').value.trim();
+  const fechaNacimiento = document.getElementById('fecha-nacimiento-registro').value.trim();
+  const telefono = document.getElementById('telefono-usuario-registro').value.trim();
+  const email = document.getElementById('email-usuario-registro').value.trim();
+  const contraseña = document.getElementById('contraseña-usuario-registro').value.trim();
+
   if (!validateEmail(email)) {
     alert('El email es inválido. Por favor ingresa un email válido.');
-    emailInput.value = '';
-    emailInput.focus();
+    document.getElementById('email-usuario-registro').focus();
     return false;
   }
-  /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+
+  alert('Formulario válido. Datos listos para enviar al servidor (simulado).');
+
+  /*
+  // Cuando conecte con PHP, descomento esto:
+  fetch('ruta-a-tu-archivo.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      nombre,
+      apellido,
+      dni,
+      fechaNacimiento,
+      telefono,
+      email,
+      contraseña
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert('Respuesta del servidor: ' + data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Hubo un error al enviar los datos.');
+  });
+  */
+
   return false;
 }
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
