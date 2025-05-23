@@ -453,6 +453,10 @@ section{
     color: #000000;
     font-size: 16px;
 }
+#cliente a , #empleado a{
+    text-decoration: none; 
+    color: #4d2513;
+}
 #cliente input[type="date"]{
     display: block;
     width: 100%;

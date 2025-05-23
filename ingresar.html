@@ -52,7 +52,7 @@
     </header>
     <main class="mainIngreso">
         <div class="contenedorFormulario">
-            <div id="cliente" style="display: none;"> 
+            <div id="cliente" style="display: none"> 
                 <section class="iniciarSesion">
                     <h1>Iniciar Sesion</h1>
                     <form id="form-acceso-cliente"  onsubmit="return submitAccederCliente(event)"><!--Recopila los datos y los envia al servidor-->
@@ -65,7 +65,7 @@
                             </label>
                             <label for="contraseña-usuario-login">Contraseña: 
                                 <input id="contraseña-usuario-login" name="contraseña-usuario-login" type="password" maxlength="20" required>
-                                <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
+                                <legend><a href id="link-olvide-cliente">¿Olvidaste tu contraseña?</a></legend>
                             </label>
                         </fieldset>
                         <input type="submit" value="Acceder"/>
@@ -107,7 +107,7 @@
                 </section>
             </div>
             
-            <div id="empleado" style="display: none;">
+            <div id="empleado" style="display: none">
                 <section class="iniciarSesion">
                     <h1>Iniciar Sesion</h1>
                     <form id="form-acceso-empleado"  onsubmit="return submitAccederEmpleado(event)"><!--Recopila los datos y los envia al servidor-->
@@ -120,12 +120,34 @@
                             </label>
                             <label for="contraseña-empleado-login">Contraseña: 
                                 <input id="contraseña-empleado-login" name="contraseña-empleado-login" type="password" maxlength="20" required>
-                                <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
+                                <legend><a href id="link-olvide-empleado">¿Olvidaste tu contraseña?</a></legend>
                             </label>
                         </fieldset>
                         <input type="submit" value="Acceder"/>
                     </form>   
                 </section>
+            </div>
+            <div id="olvideContrasenia" style="display: none">
+                <h1>Recuperar contraseña</h1>
+                <form id="recuperar-contraseña">
+                    <fieldset>
+                        <label for="email-empleado-login">Email: 
+                            <input id="email-empleado-login" name="email-empleado-login" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                        </label>
+                        <label for="dni-empleado-login" class="solo-numeros">DNI: 
+                            <input id="dni-empleado-login" name="dni-empleado-login" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                        </label>
+                    </fieldset>
+                    <fieldset>
+                        <label for="personal-account">
+                            <input id="personal-account" type="radio" name="account-type" class="inline" checked /> Cliente
+                        </label>
+                        <label for="business-account">
+                            <input id="business-account" type="radio" name="account-type" class="inline" /> Empleado
+                        </label>
+                    </fieldset>
+                    <input type="submit" value="Enviar"/>
+                </form>
             </div>
         </div>
     </main>

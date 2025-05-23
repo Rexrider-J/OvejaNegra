@@ -1,3 +1,4 @@
+/*MENU*/
 /*Es un boton para scrollear para arriba en menu*/
 window.addEventListener('scroll', () => {
   const btn = document.getElementById('btn-subir');
@@ -7,7 +8,7 @@ window.addEventListener('scroll', () => {
     btn.style.display = 'none';
   }
 });
-
+/*TODAS LAS PAGINAS*/
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
     const hash = window.location.hash;
@@ -25,17 +26,7 @@ window.addEventListener("DOMContentLoaded", function () {
       divEmpleado.style.display = "grid";
     }
   });
-/*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
-function mostrarFormulario(tipo) {
-    document.getElementById("cliente").style.display = "none";
-    document.getElementById("empleado").style.display = "none";
-  
-    if (tipo === "botonCliente") {
-      document.getElementById("cliente").style.display = "grid";
-    } else if (tipo === "botonEmpleado") {
-      document.getElementById("empleado").style.display = "grid";
-    }
-}
+/*RESERVAS*/
 /*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
 function mostrarDatosDeReserva() {
   const sucursalSelect = document.getElementById("dropdownReservas");
@@ -86,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
     dropdown.value = valorGuardado;
   }
 });
-
+/*RESTRICCIONES PARA DATOS INGRESADOS*/
 /*Calendario externo Flatpickr*/
 document.addEventListener("DOMContentLoaded", function () {
   flatpickr("#calendarioReservas", {
@@ -189,6 +180,34 @@ function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})$/;
   return re.test(email);
 }
+/*INGRESAR, REGISTRARSE, EMPLEADO*/
+/*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
+function mostrarFormulario(tipo) {
+
+    document.getElementById("cliente").style.display = "none";
+    document.getElementById("empleado").style.display = "none";
+    document.getElementById("olvideContrasenia").style.display = "none";
+  
+    if (tipo === "botonCliente") {
+      document.getElementById("cliente").style.display = "grid";
+    } else if (tipo === "botonEmpleado") {
+      document.getElementById("empleado").style.display = "grid";
+    }
+}
+document.getElementById("link-olvide-cliente").addEventListener("click", function (e) {
+  e.preventDefault();
+  document.getElementById("cliente").style.display = "none";
+  document.getElementById("empleado").style.display = "none";
+  document.getElementById("olvideContrasenia").style.display = "grid";
+});
+
+document.getElementById("link-olvide-empleado").addEventListener("click", function (e) {
+  e.preventDefault();
+  document.getElementById("cliente").style.display = "none";
+  document.getElementById("empleado").style.display = "none";
+  document.getElementById("olvideContrasenia").style.display = "grid";
+});
+
 /* Función que se ejecuta al enviar el formulario en el boton registrarse*/
 function submitRegistrar(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
