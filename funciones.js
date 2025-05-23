@@ -88,12 +88,18 @@ document.addEventListener("DOMContentLoaded", function () {
 /*Calendario externo Flatpickr*/
 document.addEventListener("DOMContentLoaded", function () {
   flatpickr("#calendarioReservas", {
-    inline: true,             /*Para que el calendario sea siempre visible*/
+    inline: true,             
     dateFormat: "Y-m-d",
-    locale: "es",             /*Permite que este en español*/
+    locale: "es",             
     minDate: "today",
+    disable: [
+      function(date) {
+        // Devuelve true si el día es lunes (1)
+        return date.getDay() === 1;
+      }
+    ],
     onChange: function(selectedDates, dateStr) {
-      document.getElementById("fechaReserva").value = dateStr; /* Guarda la fecha seleccionada en el calendario*/
+      document.getElementById("fechaReserva").value = dateStr;
     }
   });
 });
