@@ -133,6 +133,7 @@ document.querySelectorAll('.solo-numeros').forEach(function(campo) {
       e.preventDefault();
     }
   });
+  
   /* Limpia cualquier caracter no numérico en el input, útil para pegar o escribir de otras formas*/
   campo.addEventListener('input', function() {
     campo.value = campo.value.replace(/[^0-9]/g, '');
@@ -183,7 +184,6 @@ function validateEmail(email) {
 /*INGRESAR, REGISTRARSE, EMPLEADO*/
 /*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
 function mostrarFormulario(tipo) {
-
     document.getElementById("cliente").style.display = "none";
     document.getElementById("empleado").style.display = "none";
     document.getElementById("olvideContrasenia").style.display = "none";
@@ -194,18 +194,23 @@ function mostrarFormulario(tipo) {
       document.getElementById("empleado").style.display = "grid";
     }
 }
+/*Acceder a olvideContrasenia desde login cliente*/
 document.getElementById("link-olvide-cliente").addEventListener("click", function (e) {
   e.preventDefault();
   document.getElementById("cliente").style.display = "none";
   document.getElementById("empleado").style.display = "none";
   document.getElementById("olvideContrasenia").style.display = "grid";
+  document.getElementById("datos-enviar-mail").style.display = "grid"; 
+  document.getElementById("confirmacion-envio-mail").style.display = "none"; 
 });
-
+/*Acceder a olvideContrasenia desde login empleado*/
 document.getElementById("link-olvide-empleado").addEventListener("click", function (e) {
   e.preventDefault();
   document.getElementById("cliente").style.display = "none";
   document.getElementById("empleado").style.display = "none";
   document.getElementById("olvideContrasenia").style.display = "grid";
+  document.getElementById("datos-enviar-mail").style.display = "grid"; 
+  document.getElementById("confirmacion-envio-mail").style.display = "none";
 });
 
 /* Función que se ejecuta al enviar el formulario en el boton registrarse*/
@@ -336,6 +341,55 @@ function submitAccederEmpleado(event) {
   */
 
   return false;
+}
+/*Funcion que se ejecuta al enviar el formulario en el boton enviar de olvideContraseña*/
+function submitEnviarMail(event) {
+  event.preventDefault(); // Evita que se envíe el formulario por ahora
+
+  const email = document.getElementById('email-recuperar-contrasenia').value.trim();
+  const dni = document.getElementById('dni-recuperar-contrasenia').value.trim();
+  const cuentaCliente = document.getElementById("cuenta-cliente").checked;
+  const cuentaEmpleado = document.getElementById("cuenta-empleado").checked;
+  sessionStorage.setItem("cuentaClient", cuentaCliente);
+  sessionStorage.setItem("cuentaEmpleado", cuentaEmpleado);
+
+  /*Si el formato es invalido aparece este cartel*/
+  if (!validateEmail(email)) {
+    alert('El email es inválido. Por favor ingresa un email válido.');
+    document.getElementById('email-empleado-login').focus();
+    return false;
+  }
+  
+  /*Si el formato es valido aparece este cartel*/
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+  
+  /*Ocultar datos-enviar-mail*/
+  document.getElementById("datos-enviar-mail").style.display = "none";
+
+  /*mostrar confirmacion-envio-mail*/
+  document.getElementById("email-confirmado").textContent = email;
+  document.getElementById("confirmacion-envio-mail").style.display = "grid";
+
+  return false;
+}
+function finalizarRecuperarContrasenia(){
+  /*Ocultar confirmacion-envio-mail*/
+  document.getElementById("confirmacion-envio-mail").style.display = "none";
+
+  const cuentaCliente = sessionStorage.getItem("cuentaClient") === "true";
+  const cuentaEmpleado = sessionStorage.getItem("cuentaEmpleado") === "true";
+
+  /* Muestra la sección correspondiente segun si se selecciono cliente o empleado*/
+  if (cuentaCliente) {
+    document.getElementById("cliente").style.display = "grid";
+    document.getElementById("empleado").style.display = "none"; 
+  } else if (cuentaEmpleado) {
+    document.getElementById("empleado").style.display = "grid";
+    document.getElementById("cliente").style.display = "none"; 
+  }
+
+  /* limpiar el formulario por si se quiere volver a utilizar*/
+  document.getElementById("form-recuperar").reset();
 }
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {

@@ -116,7 +116,7 @@
                                 <input id="email-empleado-login" name="email-empleado-login" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
                             </label>
                             <label for="dni-empleado-login" class="solo-numeros">DNI: 
-                                <input id="dni-empleado-login" name="dni-empleado-login" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                                <input id="dni-empleado-login" name="dni-empleado-login" type="text" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
                             </label>
                             <label for="contraseña-empleado-login">Contraseña: 
                                 <input id="contraseña-empleado-login" name="contraseña-empleado-login" type="password" maxlength="20" required>
@@ -128,15 +128,15 @@
                 </section>
             </div>
             <div id="olvideContrasenia" style="display: none">
-                <section class="recuperar-contrasenia">
+                <section class="recuperar-contrasenia" id="datos-enviar-mail">
                     <h1>Recuperar contraseña</h1>
-                    <form id="form-recuperar">
+                    <form id="form-recuperar" onsubmit="return submitEnviarMail(event)">
                         <fieldset>
                             <label for="email-recuperar-contrasenia">Email: 
                                 <input id="email-recuperar-contrasenia" name="email-recuperar-contrasenia" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
                             </label>
                             <label for="dni-recuperar-contrasenia" class="solo-numeros">DNI: 
-                                <input id="dni-recuperar-contrasenia" name="dni-recuperar-contrasenia" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                                <input id="dni-recuperar-contrasenia" name="dni-recuperar-contrasenia" type="text" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
                             </label>
                         </fieldset>
                         <fieldset>
@@ -148,6 +148,13 @@
                         </fieldset>
                         <input type="submit" value="Enviar"/>
                     </form> 
+                </section>
+                <section id="confirmacion-envio-mail" style="display: none">
+                    <div class="textoFinalizoGestion">
+                    <p>En breve recibirás un correo electrónico en la dirección <strong><span id="email-confirmado"></strong>. Ese mensaje contendrá tu contraseña de acceso.</p>
+                    <p>Una vez recibida, podrás iniciar sesión utilizando tu correo electrónico, tu DNI y la contraseña proporcionada.</p>
+                    <p>Par modificar la contraseña por una personal, podés hacerlo desde tu perfil, en la opción "Modificar contraseña".</p>
+                    <input type="submit" value="Finalizar" onclick="finalizarRecuperarContrasenia()"/>
                 </section>
             </div>
         </div>
