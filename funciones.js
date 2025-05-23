@@ -1,3 +1,13 @@
+/*Es un boton para scrollear para arriba en menu*/
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('btn-subir');
+  if (window.scrollY > 200) {
+    btn.style.display = 'block';
+  } else {
+    btn.style.display = 'none';
+  }
+});
+
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
     const hash = window.location.hash;
