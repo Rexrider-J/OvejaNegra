@@ -768,7 +768,7 @@ input[type=number]::-webkit-outer-spin-button {
 /*MI PERFIL*/
 #miPerfil{
     width: 100%;
-    height: auto;
+    min-height: 100vh; /* ocupa toda la pantalla al menos */
     align-items: center;
     text-align: center;
 
@@ -778,10 +778,9 @@ input[type=number]::-webkit-outer-spin-button {
     background-size: cover;
 }
 #miPerfil .lista-contenido {
-    width: 100%;
-    max-width: 1200px; 
-    max-width: 1000px;
+    width: 70%;
     margin: 3% auto;
+    padding: 2rem 3rem;
     background: rgb(255, 255, 255); /* blanco translúcido */
     border-radius: 10px;
 
@@ -795,4 +794,7 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     font-size: 18px;
     color: #4d2513;
+}
+#listaEnlaces{
+    
 }
