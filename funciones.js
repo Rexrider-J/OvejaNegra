@@ -246,7 +246,7 @@ function submitRegistrar(event) {
   }
 
   /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+  alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
 
 /*
   // Cuando conecte con PHP, descomento esto:
