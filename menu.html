@@ -51,514 +51,516 @@
         </div>
     </header>
     <main id="mainMenu">
-        <div class="navCategoria">
-            <ol class="listCategorias">
-                <li><a href="#cafeteria">Cafeteria</a></li>
-                <li><a href="#panaderia">Panaderia</a></li>
-                <li><a href="#milkshakes">Milkshake</a></li>
-                <li><a href="#waffles">Waffles</a></li>
-                <li><a href="#starters">Starters</a></li>
-                <li><a href="#burgers">Burgers con papas</a></li>
-                <li><a href="#adicionales">Adicionales</a></li>
-                <li><a href="#milanesas">Milanesas con papas</a></li>
-                <li><a href="#hotdogs">Hot dogs</a></li>
-                <li><a href="#ensaladas">Ensaladas</a></li>
-                <li><a href="#bebidas">Bebidas</a></li>
-                <li><a href="#postres">Postres</a></li>
-            </ol>
-        </div>
-        <div class="elMenu">
-            <button id="btn-subir" title="Volver arriba">↑</button>
-            <section id="cafeteria">
-                <div class="tituloCategoria">
-                    <h2>Cafeteria</h2>
+        <div class="row">
+            <div class="col-4">
+                <div class="list-group" id="list-tab" role="tablist">
+                    <a class="list-group-item list-group-item-action active" id="list-cafeteria-list" data-bs-toggle="list" href="#list-cafeteria" role="tab" aria-controls="list-cafeteria">Cafeteria</a>
+                    <a class="list-group-item list-group-item-action" id="list-panaderia-list" data-bs-toggle="list" href="#list-panaderia" role="tab" aria-controls="list-panaderia">Panaderia</a>
+                    <a class="list-group-item list-group-item-action" id="list-milkshake-list" data-bs-toggle="list" href="#list-milkshake" role="tab" aria-controls="list-milkshake">Milkshake</a>
+                    <a class="list-group-item list-group-item-action" id="list-waffles-list" data-bs-toggle="list" href="#list-waffles" role="tab" aria-controls="list-waffles">Waffles</a>
+                    <a class="list-group-item list-group-item-action" id="list-starters-list" data-bs-toggle="list" href="#list-starters" role="tab" aria-controls="list-starters">Starters</a>
+                    <a class="list-group-item list-group-item-action" id="list-burgers-list" data-bs-toggle="list" href="#list-burgers" role="tab" aria-controls="list-burgers">Burgers con papas</a>
+                    <a class="list-group-item list-group-item-action" id="list-adicionales-list" data-bs-toggle="list" href="#list-adicionales" role="tab" aria-controls="list-adicionales">Adicionales</a>
+                    <a class="list-group-item list-group-item-action" id="list-milanesas-list" data-bs-toggle="list" href="#list-milanesas" role="tab" aria-controls="list-milanesas">Milanesas con papas</a>
+                    <a class="list-group-item list-group-item-action" id="list-hotdogs-list" data-bs-toggle="list" href="#list-hotdogs" role="tab" aria-controls="list-hotdogs">Hot dogs</a>
+                    <a class="list-group-item list-group-item-action" id="list-ensaladas-list" data-bs-toggle="list" href="#list-ensaladas" role="tab" aria-controls="list-ensaladas">Ensaladas</a>
+                    <a class="list-group-item list-group-item-action" id="list-bebidas-list" data-bs-toggle="list" href="#list-bebidas" role="tab" aria-controls="list-bebidas">Bebidas</a>
+                    <a class="list-group-item list-group-item-action" id="list-postres-list" data-bs-toggle="list" href="#list-postres" role="tab" aria-controls="list-postres">Postres</a>
                 </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/Espresso.jpg" alt="foto Espresso">
-                        <figcaption>Espresso</figcaption>
-                        <figcaption>$2.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/CortadoJarrito.jpg" alt="foto cortado en jarrito">
-                        <figcaption>Cortado en jarrito</figcaption>
-                        <figcaption>$2.700</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/CafeJarrito.jpg" alt="foto cafe en jarrito">
-                        <figcaption>Café en jarrito</figcaption>
-                        <figcaption>$2.700</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/CafeJarritoCrema.jpg" alt="foto cafe en jarrito con crema">
-                        <figcaption>Café en jarrito con crema</figcaption>
-                        <figcaption>$3.100</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/Cappuccino.webp" alt="foto cappucchino">
-                        <figcaption>Café con leche/Latte/Cappucchino/Té</figcaption>
-                        <figcaption>$3.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/cafeConLecheXL.jpg" alt="foto cafe con leche xl">
-                        <figcaption>Café con leche XL</figcaption>
-                        <figcaption>$4.700</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/lecheChocolatada.jpg" alt="foto leche chocolatada">
-                        <figcaption>Leche chocolatada/Submarino</figcaption>
-                        <figcaption>$3.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/CaramelMacchiato.png" alt="foto caramel macchiato">
-                        <figcaption>Cappucchino italiano/Caramel macchiato/Mocha</figcaption>
-                        <figcaption>$4.700</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/cafeDoble.jpg" alt="foto cafe doble">
-                        <figcaption>Café doble</figcaption>
-                        <figcaption>$3.900</figcaption>
-                    </figure>
-                    <figure>
-                         <img src="img/Fotos/menu/Cafeteria/JugoDeNaranja.webp" alt="foto jugo de naranja">
-                         <figcaption>Jugo de naranja</figcaption>
-                        <figcaption>$3.200</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/licuadoBanana.png" alt="foto licuado de banana">
-                        <figcaption>Licuado de banana</figcaption>
-                        <figcaption>$3.300</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/licuadoFrutosRojos.png" alt="foto licuado de frutos rojos">
-                        <figcaption>Licuado de frutos rojos/frutilla</figcaption>
-                        <figcaption>$4.100</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/limonadaMentaJengibre.png" alt="foto limonada de menta y jengibre">
-                        <figcaption>Limonada de menta y jengibre</figcaption>
-                        <figcaption>$5.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/jugoDetox.png" alt="foto jarra jugo detox">
-                        <figcaption>Jarra Jugo detox(manzana,zanahoria,ananá y jengibre)</figcaption>
-                        <figcaption>$6.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Cafeteria/yogurtGranola.png" alt="foto yogurt narutal">
-                        <figcaption>Yogurt natural con frutos rojos y granola</figcaption>
-                        <figcaption>$3.300</figcaption>
-                    </figure>
+            </div>
+            <div class="col-8">
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="list-cafeteria" role="tabpanel" aria-labelledby="list-cafeteria-list">
+                        <div class="tituloCategoria">
+                            <h2>Cafeteria</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/Espresso.jpg" alt="foto Espresso">
+                                <figcaption>Espresso</figcaption>
+                                <figcaption>$2.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/CortadoJarrito.jpg" alt="foto cortado en jarrito">
+                                <figcaption>Cortado en jarrito</figcaption>
+                                <figcaption>$2.700</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/CafeJarrito.jpg" alt="foto cafe en jarrito">
+                                <figcaption>Café en jarrito</figcaption>
+                                <figcaption>$2.700</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/CafeJarritoCrema.jpg" alt="foto cafe en jarrito con crema">
+                                <figcaption>Café en jarrito con crema</figcaption>
+                                <figcaption>$3.100</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/Cappuccino.webp" alt="foto cappucchino">
+                                <figcaption>Café con leche/Latte/Cappucchino/Té</figcaption>
+                                <figcaption>$3.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/cafeConLecheXL.jpg" alt="foto cafe con leche xl">
+                                <figcaption>Café con leche XL</figcaption>
+                                <figcaption>$4.700</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/lecheChocolatada.jpg" alt="foto leche chocolatada">
+                                <figcaption>Leche chocolatada/Submarino</figcaption>
+                                <figcaption>$3.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/CaramelMacchiato.png" alt="foto caramel macchiato">
+                                <figcaption>Cappucchino italiano/Caramel macchiato/Mocha</figcaption>
+                                <figcaption>$4.700</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/cafeDoble.jpg" alt="foto cafe doble">
+                                <figcaption>Café doble</figcaption>
+                                <figcaption>$3.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/JugoDeNaranja.webp" alt="foto jugo de naranja">
+                                <figcaption>Jugo de naranja</figcaption>
+                                <figcaption>$3.200</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/licuadoBanana.png" alt="foto licuado de banana">
+                                <figcaption>Licuado de banana</figcaption>
+                                <figcaption>$3.300</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/licuadoFrutosRojos.png" alt="foto licuado de frutos rojos">
+                                <figcaption>Licuado de frutos rojos/frutilla</figcaption>
+                                <figcaption>$4.100</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/limonadaMentaJengibre.png" alt="foto limonada de menta y jengibre">
+                                <figcaption>Limonada de menta y jengibre</figcaption>
+                                <figcaption>$5.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/jugoDetox.png" alt="foto jarra jugo detox">
+                                <figcaption>Jarra Jugo detox(manzana,zanahoria,ananá y jengibre)</figcaption>
+                                <figcaption>$6.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Cafeteria/yogurtGranola.png" alt="foto yogurt narutal">
+                                <figcaption>Yogurt natural con frutos rojos y granola</figcaption>
+                                <figcaption>$3.300</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-panaderia" role="tabpanel" aria-labelledby="list-panaderia-list">
+                        <div class="tituloCategoria">
+                            <h2>Panaderia</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/medialuna.png" alt="foto medialuna">
+                                <figcaption>Medialuna</figcaption>
+                                <figcaption>$1.400</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/medialunaDulcedeLeche.png" alt="foto medialuna con dulce de leche">
+                                <figcaption>Medialuna con dulce de leche</figcaption>
+                                <figcaption>$2.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/medialunasNutella.jpg" alt="foto medialuna con nutella">
+                                <figcaption>Medialuna con nutella</figcaption>
+                                <figcaption>$3.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/MedialunasJamonQueso.png" alt="Foto medialuna de jamón y queso">
+                                <figcaption>Medialuna de jamón y queso(2U)</figcaption>
+                                <figcaption>$4.3000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/donut.jpg" alt="foto Donut">
+                                <figcaption>Donut</figcaption>
+                                <figcaption>$1.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/budinLimon.png" alt="foto budin de limon">
+                                <figcaption>Budin de limón</figcaption>
+                                <figcaption>$2.800</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/tostadasMermelada.png" alt="foto tostadas">
+                                <figcaption>Tostadas(queso crema y mermelada)</figcaption>
+                                <figcaption>$2.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/medioTostadoMiga.jpg" alt="foto medio tostado de miga">
+                                <figcaption>Medio tostado de miga</figcaption>
+                                <figcaption>$3.800</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/tostadoFigazza.png" alt="foto tostado figazza">
+                                <figcaption>Tostado figazza</figcaption>
+                                <figcaption>$5.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/TostadoMiga.jpg" alt="foto tostado de miga">
+                                <figcaption>Tostado de miga</figcaption>
+                                <figcaption>$7.200</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/tostadoOvejaNegra.jpg" alt="foto tostado oveja negra">
+                                <figcaption>Tostado oveja negra(jamón,queso,lechuga,tomate)</figcaption>
+                                <figcaption>$9.300</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/tostadoMorron.png" alt="foto tostado de morrón">
+                                <figcaption>Tostado de Morrón(jamón,queso,morrón y huevo)</figcaption>
+                                <figcaption>$9.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/tostadoHuevo.png" alt="foto tostada con huevo revuelto">
+                                <figcaption>Tostada con huevo revuelto</figcaption>
+                                <figcaption>$5.100</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/tostadoHuevoBaicon.jpg" alt="foto tostada con huevo revuelto y bacon">
+                                <figcaption>Tostada con huevo revuelto y bacon</figcaption>
+                                <figcaption>$6.800</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Panaderia/tostadoPaltaHuevo.png" alt="foto tostada con palta y huevo revuelto">
+                                <figcaption>Tostada con palta y huevo revuelto</figcaption>
+                                <figcaption>$6.200</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-milkshake" role="tabpanel" aria-labelledby="list-milkshake-list">
+                        <div class="tituloCategoria">
+                            <h2>Milkshakes</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/menu/Milkshakes/chocolateMilkshake.png" alt="foto milkshake chocolate">
+                                <figcaption>Milkshake Chocolate/DDL/Frutilla/Vinilla</figcaption>
+                                <figcaption>$5.100</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Milkshakes/milkshakeOreo.png" alt="foto milkshake oreo">
+                                <figcaption>Milkshake Oreo: Milkshake de vainillas,Oreos y chocolate rallado</figcaption>
+                                <figcaption>$5.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Milkshakes/milkshakeNutella.png" alt="foto milkshake Nutella">
+                                <figcaption>Milshake Nutella: Milkshake de vainilla, nutella y chocolate rallado.</figcaption>
+                                <figcaption>$6.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Milkshakes/milkshakeRocklets.png" alt="foto milkshake oveja negra">
+                                <figcaption>Milkshake Oveja Negra: Milkshake de chocolate,rocklets y donut</figcaption>
+                                <figcaption>$7.100</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-waffles" role="tabpanel" aria-labelledby="list-waffles-list">
+                        <div class="tituloCategoria">
+                            <h2>Waffles</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/waffleDDL.jpg" alt="foto waffle dulce de leche">
+                                <figcaption>Waffle dulce de leche</figcaption>
+                                <figcaption>$4.300</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/waffleDDLCrema.jpg" alt="foto waffle dulce de leche y crema">
+                                <figcaption>Waffle dulce de leche y crema</figcaption>
+                                <figcaption>$4.800</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/waffleNutellaFrutosR.png" alt="foto waffle nutella">
+                                <figcaption>waffle nutella, frutos rojos y banana</figcaption>
+                                <figcaption>$6.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/waffleHeladoSalsa.jpg" alt="foto waffle helado y salsa">
+                                <figcaption>Waffle helado y salsa a elección:Helado de Chocolate,DDL,Frutilla,Vainilla.Salsa de chocolate,DDL o caramelo</figcaption>
+                                <figcaption>$6.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/waffleOreo.jpg" alt="foto waffle oreo">
+                                <figcaption>Waffle de oreo: helado de vainilla, oreos y salsa de DDL</figcaption>
+                                <figcaption>$9.400</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/wafflesFrutosRojos.png" alt=" fotowaffle frutos rojos">
+                                <figcaption>Waffle de frutos rojos: Helado de vainilla, frutos rojos y salsa de chocolate.</figcaption>
+                                <figcaption>$9.400</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/waffleNutellaHelado.png" alt="foto waffle nutella y helado">
+                                <figcaption>Waffle de nutella y helado: Helado de vainilla, salsa DDL</figcaption>
+                                <figcaption>$12.600</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/WaffleOvejaNegra.jpeg" alt="foto waffle Oveja Negra">
+                                <figcaption>Waffle Oveja Negra: con helado de vainilla y DDL, rocklets, y salsa de chocolate.</figcaption>
+                                <figcaption>$12.600</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/menu/Waffles/wafflesSalados.png" alt="foto waffle salado">
+                                <figcaption>Waffle salado: jamón, queso, huevo y cheddar</figcaption>
+                                <figcaption>$7.400</figcaption>
+                            </figure>
+                        </div>                        
+                    </div>
+                    <div class="tab-pane fade" id="list-starters" role="tabpanel" aria-labelledby="list-starters-list">
+                        <div class="tituloCategoria">
+                            <h2>Starters</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img//Fotos/Menu/Starters/arosDeCebolla.png" alt="foto aros de cebolla">
+                                <figcaption>Aros de cebolla</figcaption>
+                                <figcaption>1/2 Porción $4.300</figcaption>
+                                <figcaption>Porción $7.100</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Starters/PapasFritas.png" alt="foto de papas fritas">
+                                <figcaption>Papas fritas</figcaption>
+                                <figcaption>1/2 Porción $3.900</figcaption>
+                                <figcaption>Porción $6.400</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Starters/PapasBaicon.png" alt="fotos papas co cheddar y bacon">
+                                <figcaption>Papas con cheddar y bacon</figcaption>
+                                <figcaption>1/2 Porción $5.700</figcaption>
+                                <figcaption>Porción $9.500</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Starters/Nuggets.png" alt="fotos Nuggets">
+                                <figcaption>Nuggets</figcaption>
+                                <figcaption>1/2 Porción $3.900</figcaption>
+                                <figcaption>Porción $6.400</figcaption>
+                            </figure>
+                        </div>                        
+                    </div>
+                    <div class="tab-pane fade" id="list-burgers" role="tabpanel" aria-labelledby="list-burgers-list">
+                        <div class="tituloCategoria">
+                            <h2>Burgers con papas</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/Menu/Burgers/HamburguesaQueso.png" alt="Foto hamburguesa con queso">
+                                <figcaption>Hamburguesa con queso: carne,queso cheddar,salsa de cebolla,ketchup y mostaza</figcaption>
+                                <figcaption>Junior 80gr. $6.300</figcaption>
+                                <figcaption>Doble Junior $9.000</figcaption>
+                                <figcaption>Premium 125gr. $9.800</figcaption>
+                                <figcaption>Doble Premium $12.300</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Burgers/HamburguesaClasica.png" alt="Foto hamburguesa clásica">
+                                <figcaption>Hamburguesa clásica: carne, cheddar, lechuga, tomate</figcaption>
+                                <figcaption>Junior 80gr. $7.100</figcaption>
+                                <figcaption>Doble Junior $9.900</figcaption>
+                                <figcaption>Premium 125gr. $10.600</figcaption>
+                                <figcaption>Doble Premium $14.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Burgers/HamburguesaNapolitana.png" alt="Foto hamburguesa napolitana">
+                                <figcaption>Hamburguesa napolitana: carne, muzzarella, jamón y tomate</figcaption>
+                                <figcaption>Junior 80gr. $7.100</figcaption>
+                                <figcaption>Doble Junior $9.900</figcaption>
+                                <figcaption>Premium 125gr. $10.600</figcaption>
+                                <figcaption>Doble Premium $14.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Burgers/HamburguesaBacon.png" alt="Foto hamburguesa con bacon">
+                                <figcaption>Hamburguesa bacon: carne, cheddar, bacon y salsa barbacoa</figcaption>
+                                <figcaption>Junior 80gr. $7.100</figcaption>
+                                <figcaption>Doble Junior $9.900</figcaption>
+                                <figcaption>Premium 125gr. $10.600</figcaption>
+                                <figcaption>Doble Premium $14.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Burgers/HamburguesaOvejaNegra.png" alt="Foto hamburguesa oveja negra">
+                                <figcaption>Hamburguesa Oveja Negra: carne, muzzarella, lechuga, tomate, bacon, salsa de cebolla, ketchup, mostaza</figcaption>
+                                <figcaption>Junior 80gr. $8.100</figcaption>
+                                <figcaption>Doble Junior $10.900</figcaption>
+                                <figcaption>Premium 125gr. $11.500</figcaption>
+                                <figcaption>Doble Premium $15.000</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-adicionales" role="tabpanel" aria-labelledby="list-adicionales-list">
+                        <div class="tituloCategoria">
+                            <h2>Adicionales</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/Menu/Adicionales/arosDeCebolla.png" alt="foto adicional aros de cebolla">
+                                <figcaption>Cambiar papas por aros de cebolla</figcaption>
+                                <figcaption>$2.400</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Adicionales/PapasBaicon.png" alt="foto adicional papas con cheddar y bacon">
+                                <figcaption>Papas con cheddar y bacon</figcaption>
+                                <figcaption>$2.100</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Adicionales/Huevo.png" alt="foto adicional huevo frito">
+                                <figcaption>Huevo frito</figcaption>
+                                <figcaption>$700</figcaption>
+                            </figure>
+                        </div>                        
+                    </div>
+                    <div class="tab-pane fade" id="list-milanesas" role="tabpanel" aria-labelledby="list-milanesas-list">
+                        <div class="tituloCategoria">
+                            <h2>Milanesas con papas</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/Menu/Milanesas/MilanesaNormal.png" alt="foto milanesa">
+                                <figcaption>Milanesa</figcaption>
+                                <figcaption>S/Papas $6.700</figcaption>
+                                <figcaption>C/Papas $8.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Milanesas/MilanesaACaballo.png" alt="foto milanesa a caballo">
+                                <figcaption>Milanesa a caballo: Con huevo frito</figcaption>
+                                <figcaption>S/Papas $8.000</figcaption>
+                                <figcaption>C/Papas $10.200</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Milanesas/MilanesaClasica.png" alt="foto milanesa clásica">
+                                <figcaption>Milanesa clásica: lechuga, tomate, muzzarella</figcaption>
+                                <figcaption>S/Papas $9.700</figcaption>
+                                <figcaption>C/Papas $11.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Milanesas/milanesaNapolitana.png" alt="foto milanesa napolitana">
+                                <figcaption>Milanesa napolitana: jamón, muzzarella, tomate</figcaption>
+                                <figcaption>S/Papas $9.700</figcaption>
+                                <figcaption>C/Papas $11.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Milanesas/milanesaBacon.png" alt="foto milanesa bacon">
+                                <figcaption>Milanesa bacon: cheddar, bacon, salsa barbacoa</figcaption>
+                                <figcaption>S/Papas $9.700</figcaption>
+                                <figcaption>C/Papas $11.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Milanesas/milanesaOvejaNegra.png" alt="foto milanesa Oveja Negra">
+                                <figcaption>Milanesa Oveja Negra: muzzarella, lechuga, tomate, bacon</figcaption>
+                                <figcaption>S/Papas $10.700</figcaption>
+                                <figcaption>C/Papas $12.900</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="list-hotdogs" role="tabpanel" aria-labelledby="list-hotdogs-list">
+                        <div class="tituloCategoria">
+                            <h2>Hot dogs</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/Menu/Hotdogs/2Salchichas.png" alt="foto 2 superpanchos">
+                                <figcaption>2 Superpanchos</figcaption>
+                                <figcaption>$4.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Hotdogs/superpancho.png" alt="foto superpancho">
+                                <figcaption>Superpancho</figcaption>
+                                <figcaption>$2.400</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Hotdogs/SalchichaAlemana.png" alt="foto salchicha alemana">
+                                <figcaption>Salchicha alemana</figcaption>
+                                <figcaption>$3.700</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Hotdogs/SuperpanchoPapas.jpg" alt="foto superpancho con papas">
+                                <figcaption>Superpancho con papas fritas</figcaption>
+                                <figcaption>$4.800</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Hotdogs/salchichaAlemanaPapas.png" alt="foto alemana con papas">
+                                <figcaption>Alemana con papas fritas</figcaption>
+                                <figcaption>$6.300</figcaption>
+                            </figure>
+                        </div>                       
+                    </div>
+                    <div class="tab-pane fade" id="list-ensaladas" role="tabpanel" aria-labelledby="list-ensaladas-list">
+                        <div class="tituloCategoria">
+                            <h2>Ensaladas</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/Menu/Ensaladas/ensaladaCesar.png" alt="foto ensalada cesar">
+                                <figcaption>Ensalada Caesar: Lechuga, tomate, queso, huevo, pollo crispy y salsa caeser</figcaption>
+                                <figcaption>$11.100</figcaption>
+                            </figure>
+                        </div>                        
+                    </div>
+                    <div class="tab-pane fade" id="list-bebidas" role="tabpanel" aria-labelledby="list-bebidas-list">
+                        <div class="tituloCategoria">
+                            <h2>Bebidas</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/Menu/Bebidas/CCl.png" alt="foto cocacola 500ml">
+                                <figcaption>Linea Coca Cola 500ml</figcaption>
+                                <figcaption>$2.200</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Bebidas/CocaCola1L.png" alt="foto cocacola 1L">
+                                <figcaption>Linea Coca Cola 1L</figcaption>
+                                <figcaption>$4.000</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Bebidas/AQUARIUS-agua-manzana-x500cc.png" alt="foto agua saborizada">
+                                <figcaption>Agua saborizada Manzana o Pomelo 500ml</figcaption>
+                                <figcaption>$2.200</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Bebidas/Agua-Villavicencio-Sin-Gas-500-ml.png" alt="foto agua 5000ml">
+                                <figcaption>Agua con o sin gas 500ml</figcaption>
+                                <figcaption>$2.200</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Bebidas/Cerveza-QUILMES-CRISTAL-Lata-473ml.png" alt="foto quilmes">
+                                <figcaption>Quilmes 473ml</figcaption>
+                                <figcaption>$3.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Bebidas/imperial-lager-cerveza-lata-473-ml-e1603837257931.png" alt="foto imperial">
+                                <figcaption>Imperial o Andes Rubia/Roja/Negra</figcaption>
+                                <figcaption>$3.900</figcaption>
+                            </figure>
+                        </div>                        
+                    </div>
+                    <div class="tab-pane fade" id="list-postres" role="tabpanel" aria-labelledby="list-postres-list">
+                        <div class="tituloCategoria">
+                            <h2>Postres</h2>
+                        </div>
+                        <div class="listProductos">
+                            <figure>
+                                <img src="img/Fotos/Menu/Postres/Affogato.png" alt="foto Affogato">
+                                <figcaption>Affogato: 2 bochas de helado de vainilla y café</figcaption>
+                                <figcaption>$7.900</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Postres/CopaOreo.png" alt="foto copa oreo">
+                                <figcaption>Copa Oreo: 2 bochas de helado de DDL de Oreo</figcaption>
+                                <figcaption>$6.700</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="img/Fotos/Menu/Postres/CopaRocklets.png" alt="foto copa rocklet">
+                                <figcaption>Copa Rocklet: 2 bochas de helado a elección con rocklets y salsa</figcaption>
+                                <figcaption>$6.700</figcaption>
+                            </figure>
+                        </div>
+                    </div>
                 </div>
-            </section>
-            <section id="panaderia">
-                <div class="tituloCategoria">
-                    <h2>Panaderia</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/medialuna.png" alt="foto medialuna">
-                        <figcaption>Medialuna</figcaption>
-                        <figcaption>$1.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/medialunaDulcedeLeche.png" alt="foto medialuna con dulce de leche">
-                        <figcaption>Medialuna con dulce de leche</figcaption>
-                        <figcaption>$2.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/medialunasNutella.jpg" alt="foto medialuna con nutella">
-                        <figcaption>Medialuna con nutella</figcaption>
-                        <figcaption>$3.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/MedialunasJamonQueso.png" alt="Foto medialuna de jamón y queso">
-                        <figcaption>Medialuna de jamón y queso(2U)</figcaption>
-                        <figcaption>$4.3000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/donut.jpg" alt="foto Donut">
-                        <figcaption>Donut</figcaption>
-                        <figcaption>$1.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/budinLimon.png" alt="foto budin de limon">
-                        <figcaption>Budin de limón</figcaption>
-                        <figcaption>$2.800</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/tostadasMermelada.png" alt="foto tostadas">
-                        <figcaption>Tostadas(queso crema y mermelada)</figcaption>
-                        <figcaption>$2.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/medioTostadoMiga.jpg" alt="foto medio tostado de miga">
-                        <figcaption>Medio tostado de miga</figcaption>
-                        <figcaption>$3.800</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/tostadoFigazza.png" alt="foto tostado figazza">
-                        <figcaption>Tostado figazza</figcaption>
-                        <figcaption>$5.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/TostadoMiga.jpg" alt="foto tostado de miga">
-                        <figcaption>Tostado de miga</figcaption>
-                        <figcaption>$7.200</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/tostadoOvejaNegra.jpg" alt="foto tostado oveja negra">
-                        <figcaption>Tostado oveja negra(jamón,queso,lechuga,tomate)</figcaption>
-                        <figcaption>$9.300</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/tostadoMorron.png" alt="foto tostado de morrón">
-                        <figcaption>Tostado de Morrón(jamón,queso,morrón y huevo)</figcaption>
-                        <figcaption>$9.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/tostadoHuevo.png" alt="foto tostada con huevo revuelto">
-                        <figcaption>Tostada con huevo revuelto</figcaption>
-                        <figcaption>$5.100</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/tostadoHuevoBaicon.jpg" alt="foto tostada con huevo revuelto y bacon">
-                        <figcaption>Tostada con huevo revuelto y bacon</figcaption>
-                        <figcaption>$6.800</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Panaderia/tostadoPaltaHuevo.png" alt="foto tostada con palta y huevo revuelto">
-                        <figcaption>Tostada con palta y huevo revuelto</figcaption>
-                        <figcaption>$6.200</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="milkshakes">
-                <div class="tituloCategoria">
-                    <h2>Milkshakes</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/menu/Milkshakes/chocolateMilkshake.png" alt="foto milkshake chocolate">
-                        <figcaption>Milkshake Chocolate/DDL/Frutilla/Vinilla</figcaption>
-                        <figcaption>$5.100</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Milkshakes/milkshakeOreo.png" alt="foto milkshake oreo">
-                        <figcaption>Milkshake Oreo: Milkshake de vainillas,Oreos y chocolate rallado</figcaption>
-                        <figcaption>$5.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Milkshakes/milkshakeNutella.png" alt="foto milkshake Nutella">
-                        <figcaption>Milshake Nutella: Milkshake de vainilla, nutella y chocolate rallado.</figcaption>
-                        <figcaption>$6.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Milkshakes/milkshakeRocklets.png" alt="foto milkshake oveja negra">
-                        <figcaption>Milkshake Oveja Negra: Milkshake de chocolate,rocklets y donut</figcaption>
-                        <figcaption>$7.100</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="waffles">
-                <div class="tituloCategoria">
-                    <h2>Waffles</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/waffleDDL.jpg" alt="foto waffle dulce de leche">
-                        <figcaption>Waffle dulce de leche</figcaption>
-                        <figcaption>$4.300</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/waffleDDLCrema.jpg" alt="foto waffle dulce de leche y crema">
-                        <figcaption>Waffle dulce de leche y crema</figcaption>
-                        <figcaption>$4.800</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/waffleNutellaFrutosR.png" alt="foto waffle nutella">
-                        <figcaption>waffle nutella, frutos rojos y banana</figcaption>
-                        <figcaption>$6.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/waffleHeladoSalsa.jpg" alt="foto waffle helado y salsa">
-                        <figcaption>Waffle helado y salsa a elección:Helado de Chocolate,DDL,Frutilla,Vainilla.Salsa de chocolate,DDL o caramelo</figcaption>
-                        <figcaption>$6.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/waffleOreo.jpg" alt="foto waffle oreo">
-                        <figcaption>Waffle de oreo: helado de vainilla, oreos y salsa de DDL</figcaption>
-                        <figcaption>$9.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/wafflesFrutosRojos.png" alt=" fotowaffle frutos rojos">
-                        <figcaption>Waffle de frutos rojos: Helado de vainilla, frutos rojos y salsa de chocolate.</figcaption>
-                        <figcaption>$9.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/waffleNutellaHelado.png" alt="foto waffle nutella y helado">
-                        <figcaption>Waffle de nutella y helado: Helado de vainilla, salsa DDL</figcaption>
-                        <figcaption>$12.600</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/WaffleOvejaNegra.jpeg" alt="foto waffle Oveja Negra">
-                        <figcaption>Waffle Oveja Negra: con helado de vainilla y DDL, rocklets, y salsa de chocolate.</figcaption>
-                        <figcaption>$12.600</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/menu/Waffles/wafflesSalados.png" alt="foto waffle salado">
-                        <figcaption>Waffle salado: jamón, queso, huevo y cheddar</figcaption>
-                        <figcaption>$7.400</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="starters">
-                <div class="tituloCategoria">
-                    <h2>Starters</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img//Fotos/Menu/Starters/arosDeCebolla.png" alt="foto aros de cebolla">
-                        <figcaption>Aros de cebolla</figcaption>
-                        <figcaption>1/2 Porción $4.300</figcaption>
-                        <figcaption>Porción $7.100</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Starters/PapasFritas.png" alt="foto de papas fritas">
-                        <figcaption>Papas fritas</figcaption>
-                        <figcaption>1/2 Porción $3.900</figcaption>
-                        <figcaption>Porción $6.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Starters/PapasBaicon.png" alt="fotos papas co cheddar y bacon">
-                        <figcaption>Papas con cheddar y bacon</figcaption>
-                        <figcaption>1/2 Porción $5.700</figcaption>
-                        <figcaption>Porción $9.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Starters/Nuggets.png" alt="fotos Nuggets">
-                        <figcaption>Nuggets</figcaption>
-                        <figcaption>1/2 Porción $3.900</figcaption>
-                        <figcaption>Porción $6.400</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="burgers">
-                <div class="tituloCategoria">
-                    <h2>Burgers con papas</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Menu/Burgers/HamburguesaQueso.png" alt="Foto hamburguesa con queso">
-                        <figcaption>Hamburguesa con queso: carne,queso cheddar,salsa de cebolla,ketchup y mostaza</figcaption>
-                        <figcaption>Junior 80gr. $6.300</figcaption>
-                        <figcaption>Doble Junior $9.000</figcaption>
-                        <figcaption>Premium 125gr. $9.800</figcaption>
-                        <figcaption>Doble Premium $12.300</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Burgers/HamburguesaClasica.png" alt="Foto hamburguesa clásica">
-                        <figcaption>Hamburguesa clásica: carne, cheddar, lechuga, tomate</figcaption>
-                        <figcaption>Junior 80gr. $7.100</figcaption>
-                        <figcaption>Doble Junior $9.900</figcaption>
-                        <figcaption>Premium 125gr. $10.600</figcaption>
-                        <figcaption>Doble Premium $14.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Burgers/HamburguesaNapolitana.png" alt="Foto hamburguesa napolitana">
-                        <figcaption>Hamburguesa napolitana: carne, muzzarella, jamón y tomate</figcaption>
-                        <figcaption>Junior 80gr. $7.100</figcaption>
-                        <figcaption>Doble Junior $9.900</figcaption>
-                        <figcaption>Premium 125gr. $10.600</figcaption>
-                        <figcaption>Doble Premium $14.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Burgers/HamburguesaBacon.png" alt="Foto hamburguesa con bacon">
-                        <figcaption>Hamburguesa bacon: carne, cheddar, bacon y salsa barbacoa</figcaption>
-                        <figcaption>Junior 80gr. $7.100</figcaption>
-                        <figcaption>Doble Junior $9.900</figcaption>
-                        <figcaption>Premium 125gr. $10.600</figcaption>
-                        <figcaption>Doble Premium $14.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Burgers/HamburguesaOvejaNegra.png" alt="Foto hamburguesa oveja negra">
-                        <figcaption>Hamburguesa Oveja Negra: carne, muzzarella, lechuga, tomate, bacon, salsa de cebolla, ketchup, mostaza</figcaption>
-                        <figcaption>Junior 80gr. $8.100</figcaption>
-                        <figcaption>Doble Junior $10.900</figcaption>
-                        <figcaption>Premium 125gr. $11.500</figcaption>
-                        <figcaption>Doble Premium $15.000</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="adicionales">
-                <div class="tituloCategoria">
-                    <h2>Adicionales</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Menu/Adicionales/arosDeCebolla.png" alt="foto adicional aros de cebolla">
-                        <figcaption>Cambiar papas por aros de cebolla</figcaption>
-                        <figcaption>$2.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Adicionales/PapasBaicon.png" alt="foto adicional papas con cheddar y bacon">
-                        <figcaption>Papas con cheddar y bacon</figcaption>
-                        <figcaption>$2.100</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Adicionales/Huevo.png" alt="foto adicional huevo frito">
-                        <figcaption>Huevo frito</figcaption>
-                        <figcaption>$700</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="milanesas">
-                <div class="tituloCategoria">
-                    <h2>Milanesas con papas</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Menu/Milanesas/MilanesaNormal.png" alt="foto milanesa">
-                        <figcaption>Milanesa</figcaption>
-                        <figcaption>S/Papas $6.700</figcaption>
-                        <figcaption>C/Papas $8.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Milanesas/MilanesaACaballo.png" alt="foto milanesa a caballo">
-                        <figcaption>Milanesa a caballo: Con huevo frito</figcaption>
-                        <figcaption>S/Papas $8.000</figcaption>
-                        <figcaption>C/Papas $10.200</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Milanesas/MilanesaClasica.png" alt="foto milanesa clásica">
-                        <figcaption>Milanesa clásica: lechuga, tomate, muzzarella</figcaption>
-                        <figcaption>S/Papas $9.700</figcaption>
-                        <figcaption>C/Papas $11.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Milanesas/milanesaNapolitana.png" alt="foto milanesa napolitana">
-                        <figcaption>Milanesa napolitana: jamón, muzzarella, tomate</figcaption>
-                        <figcaption>S/Papas $9.700</figcaption>
-                        <figcaption>C/Papas $11.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Milanesas/milanesaBacon.png" alt="foto milanesa bacon">
-                        <figcaption>Milanesa bacon: cheddar, bacon, salsa barbacoa</figcaption>
-                        <figcaption>S/Papas $9.700</figcaption>
-                        <figcaption>C/Papas $11.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Milanesas/milanesaOvejaNegra.png" alt="foto milanesa Oveja Negra">
-                        <figcaption>Milanesa Oveja Negra: muzzarella, lechuga, tomate, bacon</figcaption>
-                        <figcaption>S/Papas $10.700</figcaption>
-                        <figcaption>C/Papas $12.900</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="hotdogs">
-                <div class="tituloCategoria">
-                    <h2>Hot dogs</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Menu/Hotdogs/2Salchichas.png" alt="foto 2 superpanchos">
-                        <figcaption>2 Superpanchos</figcaption>
-                        <figcaption>$4.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Hotdogs/superpancho.png" alt="foto superpancho">
-                        <figcaption>Superpancho</figcaption>
-                        <figcaption>$2.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Hotdogs/SalchichaAlemana.png" alt="foto salchicha alemana">
-                        <figcaption>Salchicha alemana</figcaption>
-                        <figcaption>$3.700</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Hotdogs/SuperpanchoPapas.jpg" alt="foto superpancho con papas">
-                        <figcaption>Superpancho con papas fritas</figcaption>
-                        <figcaption>$4.800</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Hotdogs/salchichaAlemanaPapas.png" alt="foto alemana con papas">
-                        <figcaption>Alemana con papas fritas</figcaption>
-                        <figcaption>$6.300</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="ensaladas">
-                <div class="tituloCategoria">
-                    <h2>Ensaladas</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Menu/Ensaladas/ensaladaCesar.png" alt="foto ensalada cesar">
-                        <figcaption>Ensalada Caesar: Lechuga, tomate, queso, huevo, pollo crispy y salsa caeser</figcaption>
-                        <figcaption>$11.100</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="bebidas">
-                <div class="tituloCategoria">
-                    <h2>Bebidas</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Menu/Bebidas/CCl.png" alt="foto cocacola 500ml">
-                        <figcaption>Linea Coca Cola 500ml</figcaption>
-                        <figcaption>$2.200</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Bebidas/CocaCola1L.png" alt="foto cocacola 1L">
-                        <figcaption>Linea Coca Cola 1L</figcaption>
-                        <figcaption>$4.000</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Bebidas/AQUARIUS-agua-manzana-x500cc.png" alt="foto agua saborizada">
-                        <figcaption>Agua saborizada Manzana o Pomelo 500ml</figcaption>
-                        <figcaption>$2.200</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Bebidas/Agua-Villavicencio-Sin-Gas-500-ml.png" alt="foto agua 5000ml">
-                        <figcaption>Agua con o sin gas 500ml</figcaption>
-                        <figcaption>$2.200</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Bebidas/Cerveza-QUILMES-CRISTAL-Lata-473ml.png" alt="foto quilmes">
-                        <figcaption>Quilmes 473ml</figcaption>
-                        <figcaption>$3.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Bebidas/imperial-lager-cerveza-lata-473-ml-e1603837257931.png" alt="foto imperial">
-                        <figcaption>Imperial o Andes Rubia/Roja/Negra</figcaption>
-                        <figcaption>$3.900</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="postres">
-                <div class="tituloCategoria">
-                    <h2>Postres</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Menu/Postres/Affogato.png" alt="foto Affogato">
-                        <figcaption>Affogato: 2 bochas de helado de vainilla y café</figcaption>
-                        <figcaption>$7.900</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Postres/CopaOreo.png" alt="foto copa oreo">
-                        <figcaption>Copa Oreo: 2 bochas de helado de DDL de Oreo</figcaption>
-                        <figcaption>$6.700</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Menu/Postres/CopaRocklets.png" alt="foto copa rocklet">
-                        <figcaption>Copa Rocklet: 2 bochas de helado a elección con rocklets y salsa</figcaption>
-                        <figcaption>$6.700</figcaption>
-                    </figure>
-                    <figure>
-                </div>
-            </section>
+            </div>
         </div>
     </main>
     <footer>
@@ -590,7 +592,7 @@
             </div>
         </div>
         <div class="footerDerechos">
-            <h6>© 2025 ovejanegra derechos de autor</h6>
+            <h6>© 2025 BC Cube derechos de autor</h6>
         </div>
     </footer>
     <script src="funciones.js"></script>

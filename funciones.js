@@ -1,18 +1,21 @@
+/*MENU*/
 /*Es un boton para scrollear para arriba en menu*/
-window.addEventListener('scroll', () => {
+document.addEventListener('DOMContentLoaded', () => {
   const btn = document.getElementById('btn-subir');
-  if (window.scrollY > 200) {
-    btn.style.display = 'block';
-  } else {
-    btn.style.display = 'none';
-  }
-});
 
-// Volver arriba al hacer clic
-document.getElementById('btn-subir').addEventListener('click', () => {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 200) {
+      btn.style.display = 'block';
+    } else {
+      btn.style.display = 'none';
+    }
+  });
 
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+/*TODAS LAS PAGINAS*/
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
     const hash = window.location.hash;
@@ -29,20 +32,8 @@ window.addEventListener("DOMContentLoaded", function () {
     } else if (hash === "#empleado" && divEmpleado) {
       divEmpleado.style.display = "grid";
     }
-  }
-);
-
-/*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
-function mostrarFormulario(tipo) {
-    document.getElementById("cliente").style.display = "none";
-    document.getElementById("empleado").style.display = "none";
-  
-    if (tipo === "botonCliente") {
-      document.getElementById("cliente").style.display = "grid";
-    } else if (tipo === "botonEmpleado") {
-      document.getElementById("empleado").style.display = "grid";
-    }
-}
+  });
+/*RESERVAS*/
 /*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
 function mostrarDatosDeReserva() {
   const sucursalSelect = document.getElementById("dropdownReservas");
@@ -93,16 +84,22 @@ document.addEventListener("DOMContentLoaded", function () {
     dropdown.value = valorGuardado;
   }
 });
-
+/*RESTRICCIONES PARA DATOS INGRESADOS*/
 /*Calendario externo Flatpickr*/
 document.addEventListener("DOMContentLoaded", function () {
   flatpickr("#calendarioReservas", {
-    inline: true,             /*Para que el calendario sea siempre visible*/
+    inline: true,             
     dateFormat: "Y-m-d",
-    locale: "es",             /*Permite que este en español*/
+    locale: "es",             
     minDate: "today",
+    disable: [
+      function(date) {
+        // Devuelve true si el día es lunes (1)
+        return date.getDay() === 1;
+      }
+    ],
     onChange: function(selectedDates, dateStr) {
-      document.getElementById("fechaReserva").value = dateStr; /* Guarda la fecha seleccionada en el calendario*/
+      document.getElementById("fechaReserva").value = dateStr;
     }
   });
 });
@@ -149,6 +146,7 @@ document.querySelectorAll('.solo-numeros').forEach(function(campo) {
       e.preventDefault();
     }
   });
+  
   /* Limpia cualquier caracter no numérico en el input, útil para pegar o escribir de otras formas*/
   campo.addEventListener('input', function() {
     campo.value = campo.value.replace(/[^0-9]/g, '');
@@ -196,95 +194,43 @@ function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})$/;
   return re.test(email);
 }
+/*INGRESAR, REGISTRARSE, EMPLEADO*/
+/*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
+function mostrarFormulario(tipo) {
+    document.getElementById("cliente").style.display = "none";
+    document.getElementById("empleado").style.display = "none";
+    document.getElementById("olvideContrasenia").style.display = "none";
+  
+    if (tipo === "botonCliente") {
+      document.getElementById("cliente").style.display = "grid";
+    } else if (tipo === "botonEmpleado") {
+      document.getElementById("empleado").style.display = "grid";
+    }
+}
+/*Acceder a olvideContrasenia desde login cliente*/
+document.getElementById("link-olvide-cliente").addEventListener("click", function (e) {
+  e.preventDefault();
+  document.getElementById("cliente").style.display = "none";
+  document.getElementById("empleado").style.display = "none";
+  document.getElementById("olvideContrasenia").style.display = "grid";
+  document.getElementById("datos-enviar-mail").style.display = "grid"; 
+  document.getElementById("confirmacion-envio-mail").style.display = "none"; 
+});
+/*Acceder a olvideContrasenia desde login empleado*/
+document.getElementById("link-olvide-empleado").addEventListener("click", function (e) {
+  e.preventDefault();
+  document.getElementById("cliente").style.display = "none";
+  document.getElementById("empleado").style.display = "none";
+  document.getElementById("olvideContrasenia").style.display = "grid";
+  document.getElementById("datos-enviar-mail").style.display = "grid"; 
+  document.getElementById("confirmacion-envio-mail").style.display = "none";
+});
+
 /* Función que se ejecuta al enviar el formulario en el boton registrarse*/
-function submitAccederEmpleado(event) {
-  event.preventDefault(); // Evita que se envíe el formulario por ahora
-
-  const email = document.getElementById('email-empleado-login').trim();
-  const dni = document.getElementById('dni-empleado-login').value.trim();
-  const contraseña = document.getElementById('contraseña-empleado-login').value.trim();
-
-  /*Si el formato es invalido aparece este cartel*/
-  if (!validateEmail(email)) {
-    alert('El email es inválido. Por favor ingresa un email válido.');
-    document.getElementById('email-usuario-login').focus();
-    return false;
-  }
-
-  /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
-
-    /*
-  // Cuando conecte con PHP, descomento esto:
-  fetch('ruta-a-tu-archivo.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      dni,
-      email,
-      contraseña
-    })
-  })
-  .then(response => response.text())
-  .then(data => {
-    alert('Respuesta del servidor: ' + data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Hubo un error al enviar los datos.');
-  });
-  */
-
-  /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
-  return false;
-}
-/*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion cliente*/
-function submitAccederCliente(event) {
-  event.preventDefault(); // Evita que se envíe el formulario por ahora
-
-  const email = document.getElementById('email-usuario-login').trim();
-  const dni = document.getElementById('dni-usuario-registro').value.trim();
-  const contraseña = document.getElementById('contraseña-usuario-registro').value.trim();
-
-  /*Si el formato es invalido aparece este cartel*/
-  if (!validateEmail(email)) {
-    alert('El email es inválido. Por favor ingresa un email válido.');
-    document.getElementById('email-usuario-login').focus();
-    return false;
-  }
-
-  /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
-
-    /*
-  // Cuando conecte con PHP, descomento esto:
-  fetch('ruta-a-tu-archivo.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      dni,
-      email,
-      contraseña
-    })
-  })
-  .then(response => response.text())
-  .then(data => {
-    alert('Respuesta del servidor: ' + data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Hubo un error al enviar los datos.');
-  });
-  */
-
-  return false;
-}
-/*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion empleado*/
 function submitRegistrar(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
 
-const nombre = document.getElementById('nombre-usuario-registro').value.trim();
+  const nombre = document.getElementById('nombre-usuario-registro').value.trim();
   const apellido = document.getElementById('apellido-usuario-registro').value.trim();
   const dni = document.getElementById('dni-usuario-registro').value.trim();
   const fechaNacimiento = document.getElementById('fecha-nacimiento-registro').value.trim();
@@ -292,15 +238,17 @@ const nombre = document.getElementById('nombre-usuario-registro').value.trim();
   const email = document.getElementById('email-usuario-registro').value.trim();
   const contraseña = document.getElementById('contraseña-usuario-registro').value.trim();
 
+  /*Si el formato es invalido aparece este cartel*/
   if (!validateEmail(email)) {
     alert('El email es inválido. Por favor ingresa un email válido.');
     document.getElementById('email-usuario-registro').focus();
     return false;
   }
 
-  alert('Formulario válido. Datos listos para enviar al servidor (simulado).');
+  /*Si el formato es valido aparece este cartel*/
+  alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
 
-  /*
+/*
   // Cuando conecte con PHP, descomento esto:
   fetch('ruta-a-tu-archivo.php', {
     method: 'POST',
@@ -326,6 +274,135 @@ const nombre = document.getElementById('nombre-usuario-registro').value.trim();
   */
 
   return false;
+}
+/*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion cliente*/
+function submitAccederCliente(event) {
+  event.preventDefault(); // Evita que se envíe el formulario por ahora
+
+  const email = document.getElementById('email-usuario-login').trim();
+  const dni = document.getElementById('dni-usuario-login').value.trim();
+  const contraseña = document.getElementById('contraseña-usuario-login').value.trim();
+
+  /*Si el formato es invalido aparece este cartel*/
+  if (!validateEmail(email)) {
+    alert('El email es inválido. Por favor ingresa un email válido.');
+    document.getElementById('email-usuario-login').focus();
+    return false;
+  }
+  /*Si el formato es valido aparece este cartel*/
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+
+  /*
+  // Cuando conecte con PHP, descomento esto:
+  fetch('ruta-a-tu-archivo.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      dni,
+      email,
+      contraseña
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert('Respuesta del servidor: ' + data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Hubo un error al enviar los datos.');
+  });
+  */
+
+  return false;
+}
+/*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion empleado*/
+function submitAccederEmpleado(event) {
+  event.preventDefault(); // Evita que se envíe el formulario por ahora
+
+  const email = document.getElementById('email-empleado-login').trim();
+  const dni = document.getElementById('dni-empleado-login').value.trim();
+  const contraseña = document.getElementById('contraseña-empleado-login').value.trim();
+
+  /*Si el formato es invalido aparece este cartel*/
+  if (!validateEmail(email)) {
+    alert('El email es inválido. Por favor ingresa un email válido.');
+    document.getElementById('email-empleado-login').focus();
+    return false;
+  }
+  /*Si el formato es valido aparece este cartel*/
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+
+  /*
+  // Cuando conecte con PHP, descomento esto:
+  fetch('ruta-a-tu-archivo.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      dni,
+      email,
+      contraseña
+    })
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert('Respuesta del servidor: ' + data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    alert('Hubo un error al enviar los datos.');
+  });
+  */
+
+  return false;
+}
+/*Funcion que se ejecuta al enviar el formulario en el boton enviar de olvideContraseña*/
+function submitEnviarMail(event) {
+  event.preventDefault(); // Evita que se envíe el formulario por ahora
+
+  const email = document.getElementById('email-recuperar-contrasenia').value.trim();
+  const dni = document.getElementById('dni-recuperar-contrasenia').value.trim();
+  const cuentaCliente = document.getElementById("cuenta-cliente").checked;
+  const cuentaEmpleado = document.getElementById("cuenta-empleado").checked;
+  sessionStorage.setItem("cuentaClient", cuentaCliente);
+  sessionStorage.setItem("cuentaEmpleado", cuentaEmpleado);
+
+  /*Si el formato es invalido aparece este cartel*/
+  if (!validateEmail(email)) {
+    alert('El email es inválido. Por favor ingresa un email válido.');
+    document.getElementById('email-empleado-login').focus();
+    return false;
+  }
+  
+  /*Si el formato es valido aparece este cartel*/
+  alert('Email válido. Los datos serían enviados al servidor (simulado).');
+  
+  /*Ocultar datos-enviar-mail*/
+  document.getElementById("datos-enviar-mail").style.display = "none";
+
+  /*mostrar confirmacion-envio-mail*/
+  document.getElementById("email-confirmado").textContent = email;
+  document.getElementById("confirmacion-envio-mail").style.display = "grid";
+
+  return false;
+}
+function finalizarRecuperarContrasenia(){
+  /*Ocultar confirmacion-envio-mail*/
+  document.getElementById("confirmacion-envio-mail").style.display = "none";
+
+  const cuentaCliente = sessionStorage.getItem("cuentaClient") === "true";
+  const cuentaEmpleado = sessionStorage.getItem("cuentaEmpleado") === "true";
+
+  /* Muestra la sección correspondiente segun si se selecciono cliente o empleado*/
+  if (cuentaCliente) {
+    document.getElementById("cliente").style.display = "grid";
+    document.getElementById("empleado").style.display = "none"; 
+  } else if (cuentaEmpleado) {
+    document.getElementById("empleado").style.display = "grid";
+    document.getElementById("cliente").style.display = "none"; 
+  }
+
+  /* limpiar el formulario por si se quiere volver a utilizar*/
+  document.getElementById("form-recuperar").reset();
 }
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {

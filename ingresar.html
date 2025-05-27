@@ -52,7 +52,7 @@
     </header>
     <main class="mainIngreso">
         <div class="contenedorFormulario">
-            <div id="cliente" style="display: none;"> 
+            <div id="cliente" style="display: none"> 
                 <section class="iniciarSesion">
                     <h1>Iniciar Sesion</h1>
                     <form id="form-acceso-cliente"  onsubmit="return submitAccederCliente(event)"><!--Recopila los datos y los envia al servidor-->
@@ -65,7 +65,7 @@
                             </label>
                             <label for="contraseña-usuario-login">Contraseña: 
                                 <input id="contraseña-usuario-login" name="contraseña-usuario-login" type="password" maxlength="20" required>
-                                <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
+                                <legend><a href id="link-olvide-cliente">¿Olvidaste tu contraseña?</a></legend>
                             </label>
                         </fieldset>
                         <input type="submit" value="Acceder"/>
@@ -107,7 +107,7 @@
                 </section>
             </div>
             
-            <div id="empleado" style="display: none;">
+            <div id="empleado" style="display: none">
                 <section class="iniciarSesion">
                     <h1>Iniciar Sesion</h1>
                     <form id="form-acceso-empleado"  onsubmit="return submitAccederEmpleado(event)"><!--Recopila los datos y los envia al servidor-->
@@ -116,15 +116,45 @@
                                 <input id="email-empleado-login" name="email-empleado-login" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
                             </label>
                             <label for="dni-empleado-login" class="solo-numeros">DNI: 
-                                <input id="dni-empleado-login" name="dni-empleado-login" type="number" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                                <input id="dni-empleado-login" name="dni-empleado-login" type="text" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
                             </label>
                             <label for="contraseña-empleado-login">Contraseña: 
                                 <input id="contraseña-empleado-login" name="contraseña-empleado-login" type="password" maxlength="20" required>
-                                <legend><a href=""></a>Olvidaste la contraseña?</legend><!--Despues hare referencia a otra pagina o sección-->
+                                <legend><a href id="link-olvide-empleado">¿Olvidaste tu contraseña?</a></legend>
                             </label>
                         </fieldset>
                         <input type="submit" value="Acceder"/>
                     </form>   
+                </section>
+            </div>
+            <div id="olvideContrasenia" style="display: none">
+                <section class="recuperar-contrasenia" id="datos-enviar-mail">
+                    <h1>Recuperar contraseña</h1>
+                    <form id="form-recuperar" onsubmit="return submitEnviarMail(event)">
+                        <fieldset>
+                            <label for="email-recuperar-contrasenia">Email: 
+                                <input id="email-recuperar-contrasenia" name="email-recuperar-contrasenia" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                            </label>
+                            <label for="dni-recuperar-contrasenia" class="solo-numeros">DNI: 
+                                <input id="dni-recuperar-contrasenia" name="dni-recuperar-contrasenia" type="text" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                            </label>
+                        </fieldset>
+                        <fieldset>
+                            <label for="cuenta-cliente" class="radio-buttom-estilo">
+                                <input id="cuenta-cliente" type="radio" name="tipo-cuenta" class="inline" checked /> Cliente
+                            </label>
+                            <label for="cuenta-empleado" class="radio-buttom-estilo">
+                                <input id="cuenta-empleado" type="radio" name="tipo-cuenta" class="inline" /> Empleado</label>
+                        </fieldset>
+                        <input type="submit" value="Enviar"/>
+                    </form> 
+                </section>
+                <section id="confirmacion-envio-mail" style="display: none">
+                    <div class="textoFinalizoGestion">
+                    <p>En breve recibirás un correo electrónico en la dirección <strong><span id="email-confirmado"></strong>. Ese mensaje contendrá tu contraseña de acceso.</p>
+                    <p>Una vez recibida, podrás iniciar sesión utilizando tu correo electrónico, tu DNI y la contraseña proporcionada.</p>
+                    <p>Para modificar la contraseña por una personal, podés hacerlo desde tu perfil, en la opción "Modificar contraseña".</p>
+                    <input type="submit" value="Finalizar" onclick="finalizarRecuperarContrasenia()"/>
                 </section>
             </div>
         </div>
@@ -158,7 +188,7 @@
             </div>
         </div>
         <div class="footerDerechos">
-            <h6>© 2025 ovejanegra derechos de autor</h6>
+            <h6>© 2025 BC Cube derechos de autor</h6>
         </div>
     </footer>
 <script src="funciones.js"></script>

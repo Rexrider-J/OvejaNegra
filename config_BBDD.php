@@ -12,4 +12,3 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error); // Mostrar mensaje y detener ejecución si falla
 }
 ?>
-
