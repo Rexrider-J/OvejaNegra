@@ -534,6 +534,14 @@ section{
     background-color: #4d2513;
     border-color: black;
 }
+#confirmacion-envio-mail{
+    background-color: #ffffff;
+    border-radius: 10px;
+    display: none;
+    padding: 2em;
+    gap: 2em;
+    color:#4d2513;
+}
 #cliente input[type="submit"], #empleado input[type="submit"], #seleccionSucursalDeReserva input[type="submit"] , #olvideContrasenia input[type="submit"]{
     display: block;
     width: 60%;
