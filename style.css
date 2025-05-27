@@ -598,7 +598,7 @@ input[type=number]::-webkit-outer-spin-button {
     background-size: cover;
 }
 .contenedorRealizarReservas {
-    width: 100%;
+    width: 70%;
     margin: 3% 15%; /* 5% arriba/abajo, 15% izquierda/derecha */
     background: rgba(255, 255, 255, 0.3); /* blanco translúcido */
     backdrop-filter: blur(10px);          /* desenfoque del fondo */
@@ -623,12 +623,10 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 2rem;
 }
 .tituloReservas h1{
-    display: flex;
-    justify-content: center; 
-    align-items: center;   
-    height: 100%;          
-    margin: 0;            
+    margin: 0 auto;
     font-weight: bold;
+    font-size: clamp(1.5rem, 6vw, 3rem);
+    text-align: center;
 }
 #dropdownReservas{
     width: 100%;
@@ -664,8 +662,10 @@ input[type=number]::-webkit-outer-spin-button {
     gap: 2em;
 }
 #referenciaLocal img {
-    width: 70vh;
+    width: 100%;
+    max-width: 700px;
     border-radius: 10px;
+    height: auto;
 }
 #reservarMesa {
     background-color: #ffffff;
@@ -703,11 +703,13 @@ input[type=number]::-webkit-outer-spin-button {
 .flatpickr-rContainer {
     display: grid;
     grid-template-rows: auto auto;
-    width: 700px;
-    text-align: justify;
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
     align-items: center;
     align-content: center;
     text-align: center;
+    margin: 0 auto; 
 }
 /*Es el contenedor de .dayContainer*/
 .flatpickr-days{
@@ -732,7 +734,6 @@ input[type=number]::-webkit-outer-spin-button {
 #formFechaDatosReserva label{
     width: 100%;
     display: block;
-    margin: 0.5rem 5%;
     text-align: left; 
 }
 #formFechaDatosReserva textarea{
@@ -771,7 +772,7 @@ input[type=number]::-webkit-outer-spin-button {
     width: 100%;
 }
 .botonesReserva input{
-    display:inline-flex;
+    display:grid;
     height: 2em;
     font-size: 1.1rem;
     background-color: #4d2513;
@@ -842,6 +843,67 @@ input[type=number]::-webkit-outer-spin-button {
     min-width: 300px;
     align-content: center;
     text-decoration: none; 
+}
+/*RESPONSIVE*/
+@media (max-width: 768px) {
+    .contenedorRealizarReservas {
+        margin: 1rem;
+        flex-direction: column; /* si seguís usando flex */
+        padding: 1rem;
+    }
+    #formFechaDatosReserva {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding-left: 5px;
+    padding-right: 30px;
+    }
+    #referenciaLocal img {
+        width: 100%; /* que no se desborde */
+        height: auto;
+    }
+    .botonesReserva {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .botonesReserva input {
+        width: 100%;
+        min-width: auto;
+    }
+
+    #textoFinalizoReserva {
+        padding: 0 1rem;
+    }
+
+    #finalizoReserva .botonFinalizar {
+        width: 100%;
+        min-width: auto;
+    }
+    #reservarMesa {
+        padding: 1em;
+        gap: 1em;
+        text-align: center; /* Mantiene el centrado */
+    }
+    #formFechaDatosReserva {
+        grid-template-columns: 1fr;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    #calendarioReservas {
+        max-width: 100%;
+    }
+    #calendarioReservas {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+    .flatpickr-calendar.inline {
+        max-width: 100%;
+        font-size: 14px;
+        padding: 0 5px; /* opcional, para que no quede pegado al borde */
+    }
 }
 /*MI PERFIL*/
 #miPerfil{

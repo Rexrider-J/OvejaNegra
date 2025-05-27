@@ -443,6 +443,8 @@ function mostrarSeleccionSucursalReserva() {
 
   /* Mostrar segunda sección*/
   document.getElementById("confirmacionReserva").style.display = "grid";
+  const inicio = document.getElementById("imagenConfirmacionReservas");
+  inicio.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 /*Permite volver para atras de datos de reserva a selección de sucursal de reserva*/
 function volverSeleccionSucursalReserva() {
