@@ -416,7 +416,8 @@ section{
 /*MAIN*/
 .mainIngreso {
     width: 100%;
-    height: auto; 
+    height: auto;
+    min-height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -429,7 +430,7 @@ section{
     background-size: cover;
 }
 .contenedorFormulario {
-    width: 100%;
+    width: auto;
     margin: 3% 15%; /* 5% arriba/abajo, 15% izquierda/derecha */
     background: rgba(255, 255, 255, 0.3); /* blanco translúcido */
     backdrop-filter: blur(10px);          /* desenfoque del fondo */
@@ -568,6 +569,12 @@ section{
 }
 #cliente fieldset, #empleado fieldset , #olvideContrasenia fieldset{
     border: none;
+}
+/*RESPONSIVE*/
+@media (max-width: 768px) {
+    #cliente {
+        grid-template-columns: 1fr; /* Solo una columna */
+    }
 }
 /*Quitar las fechas de arriba y abajo por defecto en los input type number*/
 input[type=number]::-webkit-inner-spin-button,
