@@ -213,6 +213,7 @@ document.getElementById("link-olvide-empleado").addEventListener("click", functi
 function submitRegistrar(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
 
+  //tomamos los valores del form
   const nombre = document.getElementById('nombre-usuario-registro').value.trim();
   const apellido = document.getElementById('apellido-usuario-registro').value.trim();
   const dni = document.getElementById('dni-usuario-registro').value.trim();
@@ -231,38 +232,46 @@ function submitRegistrar(event) {
   /*Si el formato es valido aparece este cartel*/
   alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
 
-/*
-  // Cuando conecte con PHP, descomento esto:
-  fetch('ruta-a-tu-archivo.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      nombre,
-      apellido,
-      dni,
-      fechaNacimiento,
-      telefono,
-      email,
-      contraseña
+  //verificamos que existan todos los campos
+  if (!nombre || !apellido || !dni || !fechaNacimiento || !telefono || !email || !contraseña) {
+    alert("Por favor, completá todos los campos.");
+    return false;
+  }
+
+  const formData = new FormData();// creamos un objeto FormData para empaquetar los datos como si fuera un formulario
+  formData.append("accion", "registro");//indicamos que tipo de accion es y le pasamos los datos del form
+  formData.append("nombre", nombre);
+  formData.append("apellido", apellido);
+  formData.append("dni", dni);
+  formData.append("fecha_nacimiento", fechaNacimiento);
+  formData.append("telefono", telefono);
+  formData.append("email", email);
+  formData.append("contraseña", contraseña);
+
+  fetch("registro_inicio_sesion.php", {// enviamos la solicitud al servidor con fetch
+    method: "POST",
+    body: formData//enviamos el objeto creado previamente como cuerpo del POST
+  })
+    .then(response => response.text())// esperamos la respuesta del servidor como texto
+    .then(data => {
+      alert(data);// mostramos lo que responde el servidor
+      if (data.includes("✅")) {// nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
+        window.location.reload(); // recargamos la pagina
+      }
     })
-  })
-  .then(response => response.text())
-  .then(data => {
-    alert('Respuesta del servidor: ' + data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Hubo un error al enviar los datos.');
-  });
-  */
+    .catch(error => {
+      console.error("Error en registro:", error);//mostramos el error en consola
+      alert("Hubo un problema al registrarse.");// y un alert para el usuario
+    });
 
   return false;
 }
+
 /*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion cliente*/
 function submitAccederCliente(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
 
-  const email = document.getElementById('email-usuario-login').trim();
+  const email = document.getElementById('email-usuario-login').value.trim(); //tomamos los valores del form
   const dni = document.getElementById('dni-usuario-login').value.trim();
   const contraseña = document.getElementById('contraseña-usuario-login').value.trim();
 
@@ -275,34 +284,42 @@ function submitAccederCliente(event) {
   /*Si el formato es valido aparece este cartel*/
   alert('Email válido. Los datos serían enviados al servidor (simulado).');
 
-  /*
-  // Cuando conecte con PHP, descomento esto:
-  fetch('ruta-a-tu-archivo.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      dni,
-      email,
-      contraseña
+  if (!email || !dni || !contraseña) { //verificamos que existan todos los campos
+    alert("Por favor, completá todos los campos.");
+    return false;
+  }
+
+  const formData = new FormData(); //creamos un objeto FormData para empaquetar los datos como si fuera un formulario
+  formData.append("accion", "login"); //indicamos que tipo de accion es y le pasamos los datos del form
+  formData.append("email", email);
+  formData.append("dni", dni);
+  formData.append("contraseña", contraseña);
+
+  fetch("registro_inicio_sesion.php", {   // enviamos la solicitud al servidor con fetch
+    method: "POST",
+    body: formData        //enviamos el objeto creado previamente como cuerpo del POST
+  })
+    .then(response => response.text())  // esperamos la respuesta del servidor como texto
+    .then(data => {
+      alert(data);// mostramos lo que responde el servidor
+      if (data.includes("✅")) {  // nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
+        window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
+      }
     })
-  })
-  .then(response => response.text())
-  .then(data => {
-    alert('Respuesta del servidor: ' + data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Hubo un error al enviar los datos.');
-  });
-  */
+    .catch(error => {
+      console.error("Error en login:", error); //mostramos el error en consola
+      alert("Hubo un problema al iniciar sesión."); // y un alert para el usuario
+    });
 
   return false;
 }
+
 /*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion empleado*/
 function submitAccederEmpleado(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
 
-  const email = document.getElementById('email-empleado-login').trim();
+  //tomamos los valores del form
+  const email = document.getElementById('email-empleado-login').value.trim();
   const dni = document.getElementById('dni-empleado-login').value.trim();
   const contraseña = document.getElementById('contraseña-empleado-login').value.trim();
 
@@ -315,29 +332,39 @@ function submitAccederEmpleado(event) {
   /*Si el formato es valido aparece este cartel*/
   alert('Email válido. Los datos serían enviados al servidor (simulado).');
 
-  /*
-  // Cuando conecte con PHP, descomento esto:
-  fetch('ruta-a-tu-archivo.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      dni,
-      email,
-      contraseña
+  if (!email || !dni || !contraseña) { //verificamos que existan todos los campos
+    alert("Por favor, completá todos los campos.");
+    return false;
+  }
+
+
+  const formData = new FormData();// Creamos el objeto FormData para enviar los datos al servidor
+  formData.append("accion", "login_empleado"); // Distinguimos que es un login de empleado
+  formData.append("email", email);
+  formData.append("dni", dni);
+  formData.append("contraseña", contraseña);
+
+  fetch("registro_inicio_sesion.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(response => response.text())
+    .then(data => {
+      alert(data);
+
+      if (data.includes("✅")) {
+        window.location.href = "index.html"; // O redirigir a un panel de empleado
+      }
     })
-  })
-  .then(response => response.text())
-  .then(data => {
-    alert('Respuesta del servidor: ' + data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Hubo un error al enviar los datos.');
-  });
-  */
+    .catch(error => {
+      console.error("Error en login empleado:", error);
+      alert("Hubo un problema al iniciar sesión como empleado.");
+    });
+
 
   return false;
 }
+
 /*Funcion que se ejecuta al enviar el formulario en el boton enviar de olvideContraseña*/
 function submitEnviarMail(event) {
   event.preventDefault(); // Evita que se envíe el formulario por ahora
