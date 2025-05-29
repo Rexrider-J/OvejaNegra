@@ -255,36 +255,22 @@ CREATE TABLE `estado_reserva` (
   PRIMARY KEY (`id_estado_reserva`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-/*DATOS DE LA TABLA
+-- DATOS DE LA TABLA
 
 INSERT INTO locales (nombre, direccion, telefono, estado_disponibilidad)
 VALUES ("Oveja Negra Chacabuco", "Emilio Mitre 1296", "+54 9 11 2176-9555","disponible");
-("Oveja Negra Palermo", "Gorriti 4567", "+54 9 11 3344-7788", "disponible");
-
--- Tabla: administradores
-INSERT INTO `empleados` (`nombre`, `apellido`, `dni`, `mail`, `puesto`, `contraseña`, `id_local`)
-VALUES 
-('Sebastian', 'Raiz', 40123456, 'sebastian.admin@example.com', 'Administrador', 'admin1234', 1),
-('Lucas', 'Pérez', 40234567, 'lucas.p@example.com', 'Mozo', 'lucaspass', 1),
-('Tobias', 'López', 40345678, 'martina.l@example.com', 'Cajero', 'Tobiaspass', 2);
 
 -- Tabla: clientes
 INSERT INTO `clientes` (`nombre`, `apellido`, `dni`, `mail`, `telefono`, `fecha_nacimiento`, `contraseña`) VALUES
-('Carlos', 'Lopez', 12345678, 'carloslopez@example.com', '1122334455', '1990-05-20', 'carlos123'),
+('Tom', 'Tom', 12345678, 'tom@tom.com', '1122334455', '1990-05-20', '1234'),
+('Carlos', 'Lopez', 12345679, 'carloslopez@example.com', '1122334455', '1990-05-20', 'carlos123'),
 ('Lucía', 'Martinez', 87654321, 'luciamartinez@example.com', '5566778899',  '1988-11-15', 'lucia456');
-('Sofía', 'Gómez', 45123456, 'sofia.gomez@example.com', '1134567890', '1998-06-15', 'sofiapass'),
-('Matías', 'Fernández', 46234567, 'matias.f@example.com', '1123456789', '1995-03-22', 'matias123'),
-('Julieta', 'Ramírez', 47345678, 'julieta.r@example.com', '1145678901', '2000-11-09', 'julieta456');
 
 -- Tabla: empleados
 INSERT INTO `empleados` (`nombre`, `apellido`, `dni`, `mail`, `puesto`, `contraseña`, `id_local`) VALUES
+('Tom', 'Tom', 12345678, 'tom@tom.com', 'Mozo', '1234', 1),
 ('Pedro', 'Fernandez', 22334455, 'pedrofernandez@example.com', 'Mozo', 'mozo123', 1),
 ('Ana', 'Suarez', 99887766, 'anasuarez@example.com', 'Caja', 'asuarez', 2);
-
--- Tabla: menu
-INSERT INTO `menu` (`nombre`, `precio`, `categoria`, `descripcion`) VALUES
-('Hamburguesa Especial', 1500.00, 'Comida', 'Hamburguesa completa con papas'),
-('Pizza Margarita', 1800.00, 'Comida', 'Pizza con mozzarella, tomate y albahaca');
 
 -- Tabla: mesas
 INSERT INTO `mesas` (`id_local`, `descripcion`, `cupo_maximo`, `estado`) VALUES
@@ -305,11 +291,8 @@ INSERT INTO `reservas` (`id_cliente`, `id_mesa`, `fecha_reserva`, `observaciones
 INSERT INTO `empleado_funcion` (`dia_hora`, `funcion`, `id_empleado`) VALUES
 ('2025-05-01 18:00:00', 'Mozo', 1),
 ('2025-05-02 19:00:00', 'Caja', 2),
---('2025-05-02 19:00:00', 'Caja', 2),('2025-05-02 19:00:00', 'Mozo', 2),
+-- ('2025-05-02 19:00:00', 'Caja', 2),('2025-05-02 19:00:00', 'Mozo', 2),
 ('2025-05-02 18:00:00', 'Caja', 2);
-('2025-05-08 17:00:00', 'Mozo', 1),
-('2025-05-10 12:00:00', 'Gerente', 2),
-('2025-05-18 18:38:00', 'Caja', 2);
 
 INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES
 (1, 1, 'disponible'),
@@ -425,7 +408,7 @@ INSERT INTO `menu` (`nombre`, `precio`, `categoria`, `descripcion`, `ruta_imagen
 ('Affogato', 7900.00, 'Postres', '2 bochas de helado de vainilla y café', 'img/Fotos/Menu/Postres/Affogato.png'),
 ('Copa Oreo', 6700.00, 'Postres', '2 bochas de helado de DDL de Oreo', 'img/Fotos/Menu/Postres/CopaOreo.png'),
 ('Copa Rocklet', 6700.00, 'Postres', '2 bochas de helado a elección con rocklets y salsa', 'img/Fotos/Menu/Postres/CopaRocklets.png');
-*/
+
 --
 -- Dumping routines for database 'oveja_negra'
 --
