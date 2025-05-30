@@ -27,23 +27,23 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
     $fecha_nac = $_POST['fecha_nacimiento'];
     $telefono = $_POST['telefono'];
     $email = $_POST['email'];
-    $contraseña = $_POST['contraseña'];
+    $contrasena = $_POST['contraseña'];
 
     // verificar que los campos no estén vacíos
-    if (empty($nombre) || empty($apellido) || empty($dni) || empty($fecha_nac) || empty($telefono) || empty($email) || empty($contraseña)) {
+    if (empty($nombre) || empty($apellido) || empty($dni) || empty($fecha_nac) || empty($telefono) || empty($email) || empty($contrasena)) {
         echo "❗ Todos los campos son obligatorios.";
         exit;
     }
 
     // preparo el insert en base de datos
-    $stmt = $conexion->prepare("INSERT INTO clientes (nombre, apellido, dni, fecha_nacimiento, telefono, mail, contraseña)
+    $stmt = $conexion->prepare("INSERT INTO clientes (nombre, apellido, dni, fecha_nacimiento, telefono, mail, contrasena)
                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         die("Error en prepare(): " . $conexion->error);
     }
 
     // vinculo parametros para la consulta
-    $stmt->bind_param("ssissss", $nombre, $apellido, $dni, $fecha_nac, $telefono, $email, $contraseña);
+    $stmt->bind_param("ssissss", $nombre, $apellido, $dni, $fecha_nac, $telefono, $email, $contrasena);
 
     if ($stmt->execute()) { // chequeo que se ejecute la consulta
         echo "✅ ¡Registro exitoso! Ya podés iniciar sesión.";
@@ -57,20 +57,20 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
 } elseif ($_POST['accion'] === 'login') { // INICIO DE SESIÓN DE CLIENTE
     $email = $_POST['email'];
     $dni = $_POST['dni'];
-    $contraseña = $_POST['contraseña'];
+    $contrasena = $_POST['contraseña'];
 
-    if (empty($email) || empty($dni) || empty($contraseña)) { // verificar que los campos no estén vacíos
+    if (empty($email) || empty($dni) || empty($contrasena)) { // verificar que los campos no estén vacíos
         echo "❗ Todos los campos son obligatorios.";
         exit;
     }
 
     // con prepare preparamos una consulta segura 
-    $stmt = $conexion->prepare("SELECT * FROM clientes WHERE mail = ? AND dni = ? AND contraseña = ?");
+    $stmt = $conexion->prepare("SELECT * FROM clientes WHERE mail = ? AND dni = ? AND contrasena = ?");
     if (!$stmt) { // por si falla la consulta
         die("Error en prepare(): " . $conexion->error); // die mata la ejecucion del codigo
     }
 
-    $stmt->bind_param("sis", $email, $dni, $contraseña); // vinculo parametros para la consulta
+    $stmt->bind_param("sis", $email, $dni, $contrasena); // vinculo parametros para la consulta
     $stmt->execute(); // ejecuto la consulta
     $res = $stmt->get_result(); // igualo el resultado de la consulta a la variable $res
 
@@ -90,22 +90,22 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
 } elseif ($_POST['accion'] === 'login_empleado') { // INICIO DE SESIÓN DE EMPLEADO
     $email = $_POST['email'];
     $dni = $_POST['dni'];
-    $contraseña = $_POST['contraseña'];
+    $contrasena = $_POST['contraseña'];
 
 
-    if (empty($email) || empty($dni) || empty($contraseña)) { // verificar que los campos no estén vacíos
+    if (empty($email) || empty($dni) || empty($contrasena)) { // verificar que los campos no estén vacíos
         echo "❗ Todos los campos son obligatorios.";
         exit;
     }
 
     // con prepare preparamos una consulta segura 
-    $stmt = $conexion->prepare("SELECT * FROM empleados WHERE mail = ? AND dni = ? AND contraseña = ?");
+    $stmt = $conexion->prepare("SELECT * FROM empleados WHERE mail = ? AND dni = ? AND contrasena = ?");
 
     if (!$stmt) { // por si falla la consulta
         die("Error en prepare(): " . $conexion->error); // die mata la ejecucion del codigo
     }
 
-    $stmt->bind_param("sis", $email, $dni, $contraseña); // vinculo parametros 
+    $stmt->bind_param("sis", $email, $dni, $contrasena); // vinculo parametros 
     $stmt->execute();
     $res = $stmt->get_result();
 

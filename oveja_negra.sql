@@ -33,7 +33,7 @@ CREATE TABLE `clientes` (
   `mail` varchar(100) NOT NULL,
   `telefono` varchar(20) DEFAULT NULL,
   `fecha_nacimiento` date DEFAULT NULL,
-  `contraseña` varchar(20) NOT NULL,
+  `contrasena` varchar(20) NOT NULL,
   PRIMARY KEY (`id_cliente`),
   UNIQUE KEY `unq_dni_nombre_apellido` (`dni`, `nombre`, `apellido`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -62,7 +62,7 @@ CREATE TABLE `empleados` (
   `dni` int(8) NOT NULL,
   `mail` varchar(100) DEFAULT NULL,
   `puesto` varchar(50) NOT NULL,
-  `contraseña` varchar(20) NOT NULL,
+  `contrasena` varchar(20) NOT NULL,
   `id_local` int(11) NOT NULL,
   PRIMARY KEY (`id_empleado`),
   UNIQUE KEY `dni` (`dni`),
@@ -261,13 +261,13 @@ INSERT INTO locales (nombre, direccion, telefono, estado_disponibilidad)
 VALUES ("Oveja Negra Chacabuco", "Emilio Mitre 1296", "+54 9 11 2176-9555","disponible");
 
 -- Tabla: clientes
-INSERT INTO `clientes` (`nombre`, `apellido`, `dni`, `mail`, `telefono`, `fecha_nacimiento`, `contraseña`) VALUES
+INSERT INTO `clientes` (`nombre`, `apellido`, `dni`, `mail`, `telefono`, `fecha_nacimiento`, `contrasena`) VALUES
 ('Tom', 'Tom', 12345678, 'tom@tom.com', '1122334455', '1990-05-20', '1234'),
 ('Carlos', 'Lopez', 12345679, 'carloslopez@example.com', '1122334455', '1990-05-20', 'carlos123'),
 ('Lucía', 'Martinez', 87654321, 'luciamartinez@example.com', '5566778899',  '1988-11-15', 'lucia456');
 
 -- Tabla: empleados
-INSERT INTO `empleados` (`nombre`, `apellido`, `dni`, `mail`, `puesto`, `contraseña`, `id_local`) VALUES
+INSERT INTO `empleados` (`nombre`, `apellido`, `dni`, `mail`, `puesto`, `contrasena`, `id_local`) VALUES
 ('Tom', 'Tom', 12345678, 'tom@tom.com', 'Mozo', '1234', 1),
 ('Pedro', 'Fernandez', 22334455, 'pedrofernandez@example.com', 'Mozo', 'mozo123', 1),
 ('Ana', 'Suarez', 99887766, 'anasuarez@example.com', 'Caja', 'asuarez', 2);
