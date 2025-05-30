@@ -16,6 +16,42 @@ window.addEventListener("DOMContentLoaded", function () {
       divEmpleado.style.display = "grid";
     }
   });
+/*Cambio el dropdown del header segun si ingreso cliente, empleado y la funcion del empleado*/
+document.addEventListener("DOMContentLoaded", function () {
+  const tipoUsuario = sessionStorage.getItem("usuarioTipo");
+  const boton = document.getElementById("botonIngresar");
+  const menu = document.getElementById("contenidoBotonIngresar");
+
+  if (!boton || !menu) return; // Si no están, salimos
+
+  /* Limpiar el menú actual*/
+  menu.innerHTML = "";
+
+  /*Segun el tipo de usuario, o si no hay usuario, se muestra un titulo en el dropdown y unas opciones diferentes*/
+  if (tipoUsuario === "cliente") {
+    boton.textContent = "Mi Perfil";
+    menu.innerHTML = `
+      <li><a class="dropdown-item" href="/proyecto_oveja_negra/OvejaNegra/miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="/proyecto_oveja_negra/OvejaNegra/miPerfil.html#list-misReservas">Mis Reservas</a></li>
+      <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
+    `;
+  } else if (tipoUsuario === "empleado") {
+    boton.textContent = "Empleado";
+    menu.innerHTML = `
+      <li><a class="dropdown-item" href="/proyecto_oveja_negra/OvejaNegra/miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="panel-empleado.html">Modificar menu</a></li>
+      <li><a class="dropdown-item" href="panel-empleado.html">Administrador</a></li>
+      <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
+    `;
+  } else {
+    // Si nadie inició sesión, dejarlo como estaba por defecto
+    boton.textContent = "Ingresar";
+    menu.innerHTML = `
+      <li><a class="dropdown-item" href="ingresar.html#cliente">Cliente</a></li>
+      <li><a class="dropdown-item" href="ingresar.html#empleado">Empleado</a></li>
+    `;
+  }
+});
 /*RESERVAS*/
 /*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
 function mostrarDatosDeReserva() {
@@ -281,8 +317,6 @@ function submitAccederCliente(event) {
     document.getElementById('email-usuario-login').focus();
     return false;
   }
-  /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
 
   if (!email || !dni || !contraseña) { //verificamos que existan todos los campos
     alert("Por favor, completá todos los campos.");
@@ -303,6 +337,8 @@ function submitAccederCliente(event) {
     .then(data => {
       alert(data);// mostramos lo que responde el servidor
       if (data.includes("✅")) {  // nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
+        /*Creamos una variable para indicar que el usuario que ingreso es un cliente*/
+        sessionStorage.setItem("usuarioTipo", "cliente");
         window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
       }
     })
@@ -329,9 +365,7 @@ function submitAccederEmpleado(event) {
     document.getElementById('email-empleado-login').focus();
     return false;
   }
-  /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
-
+  
   if (!email || !dni || !contraseña) { //verificamos que existan todos los campos
     alert("Por favor, completá todos los campos.");
     return false;
@@ -353,6 +387,8 @@ function submitAccederEmpleado(event) {
       alert(data);
 
       if (data.includes("✅")) {
+        /*Creamos una variable para indicar que el usuario que ingreso es un empleado*/
+        sessionStorage.setItem("usuarioTipo", "empleado");
         window.location.href = "index.html"; // O redirigir a un panel de empleado
       }
     })
@@ -413,6 +449,11 @@ function finalizarRecuperarContrasenia(){
 
   /* limpiar el formulario por si se quiere volver a utilizar*/
   document.getElementById("form-recuperar").reset();
+}
+/*Sirve para cerrar sesion*/
+function cerrarSesion() {
+  sessionStorage.removeItem("usuarioTipo");
+  window.location.href = "index.html";
 }
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {
