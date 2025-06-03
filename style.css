@@ -153,8 +153,7 @@ main{
 footer{
     display: grid;
     width: 100%;
-    height: 340px;
-    grid-template-rows: 290px 50px; /*Cantidad de filas y su tamaño*/
+    grid-template-rows: auto auto; /*Cantidad de filas y su tamaño*/
     grid-template-columns: 100%;
     align-content: center;
     text-align: center;
@@ -201,14 +200,21 @@ footer{
 .listasFooter li,h5{
     text-align: justify;
 }
-.footerDerechos{
+.footerDerechos {
     display: flex;
-    align-items: center;       /* centra verticalmente */
-    justify-content: flex-start; /* alinea a la izquierda horizontalmente */
-    height: 100%;
+    align-items: center;
+    justify-content: space-between;
     background-color: #000000;
+    min-height: 60px;
+    padding: 10px 20px;
+    box-sizing: border-box; 
 }
-.footerDerechos h6{
+.footerDerechos img {
+    max-width: 100px;            
+    height: auto;
+    margin:0;
+}
+.footerDerechos h6 {
     font-family: 'Times New Roman', Times, serif;
     font-size: 14px;
     margin: 0;
