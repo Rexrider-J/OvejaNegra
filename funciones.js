@@ -1,3 +1,4 @@
+console.log("funciones.js se cargó correctamente");
 /*TODAS LAS PAGINAS*/
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
@@ -52,6 +53,75 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 });
+/*FOOTER*/
+function crearDropdown(id, label, opciones) {
+  const dropdown = document.getElementById(id);
+  dropdown.innerHTML = '';
+  const defaultOption = document.createElement('option');
+  defaultOption.textContent = `${label}`;
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  dropdown.appendChild(defaultOption);
+
+  opciones.forEach(op => {
+    const option = document.createElement('option');
+    option.textContent = op.text;
+    option.value = op.href || '';
+    dropdown.appendChild(option);
+  });
+
+  dropdown.onchange = function () {
+    const selected = this.options[this.selectedIndex].value;
+    if (selected && selected !== '') {
+      if (selected.includes('mostrarFormulario')) {
+        eval(selected); // solo si es función como mostrarFormulario('algo')
+      } else {
+        window.location.href = selected;
+      }
+    }
+  };
+}
+
+function actualizarFooter() {
+  const width = window.innerWidth;
+  const listas = document.querySelectorAll('.listasFooter > ol');
+  const dropdowns = document.querySelectorAll('.footerDropdown');
+
+  if (width <= 768) {
+    listas.forEach(ol => ol.style.display = 'none');
+    dropdowns.forEach(dd => dd.style.display = 'block');
+
+    // Crear dropdowns con los datos
+    crearDropdown('dropdownInstitucional', 'Institucional', [
+      { text: 'Quiénes somos', href: 'nosotros.html' },
+      { text: 'Menú', href: 'menu.html' },
+      { text: 'Reservas', href: 'reservas.html' },
+      { text: 'Promociones', href: 'promociones.html' },
+      { text: 'Tienda de puntos', href: 'tiendaDePuntos.html' }
+    ]);
+
+    crearDropdown('dropdownCliente', 'Cliente', [
+      { text: 'Ingresar', href: "javascript:mostrarFormulario('botonCliente')" },
+      { text: 'Mis reservas', href: '#' }
+    ]);
+
+    crearDropdown('dropdownEmpleado', 'Empleado', [
+      { text: 'Ingresar', href: "javascript:mostrarFormulario('botonEmpleado')" },
+      { text: 'Mis reservas', href: '#' }
+    ]);
+
+    crearDropdown('dropdownServicios', 'Servicios', [
+      { text: 'Servicios', href: "javascript:mostrarFormulario('botonCliente')" },
+      { text: 'Nuestros Locales', href: '#' }
+    ]);
+  } else {
+    listas.forEach(ol => ol.style.display = 'block');
+    dropdowns.forEach(dd => dd.style.display = 'none');
+  }
+}
+
+window.addEventListener('load', actualizarFooter);
+window.addEventListener('resize', actualizarFooter);
 /*RESERVAS*/
 /*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
 function mostrarDatosDeReserva() {

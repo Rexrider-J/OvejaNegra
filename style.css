@@ -214,6 +214,80 @@ footer{
     margin: 0;
     color: white;
 }
+@media (max-width: 768px) {
+    footer {
+        height: auto;
+        grid-template-rows: auto auto;
+    }
+
+    .footerEnlaces {
+        grid-template-columns: 1fr;
+        padding: 10% 5%;
+        text-align: center;
+    }
+
+    .footerEnlaces img {
+        width: 80px;
+        margin-bottom: 20px;
+    }
+
+   .listasFooter {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+        width: 100%;
+        height: auto;
+        justify-items: center;
+        text-align: center;
+    }
+    .listasFooter ul {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .listasFooter li {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 300;
+        word-wrap: break-word; /* En caso de textos largos */
+    }
+    .listasFooter option{
+        font-size: 17px;
+        background-color: rgb(111, 202, 191);;
+    }
+    .listasFooter h5 {
+        color: #49819b;
+        font-size: 15px;
+        font-weight: 500;
+    }
+    .listasFooter a {
+        font-size: 14px;
+        display: block;
+        padding: 6px 0;
+    }
+    .footerDerechos {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 10px;
+        text-align: center;
+    }
+    .footerDerechos h6 {
+        font-size: 13px;
+    }
+    .footerDropdown {
+        width: 100%;
+        padding: 10px;
+        background-color:#288fb100;
+        color: #034850;
+        border: none;
+        border-radius: 4px;
+        display: none; /* se mostrará solo en mobile */
+        font-size: 22px;
+    }
+}
+
 /*MENU*/
 /*MAIN*/
 #mainMenu{
