@@ -61,7 +61,7 @@ CREATE TABLE `empleados` (
   `apellido` varchar(50) NOT NULL,
   `dni` int(8) NOT NULL,
   `mail` varchar(100) DEFAULT NULL,
-  `puesto` varchar(50) NOT NULL,
+  `puesto` ENUM('mozo', 'caja', 'subgerente', 'gerente') NOT NULL,
   `contrasena` varchar(20) NOT NULL,
   `id_local` int(11) NOT NULL,
   PRIMARY KEY (`id_empleado`),

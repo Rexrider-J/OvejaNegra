@@ -454,11 +454,28 @@ function submitAccederEmpleado(event) {
   })
     .then(response => response.text())
     .then(data => {
-      alert(data);
 
       if (data.includes("✅")) {
+
+        const partes = data.split("|"); // separa los campos
+        const datos = {}; // usamos un objeto para guardar los pares clave:valor
+
+            for (let i = 1; i < partes.length; i++) { //cargamos las partes en los datos, excluyendo el ✅
+              const [clave, valor] = partes[i].split("=");
+              datos[clave] = valor;
+            }
+        console.log(datos);
+
         /*Creamos una variable para indicar que el usuario que ingreso es un empleado*/
         sessionStorage.setItem("usuarioTipo", "empleado");
+        sessionStorage.setItem("idEmpleado", datos.id_empleado);
+        sessionStorage.setItem("nombreEmpleado", datos.nombre);
+        sessionStorage.setItem("apellidoEmpleado", datos.apellido);
+        sessionStorage.setItem("dniEmpleado", datos.dni);
+        sessionStorage.setItem("emailEmpleado", datos.email);
+        sessionStorage.setItem("puestoEmpleado", datos.puesto);
+        sessionStorage.setItem("idLocalEmpleado", datos.id_local);
+
         window.location.href = "index.html"; // O redirigir a un panel de empleado
       }
     })

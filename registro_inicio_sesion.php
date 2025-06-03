@@ -2,23 +2,19 @@
 session_start();
 require_once("config_BDD.php");
 
-
 if (!isset($conexion) || $conexion === null) {  // verifico conexión
     die("Error de conexión con la base de datos.");
 }
-
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") { // solo acepto método POST
     http_response_code(405);
     die("Método no permitido.");
 }
 
-
 if (!isset($_POST['accion'])) { // Verifico que se recibió una acción
     http_response_code(400);
     die("Falta acción.");
 }
-
 
 if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
     $nombre = $_POST['nombre'];
@@ -111,10 +107,18 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
 
     if ($res->num_rows === 1) { // verifico que se encontro el empleado 
         $empleado = $res->fetch_assoc();
-        // guardo datos del empleado en la variable global SESSION
-        $_SESSION['id_empleado'] = $empleado['id_empleado'];
-        $_SESSION['nombre'] = $empleado['nombre'];
-        echo "✅ Bienvenido, " . $_SESSION['nombre'];
+        
+        /* $_SESSION['id_empleado'] = $empleado['id_empleado'];// guardo datos del empleado en la variable global SESSION
+        $_SESSION['nombre'] = $empleado['nombre']; */
+        
+        echo "✅"
+            . "|id_empleado=" . $empleado['id_empleado']
+            . "|nombre=" . $empleado['nombre']
+            . "|apellido=" . $empleado['apellido']
+            . "|dni=" . $empleado['dni']
+            . "|email=" . $empleado['mail']
+            . "|puesto=" . $empleado['puesto']
+            . "|id_local=" . $empleado['id_local'];
     } else {
         echo "❌ Credenciales incorrectas."; // no se encontro el empleado
     }
