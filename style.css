@@ -1,11 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Special+Gothic+Condensed+One&display=swap');
+
 body {
     height: 100%;
     width: 100%;
-    margin: 0; /* Elimina márgenes */
-    padding: 0; /* Elimina rellenos */
-    background-color: white; /* Color de fondo */
+    margin: 0;
+    /* Elimina márgenes */
+    padding: 0;
+    /* Elimina rellenos */
+    background-color: white;
+    /* Color de fondo */
 }
+
 /*INDEX*/
 /*HEADER*/
 header {
@@ -16,18 +21,20 @@ header {
     box-sizing: border-box;
 
     display: grid;
-    grid-template-rows: 30px 150px; /* 2 filas, ajustadas */
-    grid-template-columns: 100%; /* 1 columna */
+    grid-template-rows: 30px 150px;
+    /* 2 filas, ajustadas */
+    grid-template-columns: 100%;
+    /* 1 columna */
     align-items: center;
     text-align: center;
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
 }
 
-.headerUbicacion{
+.headerUbicacion {
     display: grid;
     height: 100%;
-    grid-template-rows: 100%; 
+    grid-template-rows: 100%;
     grid-template-columns: 1fr 1fr;
     background-image: url("img/turquesa.png");
     background-size: cover;
@@ -35,38 +42,50 @@ header {
     padding-right: 15%;
     align-items: center;
     text-align: center;
-    color:black;
+    color: black;
 }
-#selectorSucursales{
+
+#selectorSucursales {
     background-color: transparent;
-    width:max-content;
+    width: max-content;
     border-color: transparent;
     font-size: 20px;
     font-weight: bold;
 }
-#selectorSucursales option{
+
+#selectorSucursales option {
     background-color: rgb(3, 175, 219);
     font-size: 18px;
 }
-.icoRedes{
+
+.icoRedes {
     text-align: right;
 }
-.icoRedes img{
-    width: 4%;
+
+.icoRedes img {
+    width: 28px;
+    height: auto;
 }
-.headerNavegacion{
-    display: grid;
+
+.headerNavegacion {
+    display: flex;
     height: 100%;
-    grid-template-rows: 100%; /*Cantidad de filas y su tamaño*/
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center; 
-    text-align: center;
+    justify-content: space-between;
+    align-items: center;
     background-color: #000000;
-    padding-left: 15%;
-    padding-right: 15%;
+    padding: 0 15%;
 }
-.listNavIzq, .listNavDer {
-    list-style: none; /* Elimina numeración */
+.navLinks {
+    display: grid;
+    grid-template-columns: 40% 20% 40%;
+    align-items: center;
+    width: 100%;
+}
+
+.listNavIzq,
+.listNavDer {
+    list-style: none;
+    /* Elimina numeración */
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
@@ -74,132 +93,239 @@ header {
     margin: 0;
     padding: 0;
 }
+
 .listNavIzq {
-    justify-content: flex-start; /* Alinea a la izquierda */
-}
-#botonIngresar{
-    font-size: 20px;
-    background-color: transparent;
-    border-color:transparent;
-}
-#contenidoBotonIngresar{
-    background-color: rgb(111, 202, 191);
-}
-#contenidoBotonIngresar a{
-    color: black;
+    justify-items: start;/* Alinea a la izquierda */
 }
 .listNavDer {
-    justify-content: flex-end; /* Alinea a la derecha */
+    justify-items: end; /* Alinea a la derecha */
 }
-.logoNav{
+#botonIngresar {
+    font-size: 20px;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+#contenidoBotonIngresar {
+    background-color: rgb(111, 202, 191);
+}
+
+#contenidoBotonIngresar a {
+    color: black;
+}
+
+.logoNav {
     justify-items: center;
     align-items: center;
     border-radius: 50%;
 }
-.imgLogo{
-    width: 23%;
+
+.imgLogo {
+    width: 40%;
 }
-/*MAIN*/
-main{
-    min-height: 100vh;
-    margin: 0;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    font-family: "Special Gothic Condensed One", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    box-sizing: border-box;
+.logoResponsive {
+  display: none;
 }
-.subtituloIndex {
-    text-align: center; /* centra el texto dentro del contenedor */
-    margin: 0 auto; /* centra el contenedor si es un bloque con ancho definido */
-    padding: 0.5rem 1rem; /* opcional, para darle espacio */
+
+.hamburger {
+    display: none;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
 }
-.subtituloIndex h2{
-    margin: 0;
-    font-size: clamp(1.5rem, 5vw, 2.5rem);
-    font-weight: bold;
-    text-align: center;
+
+/*RESPONSIVE*/
+@media (max-width: 1024px) {
+  .headerNavegacion {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+    .headerUbicacion {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+    .icoRedes img {
+    width: 24px;
+    }
 }
-.fotosDestacadas{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1.5rem;
-    padding: 2rem 5%;
-    justify-items: center;  /* CENTRA las cards dentro del grid */
-    text-align: center;
+
+@media (max-width: 900px) {
+  .headerNavegacion {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+    .headerUbicacion {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
 }
-.fotosDestacadas img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover; /* Para que la imagen se adapte bien */
+
+@media (max-width: 768px) {
+    .headerUbicacion {
+        grid-template-columns: 1fr 1fr;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+    .icoRedes {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .icoRedes img {
+        width: 20px;
+    }
+    .headerNavegacion {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+    }
+
+    .hamburger {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .logoNav {
+        display: none;
+    }
+
+    .logoResponsive {
+        display: block;
+    }
+
+    .logoResponsive img {
+        width: 80px;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    .navLinks {
+        display: none;
+        flex-direction: column;
+        background-color: #000;
+        width: 100%;
+        text-align: center;
+        padding: 10px 0;
+
+        position: absolute;
+        top: 100%;
+        left: 0;
+        /* ara que esté por encima */
+        z-index: 999; 
+    }
+
+    .navLinks.active {
+        display: flex;
+        background-color: rgb(111, 202, 191);
+    }
+
+    .navLinks ol li {
+        width: 100%;
+    }
+    
+    .navLinks ol li a {
+        display: block; 
+        width: 100%;
+        padding: 8px 0;      /* un poco de padding arriba y abajo para espacio */
+        text-align: center;   /* centrar texto */
+        color: white;         /* o el color que uses */
+        text-decoration: none;
+    }
+
+    /*Detallecito: Cambia el color al pasar el mouse */
+    .navLinks ol li a:hover {
+        background-color: rgb(111, 202, 191);
+        border-radius: 10px;
+    }
+
+    .listNavIzq, .listNavDer {
+        grid-template-columns: 1fr;
+        row-gap: 10px;
+        width: 100%;
+        display:inline;
+    }
+
+    .logoNav {
+        order: -1;
+        margin-bottom: 10px;
+    }
+
+    .imgLogo {
+        width: 100px;
+    }
 }
-.card {
-    width: 100%;
-    max-width: 300px;       /* Limita el ancho máximo para que no estire en pantallas grandes */
-    display: flex;
-    flex-direction: column;
-    align-items: center;    /* CENTRA el contenido dentro de la card */
-    justify-content: center;
-}
-.card-text {
-    text-align: justify;
-    font-size: 16px;
-    padding: 0 1rem; /* un poco de padding para no pegar texto a los bordes */
-}
+
 /*FOOTER*/
-footer{
+footer {
     display: grid;
     width: 100%;
-    grid-template-rows: auto auto; /*Cantidad de filas y su tamaño*/
+    grid-template-rows: auto auto;
+    /*Cantidad de filas y su tamaño*/
     grid-template-columns: 100%;
     align-content: center;
     text-align: center;
 }
-.footerEnlaces{
+
+.footerEnlaces {
     height: 100%;
     padding-left: 15%;
     padding-right: 15%;
     padding-top: 2%;
     padding-bottom: 3%;
 
-    display: grid; /* crea la grilla */
-    grid-template-columns: 20% 80%; /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
-    text-align: center; /* alinea el centro en eje X el texto */
+    display: grid;
+    /* crea la grilla */
+    grid-template-columns: 20% 80%;
+    /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
+    text-align: center;
+    /* alinea el centro en eje X el texto */
     align-items: center;
-    justify-items:center;
+    justify-items: center;
 
     font-family: "Special Gothic Condensed One", sans-serif;
     font-style: normal;
     background-image: url("img/turquesa.png");
     background-size: cover;
 }
-.footerEnlaces a, .listCategorias a, .headerNavegacion a{
-    text-decoration: none; /*Quita el subrayado de los enlaces*/
+
+.footerEnlaces a,
+.listCategorias a,
+.headerNavegacion a {
+    text-decoration: none;
+    /*Quita el subrayado de los enlaces*/
     font-weight: 400;
     font-size: 20px;
-    color:white;
+    color: white;
 }
-.footerEnlaces img{
+
+.footerEnlaces img {
     width: 35%;
 }
-.listasFooter{
+
+.listasFooter {
     display: grid;
     width: 100%;
     height: 80%;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     justify-items: end;
 }
-.listasFooter ol{
-    text-decoration: none; /*Quita el subrayado de los enlaces*/
+
+.listasFooter ol {
+    text-decoration: none;
+    /*Quita el subrayado de los enlaces*/
     list-style: none;
     padding: 0;
 }
-.listasFooter li,h5{
+
+.listasFooter li,h5 {
     text-align: justify;
 }
+
 .footerDerechos {
     display: flex;
     align-items: center;
@@ -207,19 +333,23 @@ footer{
     background-color: #000000;
     min-height: 60px;
     padding: 10px 20px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
 }
+
 .footerDerechos img {
-    max-width: 100px;            
+    max-width: 100px;
     height: auto;
-    margin:0;
+    margin: 0;
 }
+
 .footerDerechos h6 {
     font-family: 'Times New Roman', Times, serif;
     font-size: 14px;
     margin: 0;
     color: white;
 }
+
+/*RESPONSIVE*/
 @media (max-width: 768px) {
     footer {
         height: auto;
@@ -237,7 +367,7 @@ footer{
         margin-bottom: 20px;
     }
 
-   .listasFooter {
+    .listasFooter {
         grid-template-columns: 1fr;
         row-gap: 1rem;
         width: 100%;
@@ -245,6 +375,7 @@ footer{
         justify-items: center;
         text-align: center;
     }
+
     .listasFooter ul {
         width: 100%;
         max-width: 280px;
@@ -252,26 +383,33 @@ footer{
         padding: 0;
         box-sizing: border-box;
     }
+
     .listasFooter li {
         text-align: center;
         font-size: 14px;
         font-weight: 300;
-        word-wrap: break-word; /* En caso de textos largos */
+        word-wrap: break-word;
+        /* En caso de textos largos */
     }
-    .listasFooter option{
+
+    .listasFooter option {
         font-size: 17px;
-        background-color: rgb(111, 202, 191);;
+        background-color: rgb(111, 202, 191);
+        ;
     }
+
     .listasFooter h5 {
         color: #49819b;
         font-size: 15px;
         font-weight: 500;
     }
+
     .listasFooter a {
         font-size: 14px;
         display: block;
         padding: 6px 0;
     }
+
     .footerDerechos {
         flex-direction: column;
         align-items: center;
@@ -279,148 +417,251 @@ footer{
         padding: 10px;
         text-align: center;
     }
+
     .footerDerechos h6 {
         font-size: 13px;
     }
+
     .footerDropdown {
         width: 100%;
         padding: 10px;
-        background-color:#288fb100;
+        background-color: #288fb100;
         color: #034850;
         border: none;
         border-radius: 4px;
-        display: none; /* se mostrará solo en mobile */
+        display: none;
+        /* se mostrará solo en mobile */
         font-size: 22px;
     }
 }
 
+/*MAIN*/
+main {
+    min-height: 100vh;
+    margin: 0;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    font-family: "Special Gothic Condensed One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    box-sizing: border-box;
+}
+
+.subtituloIndex {
+    text-align: center;
+    /* centra el texto dentro del contenedor */
+    margin: 0 auto;
+    /* centra el contenedor si es un bloque con ancho definido */
+    padding: 0.5rem 1rem;
+    /* opcional, para darle espacio */
+}
+
+.subtituloIndex h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 5vw, 2.5rem);
+    font-weight: bold;
+    text-align: center;
+}
+
+.fotosDestacadas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem 5%;
+    justify-items: center;
+    /* CENTRA las cards dentro del grid */
+    text-align: center;
+}
+
+.fotosDestacadas img {
+    width: 100%;
+    height: 350px;
+    /* Para que la imagen se adapte bien */
+    object-fit: cover;
+    border-radius: 3%;
+}
+
+.card {
+    width: 100%;
+    max-width: 300px;
+    /* Limita el ancho máximo para que no estire en pantallas grandes */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* CENTRA el contenido dentro de la card */
+    justify-content: center;
+    border-radius: 3% !important;
+}
+
+.card-text {
+    text-align: justify;
+    font-size: 16px;
+    padding: 0 1rem;
+    /* un poco de padding para no pegar texto a los bordes */
+}
+
 /*MENU*/
 /*MAIN*/
-#mainMenu{
+#mainMenu {
     padding: 0 15%;
-    display:inline;
+    display: inline;
 }
-#mainMenu .row{
+
+#mainMenu .row {
     width: 100%;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
 }
-#mainMenu .col-4{
+
+#mainMenu .col-4 {
     width: 12%;
     font-size: 1.2rem;
 }
-#mainMenu .col-8{
+
+#mainMenu .col-8 {
     width: 76%;
-    margin:0;
+    margin: 0;
 }
-.list-group-item.active{
+
+.list-group-item.active {
     background-color: #4cbfe6 !important;
     border-color: #4cbfe6 !important;
 }
-#mainMenu .tituloCategoria{
+
+#mainMenu .tituloCategoria {
     width: 100%;
     border-bottom: 1px solid #000000;
     border-top: 1px solid #000000;
     font-size: 20px;
-    margin:0;
+    margin: 0;
 }
-#mainMenu .tituloCategoria h2, #mainPromos .tituloCategoria h2{
+
+#mainMenu .tituloCategoria h2,
+#mainPromos .tituloCategoria h2 {
     text-align: center;
-    margin:0;
+    margin: 0;
 }
-#mainMenu .listProductos{
+
+#mainMenu .listProductos {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 2rem;
     padding: 1rem;
 }
-#mainMenu figure{
-    margin:0;
+
+#mainMenu figure {
+    margin: 0;
     width: 180px;
     align-content: center;
     height: 100%;
     justify-content: space-between;
 }
-#mainMenu .listProductos img, #mainPromos .listProductos img{
+
+#mainMenu .listProductos img,
+#mainPromos .listProductos img {
     border-radius: 50%;
-    width:150px;
+    width: 150px;
     height: 150px;
     border: 1px solid #000;
 }
+
 /* Tablets */
 @media (max-width: 992px) {
     #mainMenu {
         padding: 0 5%;
     }
-    #mainMenu .col-4, #mainMenu .col-8 {
+
+    #mainMenu .col-4,
+    #mainMenu .col-8 {
         width: 100%;
     }
+
     #mainMenu .row {
         flex-direction: column;
     }
 }
+
 /* Teléfonos */
 @media (max-width: 576px) {
     #mainMenu {
         padding: 0 1rem;
     }
+
     #mainMenu .listProductos {
         gap: 1rem;
     }
+
     #mainMenu figure {
         width: 100%;
     }
+
     #mainMenu .listProductos img {
         width: 120px;
         height: 120px;
     }
 }
+
 /*PROMOS Y COMBOS*/
-#mainPromos{
+#mainPromos {
     width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
-    display: grid; /* crea la grilla */
-    grid-template-rows: 70px auto; /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
-    align-items: center; /* alinea el centro en eje Y (vertical) */
-    text-align: center; /* alinea el centro en eje X el texto */
+    display: grid;
+    /* crea la grilla */
+    grid-template-rows: 70px auto;
+    /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
+    align-items: center;
+    /* alinea el centro en eje Y (vertical) */
+    text-align: center;
+    /* alinea el centro en eje X el texto */
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
     font-style: normal;
 }
-#mainPromos .navCategoria{
+
+#mainPromos .navCategoria {
     width: 100%;
     height: 100%;
-    text-align: center; 
+    text-align: center;
     align-content: center;
     background-image: url("img/turquesa.png");
     background-size: cover;
 }
-#mainPromos .listCategorias{
-    list-style: none;/*Para que no aparezca la numeración, solo el texto ordenado*/
-    display: grid; /*Tambien se despliega como grilla dentro de la grilla*/
-    grid-template-rows: 100%; 
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; /*Dentro del espacio donde está la lista, cada fr es un elemento de la lista y 1 en este caso, es el espacio que ocupará cada elemento*/
-    margin:0; 
-    padding:0;
+
+#mainPromos .listCategorias {
+    list-style: none;
+    /*Para que no aparezca la numeración, solo el texto ordenado*/
+    display: grid;
+    /*Tambien se despliega como grilla dentro de la grilla*/
+    grid-template-rows: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    /*Dentro del espacio donde está la lista, cada fr es un elemento de la lista y 1 en este caso, es el espacio que ocupará cada elemento*/
+    margin: 0;
+    padding: 0;
 }
-#mainPromos .listCategorias{
-   grid-template-columns: 1fr 1fr; 
+
+#mainPromos .listCategorias {
+    grid-template-columns: 1fr 1fr;
 }
-#mainPromos .elMenu{
+
+#mainPromos .elMenu {
     width: 100%;
     padding-left: 15%;
     padding-right: 15%;
     display: grid;
-    grid-template-rows: repeat(12, auto); /* 12 secciones iguales */
+    grid-template-rows: repeat(12, auto);
+    /* 12 secciones iguales */
     grid-template-columns: 100%;
-    align-items: center; 
+    align-items: center;
     justify-items: center;
 }
-section{
+
+section {
     width: 100%;
     height: auto;
     display: grid;
@@ -429,69 +670,88 @@ section{
     align-content: center;
     text-align: center;
 }
-#mainPromos .listProductos{
-    max-width:100%;
+
+#mainPromos .listProductos {
+    max-width: 100%;
     height: auto;
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 columnas fijas */
+    grid-template-columns: repeat(5, 1fr);
+    /* 5 columnas fijas */
     align-content: center;
     text-align: center;
     padding: 0;
 }
-.tituloCategoria{
+
+.tituloCategoria {
     text-align: center;
     align-content: center;
     border-bottom: 1px solid #000000;
     border-top: 1px solid #000000;
     font-size: 20px;
-    margin:2rem;
+    margin: 2rem;
 }
+
 /*NOSOTROS*/
 /*MAIN*/
-.mainNosotros{
+.mainNosotros {
     width: 100%;
     height: 2400px;
     margin: 0;
     padding: 0;
-    display: grid; /* crea la grilla */
+    display: grid;
+    /* crea la grilla */
     grid-template-rows: 1fr 1fr 1fr;
-    grid-template-columns: 100%; 
-    align-items: center; /* alinea el centro en eje Y (vertical) */
-    text-align: center; /* alinea el centro en eje X el texto */
+    grid-template-columns: 100%;
+    align-items: center;
+    /* alinea el centro en eje Y (vertical) */
+    text-align: center;
+    /* alinea el centro en eje X el texto */
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
     font-style: normal;
 }
-.presentacion, .mision, .vision{
+
+.presentacion,
+.mision,
+.vision {
     width: 100%;
     height: 800px;
-    display: grid; /* crea la grilla */
-    grid-template-rows: 100%; /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
-    grid-template-columns: 1fr 1fr; /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
-    align-items: center; /* alinea el centro en eje Y (vertical) */
+    display: grid;
+    /* crea la grilla */
+    grid-template-rows: 100%;
+    /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
+    grid-template-columns: 1fr 1fr;
+    /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
+    align-items: center;
+    /* alinea el centro en eje Y (vertical) */
     text-align: justify;
     font-size: 25px;
 }
-.imagenNosotros{
+
+.imagenNosotros {
     width: 953px;
     height: 800px;
 }
-.textoPresentacion{
+
+.textoPresentacion {
     margin-left: 10%;
     margin-right: 10%;
     margin-top: 5%;
     margin-bottom: 5%;
 }
-.subtitulosNosotros{
+
+.subtitulosNosotros {
     text-align: center;
     font-size: 100px;
     margin: 0;
 }
-.mision{
+
+.mision {
     background-image: url("img/turquesa.png");
     background-size: cover;
-    color:white;
+    color: white;
 }
+
 /*INGRESO*/
 /*MAIN*/
 .mainIngreso {
@@ -509,11 +769,15 @@ section{
     background-image: url("img/Fotos/Ingresar/fondoIngreso.png");
     background-size: cover;
 }
+
 .contenedorFormulario {
     width: auto;
-    margin: 3% 15%; /* 5% arriba/abajo, 15% izquierda/derecha */
-    background: rgba(255, 255, 255, 0.3); /* blanco translúcido */
-    backdrop-filter: blur(10px);          /* desenfoque del fondo */
+    margin: 3% 15%;
+    /* 5% arriba/abajo, 15% izquierda/derecha */
+    background: rgba(255, 255, 255, 0.3);
+    /* blanco translúcido */
+    backdrop-filter: blur(10px);
+    /* desenfoque del fondo */
     border-radius: 10px;
 
     display: flex;
@@ -522,15 +786,22 @@ section{
     justify-content: center;
     align-items: center;
 }
-#cliente{
+
+#cliente {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
 }
-#empleado, #olvideContrasenia{
+
+#empleado,
+#olvideContrasenia {
     height: auto;
 }
-#cliente .iniciarSesion , #cliente .registrarse, #empleado .iniciarSesion, #olvideContrasenia .recuperar-contrasenia {
+
+#cliente .iniciarSesion,
+#cliente .registrarse,
+#empleado .iniciarSesion,
+#olvideContrasenia .recuperar-contrasenia {
     width: 100%;
     height: auto;
     border-radius: 10px;
@@ -543,40 +814,52 @@ section{
     color: #4d2513;
     padding-bottom: 3em;
 }
-#cliente legend, #empleado legend{
+
+#cliente legend,
+#empleado legend {
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
     font-size: 18px;
 }
-#empleado .iniciarSesion{
-    background-image:url("img/Fotos/Ingresar/inicioSesionEmpleado.png");
-    background-size:cover;
+
+#empleado .iniciarSesion {
+    background-image: url("img/Fotos/Ingresar/inicioSesionEmpleado.png");
+    background-size: cover;
     align-items: center;
     padding-top: 2rem;
 }
-#cliente .iniciarSesion{
-    background-image:url("img/Fotos/Ingresar/inicioSesion.png");
-    background-size:cover;
+
+#cliente .iniciarSesion {
+    background-image: url("img/Fotos/Ingresar/inicioSesion.png");
+    background-size: cover;
 }
-#cliente .registrarse{
-    background-image:url("img/Fotos/Ingresar/registrarse.png");
-    background-size:cover;
+
+#cliente .registrarse {
+    background-image: url("img/Fotos/Ingresar/registrarse.png");
+    background-size: cover;
 }
-#olvideContrasenia .recuperar-contrasenia{
-    background-image:url("img/Fotos/Ingresar/olvideContrasenia.png");
-    background-size:cover;
+
+#olvideContrasenia .recuperar-contrasenia {
+    background-image: url("img/Fotos/Ingresar/olvideContrasenia.png");
+    background-size: cover;
     align-items: center;
     padding-top: 2rem;
 }
-#cliente h1,#empleado h1, #olvideContrasenia h1{
+
+#cliente h1,
+#empleado h1,
+#olvideContrasenia h1 {
     display: flex;
-    justify-content: center; 
-    align-items: center;   
-    height: 100%;          
-    margin: 0;            
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0;
     font-weight: bold;
 }
-#cliente form, #empleado form, #olvideContrasenia form{
+
+#cliente form,
+#empleado form,
+#olvideContrasenia form {
     width: 50vh;
     height: auto;
     max-width: 500px;
@@ -585,37 +868,48 @@ section{
     padding-top: 1em;
     align-items: start;
 }
-#cliente label, #empleado label, #olvideContrasenia label{
+
+#cliente label,
+#empleado label,
+#olvideContrasenia label {
     display: block;
     margin: 0.5rem 5%;
     text-align: left;
 }
-#olvideContrasenia .radio-buttom-estilo{
+
+#olvideContrasenia .radio-buttom-estilo {
     display: inline-block;
 }
-#cliente input, #empleado input, #olvideContrasenia input {
+
+#cliente input,
+#empleado input,
+#olvideContrasenia input {
     margin: 10px 0 0 0;
     width: 100%;
     min-height: 2em;
 
-    background-color:transparent;
-    border-top:none;
-    border-right:none;
-    border-left:none;
+    background-color: transparent;
+    border-top: none;
+    border-right: none;
+    border-left: none;
     border-bottom: 1px solid #4d2513;
     color: #000000;
     font-size: 16px;
 }
-#olvideContrasenia .inline{
+
+#olvideContrasenia .inline {
     width: unset;
     margin: 0 0.5em 0 0;
     vertical-align: middle;
 }
-#cliente a , #empleado a{
-    text-decoration: none; 
+
+#cliente a,
+#empleado a {
+    text-decoration: none;
     color: #4d2513;
 }
-#cliente input[type="date"]{
+
+#cliente input[type="date"] {
     display: block;
     width: 100%;
     margin: 10px 0 0 0;
@@ -627,15 +921,20 @@ section{
     background-color: #4d2513;
     border-color: black;
 }
-#confirmacion-envio-mail{
+
+#confirmacion-envio-mail {
     background-color: #ffffff;
     border-radius: 10px;
     display: none;
     padding: 2em;
     gap: 2em;
-    color:#4d2513;
+    color: #4d2513;
 }
-#cliente input[type="submit"], #empleado input[type="submit"], #seleccionSucursalDeReserva input[type="submit"] , #olvideContrasenia input[type="submit"]{
+
+#cliente input[type="submit"],
+#empleado input[type="submit"],
+#seleccionSucursalDeReserva input[type="submit"],
+#olvideContrasenia input[type="submit"] {
     display: block;
     width: 60%;
     margin: 1em auto;
@@ -647,26 +946,33 @@ section{
     border-radius: 8px;
     min-width: 300px;
 }
-#cliente fieldset, #empleado fieldset , #olvideContrasenia fieldset{
+
+#cliente fieldset,
+#empleado fieldset,
+#olvideContrasenia fieldset {
     border: none;
 }
+
 /*RESPONSIVE*/
 @media (max-width: 768px) {
     #cliente {
-        grid-template-columns: 1fr; /* Solo una columna */
+        grid-template-columns: 1fr;
+        /* Solo una columna */
     }
 }
+
 /*Quitar las fechas de arriba y abajo por defecto en los input type number*/
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
+
 /*Reservas*/
 /*MAIN*/
 #mainReservas {
     width: 100%;
-    height: auto; 
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -677,11 +983,15 @@ input[type=number]::-webkit-outer-spin-button {
     background-image: url("img/Fotos/Reservas/fondoReservas.png");
     background-size: cover;
 }
+
 .contenedorRealizarReservas {
     width: 70%;
-    margin: 3% 15%; /* 5% arriba/abajo, 15% izquierda/derecha */
-    background: rgba(255, 255, 255, 0.3); /* blanco translúcido */
-    backdrop-filter: blur(10px);          /* desenfoque del fondo */
+    margin: 3% 15%;
+    /* 5% arriba/abajo, 15% izquierda/derecha */
+    background: rgba(255, 255, 255, 0.3);
+    /* blanco translúcido */
+    backdrop-filter: blur(10px);
+    /* desenfoque del fondo */
     border-radius: 10px;
 
     display: flex;
@@ -695,28 +1005,31 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 18px;
     color: #4d2513;
 }
-#seleccionSucursalDeReserva{
+
+#seleccionSucursalDeReserva {
     width: 100%;
     max-width: 500px;
     display: grid;
     gap: 2rem;
     padding: 2rem;
 }
-.tituloReservas h1{
+
+.tituloReservas h1 {
     margin: 0 auto;
     font-weight: bold;
     font-size: clamp(1.5rem, 6vw, 3rem);
     text-align: center;
 }
-#dropdownReservas{
+
+#dropdownReservas {
     width: 100%;
     background-color: #ffffff;
     border: 2px solid #ddd;
     border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     padding: 7px;
     display: flex;
-    text-align:left;
+    text-align: left;
     justify-content: space-between;
     align-items: center;
 
@@ -725,7 +1038,8 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 20px;
     color: #4d2513;
 }
-#opcionesDropdownReserva{
+
+#opcionesDropdownReserva {
     width: 100%;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -734,19 +1048,23 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     font-size: 20px;
 }
-#opcionesDropdownReserva a{
+
+#opcionesDropdownReserva a {
     color: #4d2513;
 }
-#datosDeReserva{
+
+#datosDeReserva {
     display: none;
     gap: 2em;
 }
+
 #referenciaLocal img {
     width: 100%;
     max-width: 700px;
     border-radius: 10px;
     height: auto;
 }
+
 #reservarMesa {
     background-color: #ffffff;
     border-radius: 10px;
@@ -757,7 +1075,8 @@ input[type=number]::-webkit-outer-spin-button {
     padding: 2em;
     gap: 2em;
 }
-#formFechaDatosReserva{
+
+#formFechaDatosReserva {
     display: grid;
     grid-template-columns: 60% 40%;
     justify-content: center;
@@ -773,12 +1092,14 @@ input[type=number]::-webkit-outer-spin-button {
     max-width: 800px;
     margin: 0 auto;
 }
+
 /*Es la clase del calendario completo*/
 .flatpickr-calendar.inline {
-  width: 100%;
-  max-width: 700px;
-  font-size: 16px;
+    width: 100%;
+    max-width: 700px;
+    font-size: 16px;
 }
+
 /*Es el contenedor del conjunto de dias, la grilla de dias y los dias*/
 .flatpickr-rContainer {
     display: grid;
@@ -789,34 +1110,45 @@ input[type=number]::-webkit-outer-spin-button {
     align-items: center;
     align-content: center;
     text-align: center;
-    margin: 0 auto; 
+    margin: 0 auto;
 }
+
 /*Es el contenedor de .dayContainer*/
-.flatpickr-days{
-    width: 100% !important; /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
+.flatpickr-days {
+    width: 100% !important;
+    /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
 }
+
 /*Es la grilla que contiene todos los numeros en columnas y filas*/
-.dayContainer{
-    width: 100% !important; /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
-    max-width: 700px !important; /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
+.dayContainer {
+    width: 100% !important;
+    /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
+    max-width: 700px !important;
+    /*Utilizo el important para pisar los valores que vienen en el calendario externo*/
     row-gap: 10px;
 }
+
 /*Es la clase que comparten todos los numeros*/
-.flatpickr-day{
+.flatpickr-day {
     max-width: 700px !important;
 }
+
 /*La clase que contiene el dia que es seleccionado*/
-.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange {
-    background:rgb(42, 194, 250) !important;
-    border-color:rgb(42, 194, 250)!important;
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background: rgb(42, 194, 250) !important;
+    border-color: rgb(42, 194, 250) !important;
 }
+
 /*FIN CAMBIOS CALENDARIO*/
-#formFechaDatosReserva label{
+#formFechaDatosReserva label {
     width: 100%;
     display: block;
-    text-align: left; 
+    text-align: left;
 }
-#formFechaDatosReserva textarea{
+
+#formFechaDatosReserva textarea {
     width: 100%;
     margin: 10px 0 0 0;
 
@@ -825,11 +1157,13 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 5px;
     color: #212529;
 }
-#errorObservaciones{
-    color:rgb(171, 171, 171);
+
+#errorObservaciones {
+    color: rgb(171, 171, 171);
     font-size: 15px;
 }
-.notaImportanteReserva{
+
+.notaImportanteReserva {
     background-color: #66c6e7;
     border-radius: 5px;
     padding: 4px 18px;
@@ -838,21 +1172,25 @@ input[type=number]::-webkit-outer-spin-button {
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
 }
-.notaImportanteReserva p{
+
+.notaImportanteReserva p {
     margin: 0;
     font-size: 18px;
 }
-.notaImportanteReserva h5{
+
+.notaImportanteReserva h5 {
     font-size: 20px;
 }
-.botonesReserva{
+
+.botonesReserva {
     display: flex;
     justify-content: space-between;
     gap: 20px;
     width: 100%;
 }
-.botonesReserva input{
-    display:grid;
+
+.botonesReserva input {
+    display: grid;
     height: 2em;
     font-size: 1.1rem;
     background-color: #4d2513;
@@ -864,20 +1202,26 @@ input[type=number]::-webkit-outer-spin-button {
     font-weight: 400;
     font-size: 18px;
 }
+
 .botonesReserva input[type="button"] {
-  justify-content: flex-start;
+    justify-content: flex-start;
 }
+
 .botonesReserva input[type="submit"] {
-  justify-content: flex-end;
+    justify-content: flex-end;
 }
-#confirmacionReserva, #finalizoReserva{
+
+#confirmacionReserva,
+#finalizoReserva {
     background-color: #ffffff;
     border-radius: 10px;
     display: none;
     padding: 2em;
     gap: 2em;
 }
-#imagenConfirmacionReservas, #imagenFinalizacionReservas{
+
+#imagenConfirmacionReservas,
+#imagenFinalizacionReservas {
     background-image: url("/img/turquesa.png");
     border-radius: 10px;
     display: grid;
@@ -885,19 +1229,24 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: start;
     padding: 2em;
 }
-#imagenConfirmacionReservas h1, #imagenFinalizacionReservas h1{
+
+#imagenConfirmacionReservas h1,
+#imagenFinalizacionReservas h1 {
     align-content: center;
     text-align: center;
     width: 100%;
     font-weight: bold;
     color: #ffffff;
 }
-#confirmacionReserva .imgLogo, #imagenFinalizacionReservas .imgLogo{
+
+#confirmacionReserva .imgLogo,
+#imagenFinalizacionReservas .imgLogo {
     width: 10vh;
     border-radius: 50%;
 }
-#mostrarDatosReserva{
-    display:grid;
+
+#mostrarDatosReserva {
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
     height: flex;
     width: 100%;
@@ -905,12 +1254,14 @@ input[type=number]::-webkit-outer-spin-button {
     text-align: center;
     padding: 40px;
 }
-.textoFinalizoGestion{
-    text-align:center;
+
+.textoFinalizoGestion {
+    text-align: center;
     font-size: 23px;
     padding: 0px 100px;
 }
-#finalizoReserva .botonFinalizar{
+
+#finalizoReserva .botonFinalizar {
     display: block;
     width: 30%;
     margin: 1em auto;
@@ -922,28 +1273,34 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 8px;
     min-width: 300px;
     align-content: center;
-    text-decoration: none; 
+    text-decoration: none;
 }
+
 /*RESPONSIVE*/
 @media (max-width: 768px) {
     .contenedorRealizarReservas {
         margin: 1rem;
-        flex-direction: column; /* si seguís usando flex */
+        flex-direction: column;
+        /* si seguís usando flex */
         padding: 1rem;
     }
+
     #formFechaDatosReserva {
-    display: grid;
-    grid-template-columns: 60% 40%;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    padding-left: 5px;
-    padding-right: 30px;
+        display: grid;
+        grid-template-columns: 60% 40%;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        padding-left: 5px;
+        padding-right: 30px;
     }
+
     #referenciaLocal img {
-        width: 100%; /* que no se desborde */
+        width: 100%;
+        /* que no se desborde */
         height: auto;
     }
+
     .botonesReserva {
         flex-direction: column;
         align-items: center;
@@ -962,33 +1319,42 @@ input[type=number]::-webkit-outer-spin-button {
         width: 100%;
         min-width: auto;
     }
+
     #reservarMesa {
         padding: 1em;
         gap: 1em;
-        text-align: center; /* Mantiene el centrado */
+        text-align: center;
+        /* Mantiene el centrado */
     }
+
     #formFechaDatosReserva {
         grid-template-columns: 1fr;
         padding-left: 10px;
         padding-right: 10px;
     }
+
     #calendarioReservas {
         max-width: 100%;
     }
+
     #calendarioReservas {
         max-width: 100%;
         padding: 0 10px;
     }
+
     .flatpickr-calendar.inline {
         max-width: 100%;
         font-size: 14px;
-        padding: 0 5px; /* opcional, para que no quede pegado al borde */
+        padding: 0 5px;
+        /* opcional, para que no quede pegado al borde */
     }
 }
+
 /*MI PERFIL*/
-#miPerfil{
+#miPerfil {
     width: 100%;
-    min-height: 100vh; /* ocupa toda la pantalla al menos */
+    min-height: 100vh;
+    /* ocupa toda la pantalla al menos */
     align-items: center;
     text-align: center;
 
@@ -997,11 +1363,13 @@ input[type=number]::-webkit-outer-spin-button {
     background-image: url("img/Fotos/Reservas/fondoReservas.png");
     background-size: cover;
 }
+
 #miPerfil .lista-contenido {
     width: 70%;
     margin: 3% auto;
     padding: 2rem 3rem;
-    background: rgb(255, 255, 255); /* blanco translúcido */
+    background: rgb(255, 255, 255);
+    /* blanco translúcido */
     border-radius: 10px;
 
     display: flex;
@@ -1015,36 +1383,3 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 18px;
     color: #4d2513;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

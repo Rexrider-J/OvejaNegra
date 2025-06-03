@@ -2,21 +2,21 @@ console.log("funciones.js se cargó correctamente");
 /*TODAS LAS PAGINAS*/
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
-    const hash = window.location.hash;
+  const hash = window.location.hash;
 
-    const divCliente = document.getElementById("cliente");
-    const divEmpleado = document.getElementById("empleado");
+  const divCliente = document.getElementById("cliente");
+  const divEmpleado = document.getElementById("empleado");
 
-    /* Oculta ambos al principio*/
-    if (divCliente) divCliente.style.display = "none";
-    if (divEmpleado) divEmpleado.style.display = "none";
+  /* Oculta ambos al principio*/
+  if (divCliente) divCliente.style.display = "none";
+  if (divEmpleado) divEmpleado.style.display = "none";
 
-    if (hash === "#cliente" && divCliente) {
-      divCliente.style.display = "grid";
-    } else if (hash === "#empleado" && divEmpleado) {
-      divEmpleado.style.display = "grid";
-    }
-  });
+  if (hash === "#cliente" && divCliente) {
+    divCliente.style.display = "grid";
+  } else if (hash === "#empleado" && divEmpleado) {
+    divEmpleado.style.display = "grid";
+  }
+});
 /*Cambio el dropdown del header segun si ingreso cliente, empleado y la funcion del empleado*/
 document.addEventListener("DOMContentLoaded", function () {
   const tipoUsuario = sessionStorage.getItem("usuarioTipo");
@@ -52,6 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
       <li><a class="dropdown-item" href="ingresar.html#empleado">Empleado</a></li>
     `;
   }
+});
+/*HEADER*/
+document.addEventListener("DOMContentLoaded", function () {
+    window.toggleMenu = function() {
+        const nav = document.getElementById("navLinks");
+        nav.classList.toggle("active");
+    }
 });
 /*FOOTER*/
 function crearDropdown(id, label, opciones) {
@@ -177,24 +184,24 @@ document.addEventListener("DOMContentLoaded", function () {
 /*Calendario externo Flatpickr*/
 document.addEventListener("DOMContentLoaded", function () {
   flatpickr("#calendarioReservas", {
-    inline: true,             
+    inline: true,
     dateFormat: "Y-m-d",
-    locale: "es",             
+    locale: "es",
     minDate: "today",
     disable: [
-      function(date) {
+      function (date) {
         // Devuelve true si el día es lunes (1)
         return date.getDay() === 1;
       }
     ],
-    onChange: function(selectedDates, dateStr) {
+    onChange: function (selectedDates, dateStr) {
       document.getElementById("fechaReserva").value = dateStr;
     }
   });
 });
-document.querySelectorAll('.solo-letras').forEach(function(campo) {
+document.querySelectorAll('.solo-letras').forEach(function (campo) {
   /*Evento para controlar las teclas que se presionan al escribir*/
-  campo.addEventListener('keydown', function(e) {
+  campo.addEventListener('keydown', function (e) {
     const tecla = e.key;
     /*Permite letras (mayúsculas y minúsculas), tildes, ñ, Ñ, apóstrofe y espacio*/
     const letrasPermitidas = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ' ]$/;
@@ -207,13 +214,13 @@ document.querySelectorAll('.solo-letras').forEach(function(campo) {
     }
   });
   /*Evento que se activa cuando cambia el contenido del campo coincluye pegar)*/
-  campo.addEventListener('input', function() {
+  campo.addEventListener('input', function () {
     /*Reemplaza cualquier caracter que no esté permitido por nada ''*/
     campo.value = campo.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ' ]/g, '');
   });
 
   /*Evento que detecta cuando se intenta pegar texto en el campo*/
-  campo.addEventListener('paste', function(e) {
+  campo.addEventListener('paste', function (e) {
     /* Obtiene el texto que se intenta pegar*/
     const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
     /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
@@ -223,26 +230,26 @@ document.querySelectorAll('.solo-letras').forEach(function(campo) {
     }
   });
 });
-document.querySelectorAll('.solo-numeros').forEach(function(campo) {
+document.querySelectorAll('.solo-numeros').forEach(function (campo) {
   /*Permite solo números y tab, delete, enter y las fechas de direccion izquierda y derecha*/
-  campo.addEventListener('keydown', function(e) {
+  campo.addEventListener('keydown', function (e) {
     const tecla = e.key;
     const numerosPermitidos = /^[0-9]$/;
-    const teclasEspeciales = ['Backspace','Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+    const teclasEspeciales = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
 
     /*Si la tecla no está permitida y no es especial, se bloquea la acción*/
     if (!numerosPermitidos.test(tecla) && !teclasEspeciales.includes(tecla)) {
       e.preventDefault();
     }
   });
-  
+
   /* Limpia cualquier caracter no numérico en el input, útil para pegar o escribir de otras formas*/
-  campo.addEventListener('input', function() {
+  campo.addEventListener('input', function () {
     campo.value = campo.value.replace(/[^0-9]/g, '');
   });
 
   /* Bloquea pegar texto con caracteres no numéricos*/
-  campo.addEventListener('paste', function(e) {
+  campo.addEventListener('paste', function (e) {
     /* Obtiene el texto que se intenta pegar*/
     const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
     /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
@@ -257,7 +264,7 @@ function validarTelefono() {
   const tel = document.getElementById("telefono").value;
   const regex = /^\+?[\d\s\-()]{7,15}$/;
 
-  if(regex.test(tel)) {
+  if (regex.test(tel)) {
     alert("Número válido");
   } else {
     alert("Número inválido");
@@ -269,11 +276,11 @@ document.addEventListener('DOMContentLoaded', () => {
   /*Se coloca el año actual y la fecha de hoy en variables*/
   const hoy = new Date();
   const añoActual = hoy.getFullYear();
-  /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/ 
+  /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/
   /*Minimo (este año - 80) -01-01*/
   const min = `${añoActual - 80}-01-01`;
   /*Maximo el 31 de diciembre de (este año -14)*/
-  const max = `${añoActual - 14}-12-31`; 
+  const max = `${añoActual - 14}-12-31`;
   /*Se colocan las variables en los valores maximos y minimos que puede tomar el input*/
   fechaInput.min = min;
   fechaInput.max = max;
@@ -286,15 +293,15 @@ function validateEmail(email) {
 /*INGRESAR, REGISTRARSE, EMPLEADO*/
 /*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
 function mostrarFormulario(tipo) {
-    document.getElementById("cliente").style.display = "none";
-    document.getElementById("empleado").style.display = "none";
-    document.getElementById("olvideContrasenia").style.display = "none";
-  
-    if (tipo === "botonCliente") {
-      document.getElementById("cliente").style.display = "grid";
-    } else if (tipo === "botonEmpleado") {
-      document.getElementById("empleado").style.display = "grid";
-    }
+  document.getElementById("cliente").style.display = "none";
+  document.getElementById("empleado").style.display = "none";
+  document.getElementById("olvideContrasenia").style.display = "none";
+
+  if (tipo === "botonCliente") {
+    document.getElementById("cliente").style.display = "grid";
+  } else if (tipo === "botonEmpleado") {
+    document.getElementById("empleado").style.display = "grid";
+  }
 }
 /*Acceder a olvideContrasenia desde login cliente*/
 document.getElementById("link-olvide-cliente").addEventListener("click", function (e) {
@@ -302,8 +309,8 @@ document.getElementById("link-olvide-cliente").addEventListener("click", functio
   document.getElementById("cliente").style.display = "none";
   document.getElementById("empleado").style.display = "none";
   document.getElementById("olvideContrasenia").style.display = "grid";
-  document.getElementById("datos-enviar-mail").style.display = "grid"; 
-  document.getElementById("confirmacion-envio-mail").style.display = "none"; 
+  document.getElementById("datos-enviar-mail").style.display = "grid";
+  document.getElementById("confirmacion-envio-mail").style.display = "none";
 });
 /*Acceder a olvideContrasenia desde login empleado*/
 document.getElementById("link-olvide-empleado").addEventListener("click", function (e) {
@@ -311,7 +318,7 @@ document.getElementById("link-olvide-empleado").addEventListener("click", functi
   document.getElementById("cliente").style.display = "none";
   document.getElementById("empleado").style.display = "none";
   document.getElementById("olvideContrasenia").style.display = "grid";
-  document.getElementById("datos-enviar-mail").style.display = "grid"; 
+  document.getElementById("datos-enviar-mail").style.display = "grid";
   document.getElementById("confirmacion-envio-mail").style.display = "none";
 });
 
@@ -435,7 +442,7 @@ function submitAccederEmpleado(event) {
     document.getElementById('email-empleado-login').focus();
     return false;
   }
-  
+
   if (!email || !dni || !contraseña) { //verificamos que existan todos los campos
     alert("Por favor, completá todos los campos.");
     return false;
@@ -460,10 +467,10 @@ function submitAccederEmpleado(event) {
         const partes = data.split("|"); // separa los campos
         const datos = {}; // usamos un objeto para guardar los pares clave:valor
 
-            for (let i = 1; i < partes.length; i++) { //cargamos las partes en los datos, excluyendo el ✅
-              const [clave, valor] = partes[i].split("=");
-              datos[clave] = valor;
-            }
+        for (let i = 1; i < partes.length; i++) { //cargamos las partes en los datos, excluyendo el ✅
+          const [clave, valor] = partes[i].split("=");
+          datos[clave] = valor;
+        }
         console.log(datos);
 
         /*Creamos una variable para indicar que el usuario que ingreso es un empleado*/
@@ -505,10 +512,10 @@ function submitEnviarMail(event) {
     document.getElementById('email-empleado-login').focus();
     return false;
   }
-  
+
   /*Si el formato es valido aparece este cartel*/
   alert('Email válido. Los datos serían enviados al servidor (simulado).');
-  
+
   /*Ocultar datos-enviar-mail*/
   document.getElementById("datos-enviar-mail").style.display = "none";
 
@@ -518,7 +525,7 @@ function submitEnviarMail(event) {
 
   return false;
 }
-function finalizarRecuperarContrasenia(){
+function finalizarRecuperarContrasenia() {
   /*Ocultar confirmacion-envio-mail*/
   document.getElementById("confirmacion-envio-mail").style.display = "none";
 
@@ -528,10 +535,10 @@ function finalizarRecuperarContrasenia(){
   /* Muestra la sección correspondiente segun si se selecciono cliente o empleado*/
   if (cuentaCliente) {
     document.getElementById("cliente").style.display = "grid";
-    document.getElementById("empleado").style.display = "none"; 
+    document.getElementById("empleado").style.display = "none";
   } else if (cuentaEmpleado) {
     document.getElementById("empleado").style.display = "grid";
-    document.getElementById("cliente").style.display = "none"; 
+    document.getElementById("cliente").style.display = "none";
   }
 
   /* limpiar el formulario por si se quiere volver a utilizar*/
@@ -617,7 +624,7 @@ function volverSeleccionDatosReserva() {
   /* Mostrar datos reserva*/
   document.getElementById("datosDeReserva").style.display = "grid";
 }
-function enviarReserva(){
+function enviarReserva() {
   /* Recupera los datos desde sessionStorage y campos*/
   const sucursal = sessionStorage.getItem("sucursalSeleccionada");
   const fecha = sessionStorage.getItem("fechaReserva");

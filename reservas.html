@@ -9,48 +9,61 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     </head>
 <body>
-    <header><!--Encabezado de la página-->
-        <div class="headerUbicacion">
-            <select id="selectorSucursales" class="form-select"  onchange="guardarSeleccionSucursal(this.value)">
-                <option value="" selected>Sucursal</option>
-                <option value="1">Parque Chacabuco</option><!--SE TIENE QUE AGREGAR SUCURSAL POR BBDD-->  
-                <option value="2">Sucursal 2</option><!--IHNABILITADA-->
-            </select>
-            <div class="icoRedes">
-                <a target="_blank" href="https://www.instagram.com/ovejanegra.pc/"><img src="img/ico_facebook.png" alt="icono de facebook"></a>
-                <a target="_blank" href="https://www.instagram.com/ovejanegra.pc/"><img src="img/ico_instagram.png" alt="icono de instagram"></a>
-            </div>
+  <header><!--Encabezado de la página-->
+    <div class="headerUbicacion">
+      <select id="selectorSucursales" class="form-select" onchange="guardarSeleccionSucursal(this.value)">
+        <option value="" selected>Sucursal</option>
+        <option value="1">Parque Chacabuco</option><!--SE TIENE QUE AGREGAR SUCURSAL POR BBDD-->
+        <option value="2">Sucursal 2</option><!--IHNABILITADA-->
+      </select>
+      <div class="icoRedes">
+        <a target="_blank" href="https://www.facebook.com/Ovejanegragrupoteatral/"><img src="img/ico_facebook.png"
+            alt="icono de facebook"></a>
+        <a target="_blank" href="https://www.instagram.com/ovejanegra.pc/"><img src="img/ico_instagram.png"
+            alt="icono de instagram"></a>
+      </div>
+    </div>
+    <div class="headerNavegacion">
+      <div class="logoResponsive"><!--Este logo solo se va mostrar cuando se active el botón hamburguesa-->
+        <a href="index.html"><img src="img/logo.png" alt="Logo Oveja Negra"></a>
+      </div>
+      <button class="hamburger" onclick="toggleMenu()">☰</button>
+
+      <div class="navLinks" id="navLinks">
+        <nav><!--Contenedor de la barra de navegación-->
+          <ol class="listNavIzq">
+            <li><a href="menu.html">Menú</a></li>
+            <li><a href="reservas.html">Reservas</a></li>
+            <li><a href="promociones.html">Promos y combos</a></li>
+          </ol>
+        </nav>
+
+        <div class="logoNav">
+          <a href="index.html"><img class="imgLogo" src="img/logo.png" alt="Logo Oveja Negra"></a><!--a href enlaza un link a la imagen-->
         </div>
-        <div class="headerNavegacion">
-            <nav><!--Contenedor de la barra de navegación-->
-                <ol class="listNavIzq">
-                    <li><a href="menu.html">Menú</a></li>
-                    <li><a href="reservas.html">Reservas</a></li>
-                    <li><a href="promociones.html">Promos y combos</a></li>
-                </ol>
-            </nav>
-            <div class="logoNav">
-                <a href="index.html"><img class= "imgLogo" src="img/logo.png" alt="Logo Oveja Negra"></a><!--a href enlaza un link a la imagen-->
-            </div>
-            <nav>
-                <ol class="listNavDer">
-                    <li><a href="tiendaDePuntos.html">Tienda de puntos</a></li>
-                    <li><a href="nosotros.html">Nosotros</a></li>
-                    <li>
-                        <div class="dropdown">
-                            <button id="botonIngresar" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                              Ingresar
-                            </button>
-                            <ul id="contenidoBotonIngresar" class="dropdown-menu">
-                                <li><a class="dropdown-item" href="ingresar.html#cliente">Cliente</a></li>
-                                <li><a class="dropdown-item" href="ingresar.html#empleado">Empleado</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                </ol>
-            </nav>
-        </div>
-    </header>
+
+        <nav>
+          <ol class="listNavDer">
+            <li><a href="tiendaDePuntos.html">Tienda de puntos</a></li>
+            <li><a href="nosotros.html">Nosotros</a></li>
+            <li>
+              <div class="dropdown">
+                <button id="botonIngresar" class="btn btn-secondary dropdown-toggle" type="button"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  Ingresar
+                </button>
+                <ul id="contenidoBotonIngresar" class="dropdown-menu">
+                  <li><a class="dropdown-item" href="ingresar.html#cliente">Cliente</a></li>
+                  <li><a class="dropdown-item" href="ingresar.html#empleado">Empleado</a></li>
+                </ul>
+              </div>
+            </li>
+          </ol>
+        </nav>
+
+      </div>
+    </div>
+  </header>
     <main id="mainReservas">
         <div class="contenedorRealizarReservas">
             <section id="seleccionSucursalDeReserva">
