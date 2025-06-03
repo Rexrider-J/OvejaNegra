@@ -190,16 +190,12 @@ header {
         vertical-align: middle;
     }
 
-    .logoNav {
-        display: none;
-    }
-
     .logoResponsive {
         display: block;
     }
 
     .logoResponsive img {
-        width: 80px;
+        width: 5%;
         margin-right: 10px;
         vertical-align: middle;
     }
@@ -350,6 +346,23 @@ footer {
 }
 
 /*RESPONSIVE*/
+@media (max-width: 1024px) {
+  .footerEnlaces {
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 2%;
+    padding-bottom: 3%;
+  }
+}
+
+@media (max-width: 900px) {
+  .footerEnlaces{
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 3%;
+  }
+}
 @media (max-width: 768px) {
     footer {
         height: auto;
@@ -358,13 +371,12 @@ footer {
 
     .footerEnlaces {
         grid-template-columns: 1fr;
-        padding: 10% 5%;
+        padding: 5% 15px;
         text-align: center;
     }
 
     .footerEnlaces img {
         width: 80px;
-        margin-bottom: 20px;
     }
 
     .listasFooter {
