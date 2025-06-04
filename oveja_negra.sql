@@ -264,12 +264,14 @@ VALUES ("Oveja Negra Chacabuco", "Emilio Mitre 1296", "+54 9 11 2176-9555","disp
 INSERT INTO `clientes` (`nombre`, `apellido`, `dni`, `mail`, `telefono`, `fecha_nacimiento`, `contrasena`) VALUES
 ('Tom', 'Tom', 12345678, 'tom@tom.com', '1122334455', '1990-05-20', '1234'),
 ('Carlos', 'Lopez', 12345679, 'carloslopez@example.com', '1122334455', '1990-05-20', 'carlos123'),
+('Julieta', 'Godoy', 50202020, 'julieta.g@hotmail.com', '1165825496', '1998-02-14', 'juli123'),
 ('Lucía', 'Martinez', 87654321, 'luciamartinez@example.com', '5566778899',  '1988-11-15', 'lucia456');
 
 -- Tabla: empleados
 INSERT INTO `empleados` (`nombre`, `apellido`, `dni`, `mail`, `puesto`, `contrasena`, `id_local`) VALUES
 ('Tom', 'Tom', 12345678, 'tom@tom.com', 'Mozo', '1234', 1),
 ('Pedro', 'Fernandez', 22334455, 'pedrofernandez@example.com', 'Mozo', 'mozo123', 1),
+('Diego', 'De la Vega', 40202020, 'diegodelavega@admin.com', 'Gerente', '123', 1),
 ('Ana', 'Suarez', 99887766, 'anasuarez@example.com', 'Caja', 'asuarez', 2);
 
 -- Tabla: mesas

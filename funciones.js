@@ -71,10 +71,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 /*HEADER*/
 document.addEventListener("DOMContentLoaded", function () {
-    window.toggleMenu = function() {
-        const nav = document.getElementById("navLinks");
-        nav.classList.toggle("active");
-    }
+  window.toggleMenu = function () {
+    const nav = document.getElementById("navLinks");
+    nav.classList.toggle("active");
+  }
 });
 /*FOOTER*/
 function crearDropdown(id, label, opciones) {
@@ -481,10 +481,9 @@ function submitAccederEmpleado(event) {
         const datos = {}; // usamos un objeto para guardar los pares clave:valor
 
         for (let i = 1; i < partes.length; i++) { //cargamos las partes en los datos, excluyendo el ✅
-          const [clave, valor] = partes[i].split("=");
-          datos[clave] = valor;
+          const [clave, valor] = partes[i].split("="); // las separamos en el "="
+          datos[clave] = valor; // y las asignamos
         }
-        console.log(datos);
 
         /*Creamos una variable para indicar que el usuario que ingreso es un empleado*/
         sessionStorage.setItem("usuarioTipo", "empleado");
@@ -662,4 +661,15 @@ function enviarReserva() {
 
   /* Mostrar datos reserva*/
   document.getElementById("finalizoReserva").style.display = "grid";
+}
+function cargarMenu() {
+  fetch("obtener_menu.php")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("list-modificarMenu").innerHTML = data;
+    })
+    .catch(error => {
+      console.error("Error al cargar menú:", error);
+      document.getElementById("list-modificarMenu").innerHTML = "<p>Error al cargar el menú.</p>";
+    });
 }
