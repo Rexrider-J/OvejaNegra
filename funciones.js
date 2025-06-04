@@ -1,4 +1,29 @@
 /*TODAS LAS PAGINAS*/
+document.addEventListener("DOMContentLoaded", () => {
+  const tipoUsuario = sessionStorage.getItem("usuarioTipo");
+
+  const clienteSection = document.getElementById("cliente-section");
+  const empleadoSection = document.getElementById("empleado-section");
+  const avisoLogin = document.getElementById("aviso-login");
+
+  if (!clienteSection || !empleadoSection || !avisoLogin) {
+    console.error("No se encontraron las secciones necesarias.");
+    return;
+  }
+
+  if (tipoUsuario === "cliente") {
+    clienteSection.style.display = "grid";
+    empleadoSection.style.display = "none";
+    avisoLogin.style.display = "none";
+  } else if (tipoUsuario === "empleado") {
+    clienteSection.style.display = "none";
+    empleadoSection.style.display = "grid";
+    avisoLogin.style.display = "none";
+  } else {
+    alert("Debe iniciar sesión para realizar una reserva.");
+    window.location.href = "ingresar.html#cliente";
+  }
+});
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
   const hash = window.location.hash;
