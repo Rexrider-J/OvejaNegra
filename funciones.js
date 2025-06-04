@@ -649,3 +649,14 @@ function enviarReserva() {
   /* Mostrar datos reserva*/
   document.getElementById("finalizoReserva").style.display = "grid";
 }
+function cargarMenu() {
+  fetch("obtener_menu.php")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("list-modificarMenu").innerHTML = data;
+    })
+    .catch(error => {
+      console.error("Error al cargar menú:", error);
+      document.getElementById("list-modificarMenu").innerHTML = "<p>Error al cargar el menú.</p>";
+    });
+}

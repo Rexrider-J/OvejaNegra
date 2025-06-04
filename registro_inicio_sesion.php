@@ -107,10 +107,10 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
 
     if ($res->num_rows === 1) { // verifico que se encontro el empleado 
         $empleado = $res->fetch_assoc();
-        
+
         /* $_SESSION['id_empleado'] = $empleado['id_empleado'];// guardo datos del empleado en la variable global SESSION
         $_SESSION['nombre'] = $empleado['nombre']; */
-        
+
         echo "✅"
             . "|id_empleado=" . $empleado['id_empleado']
             . "|nombre=" . $empleado['nombre']
