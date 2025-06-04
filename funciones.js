@@ -1,61 +1,4 @@
 /*TODAS LAS PAGINAS*/
-/*Muestra la pagina reservas de forma distinta segun si es cliente, empleado o no usuario*/
-document.addEventListener("DOMContentLoaded", () => {
-  const tipoUsuario = sessionStorage.getItem("usuarioTipo");
-
-  const clienteSection = document.getElementById("cliente-section");
-  const empleadoSection = document.getElementById("empleado-section");
-
-  if (!clienteSection || !empleadoSection) {
-    console.error("No se encontraron las secciones necesarias.");
-    return;
-  }
-
-  if (tipoUsuario === "cliente") {
-    clienteSection.style.display = "grid";
-    empleadoSection.style.display = "none";
-  } else if (tipoUsuario === "empleado") {
-    clienteSection.style.display = "none";
-    empleadoSection.style.display = "grid";
-  } else {
-    alert("Debe iniciar sesión para realizar una reserva.");
-    window.location.href = "ingresar.html#cliente";
-  }
-});
-/*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
-window.addEventListener("DOMContentLoaded", function () {
-  const hash = window.location.hash;
-
-  const divCliente = document.getElementById("cliente");
-  const divEmpleado = document.getElementById("empleado");
-
-  /* Oculta ambos al principio*/
-  if (divCliente) divCliente.style.display = "none";
-  if (divEmpleado) divEmpleado.style.display = "none";
-
-  if (hash === "#cliente" && divCliente) {
-    divCliente.style.display = "grid";
-  } else if (hash === "#empleado" && divEmpleado) {
-    divEmpleado.style.display = "grid";
-  }
-});
-/*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
-window.addEventListener("DOMContentLoaded", function () {
-  const hash = window.location.hash;
-
-  const divCliente = document.getElementById("cliente");
-  const divEmpleado = document.getElementById("empleado");
-
-  /* Oculta ambos al principio*/
-  if (divCliente) divCliente.style.display = "none";
-  if (divEmpleado) divEmpleado.style.display = "none";
-
-  if (hash === "#cliente" && divCliente) {
-    divCliente.style.display = "grid";
-  } else if (hash === "#empleado" && divEmpleado) {
-    divEmpleado.style.display = "grid";
-  }
-});
 /*Cambio el dropdown del header segun si ingreso cliente, empleado y la funcion del empleado*/
 document.addEventListener("DOMContentLoaded", function () {
   const tipoUsuario = sessionStorage.getItem("usuarioTipo");
@@ -71,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="/proyecto_oveja_negra/OvejaNegra/miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="/proyecto_oveja_negra/OvejaNegra/miPerfil.html#list-misReservas">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="OvejaNegra/miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="OvejaNegra/miPerfil.html#list-misReservas">Mis Reservas</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
@@ -87,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Si nadie inició sesión, dejarlo como estaba por defecto
     boton.textContent = "Ingresar";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="ingresar.html#cliente">Cliente</a></li>
-      <li><a class="dropdown-item" href="ingresar.html#empleado">Empleado</a></li>
+      <li><a class="dropdown-item" href="ingresar.html#cliente" onclick="mostrarFormularioIngresar('botonCliente')">Cliente</a></li>
+      <li><a class="dropdown-item" href="ingresar.html#empleado" onclick="mostrarFormularioIngresar('botonEmpleado')">Empleado</a></li>
     `;
   }
 });
@@ -165,7 +108,29 @@ function actualizarFooter() {
     dropdowns.forEach(dd => dd.style.display = 'none');
   }
 }
+/*Muestra la pagina reservas de forma distinta segun si es cliente, empleado o no usuario*/
+document.addEventListener("DOMContentLoaded", () => {
+  const tipoUsuario = sessionStorage.getItem("usuarioTipo");
 
+  const clienteSection = document.getElementById("cliente-section");
+  const empleadoSection = document.getElementById("empleado-section");
+
+  if (!clienteSection || !empleadoSection) {
+    console.error("No se encontraron las secciones necesarias.");
+    return;
+  }
+
+  if (tipoUsuario === "cliente") {
+    clienteSection.style.display = "grid";
+    empleadoSection.style.display = "none";
+  } else if (tipoUsuario === "empleado") {
+    clienteSection.style.display = "none";
+    empleadoSection.style.display = "grid";
+  } else {
+    alert("Debe iniciar sesión para realizar una reserva.");
+    window.location.href = "ingresar.html#cliente";
+  }
+});
 /*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
 function mostrarDatosDeReserva() {
   const sucursalSelect = document.getElementById("dropdownReservas");
@@ -328,17 +293,34 @@ function validateEmail(email) {
 }
 /*INGRESAR, REGISTRARSE, EMPLEADO*/
 /*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
-function mostrarFormulario(tipo) {
-  document.getElementById("cliente").style.display = "none";
-  document.getElementById("empleado").style.display = "none";
-  document.getElementById("olvideContrasenia").style.display = "none";
-
-  if (tipo === "botonCliente") {
-    document.getElementById("cliente").style.display = "grid";
-  } else if (tipo === "botonEmpleado") {
-    document.getElementById("empleado").style.display = "grid";
-  }
+function mostrarFormularioIngresar(tipo) {
+    document.getElementById("cliente").style.display = "none";
+    document.getElementById("empleado").style.display = "none";
+    document.getElementById("olvideContrasenia").style.display = "none";
+  
+    if (tipo === "botonCliente") {
+      document.getElementById("cliente").style.display = "grid";
+    } else if (tipo === "botonEmpleado") {
+      document.getElementById("empleado").style.display = "grid";
+    }
 }
+/*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
+window.addEventListener("DOMContentLoaded", function () {
+  const hash = window.location.hash;
+
+  const divCliente = document.getElementById("cliente");
+  const divEmpleado = document.getElementById("empleado");
+
+  /* Oculta ambos al principio*/
+  if (divCliente) divCliente.style.display = "none";
+  if (divEmpleado) divEmpleado.style.display = "none";
+
+  if (hash === "#cliente" && divCliente) {
+    divCliente.style.display = "grid";
+  } else if (hash === "#empleado" && divEmpleado) {
+    divEmpleado.style.display = "grid";
+  }
+});
 /*Acceder a olvideContrasenia desde login cliente*/
 document.getElementById("link-olvide-cliente").addEventListener("click", function (e) {
   e.preventDefault();

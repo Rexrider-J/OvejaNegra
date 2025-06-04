@@ -51,10 +51,10 @@
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Ingresar
                 </button>
-                <ul id="contenidoBotonIngresar" class="dropdown-menu">
-                    <li><a class="dropdown-item" href="ingresar.html#cliente">Cliente</a></li>
-                    <li><a class="dropdown-item" href="ingresar.html#empleado">Empleado</a></li>
-                </ul>
+                    <ul id="contenidoBotonIngresar" class="dropdown-menu">
+                        <li><a class="dropdown-item" onclick="mostrarFormularioIngresar('botonCliente')">Cliente</a></li>
+                        <li><a class="dropdown-item" onclick="mostrarFormularioIngresar('botonEmpleado')">Empleado</a></li>
+                    </ul>
                 </div>
             </li>
             </ol>
@@ -185,12 +185,12 @@
               </ol>
               <ol>
                   <h5>Cliente</h5>
-                  <li><a class="dropdown-item" onclick="mostrarFormulario('botonCliente')">Ingresar</a></li>
+                  <li><a class="dropdown-item">Ingresar</a></li>
                   <li><a href="">Mis reservas</a></li>
               </ol>
               <ol>
                   <h5>Empleado</h5>
-                  <li><a class="dropdown-item" onclick="mostrarFormulario('botonEmpleado')">Ingresar</a></li>
+                  <li><a class="dropdown-item">Ingresar</a></li>
                   <li><a href="">Mis reservas</a></li>
               </ol>
               <ol>
