@@ -4,9 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const clienteSection = document.getElementById("cliente-section");
   const empleadoSection = document.getElementById("empleado-section");
-  const avisoLogin = document.getElementById("aviso-login");
 
-  if (!clienteSection || !empleadoSection || !avisoLogin) {
+  if (!clienteSection || !empleadoSection) {
     console.error("No se encontraron las secciones necesarias.");
     return;
   }
@@ -14,11 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (tipoUsuario === "cliente") {
     clienteSection.style.display = "grid";
     empleadoSection.style.display = "none";
-    avisoLogin.style.display = "none";
   } else if (tipoUsuario === "empleado") {
     clienteSection.style.display = "none";
     empleadoSection.style.display = "grid";
-    avisoLogin.style.display = "none";
   } else {
     alert("Debe iniciar sesión para realizar una reserva.");
     window.location.href = "ingresar.html#cliente";
