@@ -1,4 +1,5 @@
 /*TODAS LAS PAGINAS*/
+/*Muestra la pagina reservas de forma distinta segun si es cliente, empleado o no usuario*/
 document.addEventListener("DOMContentLoaded", () => {
   const tipoUsuario = sessionStorage.getItem("usuarioTipo");
 
