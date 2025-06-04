@@ -122,6 +122,7 @@ header {
 
 .imgLogo {
     width: 40%;
+    border-radius: 50%;
 }
 .logoResponsive {
   display: none;
@@ -195,7 +196,7 @@ header {
     }
 
     .logoResponsive img {
-        width: 5%;
+        width: 25%;
         margin-right: 10px;
         vertical-align: middle;
     }
@@ -217,7 +218,7 @@ header {
 
     .navLinks.active {
         display: flex;
-        background-color: rgb(111, 202, 191);
+        background-color: rgba(111, 202, 191, 0.808);
     }
 
     .navLinks ol li {
@@ -252,7 +253,7 @@ header {
     }
 
     .imgLogo {
-        width: 100px;
+        display: none;
     }
 }
 
@@ -376,7 +377,8 @@ footer {
     }
 
     .footerEnlaces img {
-        width: 80px;
+        width: 50px;
+        margin:0;
     }
 
     .listasFooter {
@@ -443,7 +445,7 @@ footer {
         border-radius: 4px;
         display: none;
         /* se mostrará solo en mobile */
-        font-size: 22px;
+        font-size: 18px;
     }
 }
 
@@ -515,25 +517,25 @@ main {
 }
 
 /*MENU*/
-/*MAIN*/
-#mainMenu {
+/*MAIN*//*BASE DE MIPERFIL*/
+#mainMenu, #mainPerfil {
     padding: 0 15%;
     display: inline;
 }
 
-#mainMenu .row {
+#mainMenu .row, #mainPerfil .row {
     width: 100%;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
 }
 
-#mainMenu .col-4 {
+#mainMenu .col-4, #mainPerfil .col-4{
     width: 12%;
     font-size: 1.2rem;
 }
 
-#mainMenu .col-8 {
+#mainMenu .col-8, #mainPerfil .col-8{
     width: 76%;
     margin: 0;
 }
@@ -583,23 +585,23 @@ main {
 
 /* Tablets */
 @media (max-width: 992px) {
-    #mainMenu {
+    #mainMenu, #mainPerfil {
         padding: 0 5%;
     }
 
     #mainMenu .col-4,
-    #mainMenu .col-8 {
+    #mainMenu .col-8, #mainPerfil .col-4,#mainPerfil .col-8{
         width: 100%;
     }
 
-    #mainMenu .row {
+    #mainMenu .row, #mainPerfil .row{
         flex-direction: column;
     }
 }
 
 /* Teléfonos */
 @media (max-width: 576px) {
-    #mainMenu {
+    #mainMenu, #mainPerfil {
         padding: 0 1rem;
     }
 
@@ -1363,35 +1365,4 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /*MI PERFIL*/
-#miPerfil {
-    width: 100%;
-    min-height: 100vh;
-    /* ocupa toda la pantalla al menos */
-    align-items: center;
-    text-align: center;
 
-    margin: 0;
-    padding: 0;
-    background-image: url("img/Fotos/Reservas/fondoReservas.png");
-    background-size: cover;
-}
-
-#miPerfil .lista-contenido {
-    width: 70%;
-    margin: 3% auto;
-    padding: 2rem 3rem;
-    background: rgb(255, 255, 255);
-    /* blanco translúcido */
-    border-radius: 10px;
-
-    display: flex;
-    gap: 2rem;
-    padding: 2rem;
-    justify-content: center;
-    align-items: center;
-
-    font-family: "Special Gothic Condensed One", sans-serif;
-    font-weight: 400;
-    font-size: 18px;
-    color: #4d2513;
-}
