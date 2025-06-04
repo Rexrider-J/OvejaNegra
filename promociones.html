@@ -64,78 +64,82 @@
     </div>
   </header>
     <main id="mainPromos">
-        <div class="navCategoria">
-            <ol class="listCategorias">
-                <li><a href="#promos">Promos</a></li>
-                <li><a href="#Brunch">Brunch</a></li>
-            </ol>
+      <div class="row">
+        <div class="col-4">
+          <div class="list-group" id="list-tab" role="tablist">
+            <a class="list-group-item list-group-item-action active" id="list-promos-list" data-bs-toggle="list" href="#list-promos" role="tab" aria-controls="list-promos">Promos</a>
+            <a class="list-group-item list-group-item-action" id="list-combos-list" data-bs-toggle="list" href="#list-combos" role="tab" aria-controls="list-combos">Combos</a>
+          </div>
         </div>
-        <div class="elMenu">
-            <section class="seccion">
-                <div class="tituloCategoria">
-                    <h2 id="Promos">Promos</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/cortadoJarrito.png" alt="foto cortado en jarrito + 1 medialuna">
-                        <figcaption>Cortado en jarrito + 1 medialuna</figcaption>
-                        <figcaption>$3.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/cortadoJarrito2Medialunas.jpeg" alt="foto cortado en jarrito + 2 medialuna">
-                        <figcaption>Cortado en jarrito + 2 medialunas</figcaption>
-                        <figcaption>$4.800</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/cafeConLeche2Medialunas.jpeg" alt="foto cafe con leche + 2 medialunas">
-                        <figcaption>Café con leche + 2 medialunas</figcaption>
-                        <figcaption>$5.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/cafeConLecheXL2Medialunas.jpeg" alt="foto café con leche XL + 2 medialunas">
-                        <figcaption>Café con leche XL + 2 medialunas</figcaption>
-                        <figcaption>$6.800</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/cafeConLecheDonut.jpeg" alt="foto cafe con leche + donut">
-                        <figcaption>Café con leche + donut</figcaption>
-                        <figcaption>$4.600</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/cafeConLecheXL.jpeg" alt="foto cafe con leche xl">
-                        <figcaption>Café con leche XL</figcaption>
-                        <figcaption>$4.700</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/CortadBudinLimon.jpeg" alt="foto cortado + budin de limón">
-                        <figcaption>Cortado + budin de limón</figcaption>
-                        <figcaption>$4.400</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Promos/jugoNaranjaTostado.jpeg" alt="foto jugo de naranja con tostado">
-                        <figcaption>Jugo de naranja + 1/2 tostado de miga</figcaption>
-                        <figcaption>$3.900</figcaption>
-                    </figure>
-                </div>
-            </section>
-            <section id="Brunch">
-                <div class="tituloCategoria">
-                    <h2>Brunch</h2>
-                </div>
-                <div class="listProductos">
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Brunch/brunchOvejaNegra.jpeg" alt="foto medialuna">
-                        <figcaption>Brunch Oveja Negra: Infusión(çafé, café con leche,té), jugo de naranja, huevos revueltos,tostadas con queso en pan de campo.</figcaption>
-                        <figcaption>$14.500</figcaption>
-                    </figure>
-                    <figure>
-                        <img src="img/Fotos/Promos y combos/Brunch/brunchWester.jpeg" alt="foto medialuna con dulce de leche">
-                        <figcaption>Brunch Western: Infusión(café, café con leche, té), juego de naranja, huevos revueltos, tostado de jamon y queso en pan de campo.</figcaption>
-                        <figcaption>$14.500</figcaption>
-                    </figure>
-                </div>
-            </section>
+        <div class="col-8">
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="list-promos" role="tabpanel" aria-labelledby="list-promos-list">
+              <div class="tituloCategoria">
+                <h2 id="Promos">Promos</h2>
+              </div>
+              <div class="listProductos">
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/cortadoJarrito.png" alt="foto cortado en jarrito + 1 medialuna">
+                  <figcaption>Cortado en jarrito + 1 medialuna</figcaption>
+                  <figcaption>$3.400</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/cortadoJarrito2Medialunas.jpeg" alt="foto cortado en jarrito + 2 medialuna">
+                  <figcaption>Cortado en jarrito + 2 medialunas</figcaption>
+                  <figcaption>$4.800</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/cafeConLeche2Medialunas.jpeg" alt="foto cafe con leche + 2 medialunas">
+                  <figcaption>Café con leche + 2 medialunas</figcaption>
+                  <figcaption>$5.500</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/cafeConLecheXL2Medialunas.jpeg" alt="foto café con leche XL + 2 medialunas">
+                  <figcaption>Café con leche XL + 2 medialunas</figcaption>
+                  <figcaption>$6.800</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/cafeConLecheDonut.jpeg" alt="foto cafe con leche + donut">
+                  <figcaption>Café con leche + donut</figcaption>
+                  <figcaption>$4.600</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/cafeConLecheXL.jpeg" alt="foto cafe con leche xl">
+                  <figcaption>Café con leche XL</figcaption>
+                  <figcaption>$4.700</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/CortadBudinLimon.jpeg" alt="foto cortado + budin de limón">
+                  <figcaption>Cortado + budin de limón</figcaption>
+                  <figcaption>$4.400</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Promos/jugoNaranjaTostado.jpeg" alt="foto jugo de naranja con tostado">
+                  <figcaption>Jugo de naranja + 1/2 tostado de miga</figcaption>
+                  <figcaption>$3.900</figcaption>
+                </figure>
+              </div>
+            </div>
+            <div class="tab-pane fade" id="list-combos" role="tabpanel" aria-labelledby="list-combos-list">
+              <div class="tituloCategoria">
+                <h2>Brunch</h2>
+              </div>
+              <div class="listProductos">
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Brunch/brunchOvejaNegra.jpeg" alt="foto medialuna">
+                  <figcaption>Brunch Oveja Negra: Infusión(çafé, café con leche,té), jugo de naranja, huevos revueltos,tostadas con queso en pan de campo.</figcaption>
+                  <figcaption>$14.500</figcaption>
+                </figure>
+                <figure>
+                  <img src="img/Fotos/Promos y combos/Brunch/brunchWester.jpeg" alt="foto medialuna con dulce de leche">
+                  <figcaption>Brunch Western: Infusión(café, café con leche, té), juego de naranja, huevos revueltos, tostado de jamon y queso en pan de campo.</figcaption>
+                  <figcaption>$14.500</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </main>
     <footer>
         <div class="footerEnlaces">

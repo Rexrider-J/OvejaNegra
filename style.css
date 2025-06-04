@@ -516,26 +516,26 @@ main {
     /* un poco de padding para no pegar texto a los bordes */
 }
 
-/*MENU*/
-/*MAIN*//*BASE DE MIPERFIL*/
-#mainMenu, #mainPerfil {
+/*MENU*//*PROMOS Y COMBOS*//*BASE DE MIPERFIL*/
+/*MAIN*/
+#mainMenu, #mainPerfil, #mainPromos {
     padding: 0 15%;
     display: inline;
 }
 
-#mainMenu .row, #mainPerfil .row {
+#mainMenu .row, #mainPerfil .row, #mainPromos .row {
     width: 100%;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
 }
 
-#mainMenu .col-4, #mainPerfil .col-4{
+#mainMenu .col-4, #mainPerfil .col-4, #mainPromos .col-4{
     width: 12%;
     font-size: 1.2rem;
 }
 
-#mainMenu .col-8, #mainPerfil .col-8{
+#mainMenu .col-8, #mainPerfil .col-8, #mainPromos .col-8{
     width: 76%;
     margin: 0;
 }
@@ -545,7 +545,7 @@ main {
     border-color: #4cbfe6 !important;
 }
 
-#mainMenu .tituloCategoria {
+#mainMenu .tituloCategoria, #mainPromos .tituloCategoria {
     width: 100%;
     border-bottom: 1px solid #000000;
     border-top: 1px solid #000000;
@@ -559,7 +559,7 @@ main {
     margin: 0;
 }
 
-#mainMenu .listProductos {
+#mainMenu .listProductos, #mainPromos .listProductos {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -567,7 +567,7 @@ main {
     padding: 1rem;
 }
 
-#mainMenu figure {
+#mainMenu figure, #mainPromos figure {
     margin: 0;
     width: 180px;
     align-content: center;
@@ -585,124 +585,39 @@ main {
 
 /* Tablets */
 @media (max-width: 992px) {
-    #mainMenu, #mainPerfil {
+    #mainMenu, #mainPerfil, #mainPromos {
         padding: 0 5%;
     }
 
-    #mainMenu .col-4,
-    #mainMenu .col-8, #mainPerfil .col-4,#mainPerfil .col-8{
+    #mainMenu .col-4,#mainMenu .col-8, 
+    #mainPerfil .col-4,#mainPerfil .col-8,
+    #mainPromos .col-4, #mainPromos .col-8{
         width: 100%;
     }
 
-    #mainMenu .row, #mainPerfil .row{
+    #mainMenu .row, #mainPerfil .row, #mainPromos .row{
         flex-direction: column;
     }
 }
 
 /* Teléfonos */
 @media (max-width: 576px) {
-    #mainMenu, #mainPerfil {
+    #mainMenu, #mainPerfil, #mainPromos {
         padding: 0 1rem;
     }
 
-    #mainMenu .listProductos {
+    #mainMenu .listProductos, #mainPromos .listProductos {
         gap: 1rem;
     }
 
-    #mainMenu figure {
+    #mainMenu figure, #mainPromos figure {
         width: 100%;
     }
 
-    #mainMenu .listProductos img {
+    #mainMenu .listProductos img, #mainPromos .listProductos img {
         width: 120px;
         height: 120px;
     }
-}
-
-/*PROMOS Y COMBOS*/
-#mainPromos {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    /* crea la grilla */
-    grid-template-rows: 70px auto;
-    /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
-    align-items: center;
-    /* alinea el centro en eje Y (vertical) */
-    text-align: center;
-    /* alinea el centro en eje X el texto */
-    font-family: "Special Gothic Condensed One", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-}
-
-#mainPromos .navCategoria {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    align-content: center;
-    background-image: url("img/turquesa.png");
-    background-size: cover;
-}
-
-#mainPromos .listCategorias {
-    list-style: none;
-    /*Para que no aparezca la numeración, solo el texto ordenado*/
-    display: grid;
-    /*Tambien se despliega como grilla dentro de la grilla*/
-    grid-template-rows: 100%;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    /*Dentro del espacio donde está la lista, cada fr es un elemento de la lista y 1 en este caso, es el espacio que ocupará cada elemento*/
-    margin: 0;
-    padding: 0;
-}
-
-#mainPromos .listCategorias {
-    grid-template-columns: 1fr 1fr;
-}
-
-#mainPromos .elMenu {
-    width: 100%;
-    padding-left: 15%;
-    padding-right: 15%;
-    display: grid;
-    grid-template-rows: repeat(12, auto);
-    /* 12 secciones iguales */
-    grid-template-columns: 100%;
-    align-items: center;
-    justify-items: center;
-}
-
-section {
-    width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-template-columns: 100%;
-    align-content: center;
-    text-align: center;
-}
-
-#mainPromos .listProductos {
-    max-width: 100%;
-    height: auto;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    /* 5 columnas fijas */
-    align-content: center;
-    text-align: center;
-    padding: 0;
-}
-
-.tituloCategoria {
-    text-align: center;
-    align-content: center;
-    border-bottom: 1px solid #000000;
-    border-top: 1px solid #000000;
-    font-size: 20px;
-    margin: 2rem;
 }
 
 /*NOSOTROS*/
