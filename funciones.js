@@ -1,5 +1,21 @@
-console.log("funciones.js se cargó correctamente");
 /*TODAS LAS PAGINAS*/
+/*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
+window.addEventListener("DOMContentLoaded", function () {
+  const hash = window.location.hash;
+
+  const divCliente = document.getElementById("cliente");
+  const divEmpleado = document.getElementById("empleado");
+
+  /* Oculta ambos al principio*/
+  if (divCliente) divCliente.style.display = "none";
+  if (divEmpleado) divEmpleado.style.display = "none";
+
+  if (hash === "#cliente" && divCliente) {
+    divCliente.style.display = "grid";
+  } else if (hash === "#empleado" && divEmpleado) {
+    divEmpleado.style.display = "grid";
+  }
+});
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
   const hash = window.location.hash;
@@ -127,9 +143,6 @@ function actualizarFooter() {
   }
 }
 
-window.addEventListener('load', actualizarFooter);
-window.addEventListener('resize', actualizarFooter);
-/*RESERVAS*/
 /*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
 function mostrarDatosDeReserva() {
   const sucursalSelect = document.getElementById("dropdownReservas");
