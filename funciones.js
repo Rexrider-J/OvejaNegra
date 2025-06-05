@@ -14,14 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="/OvejaNegra/miPerfil.html">Datos personales</a></li>
       <li><a class="dropdown-item" href="miPerfil.html#list-misReservas">Mis Reservas</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
     boton.textContent = "Empleado";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="/OvejaNegra/miPerfil.html">Datos personales</a></li>
       <li><a class="dropdown-item" href="panel-empleado.html">Modificar menu</a></li>
       <li><a class="dropdown-item" href="panel-empleado.html">Administrador</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 /*HEADER*/
+/*Hace que el nav sea responsive con un boton hamburguesa*/
 document.addEventListener("DOMContentLoaded", function () {
   window.toggleMenu = function () {
     const nav = document.getElementById("navLinks");
