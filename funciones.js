@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="OvejaNegra/miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="OvejaNegra/miPerfil.html#list-misReservas">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="/OvejaNegra/miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="/OvejaNegra/miPerfil.html#list-misReservas">Mis Reservas</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
