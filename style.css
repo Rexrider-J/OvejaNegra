@@ -624,17 +624,13 @@ main {
 /*MAIN*/
 .mainNosotros {
     width: 100%;
-    height: 2400px;
     margin: 0;
     padding: 0;
     display: grid;
-    /* crea la grilla */
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
     grid-template-columns: 100%;
     align-items: center;
-    /* alinea el centro en eje Y (vertical) */
     text-align: center;
-    /* alinea el centro en eje X el texto */
     font-family: "Special Gothic Condensed One", sans-serif;
     font-weight: 400;
     font-style: normal;
@@ -644,35 +640,29 @@ main {
 .mision,
 .vision {
     width: 100%;
-    height: 800px;
     display: grid;
-    /* crea la grilla */
-    grid-template-rows: 100%;
-    /* crea 2 filas de 70px y 200px respectivamente. El "ALTO"*/
     grid-template-columns: 1fr 1fr;
-    /* creo 3 columnas CON DIFERENTE "ANCHO". 20% para el logo, 30% para el titulo, 50% para la lista*/
     align-items: center;
-    /* alinea el centro en eje Y (vertical) */
     text-align: justify;
     font-size: 25px;
+    box-sizing: border-box;
 }
 
 .imagenNosotros {
-    width: 953px;
-    height: 800px;
+    width: 100%;
+    height: auto;
+    max-height: 800px;
+    object-fit: cover;
 }
 
 .textoPresentacion {
-    margin-left: 10%;
-    margin-right: 10%;
-    margin-top: 5%;
-    margin-bottom: 5%;
+    margin: 5%;
 }
 
 .subtitulosNosotros {
     text-align: center;
-    font-size: 100px;
-    margin: 0;
+    font-size: 60px;
+    margin: 0 0 20px;
 }
 
 .mision {
@@ -680,7 +670,28 @@ main {
     background-size: cover;
     color: white;
 }
+/*RESPONSIVE*/
+@media (max-width: 768px) {
+    .presentacion,
+    .mision,
+    .vision {
+        grid-template-columns: 1fr;
+        text-align: center;
+        font-size: 18px;
+    }
 
+    .subtitulosNosotros {
+        font-size: 40px;
+    }
+
+    .textoPresentacion {
+        margin: 5% 10%;
+    }
+
+    .imagenNosotros {
+        max-height: 400px;
+    }
+}
 /*INGRESO*/
 /*MAIN*/
 .mainIngreso {

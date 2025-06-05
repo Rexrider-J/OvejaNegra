@@ -360,10 +360,7 @@ function submitRegistrar(event) {
     return false;
   }
 
-  /*Si el formato es valido aparece este cartel*/
-  alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
-
-  //verificamos que existan todos los campos
+  /*verificamos que existan todos los campos*/
   if (!nombre || !apellido || !dni || !fechaNacimiento || !telefono || !email || !contraseña) {
     alert("Por favor, completá todos los campos.");
     return false;
@@ -387,6 +384,8 @@ function submitRegistrar(event) {
     .then(data => {
       alert(data);// mostramos lo que responde el servidor
       if (data.includes("✅")) {// nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
+        /*Si el formato es valido aparece este cartel*/
+        alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
         window.location.reload(); // recargamos la pagina
       }
     })
