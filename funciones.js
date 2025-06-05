@@ -14,14 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="/OvejaNegra/miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="/OvejaNegra/miPerfil.html#list-misReservas">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="../miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="../OvejaNegra/miPerfil.html#list-misReservas">Mis Reservas</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
     boton.textContent = "Empleado";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="/proyecto_oveja_negra/OvejaNegra/miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="../proyecto_oveja_negra/OvejaNegra/miPerfil.html">Datos personales</a></li>
       <li><a class="dropdown-item" href="panel-empleado.html">Modificar menu</a></li>
       <li><a class="dropdown-item" href="panel-empleado.html">Administrador</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
@@ -500,6 +500,8 @@ function submitAccederEmpleado(event) {
         sessionStorage.setItem("idLocalEmpleado", datos.id_local);
 
         window.location.href = "index.html"; // O redirigir a un panel de empleado
+      }else{
+        alert("Uno o más datos son incorrectos.");
       }
     })
     .catch(error => {
