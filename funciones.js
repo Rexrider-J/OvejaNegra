@@ -155,6 +155,33 @@ function mostrarDatosDeReserva() {
   document.getElementById("datosDeReserva").style.display = "grid";
 }
 
+let locales = [];
+
+function mostrarTodasSucursales() {
+  fetch('obtener_locales.php')
+    .then(response => response.text())
+    .then(text => {
+      
+      const lineas = text.trim().split("\n"); // limpia espacios y divide por líneas
+
+      
+      locales = lineas.map(linea => { // recorremos cada línea
+        const campos = linea.split(";"); // divide por puntoycoma
+        const objeto = {};
+
+        campos.forEach(campo => {
+          if (campo) {
+            const [clave, valor] = campo.split("="); // las separamos en el "="
+            objeto[clave] = valor; // y las asignamos
+          }
+        });
+
+        return objeto;
+      });
+    })
+    .catch(error => console.error("Error:", error));
+}
+
 /* Guarda la sucursal seleccionada*/
 function guardarSeleccionSucursal(valor) {
   sessionStorage.setItem("sucursalSeleccionada", valor);
