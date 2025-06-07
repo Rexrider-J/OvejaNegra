@@ -14,17 +14,17 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="/miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="/miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
     boton.textContent = "Empleado";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="/miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="/miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
-      <li><a class="dropdown-item" href="/miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
-      <li><a class="dropdown-item" href="/miPerfil.html#list-baseDatos-list">Administrador</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html#list-baseDatos-list">Administrador</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
     `;
   } else {
@@ -34,6 +34,23 @@ document.addEventListener("DOMContentLoaded", function () {
       <li><a class="dropdown-item" href="ingresar.html#cliente" onclick="mostrarFormularioIngresar('botonCliente')">Cliente</a></li>
       <li><a class="dropdown-item" href="ingresar.html#empleado" onclick="mostrarFormularioIngresar('botonEmpleado')">Empleado</a></li>
     `;
+  }
+});
+/*Simula un click en las opciones del dropdown de miPerfil*/
+document.addEventListener("DOMContentLoaded", function () {
+  const hash = window.location.hash;
+  const validHashes = [
+    "#list-misReservas-list",
+    "#list-modificarMenu-list",
+    "#list-baseDatos-list"
+  ];
+
+  if (validHashes.includes(hash)) {
+    const targetTab = document.querySelector(`a${hash}`);
+    if (targetTab) {
+      const tab = new bootstrap.Tab(targetTab);
+      tab.show();
+    }
   }
 });
 /*HEADER*/
