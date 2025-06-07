@@ -13,7 +13,7 @@ if ($resultado->num_rows > 0) {
         echo "estado={$local['estado_disponibilidad']}\n";
     }
 } else {
-    echo "sin_datos";
+    echo "nombre=sin locales";
 }
 
 $conexion->close();

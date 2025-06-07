@@ -696,14 +696,72 @@ function enviarReserva() {
   /* Mostrar datos reserva*/
   document.getElementById("finalizoReserva").style.display = "grid";
 }
-function cargarMenu() {
-  fetch("obtener_menu.php")
-    .then(response => response.text())
+
+function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
+  fetch("obtener_menu.php") // solicita ese archivo, que carga el HTML del menú
+    .then(res => res.text()) // convierte la respuesta en texto
     .then(data => {
-      document.getElementById("list-modificarMenu").innerHTML = data;
-    })
-    .catch(error => {
-      console.error("Error al cargar menú:", error);
-      document.getElementById("list-modificarMenu").innerHTML = "<p>Error al cargar el menú.</p>";
+      document.getElementById("list-modificarMenu").innerHTML = data; //lo inserta en el contenedor con ese id
+      inicializarEventosMenu(); // y llama a la funcion que agrega los listeners a los elementos recien insertados
     });
+}
+
+function filtrarMenu() {
+  const input = document.getElementById("busqueda").value.toLowerCase(); //toma y combierte el texto en minusculas
+  const items = document.getElementsByClassName("menu-item"); //toma todos los elementos del menu
+  for (let item of items) { // recoremos los items
+    const texto = [
+      item.querySelector('input[name="nombre"]').value,
+      item.querySelector('input[name="precio"]').value,
+      item.querySelector('input[name="categoria"]').value,
+      item.querySelector('textarea[name="descripcion"]').value
+    ].join(" ").toLowerCase(); //junta los campos del item en una sola cadena
+    if (texto.includes(input)) {// condicional para ver si el texto contiene la busqueda
+      item.style.display = ""; // si lo tiene, lo muestra
+    } else {
+      item.style.display = "none"; // si no, lo oculta
+    }
+
+  }
+}
+
+function inicializarEventosMenu() {
+  const formAgregar = document.getElementById("form-agregar-menu"); // toma el formulario de agregar item
+  if (formAgregar) { // condicional para ver si existe el form
+    formAgregar.addEventListener("submit", e => { // espera que se apriete el boton de agregar
+      e.preventDefault(); // previene el envio tradicional del formulario
+      const data = new FormData(formAgregar); // crea un obj con los datos del form
+      data.append("submit", "1"); // añadimos el campo "submit", para que el back sepa que hacer
+      fetch("acciones_menu.php", { method: "POST", body: data })
+        .then(r => r.text()) // convierte la respuesta del servidor en texto
+        .then(alert) // muestra el mensaje en un alert
+        .then(cargarMenu); // y vuelve a cargar el menu actualizado
+    });
+  }
+
+  document.querySelectorAll(".btn-success").forEach(btn => { // busca todos los botones que la clase contenga ese texto
+    btn.addEventListener("click", () => {
+      if (!confirm("Modificar este ítem?")) return; // confirma el accionar del usuario
+      const form = btn.closest("form"); // selecciona el form mas cercano a ese boton 
+      const data = new FormData(form); // crea un obj con los datos del form
+      data.append("modificar", "1"); // añadimos el campo "edit", para que el back sepa que hacer
+      fetch("acciones_menu.php", { method: "POST", body: data })
+        .then(r => r.text()) // convierte la respuesta del servidor en texto
+        .then(alert) // muestra el mensaje en un alert
+        .then(cargarMenu); // y vuelve a cargar el menu actualizado
+    });
+  });
+
+  document.querySelectorAll(".eliminar-item").forEach(btn => { // busca todos los botones que la clase contenga ese texto
+    btn.addEventListener("click", () => {
+      if (!confirm("¿Eliminar este ítem?")) return; // confirma el accionar del usuario
+      const data = new FormData(); // crea un obj
+      data.append("id", btn.dataset.id); // le añadimos el id del elemento que vamos a borrar
+      data.append("borrar", "1"); // añadimos el campo "delete", para que el back sepa que hacer
+      fetch("acciones_menu.php", { method: "POST", body: data })
+        .then(r => r.text()) // convierte la respuesta del servidor en texto
+        .then(alert) // muestra el mensaje en un alert
+        .then(cargarMenu); // y vuelve a cargar el menu actualizado
+    });
+  });
 }
