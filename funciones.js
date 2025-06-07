@@ -14,16 +14,17 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="/htdocs/miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="/htdocs/miPerfil.html#list-misReservas">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="/miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="/miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
     boton.textContent = "Empleado";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="/htdocs/miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="panel-empleado.html">Modificar menu</a></li>
-      <li><a class="dropdown-item" href="panel-empleado.html">Administrador</a></li>
+      <li><a class="dropdown-item" href="/miPerfil.html">Datos personales</a></li>
+      <li><a class="dropdown-item" href="/miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="/miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
+      <li><a class="dropdown-item" href="/miPerfil.html#list-baseDatos-list">Administrador</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
     `;
   } else {
