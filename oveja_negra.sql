@@ -257,8 +257,9 @@ CREATE TABLE `estado_reserva` (
 
 -- DATOS DE LA TABLA
 
-INSERT INTO locales (nombre, direccion, telefono, estado_disponibilidad)
-VALUES ("Oveja Negra Chacabuco", "Emilio Mitre 1296", "+54 9 11 2176-9555","disponible");
+INSERT INTO locales (nombre, direccion, telefono, estado_disponibilidad) VALUES 
+("Oveja Negra Caballito", "Bogotá 68", "+54 9 1148003415","disponible"),
+("Oveja Negra Chacabuco", "Emilio Mitre 1296", "+54 9 11 2176-9555","disponible");
 
 -- Tabla: clientes
 INSERT INTO `clientes` (`nombre`, `apellido`, `dni`, `mail`, `telefono`, `fecha_nacimiento`, `contrasena`) VALUES
@@ -271,7 +272,8 @@ INSERT INTO `clientes` (`nombre`, `apellido`, `dni`, `mail`, `telefono`, `fecha_
 INSERT INTO `empleados` (`nombre`, `apellido`, `dni`, `mail`, `puesto`, `contrasena`, `id_local`) VALUES
 ('Tom', 'Tom', 12345678, 'tom@tom.com', 'Mozo', '1234', 1),
 ('Pedro', 'Fernandez', 22334455, 'pedrofernandez@example.com', 'Mozo', 'mozo123', 1),
-('Diego', 'De la Vega', 40202020, 'diegodelavega@admin.com', 'Gerente', '123', 1),
+('Diego', 'De la Vega', 45202020, 'diegodelavega@admin.com', 'Gerente', '123', 1),
+('Bernardo', 'El Mudo', 45101010, 'bernardo.m@admin.com', 'Subgerente', '123', 1),
 ('Ana', 'Suarez', 99887766, 'anasuarez@example.com', 'Caja', 'asuarez', 2);
 
 -- Tabla: mesas
