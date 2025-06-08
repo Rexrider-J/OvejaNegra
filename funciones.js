@@ -292,13 +292,36 @@ function mostrarTodasSucursales() {
             objeto[clave] = valor; // y las asignamos
           }
         });
-
         return objeto;
       });
+      cargarSelectSucursales();  // LLama a la funcion de cargarSelectSucursales para cargar los datos en la pagina
+     
+      //Aplicar un valor a cada sucursal después de cargar las opciones para poder conservar la sucursal seleccionada en otras paginas
+      const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
+      if (valorGuardado) {
+        const selector = document.getElementById("selectorSucursales");
+        if (selector) selector.value = valorGuardado;
+
+        const dropdown = document.getElementById("dropdownReservas");
+        if (dropdown) dropdown.value = valorGuardado;
+      }
     })
     .catch(error => console.error("Error:", error));
 }
+/*Carga*/
+function cargarSelectSucursales() {
+  const select = document.getElementById("selectorSucursales");
 
+  // Limpia todas las opciones menos la primera
+  select.length = 1;
+
+  locales.forEach((local, index) => {
+    const option = document.createElement("option");
+    option.value = index + 1; // Podés cambiar esto si tenés un ID en el objeto
+    option.textContent = local.nombre;
+    select.appendChild(option);
+  });
+}
 /* Guarda la sucursal seleccionada*/
 function guardarSeleccionSucursal(valor) {
   sessionStorage.setItem("sucursalSeleccionada", valor);
@@ -309,6 +332,7 @@ function guardarSeleccionSucursal(valor) {
     dropdown.value = valor;
   }
 }
+window.addEventListener('DOMContentLoaded', mostrarTodasSucursales);
 /* Al cargar la página, recupera el valor de la selección guardada*/
 document.addEventListener("DOMContentLoaded", function () {
   const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");

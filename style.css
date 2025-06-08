@@ -41,7 +41,6 @@ header {
     padding-left: 15%;
     padding-right: 15%;
     align-items: center;
-    text-align: center;
     color: black;
 }
 
@@ -51,11 +50,13 @@ header {
     border-color: transparent;
     font-size: 20px;
     font-weight: bold;
+    text-align: start;
 }
 
 #selectorSucursales option {
     background-color: rgb(3, 175, 219);
     font-size: 18px;
+    text-align: start;
 }
 
 .icoRedes {
