@@ -295,7 +295,8 @@ function mostrarTodasSucursales() {
         return objeto;
       });
       cargarSelectSucursales();  // LLama a la funcion de cargarSelectSucursales para cargar los datos en la pagina
-     
+      cargarDropdownReservas();
+
       //Aplicar un valor a cada sucursal después de cargar las opciones para poder conservar la sucursal seleccionada en otras paginas
       const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
       if (valorGuardado) {
@@ -308,18 +309,35 @@ function mostrarTodasSucursales() {
     })
     .catch(error => console.error("Error:", error));
 }
-/*Carga*/
+/*Carga selectorSucursales que es el dropdown que esta en el header con el nombre de todas las sucursales en la bdd*/
 function cargarSelectSucursales() {
   const select = document.getElementById("selectorSucursales");
 
-  // Limpia todas las opciones menos la primera
+  /* Limpia todas las opciones menos la primera*/
   select.length = 1;
 
   locales.forEach((local, index) => {
     const option = document.createElement("option");
-    option.value = index + 1; // Podés cambiar esto si tenés un ID en el objeto
+    option.value = index + 1; 
     option.textContent = local.nombre;
     select.appendChild(option);
+  });
+}
+/*Carga dropdownReservas que es el dropdown que se encuentra en el primer paso del cliente para realizar una reserva*/
+/*Carga el nombre y la direccion de los locales*/
+function cargarDropdownReservas() {
+  const dropdown = document.getElementById("dropdownReservas");
+  if (!dropdown) return;
+
+  // Limpia todas las opciones menos la primera
+  dropdown.length = 1;
+
+  locales.forEach((local, index) => {
+    const option = document.createElement("option");
+    option.value = index + 1;
+    option.textContent = `${local.nombre} - ${local.direccion}`;
+    option.setAttribute("name", `${local.nombre} - ${local.direccion}`);
+    dropdown.appendChild(option);
   });
 }
 /* Guarda la sucursal seleccionada*/
