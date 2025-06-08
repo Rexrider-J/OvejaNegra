@@ -2,6 +2,8 @@
 /*Cambio el dropdown del header segun si ingreso cliente, empleado y la funcion del empleado*/
 document.addEventListener("DOMContentLoaded", function () {
   const tipoUsuario = sessionStorage.getItem("usuarioTipo");
+  const puesto = sessionStorage.getItem("puestoEmpleado");
+
   const boton = document.getElementById("botonIngresar");
   const menu = document.getElementById("contenidoBotonIngresar");
 
@@ -9,7 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* Limpiar el menú actual*/
   menu.innerHTML = "";
-
   /*Segun el tipo de usuario, o si no hay usuario, se muestra un titulo en el dropdown y unas opciones diferentes*/
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
@@ -19,14 +20,30 @@ document.addEventListener("DOMContentLoaded", function () {
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
-    boton.textContent = "Empleado";
-    menu.innerHTML = `
-      <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
-      <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
-      <li><a class="dropdown-item" href="miPerfil.html#list-baseDatos-list">Administrador</a></li>
-      <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
-    `;
+      boton.textContent = "Empleado";
+      if (puesto === "Gerente") {
+        menu.innerHTML = `
+        <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html#list-baseDatos-list">Administrador</a></li>
+        <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
+        `;
+      }
+      else if (puesto === "Subgerente") {
+        menu.innerHTML = `
+        <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
+        <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
+        `;
+      }else{
+        menu.innerHTML = `
+          <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
+          <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
+          <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
+        `;
+      }
   } else {
     // Si nadie inició sesión, dejarlo como estaba por defecto
     boton.textContent = "Ingresar";
@@ -36,23 +53,105 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 });
-/*Simula un click en las opciones del dropdown de miPerfil*/
+/*Muestra contenido distinto segun si es cliente o empleado y que tipo de empleado*/
 document.addEventListener("DOMContentLoaded", function () {
-  const hash = window.location.hash;
-  const validHashes = [
-    "#list-misReservas-list",
-    "#list-modificarMenu-list",
-    "#list-baseDatos-list"
+  const tipoUsuario = sessionStorage.getItem("usuarioTipo");
+  const puesto = sessionStorage.getItem("puestoEmpleado");
+
+  /*funciona para esta secciones*/
+  const secciones = [
+    "list-datosPersonales",
+    "list-misReservas",
+    "list-modificarMenu",
+    "list-baseDatos"
   ];
 
-  if (validHashes.includes(hash)) {
-    const targetTab = document.querySelector(`a${hash}`);
-    if (targetTab) {
-      const tab = new bootstrap.Tab(targetTab);
-      tab.show();
+  /* Mostrar u ocultar pestañas según tipo de usuario*/
+    secciones.forEach(id => {
+      const tab = document.getElementById(`${id}-list`);
+      const pane = document.getElementById(id);
+
+      /* Ocultar por defecto*/
+      tab.style.display = "none";
+      pane.style.display = "none";
+    });
+
+    const mostrarSiempre = ["list-datosPersonales", "list-misReservas"];
+    mostrarSiempre.forEach(id => {
+      document.getElementById(`${id}-list`).style.display = "grid";
+      document.getElementById(id).style.display = "grid";
+    });
+
+    if (tipoUsuario === "empleado") {
+      if (puesto === "Gerente" || puesto === "Subgerente") {
+        document.getElementById("list-modificarMenu-list").style.display = "grid";
+        document.getElementById("list-modificarMenu").style.display = "grid";
+      }
+      if (puesto === "Gerente") {
+        document.getElementById("list-baseDatos-list").style.display = "grid";
+        document.getElementById("list-baseDatos").style.display = "grid";
+      }
     }
+  
+
+  /*Cargar contenido dinamico dentro de datosPersonales*/
+  const datosPersonalesDiv = document.getElementById("list-datosPersonales");
+
+  if (tipoUsuario === "cliente") {
+    datosPersonalesDiv.innerHTML = `
+      <h5>Datos del Cliente</h5>
+    `;
+  } else if (tipoUsuario === "empleado") {
+    datosPersonalesDiv.innerHTML = `
+      <h5>Datos Empleados</h5>
+    `;
+  }
+
+  /*Cargar contenido dinamico dentro de misReservas*/
+  const misReservasDiv = document.getElementById("list-misReservas");
+
+  if (tipoUsuario === "cliente") {
+    misReservasDiv.innerHTML = `
+      <h5>Reservas Cliente</h5>
+    `;
+  } else if (tipoUsuario === "empleado") {
+    misReservasDiv.innerHTML = `
+      <h5>Reservas Empleado</h5>
+    `;
   }
 });
+document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
+  tab.addEventListener("shown.bs.tab", function (event) {
+    const targetId = event.target.getAttribute("href").replace("#", "");
+
+    // Cargar el contenido solo cuando corresponde
+    if (targetId === "list-modificarMenu") {
+      cargarMenu();
+    }
+  });
+});
+/*borra el contenido del tab antes de cambiar de pagina*/
+document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tabLink => {
+  tabLink.addEventListener('shown.bs.tab', function (e) {
+    const previouslyActiveTabId = e.relatedTarget?.getAttribute("href");
+    if (previouslyActiveTabId === "#list-modificarMenu") {
+      document.getElementById("list-modificarMenu").innerHTML = ""; // limpia cuando se sale
+    }
+  });
+});
+/*Cambiar seccion de dropdown de miPerfil desde la misma pagina*/
+function activarTabPorHash() {
+  const hash = window.location.hash;
+  const targetTab = document.querySelector(`a${hash}`);
+  if (targetTab) {
+    const tab = new bootstrap.Tab(targetTab);
+    tab.show();
+  }
+}
+document.addEventListener("DOMContentLoaded", activarTabPorHash);
+// También escuchar cambios de hash mientras estás en la página
+window.addEventListener("hashchange", activarTabPorHash);
+
 /*HEADER*/
 /*Hace que el nav sea responsive con un boton hamburguesa*/
 document.addEventListener("DOMContentLoaded", function () {
