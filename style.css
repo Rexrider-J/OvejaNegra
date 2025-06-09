@@ -711,6 +711,9 @@ main {
        background-image: url("img/Fotos/Nosotros/Contraer.png") !important; 
     }
 }
+.ubicacionSucursal{
+    width: 50%;
+}
 .informacionSucursal{
     width: 50%;
     display:grid;
@@ -719,6 +722,8 @@ main {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     color:#d75f44;
+    gap:1em;
+    margin:0;
 }
 .datosSucursal{
     text-align: center;
@@ -729,7 +734,7 @@ main {
     font-size: 40px !important;
 }
 .datosSucursal span{
-    font-size: 25px;
+    font-size: 18px;
 }
 /*RESPONSIVE*/
 @media (max-width: 768px) {

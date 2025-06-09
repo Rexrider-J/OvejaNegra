@@ -294,8 +294,10 @@ function mostrarTodasSucursales() {
         });
         return objeto;
       });
-      cargarSelectSucursales();  // LLama a la funcion de cargarSelectSucursales para cargar los datos en la pagina
-      cargarDropdownReservas();
+      /*LLama a la funcion de cargarSelectSucursales para cargar los datos en la pagina*/
+      cargarSelectSucursales();  // Header general
+      cargarDropdownReservas();   //Pagina reservas
+      generarAcordeones(locales); //pagina nosotros
 
       //Aplicar un valor a cada sucursal después de cargar las opciones para poder conservar la sucursal seleccionada en otras paginas
       const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
@@ -368,6 +370,53 @@ document.addEventListener("DOMContentLoaded", function () {
     dropdown.value = valorGuardado;
   }
 });
+/*Genera acordeones con los datos de cada sucursal dinamicamente en la pagina nosotros*/
+function generarAcordeones(sucursales) {
+  const contenedor = document.getElementById("accordionExample");
+  contenedor.innerHTML = ""; 
+
+  sucursales.forEach((sucursal, index) => {
+    const idCollapse = `collapse${index}`;
+    const idHeading = `heading${index}`;
+    const expanded = index === 0 ? 'true' : 'false';
+    const showClass = index === 0 ? 'show' : '';
+    const collapsedClass = index !== 0 ? 'collapsed' : '';
+
+    const direccionCodificada = encodeURIComponent(sucursal.direccion);
+    /*Este es el contenido que se repite por cada sucursal existente*/
+    const acordeonHTML = `
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="${idHeading}">
+          <button class="accordion-button ${collapsedClass}" type="button" data-bs-toggle="collapse" data-bs-target="#${idCollapse}" aria-expanded="${expanded}" aria-controls="${idCollapse}">
+            ${sucursal.nombre}
+          </button>
+        </h2>
+        <div id="${idCollapse}" class="accordion-collapse collapse ${showClass}" aria-labelledby="${idHeading}" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="ubicacionSucursal">
+              <iframe src="https://www.google.com/maps?q=${direccionCodificada}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="informacionSucursal mt-3">
+              <div class="datosSucursal">
+                <h3><strong>Dirección</strong></h3>
+                <span>${sucursal.direccion}, CABA, Argentina</span>
+              </div>
+              <div class="datosSucursal">
+                <h3><strong>Contacto</strong></h3>
+                <span>${sucursal.telefono}</span>
+              </div>
+              <div class="datosSucursal">
+                <h3><strong>Horario</strong></h3>
+                <span>Martes a Domingo 10:30AM - 9PM</span>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+    contenedor.innerHTML += acordeonHTML;
+  });
+}
 /*RESTRICCIONES PARA DATOS INGRESADOS*/
 /*Calendario externo Flatpickr*/
 document.addEventListener("DOMContentLoaded", function () {
