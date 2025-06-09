@@ -623,13 +623,10 @@ main {
 
 /*NOSOTROS*/
 /*MAIN*/
-.mainNosotros {
+#mainNosotros {
     width: 100%;
     margin: 0;
     padding: 0;
-    display: grid;
-    grid-template-rows: auto auto auto;
-    grid-template-columns: 100%;
     align-items: center;
     text-align: center;
     font-family: "Special Gothic Condensed One", sans-serif;
@@ -670,6 +667,69 @@ main {
     background-image: url("img/turquesa.png");
     background-size: cover;
     color: white;
+}
+#mainNosotros .sucursales{
+    display:grid;
+    background-color:#b87348;
+    color:white;
+    padding: 3% 15%;
+    gap:1em;
+}
+.iconoPinSucursales{
+    text-align: center;
+}
+.iconoPinSucursales img{
+    width: 3rem;
+}
+.accordion{
+    border-color: #000;
+    border-width: 1em;
+    max-width: 100%;
+    width: auto;
+    padding: 0;
+}
+.accordion-body{
+    display:flex;  
+    background-color: #f3c78a;
+    border: none; 
+}
+.accordion-button {
+    background-color: #f49f53 !important; /* Agrego el important para cambiar el estilo de bootstrap */
+    color:white !important;
+    font-size: 22px !important;
+}
+.accordion-button:not(.collapsed) {
+    background-color: #f49f53 !important; /* Cuando está expandido */
+    color: #824a34 !important;               /* Texto blanco expandido */
+}
+.accordion-button:not(.collapsed)::after {      /*Es el icono que se muestra cuando se amplia el acordeon*/
+    background-image: url("img/Fotos/Nosotros/Ampliar.png") !important;
+    transform: none !important;
+}
+@media (prefers-reduced-motion: reduce) {   /*Es el icono que se muestra cuando se contrae el acordeon*/
+    .accordion-button::after {
+       background-image: url("img/Fotos/Nosotros/Contraer.png") !important; 
+    }
+}
+.informacionSucursal{
+    width: 50%;
+    display:grid;
+    justify-content: center;
+    text-align: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    color:#d75f44;
+}
+.datosSucursal{
+    text-align: center;
+    align-content: center;
+    padding:0;
+}
+.datosSucursal h3{
+    font-size: 40px !important;
+}
+.datosSucursal span{
+    font-size: 25px;
 }
 /*RESPONSIVE*/
 @media (max-width: 768px) {
