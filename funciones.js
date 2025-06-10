@@ -297,7 +297,7 @@ function mostrarTodasSucursales() {
       /*LLama a la funcion de cargarSelectSucursales para cargar los datos en la pagina*/
       cargarSelectSucursales();  // Header general
       cargarDropdownReservas();   //Pagina reservas
-      generarAcordeones(locales); //pagina nosotros
+      crearAcordeones(locales); //pagina nosotros
 
       //Aplicar un valor a cada sucursal después de cargar las opciones para poder conservar la sucursal seleccionada en otras paginas
       const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
@@ -342,7 +342,7 @@ function cargarDropdownReservas() {
     dropdown.appendChild(option);
   });
 }
-/* Guarda la sucursal seleccionada*/
+/* Guarda la sucursal seleccionada en el header*/
 function guardarSeleccionSucursal(valor) {
   sessionStorage.setItem("sucursalSeleccionada", valor);
 
@@ -371,52 +371,58 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 /*Genera acordeones con los datos de cada sucursal dinamicamente en la pagina nosotros*/
-function generarAcordeones(sucursales) {
-  const contenedor = document.getElementById("accordionExample");
+/*Tambien despliega el acordeon correspondiente a la sucursal seleccionada previamente en el header*/
+function crearAcordeones(locales) {
+  const contenedor = document.getElementById("contenedorAcordeones"); 
+  if (!contenedor) return; 
   contenedor.innerHTML = ""; 
 
-  sucursales.forEach((sucursal, index) => {
-    const idCollapse = `collapse${index}`;
-    const idHeading = `heading${index}`;
-    const expanded = index === 0 ? 'true' : 'false';
-    const showClass = index === 0 ? 'show' : '';
-    const collapsedClass = index !== 0 ? 'collapsed' : '';
+  const sucursalSeleccionada = sessionStorage.getItem("sucursalSeleccionada");
 
-    const direccionCodificada = encodeURIComponent(sucursal.direccion);
-    /*Este es el contenido que se repite por cada sucursal existente*/
+  locales.forEach((local, index) => {
+    const idUnico = `collapse${index}`;
+    const showClass = local.id_local === sucursalSeleccionada ? "show" : "";
+    const expanded = local.id_local === sucursalSeleccionada ? "true" : "false";
+
     const acordeonHTML = `
       <div class="accordion-item">
-        <h2 class="accordion-header" id="${idHeading}">
-          <button class="accordion-button ${collapsedClass}" type="button" data-bs-toggle="collapse" data-bs-target="#${idCollapse}" aria-expanded="${expanded}" aria-controls="${idCollapse}">
-            ${sucursal.nombre}
+        <h2 class="accordion-header">
+          <button class="accordion-button ${showClass ? '' : 'collapsed'}" type="button"
+            data-bs-toggle="collapse" data-bs-target="#${idUnico}" aria-expanded="${expanded}" aria-controls="${idUnico}">
+            ${local.nombre}
           </button>
         </h2>
-        <div id="${idCollapse}" class="accordion-collapse collapse ${showClass}" aria-labelledby="${idHeading}" data-bs-parent="#accordionExample">
+        <div id="${idUnico}" class="accordion-collapse collapse ${showClass}" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <div class="ubicacionSucursal">
-              <iframe src="https://www.google.com/maps?q=${direccionCodificada}&output=embed" width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-            </div>
-            <div class="informacionSucursal mt-3">
+            <iframe src="https://www.google.com/maps?q=${encodeURIComponent(local.direccion)}&output=embed"
+              width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+
+            <div class="informacionSucursal">
               <div class="datosSucursal">
                 <h3><strong>Dirección</strong></h3>
-                <span>${sucursal.direccion}, CABA, Argentina</span>
+                <span>${local.direccion}</span>
               </div>
               <div class="datosSucursal">
                 <h3><strong>Contacto</strong></h3>
-                <span>${sucursal.telefono}</span>
+                <span>${local.telefono}</span>
               </div>
               <div class="datosSucursal">
                 <h3><strong>Horario</strong></h3>
                 <span>Martes a Domingo 10:30AM - 9PM</span>
-              </div> 
+              </div>
             </div>
           </div>
         </div>
       </div>
     `;
-    contenedor.innerHTML += acordeonHTML;
+
+    contenedor.insertAdjacentHTML("beforeend", acordeonHTML);
   });
 }
+/*Sirve para desplegar el acordeon de sucursal que corresponda a la sucursal seleccionada en el header en tiempo real*/
+document.getElementById("selectorSucursales")?.addEventListener("change", () => {
+  crearAcordeones(locales); // vuelve a renderizar con la nueva sucursal seleccionada
+});
 /*RESTRICCIONES PARA DATOS INGRESADOS*/
 /*Calendario externo Flatpickr*/
 document.addEventListener("DOMContentLoaded", function () {

@@ -670,7 +670,7 @@ main {
 }
 #mainNosotros .sucursales{
     display:grid;
-    background-color:#b87348;
+    background-color:#d5895a;
     color:white;
     padding: 3% 15%;
     gap:1em;
@@ -690,17 +690,20 @@ main {
 }
 .accordion-body{
     display:flex;  
-    background-color: #f3c78a;
+    background-color: #fff0d7;
     border: none; 
 }
 .accordion-button {
-    background-color: #f49f53 !important; /* Agrego el important para cambiar el estilo de bootstrap */
+    background-color: #b96a40 !important; /* Agrego el important para cambiar el estilo de bootstrap */
     color:white !important;
     font-size: 22px !important;
+}.accordion-header {
+    margin-bottom: 0;
+    font-size: 20px !important;
 }
 .accordion-button:not(.collapsed) {
-    background-color: #f49f53 !important; /* Cuando está expandido */
-    color: #824a34 !important;               /* Texto blanco expandido */
+    background-color: #713f2a !important; /* Cuando está expandido */
+    color: #f1ba47 !important;               /* Texto blanco expandido */
 }
 .accordion-button:not(.collapsed)::after {      /*Es el icono que se muestra cuando se amplia el acordeon*/
     background-image: url("img/Fotos/Nosotros/Ampliar.png") !important;
