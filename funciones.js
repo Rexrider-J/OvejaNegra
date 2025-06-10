@@ -394,9 +394,10 @@ function crearAcordeones(locales) {
         </h2>
         <div id="${idUnico}" class="accordion-collapse collapse ${showClass}" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <iframe src="https://www.google.com/maps?q=${encodeURIComponent(local.direccion)}&output=embed"
-              width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-
+            <div class="ubicacionSucursal">
+              <iframe src="https://www.google.com/maps?q=${encodeURIComponent(local.direccion)}&output=embed"
+              width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
             <div class="informacionSucursal">
               <div class="datosSucursal">
                 <h3><strong>Dirección</strong></h3>

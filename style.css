@@ -689,7 +689,8 @@ main {
     padding: 0;
 }
 .accordion-body{
-    display:flex;  
+    display:grid;
+    grid-template-columns: 1fr 1fr;  
     background-color: #fff0d7;
     border: none; 
 }
@@ -714,11 +715,8 @@ main {
        background-image: url("img/Fotos/Nosotros/Contraer.png") !important; 
     }
 }
-.ubicacionSucursal{
-    width: 50%;
-}
 .informacionSucursal{
-    width: 50%;
+    width: 100%;
     display:grid;
     justify-content: center;
     text-align: center;
@@ -744,21 +742,60 @@ main {
     .presentacion,
     .mision,
     .vision {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* De 2 columnas a 1 */
+        font-size: 18px; /* Tamaño de texto más chico */
         text-align: center;
-        font-size: 18px;
+    }
+    .presentacion img,
+    .mision img,
+    .vision img {
+        order: 1;
+    }
+    .presentacion .textoPresentacion,
+    .mision .textoPresentacion,
+    .vision .textoPresentacion {
+        order: 2;
+    }
+
+    .textoPresentacion {
+        margin: 10px;
     }
 
     .subtitulosNosotros {
         font-size: 40px;
     }
 
-    .textoPresentacion {
-        margin: 5% 10%;
+    .ubicacionSucursal,
+    .informacionSucursal {
+        width: 100%;
     }
 
-    .imagenNosotros {
-        max-height: 400px;
+    .accordion-body {
+        display: flex;
+        flex-direction: column; 
+    }
+
+    .ubicacionSucursal {
+        order: 1; /* mapa arriba */
+        width: 100%;
+    }
+
+    .informacionSucursal {
+        order: 2; /* texto abajo */
+        width: 100%;
+    }
+    .datosSucursal h3 {
+        font-size: 30px !important;
+    }
+
+    .datosSucursal span {
+        font-size: 16px;
+    }
+
+    iframe {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 300px;
     }
 }
 /*INGRESO*/
