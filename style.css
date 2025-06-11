@@ -572,7 +572,7 @@ main {
     margin: 0;
     width: 180px;
     align-content: center;
-    height: 100%;
+    height: auto;
     justify-content: space-between;
 }
 
@@ -1420,4 +1420,14 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /*MI PERFIL*/
-
+#list-misReservas{
+    width: 100%;
+    height: auto;
+    padding: 0;
+}
+#botonesDeAccion{
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 1em;
+}

@@ -53,6 +53,18 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 });
+/*Muestra el contenido correspondiente al boton precionado en Mis reservas Empleado*/
+function mostrarContenidoMisReservasE(opcion) {
+  const secciones = document.querySelectorAll('.seccionEmpleado');
+  secciones.forEach(seccion => {
+    seccion.style.display = 'none';
+  });
+
+  const seccionSeleccionada = document.getElementById(opcion);
+  if (seccionSeleccionada) {
+    seccionSeleccionada.style.display = 'grid';
+  }
+}
 /*Muestra contenido distinto segun si es cliente o empleado y que tipo de empleado*/
 document.addEventListener("DOMContentLoaded", function () {
   const tipoUsuario = sessionStorage.getItem("usuarioTipo");
@@ -84,12 +96,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (tipoUsuario === "empleado") {
       if (puesto === "Gerente" || puesto === "Subgerente") {
-        document.getElementById("list-modificarMenu-list").style.display = "grid";
-        document.getElementById("list-modificarMenu").style.display = "grid";
+        document.getElementById("list-modificarMenu-list").style.display = "block";
+        document.getElementById("list-modificarMenu").style.display = "block";
       }
       if (puesto === "Gerente") {
-        document.getElementById("list-baseDatos-list").style.display = "grid";
-        document.getElementById("list-baseDatos").style.display = "grid";
+        document.getElementById("list-baseDatos-list").style.display = "block";
+        document.getElementById("list-baseDatos").style.display = "block";
       }
     }
   
@@ -116,7 +128,26 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   } else if (tipoUsuario === "empleado") {
     misReservasDiv.innerHTML = `
-      <h5>Reservas Empleado</h5>
+      <div id="botonesDeAccion">
+        <input type="button" value="Modificar reservas" onclick="mostrarContenidoMisReservasE('modificar')"/>
+        <input type="button" value="Cancelar reservas" onclick="mostrarContenidoMisReservasE('cancelar')"/>
+        <input type="button" value="Visualizar reservas" onclick="mostrarContenidoMisReservasE('visualizar')"/>  
+        <a href="reservas.html" class="btn btn-primary">Crear reservas</a>
+      </div>
+      <div id="contenidoBtnEmpleado">
+        <div id="modificar" class="seccionEmpleado" style="display: none;">
+          <h3>Modificar reservas</h3>
+          <p>Aca se modificarán las reservas ya realizadas. Podria agregarse un filtro por mail, fecha, hora, dni</p>
+        </div>
+        <div id="cancelar" class="seccionEmpleado" style="display: none;">
+          <h3>Cancelar reservas</h3>
+          <p>Aquí puedes cancelar una reserva. Podria carcelarse la reserva para un solo individuo o masivamente. Debe redactarse una nota que se enviará al mail de la/el/los involucrados(simulado)</p>
+        </div>
+        <div id="visualizar" class="seccionEmpleado" style="display: none;">
+          <h3>Visualizar reservas</h3>
+          <p>Tabla o datos de reservas existentes.Se va poder sumar puntos, anular reserva y concretar reserva</p>
+        </div>
+      </div>
     `;
   }
 });
@@ -124,12 +155,24 @@ document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
   tab.addEventListener("shown.bs.tab", function (event) {
     const targetId = event.target.getAttribute("href").replace("#", "");
 
-    // Cargar el contenido solo cuando corresponde
+    // Oculta todas las secciones
+    const panes = document.querySelectorAll(".tab-pane");
+    panes.forEach(pane => {
+      pane.style.display = "none";
+    });
+
+    // Muestra solo la activa
+    const activePane = document.getElementById(targetId);
+    if (activePane) {
+      activePane.style.display = "grid";
+    }
+        // Cargar el contenido solo cuando corresponde
     if (targetId === "list-modificarMenu") {
       cargarMenu();
     }
   });
 });
+
 /*borra el contenido del tab antes de cambiar de pagina*/
 document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tabLink => {
   tabLink.addEventListener('shown.bs.tab', function (e) {
