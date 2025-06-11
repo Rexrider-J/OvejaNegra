@@ -1431,3 +1431,16 @@ input[type=number]::-webkit-outer-spin-button {
     grid-template-columns: auto auto auto auto;
     gap: 1em;
 }
+
+#botonesDeAccion input[type="button"], #botonesDeAccion a {
+    display: block;
+    width: 100%;
+    margin: 10px 0 0 0;
+    min-height: 2em;
+    border-radius: 8px;
+    color: white;
+
+    font-size: 1.1rem;
+    background-color: #4cbfe6;
+    border-color:#4cbfe6 ;
+}
