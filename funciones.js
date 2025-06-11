@@ -1023,3 +1023,37 @@ function inicializarEventosMenu() {
     });
   });
 }
+
+function cargarCategoria(categoria) { // es la funcion que carga por la categoria que se le pase como argumento
+  const targetDiv = document.querySelector(`#list-${categoria.toLowerCase()} .listProductos`); // guardamos en una variable el div donde vamos a insertar lo que devuelva el .php
+  if (!targetDiv) return; // si no existe el div, la funcion se corta y no devuelve nada
+  
+  targetDiv.innerHTML = "<p>Cargando productos...</p>"; // en lo que tarde la respuesta de la base de datos, ponemos esto
+  
+  fetch(`obtener_menu_estatico.php?categoria=${encodeURIComponent(categoria)}`)
+  .then(response => response.text())
+  .then(data => {
+      targetDiv.innerHTML = data;
+    })
+    .catch(error => {
+      console.error("Error al cargar categoría:", error);
+      targetDiv.innerHTML = "<p>Error al cargar productos.</p>";
+    });
+}
+
+function cargarMenuEstatico(categoriaInicial = "") {
+  const idBody = document.body.id;
+  if (idBody === "menu" || idBody === "promociones") { //solo se ejecuta si el id del body es igual a uno de esos
+    if (categoriaInicial) { // si exitste, que es cuando se ingresa a la pag por primera vez
+      cargarCategoria(categoriaInicial); // ejecuta la funcion con la variable que trae del html
+    }
+    
+    document.querySelectorAll(".list-group-item").forEach(item => { // se sellecionan todos los query que incluyan ".list-group-item"
+      item.addEventListener("click", () => { // esperamos a que se les haga click a alguno,
+        const categoriaId = item.getAttribute("href"); // tomamos el atributo herf,
+        const categoria = categoriaId.replace("#list-", ""); // y le cortamos el "#list-" para almacenar el nombre de la categoria que le preguntaremos a la base de datos
+        cargarCategoria(categoria); // y se ejecuta la funcion con esa variable almacenada
+      });
+    });
+  }
+}
