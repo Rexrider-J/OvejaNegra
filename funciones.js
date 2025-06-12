@@ -932,11 +932,6 @@ if (window.location.pathname.includes("reservas.html")) {
       const hora = horaSelect.value;
       const personas = personasSelect.value;
 
-      console.log("Validando:");
-      console.log("Fecha:", fecha);
-      console.log("Hora:", hora);
-      console.log("Personas:", personas);
-
       if (fecha && hora && personas) {
         mesaSelect.disabled = false;
       } else {
