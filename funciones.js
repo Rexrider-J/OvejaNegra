@@ -613,23 +613,29 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 });
 /*Acceder a olvideContrasenia desde login cliente*/
-document.getElementById("link-olvide-cliente").addEventListener("click", function (e) {
-  e.preventDefault();
-  document.getElementById("cliente").style.display = "none";
-  document.getElementById("empleado").style.display = "none";
-  document.getElementById("olvideContrasenia").style.display = "grid";
-  document.getElementById("datos-enviar-mail").style.display = "grid";
-  document.getElementById("confirmacion-envio-mail").style.display = "none";
-});
+const linkOlvideCliente = document.getElementById("link-olvide-cliente");
+if (linkOlvideCliente) {
+  linkOlvideCliente.addEventListener("click", function (e) {
+    e.preventDefault();
+    document.getElementById("cliente").style.display = "none";
+    document.getElementById("empleado").style.display = "none";
+    document.getElementById("olvideContrasenia").style.display = "grid";
+    document.getElementById("datos-enviar-mail").style.display = "grid";
+    document.getElementById("confirmacion-envio-mail").style.display = "none";
+  });
+}
 /*Acceder a olvideContrasenia desde login empleado*/
-document.getElementById("link-olvide-empleado").addEventListener("click", function (e) {
-  e.preventDefault();
-  document.getElementById("cliente").style.display = "none";
-  document.getElementById("empleado").style.display = "none";
-  document.getElementById("olvideContrasenia").style.display = "grid";
-  document.getElementById("datos-enviar-mail").style.display = "grid";
-  document.getElementById("confirmacion-envio-mail").style.display = "none";
-});
+const linkOlvideEmpleado = document.getElementById("link-olvide-empleado");
+if (linkOlvideEmpleado) {
+  linkOlvideEmpleado.addEventListener("click", function (e) {
+    e.preventDefault();
+    document.getElementById("cliente").style.display = "none";
+    document.getElementById("empleado").style.display = "none";
+    document.getElementById("olvideContrasenia").style.display = "grid";
+    document.getElementById("datos-enviar-mail").style.display = "grid";
+    document.getElementById("confirmacion-envio-mail").style.display = "none";
+  });
+}
 
 /* Función que se ejecuta al enviar el formulario en el boton registrarse*/
 function submitRegistrar(event) {
@@ -858,6 +864,79 @@ function cerrarSesion() {
   sessionStorage.removeItem("usuarioTipo");
   window.location.href = "index.html";
 }
+/*Inhabilita el boton mesaReserva hasta que se selecicone fecha,hora y cantPersonas.Guarda estos datos en el sessionStorage*/
+document.addEventListener("DOMContentLoaded", function () {
+  const calendario = document.getElementById("calendarioReservas");
+  const fechaInput = document.getElementById("fechaReserva");
+  const horaSelect = document.getElementById("horaReserva");
+  const personasSelect = document.getElementById("cantPersonasReserva");
+  const mesaSelect = document.getElementById("mesaReserva");
+
+  // Inhabilita la selección de mesa inicialmente
+  mesaSelect.disabled = true;
+
+  // Inicializa el calendario con Flatpickr
+  flatpickr(calendario, {
+    dateFormat: "Y-m-d",
+    onChange: function (selectedDates, dateStr) {
+      fechaInput.value = dateStr;
+      sessionStorage.setItem("fechaReserva", dateStr);
+      console.log("Fecha actualizada en sessionStorage:", dateStr);
+      limpiarYValidarMesa();
+    }
+  });
+
+  // Evento cambio de hora
+  horaSelect.addEventListener("change", function () {
+    sessionStorage.setItem("horaReserva", this.value);
+    console.log("Hora actualizada en sessionStorage:", this.value);
+    limpiarYValidarMesa();
+  });
+
+  // Evento cambio de cantidad de personas
+  personasSelect.addEventListener("change", function () {
+    sessionStorage.setItem("cantPersonasReserva", this.value);
+    console.log("Cantidad de personas actualizada en sessionStorage:", this.value);
+    limpiarYValidarMesa();
+  });
+
+  // Limpia mesa seleccionada y valida si debe habilitarse
+  function limpiarYValidarMesa() {
+    mesaSelect.value = ""; // Limpia selección de mesa
+    validarHabilitarMesa();
+  }
+
+  // Habilita mesa solo si fecha, hora y personas están seleccionadas
+  function validarHabilitarMesa() {
+    const fecha = fechaInput.value;
+    const hora = horaSelect.value;
+    const personas = personasSelect.value;
+
+    console.log("Validando:");
+    console.log("Fecha:", fecha);
+    console.log("Hora:", hora);
+    console.log("Personas:", personas);
+
+    if (fecha && hora && personas) {
+      mesaSelect.disabled = false;
+    } else {
+      mesaSelect.disabled = true;
+    }
+  }
+
+  // Recuperar valores guardados si existen (opcional)
+  if (sessionStorage.getItem("fechaReserva")) {
+    fechaInput.value = sessionStorage.getItem("fechaReserva");
+  }
+  if (sessionStorage.getItem("horaReserva")) {
+    horaSelect.value = sessionStorage.getItem("horaReserva");
+  }
+  if (sessionStorage.getItem("cantPersonasReserva")) {
+    personasSelect.value = sessionStorage.getItem("cantPersonasReserva");
+  }
+
+  validarHabilitarMesa(); // Verifica al cargar la página
+});
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
 function mostrarSeleccionSucursalReserva() {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/
