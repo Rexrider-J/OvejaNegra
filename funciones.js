@@ -901,7 +901,6 @@ if (window.location.pathname.includes("reservas.html")) {
       onChange: function (selectedDates, dateStr) {
         fechaInput.value = dateStr; // Guarda en el input hidden si lo usás
         sessionStorage.setItem("fechaReserva", dateStr);
-        console.log("Fecha actualizada en sessionStorage:", dateStr);
         limpiarYValidarMesa();
       }
     });
@@ -909,14 +908,12 @@ if (window.location.pathname.includes("reservas.html")) {
     // Evento cambio de hora
     horaSelect.addEventListener("change", function () {
       sessionStorage.setItem("horaReserva", this.value);
-      console.log("Hora actualizada en sessionStorage:", this.value);
       limpiarYValidarMesa();
     });
 
     // Evento cambio de cantidad de personas
     personasSelect.addEventListener("change", function () {
       sessionStorage.setItem("cantPersonasReserva", this.value);
-      console.log("Cantidad de personas actualizada en sessionStorage:", this.value);
       limpiarYValidarMesa();
     });
 
@@ -968,11 +965,9 @@ function mostrarSeleccionSucursalReserva() {
     alert("Debe seleccionar una fecha antes de continuar.");
     return;
   }
-  sessionStorage.setItem("fechaSeleccionada", fechaSeleccionada);
 
   const horaSelect = document.getElementById("horaReserva");
   const horaSeleccionada = horaSelect.value;
-  sessionStorage.setItem("horaSeleccionada", horaSeleccionada);
 
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (horaSeleccionada === "") {
@@ -981,7 +976,6 @@ function mostrarSeleccionSucursalReserva() {
   }
   const personasSelect = document.getElementById("cantPersonasReserva");
   const personasSeleccionadas = personasSelect.value;
-  sessionStorage.setItem("personasSeleccionadas", personasSeleccionadas);
 
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (personasSeleccionadas === "") {
@@ -992,16 +986,21 @@ function mostrarSeleccionSucursalReserva() {
   const mesaSelect = document.getElementById("mesaReserva");
   const mesaSeleccionada = mesaSelect.value;
   sessionStorage.setItem("mesaSeleccionada", mesaSeleccionada);
-
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (mesaSeleccionada === "") {
     alert("Debe seleccionar una mesa antes de continuar.");
     return;
   }
+
   /*Guardar observacion dada por el usuario*/
   const Observacion = document.getElementById("observacionesReserva");
   const ObservacionDada = Observacion.value;
   sessionStorage.setItem("ObservacionDada", ObservacionDada);
+
+  /*Se guardan los datos actualizados de fecha,hora y cantPersonas*/
+  sessionStorage.setItem("fechaSeleccionada", fechaSeleccionada);
+  sessionStorage.setItem("horaSeleccionada", horaSeleccionada);
+  sessionStorage.setItem("personasSeleccionadas", personasSeleccionadas);
 
   /*Insertar los datos en la siguiente pagina de confirmación*/
   document.getElementById("sucursalSeleccionada").textContent = sessionStorage.getItem("sucursalNombre");
@@ -1027,7 +1026,6 @@ function volverSeleccionSucursalReserva() {
   /* Mostrar selección de sucursal de reserva*/
   document.getElementById("seleccionSucursalDeReserva").style.display = "grid";
 }
-
 function volverSeleccionDatosReserva() {
   /* Ocultar confirmación de reserva*/
   document.getElementById("confirmacionReserva").style.display = "none";
