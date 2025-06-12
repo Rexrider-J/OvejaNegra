@@ -488,26 +488,24 @@ if (selector) {
 }
 /*RESTRICCIONES PARA DATOS INGRESADOS*/
 /*Calendario externo Flatpickr*/
-document.addEventListener("DOMContentLoaded", function () {
-  const calendario = document.getElementById("calendarioReservas");
-
-  if (typeof flatpickr !== "undefined" && calendario) {
-    flatpickr("#calendarioReservas", {
-      inline: true,
-      dateFormat: "Y-m-d",
-      locale: "es",
-      minDate: "today",
-      disable: [
-        function (date) {
-          return date.getDay() === 1; // Desactiva lunes
+if (window.location.pathname.includes("reservas.html")) {
+  document.addEventListener("DOMContentLoaded", function () {
+      flatpickr("#calendarioReservas", {
+        inline: true,
+        dateFormat: "Y-m-d",
+        locale: "es",
+        minDate: "today",
+        disable: [
+          function (date) {
+            return date.getDay() === 1; // Desactiva lunes
+          }
+        ],
+        onChange: function (selectedDates, dateStr) {
+          document.getElementById("fechaReserva").value = dateStr;
         }
-      ],
-      onChange: function (selectedDates, dateStr) {
-        document.getElementById("fechaReserva").value = dateStr;
-      }
-    });
-  }
-});
+      });
+  });
+}
 document.querySelectorAll('.solo-letras').forEach(function (campo) {
   /*Evento para controlar las teclas que se presionan al escribir*/
   campo.addEventListener('keydown', function (e) {
@@ -897,9 +895,11 @@ if (window.location.pathname.includes("reservas.html")) {
 
     // Inicializa el calendario con Flatpickr
     flatpickr(calendario, {
+      inline: true, // Hace que el calendario aparezca embebido en el div
       dateFormat: "Y-m-d",
+      defaultDate: sessionStorage.getItem("fechaReserva") || null,
       onChange: function (selectedDates, dateStr) {
-        fechaInput.value = dateStr;
+        fechaInput.value = dateStr; // Guarda en el input hidden si lo usás
         sessionStorage.setItem("fechaReserva", dateStr);
         console.log("Fecha actualizada en sessionStorage:", dateStr);
         limpiarYValidarMesa();
@@ -928,7 +928,7 @@ if (window.location.pathname.includes("reservas.html")) {
 
     // Habilita mesa solo si fecha, hora y personas están seleccionadas
     function validarHabilitarMesa() {
-      const fecha = fechaInput.value;
+      const fecha = sessionStorage.getItem("fechaReserva");
       const hora = horaSelect.value;
       const personas = personasSelect.value;
 
@@ -957,6 +957,12 @@ if (window.location.pathname.includes("reservas.html")) {
 
     validarHabilitarMesa(); // Verifica al cargar la página
   });
+  window.addEventListener("beforeunload", function () {
+  // Solo borra los datos de la reserva al salir de la página actual
+  sessionStorage.removeItem("fechaReserva");
+  sessionStorage.removeItem("horaReserva");
+  sessionStorage.removeItem("cantPersonasReserva");
+});
 }
 
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/

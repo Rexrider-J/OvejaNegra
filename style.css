@@ -76,6 +76,7 @@ header {
     background-color: #000000;
     padding: 0 15%;
 }
+
 .navLinks {
     display: grid;
     grid-template-columns: 40% 20% 40%;
@@ -96,11 +97,15 @@ header {
 }
 
 .listNavIzq {
-    justify-items: start;/* Alinea a la izquierda */
+    justify-items: start;
+    /* Alinea a la izquierda */
 }
+
 .listNavDer {
-    justify-items: end; /* Alinea a la derecha */
+    justify-items: end;
+    /* Alinea a la derecha */
 }
+
 #botonIngresar {
     font-size: 20px;
     background-color: transparent;
@@ -125,8 +130,9 @@ header {
     width: 40%;
     border-radius: 50%;
 }
+
 .logoResponsive {
-  display: none;
+    display: none;
 }
 
 .hamburger {
@@ -140,28 +146,31 @@ header {
 
 /*RESPONSIVE*/
 @media (max-width: 1024px) {
-  .headerNavegacion {
-    padding-left: 10%;
-    padding-right: 10%;
-  }
+    .headerNavegacion {
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
     .headerUbicacion {
-    padding-left: 10%;
-    padding-right: 10%;
-  }
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
     .icoRedes img {
-    width: 24px;
+        width: 24px;
     }
 }
 
 @media (max-width: 900px) {
-  .headerNavegacion {
-    padding-left: 5%;
-    padding-right: 5%;
-  }
+    .headerNavegacion {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+
     .headerUbicacion {
-    padding-left: 5%;
-    padding-right: 5%;
-  }
+        padding-left: 5%;
+        padding-right: 5%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -170,6 +179,7 @@ header {
         padding-left: 5%;
         padding-right: 5%;
     }
+
     .icoRedes {
         display: flex;
         justify-content: flex-end;
@@ -180,6 +190,7 @@ header {
     .icoRedes img {
         width: 20px;
     }
+
     .headerNavegacion {
         display: flex;
         justify-content: space-between;
@@ -214,7 +225,7 @@ header {
         top: 100%;
         left: 0;
         /* ara que esté por encima */
-        z-index: 999; 
+        z-index: 999;
     }
 
     .navLinks.active {
@@ -225,13 +236,16 @@ header {
     .navLinks ol li {
         width: 100%;
     }
-    
+
     .navLinks ol li a {
-        display: block; 
+        display: block;
         width: 100%;
-        padding: 8px 0;      /* un poco de padding arriba y abajo para espacio */
-        text-align: center;   /* centrar texto */
-        color: white;         /* o el color que uses */
+        padding: 8px 0;
+        /* un poco de padding arriba y abajo para espacio */
+        text-align: center;
+        /* centrar texto */
+        color: white;
+        /* o el color que uses */
         text-decoration: none;
     }
 
@@ -241,11 +255,12 @@ header {
         border-radius: 10px;
     }
 
-    .listNavIzq, .listNavDer {
+    .listNavIzq,
+    .listNavDer {
         grid-template-columns: 1fr;
         row-gap: 10px;
         width: 100%;
-        display:inline;
+        display: inline;
     }
 
     .logoNav {
@@ -320,7 +335,8 @@ footer {
     padding: 0;
 }
 
-.listasFooter li,h5 {
+.listasFooter li,
+h5 {
     text-align: justify;
 }
 
@@ -349,22 +365,23 @@ footer {
 
 /*RESPONSIVE*/
 @media (max-width: 1024px) {
-  .footerEnlaces {
-    padding-left: 10%;
-    padding-right: 10%;
-    padding-top: 2%;
-    padding-bottom: 3%;
-  }
+    .footerEnlaces {
+        padding-left: 10%;
+        padding-right: 10%;
+        padding-top: 2%;
+        padding-bottom: 3%;
+    }
 }
 
 @media (max-width: 900px) {
-  .footerEnlaces{
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 2%;
-    padding-bottom: 3%;
-  }
+    .footerEnlaces {
+        padding-left: 5%;
+        padding-right: 5%;
+        padding-top: 2%;
+        padding-bottom: 3%;
+    }
 }
+
 @media (max-width: 768px) {
     footer {
         height: auto;
@@ -379,7 +396,7 @@ footer {
 
     .footerEnlaces img {
         width: 50px;
-        margin:0;
+        margin: 0;
     }
 
     .listasFooter {
@@ -517,26 +534,36 @@ main {
     /* un poco de padding para no pegar texto a los bordes */
 }
 
-/*MENU*//*PROMOS Y COMBOS*//*BASE DE MIPERFIL*/
+/*MENU*/
+/*PROMOS Y COMBOS*/
+/*BASE DE MIPERFIL*/
 /*MAIN*/
-#mainMenu, #mainPerfil, #mainPromos {
+#mainMenu,
+#mainPerfil,
+#mainPromos {
     padding: 0 15%;
     display: inline;
 }
 
-#mainMenu .row, #mainPerfil .row, #mainPromos .row {
+#mainMenu .row,
+#mainPerfil .row,
+#mainPromos .row {
     width: 100%;
     margin: 0;
     display: flex;
     flex-wrap: wrap;
 }
 
-#mainMenu .col-4, #mainPerfil .col-4, #mainPromos .col-4{
+#mainMenu .col-4,
+#mainPerfil .col-4,
+#mainPromos .col-4 {
     width: 12%;
     font-size: 1.2rem;
 }
 
-#mainMenu .col-8, #mainPerfil .col-8, #mainPromos .col-8{
+#mainMenu .col-8,
+#mainPerfil .col-8,
+#mainPromos .col-8 {
     width: 76%;
     margin: 0;
 }
@@ -546,7 +573,8 @@ main {
     border-color: #4cbfe6 !important;
 }
 
-#mainMenu .tituloCategoria, #mainPromos .tituloCategoria {
+#mainMenu .tituloCategoria,
+#mainPromos .tituloCategoria {
     width: 100%;
     border-bottom: 1px solid #000000;
     border-top: 1px solid #000000;
@@ -560,7 +588,8 @@ main {
     margin: 0;
 }
 
-#mainMenu .listProductos, #mainPromos .listProductos {
+#mainMenu .listProductos,
+#mainPromos .listProductos {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -568,7 +597,8 @@ main {
     padding: 1rem;
 }
 
-#mainMenu figure, #mainPromos figure {
+#mainMenu figure,
+#mainPromos figure {
     margin: 0;
     width: 180px;
     height: auto;
@@ -585,36 +615,50 @@ main {
 
 /* Tablets */
 @media (max-width: 992px) {
-    #mainMenu, #mainPerfil, #mainPromos {
+
+    #mainMenu,
+    #mainPerfil,
+    #mainPromos {
         padding: 0 5%;
     }
 
-    #mainMenu .col-4,#mainMenu .col-8, 
-    #mainPerfil .col-4,#mainPerfil .col-8,
-    #mainPromos .col-4, #mainPromos .col-8{
+    #mainMenu .col-4,
+    #mainMenu .col-8,
+    #mainPerfil .col-4,
+    #mainPerfil .col-8,
+    #mainPromos .col-4,
+    #mainPromos .col-8 {
         width: 100%;
     }
 
-    #mainMenu .row, #mainPerfil .row, #mainPromos .row{
+    #mainMenu .row,
+    #mainPerfil .row,
+    #mainPromos .row {
         flex-direction: column;
     }
 }
 
 /* Teléfonos */
 @media (max-width: 576px) {
-    #mainMenu, #mainPerfil, #mainPromos {
+
+    #mainMenu,
+    #mainPerfil,
+    #mainPromos {
         padding: 0 1rem;
     }
 
-    #mainMenu .listProductos, #mainPromos .listProductos {
+    #mainMenu .listProductos,
+    #mainPromos .listProductos {
         gap: 1rem;
     }
 
-    #mainMenu figure, #mainPromos figure {
+    #mainMenu figure,
+    #mainPromos figure {
         width: 100%;
     }
 
-    #mainMenu .listProductos img, #mainPromos .listProductos img {
+    #mainMenu .listProductos img,
+    #mainPromos .listProductos img {
         width: 120px;
         height: 120px;
     }
@@ -667,89 +711,116 @@ main {
     background-size: cover;
     color: white;
 }
-#mainNosotros .sucursales{
-    display:grid;
-    background-color:#d5895a;
-    color:white;
+
+#mainNosotros .sucursales {
+    display: grid;
+    background-color: #d5895a;
+    color: white;
     padding: 3% 15%;
-    gap:1em;
+    gap: 1em;
 }
-.iconoPinSucursales{
+
+.iconoPinSucursales {
     text-align: center;
 }
-.iconoPinSucursales img{
+
+.iconoPinSucursales img {
     width: 3rem;
 }
-.accordion{
+
+.accordion {
     border-color: #000;
     border-width: 1em;
     max-width: 100%;
     width: auto;
     padding: 0;
 }
-.accordion-body{
-    display:grid;
-    grid-template-columns: 1fr 1fr;  
+
+.accordion-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     background-color: #fff0d7;
-    border: none; 
+    border: none;
 }
+
 .accordion-button {
-    background-color: #b96a40 !important; /* Agrego el important para cambiar el estilo de bootstrap */
-    color:white !important;
+    background-color: #b96a40 !important;
+    /* Agrego el important para cambiar el estilo de bootstrap */
+    color: white !important;
     font-size: 22px !important;
-}.accordion-header {
+}
+
+.accordion-header {
     margin-bottom: 0;
     font-size: 20px !important;
 }
+
 .accordion-button:not(.collapsed) {
-    background-color: #713f2a !important; /* Cuando está expandido */
-    color: #f1ba47 !important;               /* Texto blanco expandido */
+    background-color: #713f2a !important;
+    /* Cuando está expandido */
+    color: #f1ba47 !important;
+    /* Texto blanco expandido */
 }
-.accordion-button:not(.collapsed)::after {      /*Es el icono que se muestra cuando se amplia el acordeon*/
+
+.accordion-button:not(.collapsed)::after {
+    /*Es el icono que se muestra cuando se amplia el acordeon*/
     background-image: url("img/Fotos/Nosotros/Ampliar.png") !important;
     transform: none !important;
 }
-@media (prefers-reduced-motion: reduce) {   /*Es el icono que se muestra cuando se contrae el acordeon*/
+
+@media (prefers-reduced-motion: reduce) {
+
+    /*Es el icono que se muestra cuando se contrae el acordeon*/
     .accordion-button::after {
-       background-image: url("img/Fotos/Nosotros/Contraer.png") !important; 
+        background-image: url("img/Fotos/Nosotros/Contraer.png") !important;
     }
 }
-.informacionSucursal{
+
+.informacionSucursal {
     width: 100%;
-    display:grid;
+    display: grid;
     justify-content: center;
     text-align: center;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
-    color:#d75f44;
-    gap:1em;
-    margin:0;
+    color: #d75f44;
+    gap: 1em;
+    margin: 0;
 }
-.datosSucursal{
+
+.datosSucursal {
     text-align: center;
     align-content: center;
-    padding:0;
+    padding: 0;
 }
-.datosSucursal h3{
+
+.datosSucursal h3 {
     font-size: 40px !important;
 }
-.datosSucursal span{
+
+.datosSucursal span {
     font-size: 18px;
 }
+
 /*RESPONSIVE*/
 @media (max-width: 768px) {
+
     .presentacion,
     .mision,
     .vision {
-        grid-template-columns: 1fr; /* De 2 columnas a 1 */
-        font-size: 18px; /* Tamaño de texto más chico */
+        grid-template-columns: 1fr;
+        /* De 2 columnas a 1 */
+        font-size: 18px;
+        /* Tamaño de texto más chico */
         text-align: center;
     }
+
     .presentacion img,
     .mision img,
     .vision img {
         order: 1;
     }
+
     .presentacion .textoPresentacion,
     .mision .textoPresentacion,
     .vision .textoPresentacion {
@@ -771,18 +842,21 @@ main {
 
     .accordion-body {
         display: flex;
-        flex-direction: column; 
+        flex-direction: column;
     }
 
     .ubicacionSucursal {
-        order: 1; /* mapa arriba */
+        order: 1;
+        /* mapa arriba */
         width: 100%;
     }
 
     .informacionSucursal {
-        order: 2; /* texto abajo */
+        order: 2;
+        /* texto abajo */
         width: 100%;
     }
+
     .datosSucursal h3 {
         font-size: 30px !important;
     }
@@ -797,6 +871,7 @@ main {
         min-height: 300px;
     }
 }
+
 /*INGRESO*/
 /*MAIN*/
 .mainIngreso {
@@ -1101,13 +1176,15 @@ input[type=number]::-webkit-outer-spin-button {
 
 #datosDeReserva {
     display: none;
-    padding:1em;
+    padding: 1em;
     gap: 2em;
 }
-#referenciaLocal img{
+
+#referenciaLocal img {
     width: 70%;
     border-radius: 10px;
 }
+
 #reservarMesa {
     width: auto;
     background-color: #ffffff;
@@ -1116,7 +1193,7 @@ input[type=number]::-webkit-outer-spin-button {
     grid-template-rows: auto auto auto;
     align-items: center;
     text-align: center;
-    padding:2em;
+    padding: 2em;
     gap: 2em;
 }
 
@@ -1319,6 +1396,7 @@ input[type=number]::-webkit-outer-spin-button {
     align-content: center;
     text-decoration: none;
 }
+
 @media (max-width: 768px) {
     .contenedorRealizarReservas {
         width: 95%;
@@ -1356,6 +1434,7 @@ input[type=number]::-webkit-outer-spin-button {
     #finalizoReserva {
         padding: 1em;
     }
+
     #imagenConfirmacionReservas,
     #imagenFinalizacionReservas {
         grid-template-columns: 1fr;
@@ -1384,34 +1463,46 @@ input[type=number]::-webkit-outer-spin-button {
         border-radius: 10px;
     }
 }
+
 @media (max-width: 480px) {
-    body, input, select, textarea, h1, p {
+
+    body,
+    input,
+    select,
+    textarea,
+    h1,
+    p {
         font-size: 16px;
     }
-    #seleccionSucursalDeReserva{
+
+    #seleccionSucursalDeReserva {
         width: auto;
         max-width: 100%;
     }
+
     .tituloReservas h1 {
         font-size: 1.7rem;
     }
-    #reservarMesa{
-        margin:1em;
+
+    #reservarMesa {
+        margin: 1em;
         padding: 10px;
     }
 
-    #referenciaLocal{
+    #referenciaLocal {
         max-width: 100%;
-        margin:1em;
+        margin: 1em;
         height: auto;
-        padding:0;
+        padding: 0;
     }
-    #referenciaLocal img{
+
+    #referenciaLocal img {
         max-width: 100%;
         height: auto;
         border-radius: 10px;
-        padding:0;
+        padding: 0;
     }
+
     .notaImportanteReserva p,
     .notaImportanteReserva h5 {
         font-size: 16px;
@@ -1419,19 +1510,21 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /*MI PERFIL*/
-#list-misReservas{
+#list-misReservas {
     width: 100%;
     height: auto;
     padding: 0;
 }
-#botonesDeAccion{
+
+#botonesDeAccion {
     width: 100%;
     display: grid;
     grid-template-columns: auto auto auto auto;
     gap: 1em;
 }
 
-#botonesDeAccion input[type="button"], #botonesDeAccion a {
+#botonesDeAccion input[type="button"],
+#botonesDeAccion a {
     display: block;
     width: 100%;
     margin: 10px 0 0 0;
@@ -1441,14 +1534,17 @@ input[type=number]::-webkit-outer-spin-button {
 
     font-size: 1.1rem;
     background-color: #4cbfe6;
-    border-color:#4cbfe6 ;
+    border-color: #4cbfe6;
 }
+
 /*Boton subir, scroll para modificarMenu*/
 #list-modificarMenu {
-  max-height: 600px; /* Ajusta este valor según el diseño */
-  overflow-y: auto;
-  position: relative;
+    max-height: 600px;
+    /* Ajusta este valor según el diseño */
+    overflow-y: auto;
+    position: relative;
 }
+
 #list-modificarMenu #btn-subir {
     position: fixed;
     bottom: 20px;
@@ -1463,53 +1559,63 @@ input[type=number]::-webkit-outer-spin-button {
     border-radius: 50%;
     cursor: pointer;
     font-size: 20px;
-    display: none; /* Oculto al inicio */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-} 
+    display: none;
+    /* Oculto al inicio */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
 #list-modificarMenu #btn-subir:hover {
     background-color: rgb(3, 175, 219);
 }
+
 /*Estilo de mofidicar menu*/
 .contenedor-items-del-menu {
     display: grid;
     gap: 1rem;
     grid-template-columns: repeat(1, 1fr);
-    padding:0;
-    margin:0;
+    padding: 0;
+    margin: 0;
     align-items: center;
     text-align: center;
 }
-.contenedor-items-del-menu .list-group-item:first-child, 
-.contenedor-items-del-menu  .list-group-item+.list-group-item {
+
+.contenedor-items-del-menu .list-group-item:first-child,
+.contenedor-items-del-menu .list-group-item+.list-group-item {
     border-top-width: 0;
     Margin: 0;
     padding: 1em;
 }
+
 .contenedor-items-del-menu .col-md-2,
 .contenedor-items-del-menu .col-md-7,
 .contenedor-items-del-menu .col-md-3 {
     width: 100%;
 }
+
 .menu-item .row.align-items-center {
     display: flex;
-    flex-direction: column; /* apila en vertical */
-    gap: 1rem; /* espaciado entre bloques */
+    flex-direction: column;
+    /* apila en vertical */
+    gap: 1rem;
+    /* espaciado entre bloques */
 }
+
 .menu-item {
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
 /* tablets pequeñas (≥576px): 2 por fila */
 @media (min-width: 576px) {
     .contenedor-items-del-menu {
         grid-template-columns: repeat(2, 1fr);
-        margin:0;
-        padding:0;
+        margin: 0;
+        padding: 0;
     }
+
     .contenedor-items-del-menu .col-md-2,
     .contenedor-items-del-menu .col-md-7,
     .contenedor-items-del-menu .col-md-3 {
@@ -1522,6 +1628,7 @@ input[type=number]::-webkit-outer-spin-button {
     .contenedor-items-del-menu {
         grid-template-columns: repeat(3, 1fr);
     }
+
     .contenedor-items-del-menu .col-md-2,
     .contenedor-items-del-menu .col-md-7,
     .contenedor-items-del-menu .col-md-3 {
@@ -1534,6 +1641,7 @@ input[type=number]::-webkit-outer-spin-button {
     .contenedor-items-del-menu {
         grid-template-columns: repeat(4, 1fr);
     }
+
     .contenedor-items-del-menu .col-md-2,
     .contenedor-items-del-menu .col-md-7,
     .contenedor-items-del-menu .col-md-3 {
