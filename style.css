@@ -1510,6 +1510,9 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /*MI PERFIL*/
+#contenidoDeLista{
+    min-height: 50vh;
+}
 #list-misReservas {
     width: 100%;
     height: auto;
@@ -1539,7 +1542,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 /*Boton subir, scroll para modificarMenu*/
 #list-modificarMenu {
-    max-height: 600px;
+    max-height: 800px;
     /* Ajusta este valor según el diseño */
     overflow-y: auto;
     position: relative;
@@ -1647,4 +1650,24 @@ input[type=number]::-webkit-outer-spin-button {
     .contenedor-items-del-menu .col-md-3 {
         width: 100%;
     }
+}
+/*Base de datos*/
+#botonesDeTablas{
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 1em;
+}
+
+#botonesDeTablas input[type="button"]{
+    display: block;
+    width: 100%;
+    margin: 10px;
+    min-height: 3em;
+    border-radius: 8px;
+    color: white;
+
+    font-size: 1.1rem;
+    background-color: #4cbfe6;
+    border-color: #4cbfe6;
 }

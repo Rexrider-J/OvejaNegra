@@ -73,7 +73,7 @@
                         <option value="2"name="Sucursal 2">Sucursal 2</option>
                     </select>
                     <div>
-                        <input type="submit" value="Continuar" onclick="mostrarDatosDeReserva()"/>
+                        <input type="submit" value="Continuar" onclick="guardarSucursalDeReserva(); mostrarSeccion('datosDeReserva', this)"/>
                     </div>
                 </section>
                 <section id="datosDeReserva" >
@@ -144,8 +144,8 @@
                             <p>Para validar la reserva, el DNI entregado al empleado de caja debe coincidir con el registrado en la misma.</p>
                         </div>
                         <div class="botonesReserva">
-                            <input type="button" value="Volver" onclick="volverSeleccionSucursalReserva()" />
-                            <input type="submit" value="Continuar" onclick="mostrarSeleccionSucursalReserva()"/>
+                            <input type="button" value="Volver" onclick="volverSeleccionSucursalReserva(); mostrarSeccion('seleccionSucursalDeReserva', this)" />
+                            <input type="submit" value="Continuar" onclick="guardarValoresDatosReserva(); mostrarSeccion('confirmacionReserva', this)"/>
                         </div>
                     </div>
                 </section>
@@ -171,8 +171,8 @@
                         <p>Para validar la reserva, el DNI entregado al empleado de caja debe coincidir con el registrado en la misma.</p>
                     </div>
                     <div class="botonesReserva">
-                        <input type="button" value="Volver" onclick="volverSeleccionDatosReserva()"/>
-                        <input type="submit" value="Completar reserva" onclick="enviarReserva()"/>
+                        <input type="button" value="Volver" onclick="mostrarSeccion('datosDeReserva', this)"/>
+                        <input type="submit" value="Completar reserva" onclick="enviarReserva(); mostrarSeccion('finalizoReserva', this)"/>
                     </div>
                     <form id="formReservaFinal" method="post" action="procesar_reserva.php" style="display: none;">
                         <input type="hidden" name="sucursal">

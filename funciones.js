@@ -308,8 +308,8 @@ if (window.location.pathname.includes("reservas.html")) {
 });
 }
 
-/*Muestra la seccion datos de reserva y oculta la sección seleccionar sucursal de reseva*/
-function mostrarDatosDeReserva() {
+/*Guarda la sucursal seleccionada en la sección seleccionar sucursal de reseva*/
+function guardarSucursalDeReserva() {
   const sucursalSelect = document.getElementById("dropdownReservas");
   const sucursalSeleccionada = sucursalSelect.value;
   const sucursalSeleccionadaNombre = sucursalSelect.options[sucursalSelect.selectedIndex].text;
@@ -323,12 +323,6 @@ function mostrarDatosDeReserva() {
   /*Guardo los valores en el sessionStorage*/
   sessionStorage.setItem("sucursalValor", sucursalSeleccionada);
   sessionStorage.setItem("sucursalNombre", sucursalSeleccionadaNombre);
-
-  /* Ocultar primera sección*/
-  document.getElementById("seleccionSucursalDeReserva").style.display = "none";
-
-  /* Mostrar segunda sección*/
-  document.getElementById("datosDeReserva").style.display = "grid";
 }
 
 let locales = [];
@@ -881,6 +875,19 @@ function cerrarSesion() {
   sessionStorage.removeItem("usuarioTipo");
   window.location.href = "index.html";
 }
+function mostrarSeccion(idDestino, boton) {
+  // Ocultar la sección que contiene al botón (padre más cercano tipo <section>)
+  const seccionActual = boton.closest("section");
+  if (seccionActual) {
+    seccionActual.style.display = "none";
+  }
+
+  // Mostrar la sección destino
+  const seccionDestino = document.getElementById(idDestino);
+  if (seccionDestino) {
+    seccionDestino.style.display = "grid";
+  }
+}
 /*Inhabilita el boton mesaReserva hasta que se selecicone fecha,hora y cantPersonas.Guarda estos datos en el sessionStorage*/
 if (window.location.pathname.includes("reservas.html")) {
   document.addEventListener("DOMContentLoaded", function () {
@@ -958,7 +965,7 @@ if (window.location.pathname.includes("reservas.html")) {
 }
 
 /*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
-function mostrarSeleccionSucursalReserva() {
+function guardarValoresDatosReserva() {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/
   const fechaSeleccionada = document.getElementById("fechaReserva").value;
   if (fechaSeleccionada === "") {
@@ -968,15 +975,14 @@ function mostrarSeleccionSucursalReserva() {
 
   const horaSelect = document.getElementById("horaReserva");
   const horaSeleccionada = horaSelect.value;
-
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (horaSeleccionada === "") {
     alert("Debe seleccionar un horario antes de continuar.");
     return;
   }
+
   const personasSelect = document.getElementById("cantPersonasReserva");
   const personasSeleccionadas = personasSelect.value;
-
   /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (personasSeleccionadas === "") {
     alert("Debe indicar la cantidad de personas antes de continuar.");
@@ -1009,22 +1015,6 @@ function mostrarSeleccionSucursalReserva() {
   document.getElementById("cantPersonasSeleccionada").textContent = sessionStorage.getItem("personasSeleccionadas") + " persona/s";
   document.getElementById("mesaSeleccionada").textContent = sessionStorage.getItem("mesaSeleccionada");
   document.getElementById("ObservacionDada").textContent = sessionStorage.getItem("ObservacionDada");
-
-  /* Ocultar primera sección*/
-  document.getElementById("datosDeReserva").style.display = "none";
-
-  /* Mostrar segunda sección*/
-  document.getElementById("confirmacionReserva").style.display = "grid";
-  const inicio = document.getElementById("imagenConfirmacionReservas");
-  inicio.scrollIntoView({ behavior: "smooth", block: "start" });
-}
-/*Permite volver para atras de datos de reserva a selección de sucursal de reserva*/
-function volverSeleccionSucursalReserva() {
-  /* Ocultar datos de reserva*/
-  document.getElementById("datosDeReserva").style.display = "none";
-
-  /* Mostrar selección de sucursal de reserva*/
-  document.getElementById("seleccionSucursalDeReserva").style.display = "grid";
 }
 function volverSeleccionDatosReserva() {
   /* Ocultar confirmación de reserva*/
@@ -1050,14 +1040,6 @@ function enviarReserva() {
   form.elements["cantidad"].value = cantidad;
   form.elements["mesa"].value = mesa;
   form.elements["observaciones"].value = observaciones;
-
-  /*form.submit(); // Enviar el formulario
-
-  /* Ocultar confirmación de reserva*/
-  document.getElementById("confirmacionReserva").style.display = "none";
-
-  /* Mostrar datos reserva*/
-  document.getElementById("finalizoReserva").style.display = "grid";
 }
 /*Es un boton para scrollear para arriba en modificar menu*/
 if (window.location.pathname.includes("miPerfil.html")) {
