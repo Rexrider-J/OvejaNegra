@@ -176,7 +176,9 @@ document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
 /*borra el contenido del tab antes de cambiar de pagina*/
 document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tabLink => {
   tabLink.addEventListener('shown.bs.tab', function (e) {
-    const previouslyActiveTabId = e.relatedTarget?.getAttribute("href");
+    const previouslyActiveTab = e.relatedTarget;
+    const previouslyActiveTabId = previouslyActiveTab ? previouslyActiveTab.getAttribute("href") : null;
+
     if (previouslyActiveTabId === "#list-modificarMenu") {
       document.getElementById("list-modificarMenu").innerHTML = ""; // limpia cuando se sale
     }
@@ -464,9 +466,12 @@ function crearAcordeones(locales) {
   });
 }
 /*Sirve para desplegar el acordeon de sucursal que corresponda a la sucursal seleccionada en el header en tiempo real*/
-document.getElementById("selectorSucursales")?.addEventListener("change", () => {
-  crearAcordeones(locales); // vuelve a renderizar con la nueva sucursal seleccionada
-});
+const selector = document.getElementById("selectorSucursales");
+if (selector) {
+  selector.addEventListener("change", () => {
+    crearAcordeones(locales); // vuelve a renderizar con la nueva sucursal seleccionada
+  });
+}
 /*RESTRICCIONES PARA DATOS INGRESADOS*/
 /*Calendario externo Flatpickr*/
 document.addEventListener("DOMContentLoaded", function () {
