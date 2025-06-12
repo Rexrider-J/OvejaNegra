@@ -571,7 +571,6 @@ main {
 #mainMenu figure, #mainPromos figure {
     margin: 0;
     width: 180px;
-    align-content: center;
     height: auto;
     justify-content: space-between;
 }
