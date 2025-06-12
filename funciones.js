@@ -954,6 +954,15 @@ function enviarReserva() {
   /* Mostrar datos reserva*/
   document.getElementById("finalizoReserva").style.display = "grid";
 }
+/*Es un boton para scrollear para arriba en modificar menu*/
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('btn-subir');
+  if (window.scrollY > 200) {
+    btn.style.display = 'block';
+  } else {
+    btn.style.display = 'none';
+  }
+});
 
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
   fetch("obtener_menu.php") // solicita ese archivo, que carga el HTML del menú
