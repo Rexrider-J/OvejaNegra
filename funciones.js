@@ -20,30 +20,30 @@ document.addEventListener("DOMContentLoaded", function () {
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
-      boton.textContent = "Empleado";
-      if (puesto === "Gerente") {
-        menu.innerHTML = `
+    boton.textContent = "Empleado";
+    if (puesto === "Gerente") {
+      menu.innerHTML = `
         <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
         <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
         <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
         <li><a class="dropdown-item" href="miPerfil.html#list-baseDatos-list">Administrador</a></li>
         <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
         `;
-      }
-      else if (puesto === "Subgerente") {
-        menu.innerHTML = `
+    }
+    else if (puesto === "Subgerente") {
+      menu.innerHTML = `
         <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
         <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
         <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
         <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
         `;
-      }else{
-        menu.innerHTML = `
+    } else {
+      menu.innerHTML = `
           <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
           <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
           <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
         `;
-      }
+    }
   } else {
     // Si nadie inició sesión, dejarlo como estaba por defecto
     boton.textContent = "Ingresar";
@@ -79,76 +79,85 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   /* Mostrar u ocultar pestañas según tipo de usuario*/
-    secciones.forEach(id => {
-      const tab = document.getElementById(`${id}-list`);
-      const pane = document.getElementById(id);
+  secciones.forEach(id => {
+    const tab = document.getElementById(`${id}-list`);
+    const pane = document.getElementById(id);
 
-      /* Ocultar por defecto*/
-      tab.style.display = "none";
-      pane.style.display = "none";
-    });
+    /* Ocultar por defecto */
+    if (tab) tab.style.display = "none";
+    if (pane) pane.style.display = "none";
+  });
 
-    const mostrarSiempre = ["list-datosPersonales", "list-misReservas"];
-    mostrarSiempre.forEach(id => {
-      document.getElementById(`${id}-list`).style.display = "grid";
-      document.getElementById(id).style.display = "grid";
-    });
+  const mostrarSiempre = ["list-datosPersonales", "list-misReservas"];
+  mostrarSiempre.forEach(id => {
+    const tab = document.getElementById(`${id}-list`);
+    const pane = document.getElementById(id);
+    if (tab) tab.style.display = "grid";
+    if (pane) pane.style.display = "grid";
+  });
 
-    if (tipoUsuario === "empleado") {
-      if (puesto === "Gerente" || puesto === "Subgerente") {
-        document.getElementById("list-modificarMenu-list").style.display = "block";
-        document.getElementById("list-modificarMenu").style.display = "block";
-      }
-      if (puesto === "Gerente") {
-        document.getElementById("list-baseDatos-list").style.display = "block";
-        document.getElementById("list-baseDatos").style.display = "block";
-      }
+  if (tipoUsuario === "empleado") {
+    if (puesto === "Gerente" || puesto === "Subgerente") {
+      const modMenuTab = document.getElementById("list-modificarMenu-list");
+      const modMenuPane = document.getElementById("list-modificarMenu");
+      if (modMenuTab) modMenuTab.style.display = "block";
+      if (modMenuPane) modMenuPane.style.display = "block";
     }
-  
-
-  /*Cargar contenido dinamico dentro de datosPersonales*/
-  const datosPersonalesDiv = document.getElementById("list-datosPersonales");
-
-  if (tipoUsuario === "cliente") {
-    datosPersonalesDiv.innerHTML = `
-      <h5>Datos del Cliente</h5>
-    `;
-  } else if (tipoUsuario === "empleado") {
-    datosPersonalesDiv.innerHTML = `
-      <h5>Datos Empleados</h5>
-    `;
+    if (puesto === "Gerente") {
+      const baseDatosTab = document.getElementById("list-baseDatos-list");
+      const baseDatosPane = document.getElementById("list-baseDatos");
+      if (baseDatosTab) baseDatosTab.style.display = "block";
+      if (baseDatosPane) baseDatosPane.style.display = "block";
+    }
   }
 
-  /*Cargar contenido dinamico dentro de misReservas*/
+  /*Cargar contenido dinámico dentro de datosPersonales*/
+  const datosPersonalesDiv = document.getElementById("list-datosPersonales");
+
+  if (datosPersonalesDiv) {
+    if (tipoUsuario === "cliente") {
+      datosPersonalesDiv.innerHTML = `
+        <h5>Datos del Cliente</h5>
+      `;
+    } else if (tipoUsuario === "empleado") {
+      datosPersonalesDiv.innerHTML = `
+        <h5>Datos Empleados</h5>
+      `;
+    }
+  }
+
+  /*Cargar contenido dinámico dentro de misReservas*/
   const misReservasDiv = document.getElementById("list-misReservas");
 
-  if (tipoUsuario === "cliente") {
-    misReservasDiv.innerHTML = `
-      <h5>Reservas Cliente</h5>
-    `;
-  } else if (tipoUsuario === "empleado") {
-    misReservasDiv.innerHTML = `
-      <div id="botonesDeAccion">
-        <input type="button" value="Modificar reservas" onclick="mostrarContenidoMisReservasE('modificar')"/>
-        <input type="button" value="Cancelar reservas" onclick="mostrarContenidoMisReservasE('cancelar')"/>
-        <input type="button" value="Visualizar reservas" onclick="mostrarContenidoMisReservasE('visualizar')"/>  
-        <a href="reservas.html" class="btn btn-primary">Crear reservas</a>
-      </div>
-      <div id="contenidoBtnEmpleado">
-        <div id="modificar" class="seccionEmpleado" style="display: none;">
-          <h3>Modificar reservas</h3>
-          <p>Aca se modificarán las reservas ya realizadas. Podria agregarse un filtro por mail, fecha, hora, dni</p>
+  if (misReservasDiv) {
+    if (tipoUsuario === "cliente") {
+      misReservasDiv.innerHTML = `
+        <h5>Reservas Cliente</h5>
+      `;
+    } else if (tipoUsuario === "empleado") {
+      misReservasDiv.innerHTML = `
+        <div id="botonesDeAccion">
+          <input type="button" value="Modificar reservas" onclick="mostrarContenidoMisReservasE('modificar')"/>
+          <input type="button" value="Cancelar reservas" onclick="mostrarContenidoMisReservasE('cancelar')"/>
+          <input type="button" value="Visualizar reservas" onclick="mostrarContenidoMisReservasE('visualizar')"/>  
+          <a href="reservas.html" class="btn btn-primary">Crear reservas</a>
         </div>
-        <div id="cancelar" class="seccionEmpleado" style="display: none;">
-          <h3>Cancelar reservas</h3>
-          <p>Aquí puedes cancelar una reserva. Podria carcelarse la reserva para un solo individuo o masivamente. Debe redactarse una nota que se enviará al mail de la/el/los involucrados(simulado)</p>
+        <div id="contenidoBtnEmpleado">
+          <div id="modificar" class="seccionEmpleado" style="display: none;">
+            <h3>Modificar reservas</h3>
+            <p>Aca se modificarán las reservas ya realizadas. Podria agregarse un filtro por mail, fecha, hora, dni</p>
+          </div>
+          <div id="cancelar" class="seccionEmpleado" style="display: none;">
+            <h3>Cancelar reservas</h3>
+            <p>Aquí puedes cancelar una reserva. Podria carcelarse la reserva para un solo individuo o masivamente. Debe redactarse una nota que se enviará al mail de la/el/los involucrados(simulado)</p>
+          </div>
+          <div id="visualizar" class="seccionEmpleado" style="display: none;">
+            <h3>Visualizar reservas</h3>
+            <p>Tabla o datos de reservas existentes.Se va poder sumar puntos, anular reserva y concretar reserva</p>
+          </div>
         </div>
-        <div id="visualizar" class="seccionEmpleado" style="display: none;">
-          <h3>Visualizar reservas</h3>
-          <p>Tabla o datos de reservas existentes.Se va poder sumar puntos, anular reserva y concretar reserva</p>
-        </div>
-      </div>
-    `;
+      `;
+    }
   }
 });
 document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
@@ -166,7 +175,7 @@ document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
     if (activePane) {
       activePane.style.display = "grid";
     }
-        // Cargar el contenido solo cuando corresponde
+    // Cargar el contenido solo cuando corresponde
     if (targetId === "list-modificarMenu") {
       cargarMenu();
     }
@@ -187,7 +196,9 @@ document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tabLink => {
 /*Cambiar seccion de dropdown de miPerfil desde la misma pagina*/
 function activarTabPorHash() {
   const hash = window.location.hash;
-  const targetTab = document.querySelector(`a${hash}`);
+  if (!hash) return;
+
+  const targetTab = document.querySelector(`a[data-bs-toggle="tab"][href="${hash}"]`);
   if (targetTab) {
     const tab = new bootstrap.Tab(targetTab);
     tab.show();
@@ -323,10 +334,10 @@ function mostrarTodasSucursales() {
   fetch('obtener_locales.php')
     .then(response => response.text())
     .then(text => {
-      
+
       const lineas = text.trim().split("\n"); // limpia espacios y divide por líneas
 
-      
+
       locales = lineas.map(linea => { // recorremos cada línea
         const campos = linea.split(";"); // divide por puntoycoma
         const objeto = {};
@@ -365,7 +376,7 @@ function cargarSelectSucursales() {
 
   locales.forEach((local, index) => {
     const option = document.createElement("option");
-    option.value = index + 1; 
+    option.value = index + 1;
     option.textContent = local.nombre;
     select.appendChild(option);
   });
@@ -418,9 +429,9 @@ document.addEventListener("DOMContentLoaded", function () {
 /*Genera acordeones con los datos de cada sucursal dinamicamente en la pagina nosotros*/
 /*Tambien despliega el acordeon correspondiente a la sucursal seleccionada previamente en el header*/
 function crearAcordeones(locales) {
-  const contenedor = document.getElementById("contenedorAcordeones"); 
-  if (!contenedor) return; 
-  contenedor.innerHTML = ""; 
+  const contenedor = document.getElementById("contenedorAcordeones");
+  if (!contenedor) return;
+  contenedor.innerHTML = "";
 
   const sucursalSeleccionada = sessionStorage.getItem("sucursalSeleccionada");
 
@@ -565,17 +576,19 @@ function validarTelefono() {
 /*Para validad el input date de la fecha de nacimiento en la parte de registrarse cliente*/
 document.addEventListener('DOMContentLoaded', () => {
   const fechaInput = document.getElementById('fecha-nacimiento-registro');
-  /*Se coloca el año actual y la fecha de hoy en variables*/
-  const hoy = new Date();
-  const añoActual = hoy.getFullYear();
-  /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/
-  /*Minimo (este año - 80) -01-01*/
-  const min = `${añoActual - 80}-01-01`;
-  /*Maximo el 31 de diciembre de (este año -14)*/
-  const max = `${añoActual - 14}-12-31`;
-  /*Se colocan las variables en los valores maximos y minimos que puede tomar el input*/
-  fechaInput.min = min;
-  fechaInput.max = max;
+  if (fechaInput) {
+    /*Se coloca el año actual y la fecha de hoy en variables*/
+    const hoy = new Date();
+    const anioActual = hoy.getFullYear();
+    /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/
+    /*Minimo (este año - 80) -01-01*/
+    const min = `${anioActual - 80}-01-01`;
+    /*Maximo el 31 de diciembre de (este año -14)*/
+    const max = `${anioActual - 14}-12-31`;
+    /*Se colocan las variables en los valores maximos y minimos que puede tomar el input*/
+    fechaInput.min = min;
+    fechaInput.max = max;
+  }
 });
 /* Validar formato de email ejemplo@ejemplo.ejemplo*/
 function validateEmail(email) {
@@ -585,15 +598,15 @@ function validateEmail(email) {
 /*INGRESAR, REGISTRARSE, EMPLEADO*/
 /*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
 function mostrarFormularioIngresar(tipo) {
-    document.getElementById("cliente").style.display = "none";
-    document.getElementById("empleado").style.display = "none";
-    document.getElementById("olvideContrasenia").style.display = "none";
-  
-    if (tipo === "botonCliente") {
-      document.getElementById("cliente").style.display = "grid";
-    } else if (tipo === "botonEmpleado") {
-      document.getElementById("empleado").style.display = "grid";
-    }
+  document.getElementById("cliente").style.display = "none";
+  document.getElementById("empleado").style.display = "none";
+  document.getElementById("olvideContrasenia").style.display = "none";
+
+  if (tipo === "botonCliente") {
+    document.getElementById("cliente").style.display = "grid";
+  } else if (tipo === "botonEmpleado") {
+    document.getElementById("empleado").style.display = "grid";
+  }
 }
 /*Permite que se pueda acceder a los formularios de ingresoCliente e ingresoEmpleado desde otras paginas*/
 window.addEventListener("DOMContentLoaded", function () {
@@ -797,7 +810,7 @@ function submitAccederEmpleado(event) {
         sessionStorage.setItem("idLocalEmpleado", datos.id_local);
 
         window.location.href = "index.html"; // O redirigir a un panel de empleado
-      }else{
+      } else {
         alert("Uno o más datos son incorrectos.");
       }
     })
@@ -1039,14 +1052,18 @@ function enviarReserva() {
   document.getElementById("finalizoReserva").style.display = "grid";
 }
 /*Es un boton para scrollear para arriba en modificar menu*/
-window.addEventListener('scroll', () => {
-  const btn = document.getElementById('btn-subir');
-  if (window.scrollY > 200) {
-    btn.style.display = 'block';
-  } else {
-    btn.style.display = 'none';
-  }
-});
+if (window.location.pathname.includes("miPerfil.html")) {
+  window.addEventListener('scroll', () => {
+    const btn = document.getElementById('btn-subir');
+    if (btn) {
+      if (window.scrollY > 200) {
+        btn.style.display = 'block';
+      } else {
+        btn.style.display = 'none';
+      }
+    }
+  });
+}
 
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
   fetch("obtener_menu.php") // solicita ese archivo, que carga el HTML del menú
@@ -1120,12 +1137,12 @@ function inicializarEventosMenu() {
 function cargarCategoria(categoria) { // es la funcion que carga por la categoria que se le pase como argumento
   const targetDiv = document.querySelector(`#list-${categoria.toLowerCase()} .listProductos`); // guardamos en una variable el div donde vamos a insertar lo que devuelva el .php
   if (!targetDiv) return; // si no existe el div, la funcion se corta y no devuelve nada
-  
+
   targetDiv.innerHTML = "<p>Cargando productos...</p>"; // en lo que tarde la respuesta de la base de datos, ponemos esto
-  
+
   fetch(`obtener_menu_estatico.php?categoria=${encodeURIComponent(categoria)}`)
-  .then(response => response.text())
-  .then(data => {
+    .then(response => response.text())
+    .then(data => {
       targetDiv.innerHTML = data;
     })
     .catch(error => {
@@ -1140,7 +1157,7 @@ function cargarMenuEstatico(categoriaInicial = "") {
     if (categoriaInicial) { // si exitste, que es cuando se ingresa a la pag por primera vez
       cargarCategoria(categoriaInicial); // ejecuta la funcion con la variable que trae del html
     }
-    
+
     document.querySelectorAll(".list-group-item").forEach(item => { // se sellecionan todos los query que incluyan ".list-group-item"
       item.addEventListener("click", () => { // esperamos a que se les haga click a alguno,
         const categoriaId = item.getAttribute("href"); // tomamos el atributo herf,
