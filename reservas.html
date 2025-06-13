@@ -69,8 +69,6 @@
                     </div>
                     <select id="dropdownReservas" class="form-select"  aria-label="Default select example">
                         <option value="" selected>Seleccioná a qué local te gustaría ir</option>
-                        <option value="1" name="Oveja Negra Parque Chacabuco - Emilio Mitre 1296">Oveja Negra Parque Chacabuco - Emilio Mitre 1296</option>
-                        <option value="2"name="Sucursal 2">Sucursal 2</option>
                     </select>
                     <div>
                         <input type="submit" value="Continuar" onclick="guardarSucursalDeReserva(); mostrarSeccion('datosDeReserva', this)"/>
@@ -206,7 +204,125 @@
                 </section>
             </div>
             <div id="empleado-section" style="display: none">
-                <h1>Hola empleado</h1>
+                <div class="tituloReservas">
+                    <h1>Realizar reserva</h1>
+                </div>
+                <div id="contenido-empleado-section">
+                    <section class="completar-datos-cliente">
+                        <div class="tituloReservas">
+                            <h1>Completar datos de cliente</h1>
+                        </div>
+                        <fieldset>
+                            <legend>Tipo de cliente</legend>
+                            <label for="cliente-no-registrado">
+                                <input id="cliente-no-registrado" type="radio" name="tipo-de-registro" class="inline" checked /> No registrado
+                            </label>
+                            <label for="cliente-registrado">
+                                <input id="cliente-registrado" type="radio" name="tipo-de-registro" class="inline" /> Registrado
+                            </label>
+                        </fieldset>
+                        <div id="registrarCliente" style="display: none">
+                            <form action="">
+                                <fieldset><!--luego poner style="display:none;"-->
+                                    <label for="nombre-registrar-cliente" class="solo-letras">
+                                        <legend>Nombre/s</legend>
+                                        <input id="nombre-registrar-cliente" name="nombre-registrar-cliente" type="text" maxlength="50" required>
+                                    </label>
+                                    <label for="apellido-registrar-cliente" class="solo-letras">
+                                        <legend>Apellido/s</legend>
+                                        <input id="apellido-registrar-cliente" name="apellido-registrar-cliente" type="text" maxlength="50" required>
+                                    </label>
+                                    <label for="dni-registrar-cliente" class="solo-numeros">
+                                        <legend>DNI</legend>
+                                        <input id="dni-registrar-cliente" name="dni-registrar-cliente" type="text" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                                    </label>
+                                    <label for="email-registrar-cliente">
+                                        <legend>Email</legend> 
+                                        <input id="email-registrar-cliente" name="email-registrar-cliente" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                                    </label> 
+                                    <label for="telefono-registrar-cliente" class="solo-numeros">
+                                        <legend>Telefono</legend> 
+                                        <input id="telefono-registrar-cliente" name="telefono-registrar-cliente" type="text" placeholder="1112345678" min="1000000000" max="99999999" maxlength="20" required>
+                                    </label>        
+                                    <label for="fNacimiento-registrar-cliente">
+                                        <legend>Fecha de nacimiento</legend>
+                                        <input type="date" id="fNacimiento-registrar-cliente" name="fNacimiento-registrar-cliente" required>
+                                    </label>   
+                                    <label for="contrasenia-registrar-cliente">
+                                        <legend>Contraseña</legend> 
+                                        <input id="contrasenia-registrar-cliente" name="contrasenia-registrar-cliente" type="password" maxlength="20" required>
+                                    </label>      
+                                </fieldset>                                                
+                            </form>
+                        </div>
+                        <div id="IngresarCliente">
+                            <fieldset >
+                                <label for="email-cliente-registrado">
+                                    <legend>Email</legend> 
+                                    <input id="email-cliente-registrado" name="email-cliente-registrado" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                                </label>
+                                <label for="dni-cliente-registrado" class="solo-numeros">
+                                    <legend>DNI</legend>
+                                    <input id="dni-cliente-registrado" name="dni-cliente-registrado" type="text" placeholder="00000000" min="6000000" max="99999999" maxlength="11" required>
+                                </label>
+                            </fieldset>
+                        </div>
+                    </section>
+                    <section class="completar-datos-reserva">
+                        <div class="tituloReservas">
+                            <h1>Completar datos de reserva</h1>
+                        </div>
+                        <form action="">
+                            <fieldset>
+                                <legend>Sucursal</legend>
+                                <select id="dropdownReservas" class="form-select"  aria-label="Default select example">
+                                    <option value="" selected>Seleccioná a qué local te gustaría ir</option>
+                                </select>
+                                <input type="text" id="fechaReserva" hidden>
+                                <legend>Fecha</legend>
+                                <div id="calendarioReservas"></div>
+                                <label for="horaReserva">
+                                    <legend>Hora</legend>
+                                    <select id="horaReserva" name="horaReserva" class="form-control" required>
+                                        <option value="" selected>Seleccione hora de reserva</option>
+                                        <option value="11:00:00">11:00</option>
+                                        <option value="12:00:00">12:00</option>
+                                        <option value="13:00:00">13:00</option>
+                                        <option value="14:00:00">14:00</option>
+                                        <option value="15:00:00">15:00</option>
+                                        <option value="16:00:00">16:00</option>
+                                        <option value="17:00:00">17:00</option>
+                                        <option value="18:00:00">18:00</option>
+                                        <option value="19:00:00">19:00</option>
+                                        <option value="20:00:00">20:00</option>
+                                    </select>
+                                </label>
+                                <label for="cantPersonasReserva">
+                                    <legend>Cantidad de personas</legend>
+                                    <select id="cantPersonasReserva" name="cantPersonasReserva" class="form-control" required>
+                                        <option value="" selected>¿Cuantas personas asistirán?</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </label>
+                                <label for="mesaReserva">
+                                    <legend>Mesa</legend>
+                                    <select id="mesaReserva" name="mesaReserva" class="form-control" placeholder="Seleccione la mesa" required>
+                                        <option value="" selected>Seleccione la mesa</option>
+                                    </select>
+                                </label>
+                                <label for="observacionesReserva">
+                                    <legend>Comentarios</legend>
+                                    <textarea id="observacionesReserva" name="observacionesReserva" rows="3" cols="30" placeholder="Comentario que desee realizar..." maxlength="255"></textarea>
+                                </label>
+                            </fieldset>
+                        </form>
+                    </section>
+                </div>
+                <input type="submit" value="Submit">
             </div>
         </div>
         <script src="funciones.js"></script>
