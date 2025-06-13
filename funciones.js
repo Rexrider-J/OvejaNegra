@@ -350,6 +350,7 @@ function mostrarTodasSucursales() {
       /*LLama a la funcion de cargarSelectSucursales para cargar los datos en la pagina*/
       cargarSelectSucursales();  // Header general
       cargarDropdownReservas();   //Pagina reservas
+      cargarDropdownReservasEmpleado(); //Pagina reservas
       crearAcordeones(locales); //pagina nosotros
 
       //Aplicar un valor a cada sucursal después de cargar las opciones para poder conservar la sucursal seleccionada en otras paginas
@@ -360,6 +361,9 @@ function mostrarTodasSucursales() {
 
         const dropdown = document.getElementById("dropdownReservas");
         if (dropdown) dropdown.value = valorGuardado;
+
+        const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
+        if (dropdownEmpleado) dropdownEmpleado.value = valorGuardado;
       }
     })
     .catch(error => console.error("Error:", error));
@@ -394,6 +398,22 @@ function cargarDropdownReservas() {
     option.setAttribute("name", `${local.nombre} - ${local.direccion}`);
     dropdown.appendChild(option);
   });
+}/*Carga dropdownReservas que es el dropdown que se encuentra en el primer paso del cliente para realizar una reserva*/
+/*Carga el nombre y la direccion de los locales*/
+function cargarDropdownReservasEmpleado() {
+  const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
+  if (!dropdownEmpleado) return;
+
+  // Limpia todas las opciones menos la primera
+  dropdownEmpleado.length = 1;
+
+  locales.forEach((local, index) => {
+    const option = document.createElement("option");
+    option.value = index + 1;
+    option.textContent = `${local.nombre} - ${local.direccion}`;
+    option.setAttribute("name", `${local.nombre} - ${local.direccion}`);
+    dropdownEmpleado.appendChild(option);
+  });
 }
 /* Guarda la sucursal seleccionada en el header*/
 function guardarSeleccionSucursal(valor) {
@@ -403,6 +423,10 @@ function guardarSeleccionSucursal(valor) {
   const dropdown = document.getElementById("dropdownReservas");
   if (dropdown) {
     dropdown.value = valor;
+  }
+  const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
+  if (dropdownEmpleado) {
+    dropdownEmpleado.value = valor;
   }
 }
 window.addEventListener('DOMContentLoaded', mostrarTodasSucursales);
@@ -421,6 +445,11 @@ document.addEventListener("DOMContentLoaded", function () {
   const dropdown = document.getElementById("dropdownReservas");
   if (dropdown) {
     dropdown.value = valorGuardado;
+  }
+  /* Aplica al dropdownEmpleado de reservas si se encuentra en la pagina pero solo cuando carga la pagina*/
+  const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
+  if (dropdownEmpleado) {
+    dropdownEmpleado.value = valorGuardado;
   }
 });
 /*Genera acordeones con los datos de cada sucursal dinamicamente en la pagina nosotros*/
@@ -964,7 +993,7 @@ if (window.location.pathname.includes("reservas.html")) {
 });
 }
 
-/*Muestra la seccion confirmación de reserva y oculta la sección datos de reserva*/
+/*Verifica que esten todos los datos de reserva y los guarda en sessionStorage*/
 function guardarValoresDatosReserva() {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/
   const fechaSeleccionada = document.getElementById("fechaReserva").value;
@@ -1040,6 +1069,20 @@ function enviarReserva() {
   form.elements["cantidad"].value = cantidad;
   form.elements["mesa"].value = mesa;
   form.elements["observaciones"].value = observaciones;
+}
+/*Los botones raddioButton de reservas x empleado cambian el contenido de los datos que se deben completar de cliente segun el seleccionado*/
+function cambioTipoCliente() {
+  const noRegistrado = document.getElementById('cliente-no-registrado');
+  const divRegistrar = document.getElementById('registrarCliente');
+  const divIngresar = document.getElementById('IngresarCliente');
+
+  if (noRegistrado.checked) {
+    divRegistrar.style.display = 'grid';
+    divIngresar.style.display = 'none';
+  } else {
+    divRegistrar.style.display = 'none';
+    divIngresar.style.display = 'grid';
+  }
 }
 /*Es un boton para scrollear para arriba en modificar menu*/
 if (window.location.pathname.includes("miPerfil.html")) {

@@ -212,16 +212,16 @@
                         <div class="tituloReservas">
                             <h1>Completar datos de cliente</h1>
                         </div>
-                        <fieldset>
+                        <fieldset id="box-radio-button">
                             <legend>Tipo de cliente</legend>
-                            <label for="cliente-no-registrado">
-                                <input id="cliente-no-registrado" type="radio" name="tipo-de-registro" class="inline" checked /> No registrado
+                            <label for="cliente-no-registrado" class="contenedorRadioButton">
+                                <input id="cliente-no-registrado" type="radio" name="tipo-de-registro" class="inline" checked onclick="cambioTipoCliente()"/> No registrado
                             </label>
-                            <label for="cliente-registrado">
-                                <input id="cliente-registrado" type="radio" name="tipo-de-registro" class="inline" /> Registrado
+                            <label for="cliente-registrado" class="contenedorRadioButton">
+                                <input id="cliente-registrado" type="radio" name="tipo-de-registro" class="inline" onclick="cambioTipoCliente()"/> Registrado
                             </label>
                         </fieldset>
-                        <div id="registrarCliente" style="display: none">
+                        <div id="registrarCliente" style="display: grid">
                             <form action="">
                                 <fieldset><!--luego poner style="display:none;"-->
                                     <label for="nombre-registrar-cliente" class="solo-letras">
@@ -249,14 +249,20 @@
                                         <input type="date" id="fNacimiento-registrar-cliente" name="fNacimiento-registrar-cliente" required>
                                     </label>   
                                     <label for="contrasenia-registrar-cliente">
-                                        <legend>Contraseña</legend> 
+                                        <legend>Contraseña = fecha actual(dd/mm/aaaa)</legend> 
                                         <input id="contrasenia-registrar-cliente" name="contrasenia-registrar-cliente" type="password" maxlength="20" required>
                                     </label>      
-                                </fieldset>                                                
+                                </fieldset>
+                                <div class="notaImportanteReserva">
+                                    <h5>Importante:</h5>
+                                    <p>El empleado debe informar al cliente que, para acceder a su cuenta, deberá ingresar el correo electrónico proporcionado, su DNI y la contraseña asignada, la cual debe ser entregada por escrito.
+                                        Además, debe indicarle que puede modificar la contraseña desde la opción "Olvidé mi contraseña" en la sección de ingreso, o desde su perfil una vez que haya iniciado sesión.</p>
+                                </div>
+                                <input type="submit" value="Registrar cliente">                                                
                             </form>
                         </div>
-                        <div id="IngresarCliente">
-                            <fieldset >
+                        <div id="IngresarCliente" style="display: none">
+                            <fieldset>
                                 <label for="email-cliente-registrado">
                                     <legend>Email</legend> 
                                     <input id="email-cliente-registrado" name="email-cliente-registrado" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
@@ -266,7 +272,9 @@
                                     <input id="dni-cliente-registrado" name="dni-cliente-registrado" type="text" placeholder="00000000" min="6000000" max="99999999" maxlength="11" required>
                                 </label>
                             </fieldset>
+                            <input type="button" value="Verificar usuario">
                         </div>
+                        
                     </section>
                     <section class="completar-datos-reserva">
                         <div class="tituloReservas">
@@ -275,10 +283,10 @@
                         <form action="">
                             <fieldset>
                                 <legend>Sucursal</legend>
-                                <select id="dropdownReservas" class="form-select"  aria-label="Default select example">
+                                <select id="dropdownReservasEmpleado" class="form-select"  aria-label="Default select example">
                                     <option value="" selected>Seleccioná a qué local te gustaría ir</option>
                                 </select>
-                                <input type="text" id="fechaReserva" hidden>
+                                <input type="text" id="fechaReservaEmpleado" hidden>
                                 <legend>Fecha</legend>
                                 <div id="calendarioReservas"></div>
                                 <label for="horaReserva">
@@ -320,9 +328,9 @@
                                 </label>
                             </fieldset>
                         </form>
+                        <input type="submit" value="Realizar reserva">
                     </section>
                 </div>
-                <input type="submit" value="Submit">
             </div>
         </div>
         <script src="funciones.js"></script>
