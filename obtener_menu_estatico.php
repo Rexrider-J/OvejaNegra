@@ -1,25 +1,49 @@
 <?php
 include("config_BDD.php");
 
-$categoria = isset($_GET['categoria']) ? strtolower(trim($_GET['categoria'])) : '';
-$categoria = $conexion->real_escape_string($categoria);
-
-$sql = "SELECT nombre, precio, descripcion, ruta_imagen FROM menu WHERE LOWER(categoria) = '$categoria'";
-$result = $conexion->query($sql);
-
-if ($result && $result->num_rows > 0) {
-    while ($item = $result->fetch_assoc()) {
-        echo "<figure>";
-        echo "<img src='" . htmlspecialchars($item['ruta_imagen']) . "' alt='foto " . htmlspecialchars($item['nombre']) . "'>";
-        echo "<figcaption>" . htmlspecialchars($item['nombre']) . "</figcaption>";
-        echo "<figcaption>$" . number_format($item['precio'], 0, ',', '.') . "</figcaption>";
-        if (!empty($item['descripcion'])) {
-            echo "<figcaption>" . htmlspecialchars($item['descripcion']) . "</figcaption>";
-        }
-        echo "</figure>";
-    }
-} else {
-    echo "<p>No hay productos en esta categoría.</p>";
+// Verificamos los parámetros
+if (!isset($_GET['categoria']) || !isset($_GET['id_sucursal'])) {
+    echo "<p style='color:red'>Faltan parámetros.</p>";
+    exit;
 }
 
+$categoria = $_GET['categoria'];
+$id_sucursal = intval($_GET['id_sucursal']);
+
+$sql = "
+SELECT m.*
+FROM menu m
+JOIN local_menu lm ON m.id_menu = lm.id_menu
+WHERE lm.id_local = ? AND lm.estado_disponibilidad = 'disponible' AND m.categoria = ?
+ORDER BY m.nombre
+";
+
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("is", $id_sucursal, $categoria);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
+$itemsHTML = "";
+
+while ($row = $result->fetch_assoc()) {
+    $itemsHTML .= "
+        <figure>
+            <img src='" . htmlspecialchars($row['ruta_imagen']) . "' alt='foto " . htmlspecialchars($row['nombre']) . "'>
+            <figcaption>
+                <strong>" . htmlspecialchars($row['nombre']) . "</strong><br>
+                $" . number_format($row['precio'], 0, ',', '.') . "<br>
+                " . htmlspecialchars($row['descripcion']) . "
+            </figcaption>
+        </figure>
+    ";
+}
+
+if ($itemsHTML) {
+    echo $itemsHTML;
+}else{
+    echo "<p style='color: orange'>No se encontraron productos para la categoría '$categoria' en la sucursal $id_sucursal.</p>";
+}
+
+$stmt->close();
 $conexion->close();

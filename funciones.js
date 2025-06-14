@@ -418,6 +418,7 @@ function cargarDropdownReservasEmpleado() {
 /* Guarda la sucursal seleccionada en el header*/
 function guardarSeleccionSucursal(valor) {
   sessionStorage.setItem("sucursalSeleccionada", valor);
+  cargarMenuEstatico()
 
   /*Si se encuentra en la pagina reservas, tambien actualizar el valor de dropdown si se cambia el valor del selectoSucursal en la misma pagina*/
   const dropdown = document.getElementById("dropdownReservas");
@@ -1171,9 +1172,15 @@ function cargarCategoria(categoria) { // es la funcion que carga por la categori
   const targetDiv = document.querySelector(`#list-${categoria.toLowerCase()} .listProductos`); // guardamos en una variable el div donde vamos a insertar lo que devuelva el .php
   if (!targetDiv) return; // si no existe el div, la funcion se corta y no devuelve nada
 
+  const idSucursal = sessionStorage.getItem("sucursalSeleccionada");//tomamos la sucursal guardada en la sesion
+  if (!idSucursal) { //si no hay una se pide que se seleccione una
+    targetDiv.innerHTML = "<p>Seleccioná una sucursal primero.</p>";
+    return;
+  }
+
   targetDiv.innerHTML = "<p>Cargando productos...</p>"; // en lo que tarde la respuesta de la base de datos, ponemos esto
 
-  fetch(`obtener_menu_estatico.php?categoria=${encodeURIComponent(categoria)}`)
+  fetch(`obtener_menu_estatico.php?categoria=${encodeURIComponent(categoria)}&id_sucursal=${idSucursal}`)
     .then(response => response.text())
     .then(data => {
       targetDiv.innerHTML = data;
