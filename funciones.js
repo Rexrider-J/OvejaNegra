@@ -121,8 +121,68 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     } else if (tipoUsuario === "empleado") {
       datosPersonalesDiv.innerHTML = `
-        <h5>Datos Empleados</h5>
+        <div class="datosModificables">
+          <div class="columna">
+              <fieldset>
+                <legend>Nombre/s</legend>
+                <label class="form-group">
+                  <input type="text" id="nombreEmpleadoInput" name="nombreEmpleadoInput" maxlength="50" class="solo-letras" disabled />
+                  <button class="btn-editar" data-target="nombreEmpleadoInput">Editar</button>
+                </label>
+                <legend>Apellido/s</legend>
+                <label class="form-group">
+                  <input type="text" id="apellidoEmpleadoInput" name="apellidoEmpleadoInput" maxlength="50" class="solo-letras" disabled />
+                  <button class="btn-editar" data-target="apellidoEmpleadoInput">Editar</button>
+                </label>
+                <legend>DNI</legend> <!--FUNCION APARTE-->
+                <label class="form-group">
+                  <input type="text" id="dniEmpleadoInput" name="dniEmpleadoInput" disabled />
+                </label>
+                <legend>Email</legend>
+                <label class="form-group">
+                  <input type="email" id="emailEmpleadoInput" name="emailEmpleadoInput" maxlength="100" disabled />
+                  <button class="btn-editar" data-target="emailEmpleadoInput">Editar</button>
+                </label>
+                <legend>Contraseña</legend>
+                <label class="form-group">
+                  <input type="password" id="contrasenaEmpleadoInput" name="contrasenaEmpleadoInput" maxlength="20" disabled />
+                  <button class="btn-editar" data-target="contrasenaEmpleadoInput">Editar</button>
+                </label>
+              </fieldset>
+            </div>
+          <div class="columna">
+              <fieldset>
+                <legend>Sucursal</legend>
+                <input type="text" id="sucursalEmpleadoText" name="sucursalEmpleadoText" disabled/>
+                <legend>Mis funciones</legend>
+                <table id="tablaFunciones">
+                  <thead>
+                    <tr>
+                      <th>Día</th>
+                      <th>Hora</th>
+                      <th>Función</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Acá se llenarán las filas dinámicamente -->
+                  </tbody>
+                </table>
+              </fieldset>
+            </div>
+        </div>
       `;
+      aplicarSoloLetras(); 
+      inicializarInputsEditables();
+      mostrarDatoSoloLectura('dniEmpleadoInput', 'dniEmpleado');
+
+      /*Rellena la tabla de datosPersonales, empleado*/
+      const idEmpleado = sessionStorage.getItem("idEmpleado");
+
+      if (idEmpleado) {
+        obtenerFuncionesEmpleado(idEmpleado, mostrarTablaFunciones);
+      } else {
+        console.error("No se encontró el idEmpleado en sessionStorage.");
+      }
     }
   }
 
@@ -352,6 +412,7 @@ function mostrarTodasSucursales() {
       cargarDropdownReservas();   //Pagina reservas
       cargarDropdownReservasEmpleado(); //Pagina reservas
       crearAcordeones(locales); //pagina nosotros
+      mostrarSucursalEmpleado();
 
       //Aplicar un valor a cada sucursal después de cargar las opciones para poder conservar la sucursal seleccionada en otras paginas
       const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
@@ -453,6 +514,16 @@ document.addEventListener("DOMContentLoaded", function () {
     dropdownEmpleado.value = valorGuardado;
   }
 });
+/*Carga el input sobre la sucursal a la que pertenece el empleado en Mi Perfil, datos personales*/
+function mostrarSucursalEmpleado() {
+  const idLocalEmpleado = sessionStorage.getItem('idLocalEmpleado');
+  if (idLocalEmpleado && locales.length > 0) {
+    const sucursal = locales.find(local => local.id_local === idLocalEmpleado);
+    const texto = sucursal?.nombre || 'Sucursal desconocida';
+    const pSucursal = document.getElementById('sucursalEmpleadoText');
+    if (pSucursal) pSucursal.value = texto; 
+  }
+}
 /*Genera acordeones con los datos de cada sucursal dinamicamente en la pagina nosotros*/
 /*Tambien despliega el acordeon correspondiente a la sucursal seleccionada previamente en el header*/
 function crearAcordeones(locales) {
@@ -530,37 +601,39 @@ if (window.location.pathname.includes("reservas.html")) {
       });
   });
 }
-document.querySelectorAll('.solo-letras').forEach(function (campo) {
-  /*Evento para controlar las teclas que se presionan al escribir*/
-  campo.addEventListener('keydown', function (e) {
-    const tecla = e.key;
-    /*Permite letras (mayúsculas y minúsculas), tildes, ñ, Ñ, apóstrofe y espacio*/
-    const letrasPermitidas = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ' ]$/;
-    /*Teclas especiales que también permitimos: espacio, borrar, flecha izquierda y derecha, el tab y enter*/
-    const teclasEspeciales = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+function aplicarSoloLetras() {
+  document.querySelectorAll('.solo-letras').forEach(function (campo) {
+    /*Evento para controlar las teclas que se presionan al escribir*/
+    campo.addEventListener('keydown', function (e) {
+      const tecla = e.key;
+      /*Permite letras (mayúsculas y minúsculas), tildes, ñ, Ñ, apóstrofe y espacio*/
+      const letrasPermitidas = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ' ]$/;
+      /*Teclas especiales que también permitimos: espacio, borrar, flecha izquierda y derecha, el tab y enter*/
+      const teclasEspeciales = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
 
-    /*Si la tecla no está permitida y no es especial, se bloquea la acción*/
-    if (!letrasPermitidas.test(tecla) && !teclasEspeciales.includes(tecla)) {
-      e.preventDefault();
-    }
-  });
-  /*Evento que se activa cuando cambia el contenido del campo coincluye pegar)*/
-  campo.addEventListener('input', function () {
-    /*Reemplaza cualquier caracter que no esté permitido por nada ''*/
-    campo.value = campo.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ' ]/g, '');
-  });
+      /*Si la tecla no está permitida y no es especial, se bloquea la acción*/
+      if (!letrasPermitidas.test(tecla) && !teclasEspeciales.includes(tecla)) {
+        e.preventDefault();
+      }
+    });
+    /*Evento que se activa cuando cambia el contenido del campo coincluye pegar)*/
+    campo.addEventListener('input', function () {
+      /*Reemplaza cualquier caracter que no esté permitido por nada ''*/
+      campo.value = campo.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ' ]/g, '');
+    });
 
-  /*Evento que detecta cuando se intenta pegar texto en el campo*/
-  campo.addEventListener('paste', function (e) {
-    /* Obtiene el texto que se intenta pegar*/
-    const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
-    /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
-    if (/[^a-zA-ZáéíóúÁÉÍÓÚñÑ' ]/.test(textoPegado)) {
-      e.preventDefault();
-      alert('Solo se permiten letras, espacios y apóstrofes.');
-    }
+    /*Evento que detecta cuando se intenta pegar texto en el campo*/
+    campo.addEventListener('paste', function (e) {
+      /* Obtiene el texto que se intenta pegar*/
+      const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
+      /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
+      if (/[^a-zA-ZáéíóúÁÉÍÓÚñÑ' ]/.test(textoPegado)) {
+        e.preventDefault();
+        alert('Solo se permiten letras, espacios y apóstrofes.');
+      }
+    });
   });
-});
+}
 document.querySelectorAll('.solo-numeros').forEach(function (campo) {
   /*Permite solo números y tab, delete, enter y las fechas de direccion izquierda y derecha*/
   campo.addEventListener('keydown', function (e) {
@@ -835,6 +908,7 @@ function submitAccederEmpleado(event) {
         sessionStorage.setItem("dniEmpleado", datos.dni);
         sessionStorage.setItem("emailEmpleado", datos.email);
         sessionStorage.setItem("puestoEmpleado", datos.puesto);
+        sessionStorage.setItem("contrasenaEmpleado", datos.contrasena);
         sessionStorage.setItem("idLocalEmpleado", datos.id_local);
 
         window.location.href = "index.html"; // O redirigir a un panel de empleado
@@ -918,6 +992,106 @@ function mostrarSeccion(idDestino, boton) {
     seccionDestino.style.display = "grid";
   }
 }
+/*MI PERFIL*/
+/*Obtiene el valor del dato del empleado desde el sessionStorage y lo inserta en un input en datos Personales, mi perfil*/
+function inicializarInputsEditables() {
+  // Obtenemos todos los botones que permiten edición
+  const botones = document.querySelectorAll('.btn-editar');
+
+  botones.forEach((btn) => {
+    const inputId = btn.dataset.target; // ID del input vinculado
+    const input = document.getElementById(inputId);
+
+    // Cargar valor guardado si existe
+    const claveSession = inputId.replace('Input', ''); // Ej: nombreEmpleado
+    const valorGuardado = sessionStorage.getItem(claveSession);
+    if (valorGuardado) {
+      input.value = valorGuardado;
+
+      // Si el input es la contraseña, la mostramos como texto plano
+      if (inputId === 'contrasenaEmpleadoInput') {
+        input.type = 'text'; // Mostrar contraseña en texto plano
+      }
+    }
+
+    // Asignamos evento click a cada botón
+    btn.addEventListener('click', () => {
+      if (btn.textContent === 'Editar') {
+        input.disabled = false;
+        input.focus();
+        btn.textContent = 'Confirmar';
+      } else {
+        const nuevoValor = input.value.trim();
+        if (nuevoValor) {
+          sessionStorage.setItem(claveSession, nuevoValor);
+          input.disabled = true;
+          btn.textContent = 'Editar';
+        } else {
+          alert('El campo no puede estar vacío.');
+        }
+      }
+    });
+  });
+}
+function mostrarDatoSoloLectura(idCampo, claveSessionStorage) {
+  const input = document.getElementById(idCampo);
+  input.value = sessionStorage.getItem(claveSessionStorage) || '';
+  input.disabled = true;
+}
+/*Se debe ingresar el id del empleado y te devuelve las funciones y las horas en las que las realiza*/
+function obtenerFuncionesEmpleado(idEmpleado, callback) {
+  fetch('obtener_empleado_funcion.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'id_empleado=' + encodeURIComponent(idEmpleado),
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Error en la respuesta del servidor');
+    }
+    return response.json();
+  })
+  .then(data => {
+    sessionStorage.setItem('empleado_funcion', JSON.stringify(data));
+    if (callback) callback(data); // Llama a la función para mostrar la tabla
+  })
+  .catch(error => {
+    console.error('Error al obtener funciones del empleado:', error);
+  });
+}
+/*Esta tabla rellena dinamicamente la tabla que se encuentra en datos personales, mis reservas empleado*/
+function mostrarTablaFunciones(funciones) {
+  const tbody = document.querySelector("#tablaFunciones tbody");
+  tbody.innerHTML = ""; // Limpia cualquier contenido previo
+
+  funciones.forEach(f => {
+    const fecha = new Date(f.dia_hora);
+    const dia = fecha.toLocaleDateString(); // ej: "16/06/2025"
+    const hora = fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // ej: "18:00"
+
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${dia}</td>
+      <td>${hora}</td>
+      <td>${f.funcion}</td>
+    `;
+    tbody.appendChild(fila);
+  });
+}
+/*conecta la pagina datosPersonales con la tabla mostrarTablaFunciones*/
+/*Obtiene el idEmpleado desde sessionStorage, llama a obtenerFuncionesEmpleado() para obtener sus datos y usa esos datos para mostrar la tabla con mostrarTablaFunciones().*/
+document.addEventListener('DOMContentLoaded', () => {
+  const idEmpleado = sessionStorage.getItem("idEmpleado");
+
+  if (idEmpleado) {
+    obtenerFuncionesEmpleado(idEmpleado, mostrarTablaFunciones);
+  } else {
+    console.error("No se encontró el idEmpleado en sessionStorage.");
+  }
+});
+/*RESERVAS*/
 /*Inhabilita el boton mesaReserva hasta que se selecicone fecha,hora y cantPersonas.Guarda estos datos en el sessionStorage*/
 if (window.location.pathname.includes("reservas.html")) {
   document.addEventListener("DOMContentLoaded", function () {

@@ -118,6 +118,7 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
             . "|dni=" . $empleado['dni']
             . "|email=" . $empleado['mail']
             . "|puesto=" . $empleado['puesto']
+            . "|contrasena=" . $empleado['contrasena']
             . "|id_local=" . $empleado['id_local'];
     } else {
         echo "❌ Credenciales incorrectas."; // no se encontro el empleado

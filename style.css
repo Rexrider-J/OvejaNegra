@@ -1128,18 +1128,19 @@ input[type=number]::-webkit-outer-spin-button {
     color: #4d2513;
 
 }
-#cliente-section {
-  width: 100%;
-  max-width: 100vw;
-  overflow-x: hidden;
-  box-sizing: border-box;
-  padding: 2rem;
-  margin: 0 auto;
 
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+#cliente-section {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    box-sizing: border-box;
+    padding: 2rem;
+    margin: 0 auto;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 #seleccionSucursalDeReserva {
@@ -1774,6 +1775,138 @@ input[type=number]::-webkit-outer-spin-button {
 
 #list-modificarMenu #btn-subir:hover {
     background-color: rgb(3, 175, 219);
+}
+
+/*Estilo de Datos Personales*/
+#list-datosPersonales {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.datosModificables {
+    display: flex;
+    gap: 30px;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+}
+
+.datosModificables .columna {
+    flex: 1;
+    min-width: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+.datosModificables fieldset {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f8f9fa;
+  box-shadow: 0px 0px 5px #ccc;
+  height: 100%;
+}
+
+.tabla-scroll {
+  max-height: 200px; /* 👈 Ajustable */
+  overflow-y: auto;
+  border-radius: 10px;
+}
+
+#list-datosPersonales .form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+#list-datosPersonales input {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: .375rem .75rem;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+}
+
+#list-datosPersonales legend {
+    text-align: start;
+    font-size: 20px;
+}
+
+#list-datosPersonales button {
+    display: block;
+    margin: 0;
+    min-height: 2em;
+    border-radius: 8px;
+    color: white;
+
+    font-size: 1.1rem;
+    background-color: #4cbfe6;
+    border-color: #4cbfe6;
+}
+
+#tablaFuncionesContainer {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #e9ecef; /* Fondo como input disabled */
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+#tablaFunciones {
+  width: 100%;
+  border-collapse: separate; /* Necesario para que border-radius funcione */
+  border-spacing: 0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#tablaFunciones thead {
+  background-color: #4cbfe6;
+  color: white;
+  font-weight: bold;
+}
+
+/* Celdas */
+#tablaFunciones th,
+#tablaFunciones td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Zebra striping */
+#tablaFunciones tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Hover opcional */
+#tablaFunciones tbody tr:hover {
+  background-color: #dee2e6;
+  cursor: default;
+}
+
+/* Redondeo visual solo en esquinas */
+#tablaFunciones thead tr:first-child th:first-child {
+  border-top-left-radius: 10px;
+}
+#tablaFunciones thead tr:first-child th:last-child {
+  border-top-right-radius: 10px;
+}
+#tablaFunciones tbody tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+#tablaFunciones tbody tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
 }
 
 /*Estilo de mofidicar menu*/

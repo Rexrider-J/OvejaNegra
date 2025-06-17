@@ -293,10 +293,13 @@ INSERT INTO `reservas` (`id_cliente`, `id_mesa`, `fecha_reserva`, `observaciones
 
 -- Tabla: empleado_funcion
 INSERT INTO `empleado_funcion` (`dia_hora`, `funcion`, `id_empleado`) VALUES
-('2025-05-01 18:00:00', 'Mozo', 1),
-('2025-05-02 19:00:00', 'Caja', 2),
--- ('2025-05-02 19:00:00', 'Caja', 2),('2025-05-02 19:00:00', 'Mozo', 2),
-('2025-05-02 18:00:00', 'Caja', 2);
+('2025-06-15 9:00:00', 'Caja', 1), 
+('2025-06-15 12:00:00', 'Limpieza', 1), 
+('2025-06-17 9:00:00', 'Caja', 1),  
+('2025-06-17 19:00:00', 'Gerente', 4),  
+('2025-06-16 19:00:00', 'Subgerente', 6), 
+('2025-06-15 19:00:00', 'Caja', 6), 
+('2025-06-15 10:00:00', 'Suberente', 6),; 
 
 INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES
 (1, 1, 'disponible'),
