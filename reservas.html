@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reservas</title>
+        <link rel="icon" type="image/png" href="img/logoEnPestaña.png">
+        <link rel="stylesheet" href="style.css"><!--linkeado el archivo de css-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    </head>
+<body>
+    <header><!--Encabezado de la página-->
+        <div class="headerUbicacion">
+        <select id="selectorSucursales" class="form-select" onchange="guardarSeleccionSucursal(this.value)">
+            <option value="0" selected>Sucursal</option>
+        </select>
+        <div class="icoRedes">
+            <a target="_blank" href="https://www.facebook.com/Ovejanegragrupoteatral/"><img src="img/ico_facebook.png" alt="icono de facebook"></a>
+            <a target="_blank" href="https://www.instagram.com/ovejanegra.pc/"><img src="img/ico_instagram.png" alt="icono de instagram"></a>
+        </div>
+        </div>
+        <div class="headerNavegacion">
+        <div class="logoResponsive"><!--Este logo solo se va mostrar cuando se active el botón hamburguesa-->
+            <a href="index.html"><img src="img/logo.png" alt="Logo Oveja Negra"></a>
+        </div>
+        <button class="hamburger" onclick="toggleMenu()">☰</button>
+
+        <div class="navLinks" id="navLinks">
+            <nav><!--Contenedor de la barra de navegación-->
+            <ol class="listNavIzq">
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="reservas.html">Reservas</a></li>
+                <li><a href="promociones.html">Promos y combos</a></li>
+            </ol>
+            </nav>
+
+            <div class="logoNav">
+            <a href="index.html"><img class="imgLogo" src="img/logo.png" alt="Logo Oveja Negra"></a><!--a href enlaza un link a la imagen-->
+            </div>
+
+            <nav>
+                <ol class="listNavDer">
+                    <li><a href="tiendaDePuntos.html">Tienda de puntos</a></li>
+                    <li><a href="nosotros.html">Nosotros</a></li>
+                    <li>
+                    <div class="dropdown">
+                        <button id="botonIngresar" class="btn btn-secondary dropdown-toggle" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Ingresar
+                        </button>
+                        <ul id="contenidoBotonIngresar" class="dropdown-menu">
+                        <li><a class="dropdown-item" href="ingresar.html#cliente">Cliente</a></li>
+                        <li><a class="dropdown-item" href="ingresar.html#empleado">Empleado</a></li>
+                        </ul>
+                    </div>
+                    </li>
+                </ol>
+            </nav>
+        </div>
+        </div>
+    </header>
+    <main id="mainReservas">
+        <div class="contenedorRealizarReservas">
+            <div id="cliente-section" style="display: none">
+                <section id="seleccionSucursalDeReserva">
+                    <div class="tituloReservas">
+                        <h1 >Reservas</h1>
+                    </div>
+                    <select id="dropdownReservas" class="form-select"  aria-label="Default select example">
+                        <option value="" selected>Seleccioná a qué local te gustaría ir</option>
+                    </select>
+                    <div>
+                        <input type="submit" value="Continuar" onclick="guardarSucursalDeReserva(); mostrarSeccion('datosDeReserva', this)"/>
+                    </div>
+                </section>
+                <section id="datosDeReserva" >
+                    <div id="referenciaLocal">
+                        <img src="img/Fotos/Reservas/planoLocal.png" alt="local Oveja Negra">
+                    </div>
+                    <div id="reservarMesa">
+                        <div class="tituloReservas">
+                            <h1>Reservar una mesa</h1>
+                        </div>
+                        <div id="formFechaDatosReserva">
+                            <form method="post" action="">
+                                <input type="text" id="fechaReserva" hidden>
+                                <div id="calendarioReservas"></div>
+                            </form>
+                            <fieldset>
+                                <label for="horaReserva">Hora<!--se muestran los horarios disponibles para la fecha seleccionada-->
+                                    <select id="horaReserva" name="horaReserva" class="form-control" required>
+                                        <option value="" selected>Seleccione hora de reserva</option>
+                                        <option value="11:00:00">11:00</option>
+                                        <option value="12:00:00">12:00</option>
+                                        <option value="13:00:00">13:00</option>
+                                        <option value="14:00:00">14:00</option>
+                                        <option value="15:00:00">15:00</option>
+                                        <option value="16:00:00">16:00</option>
+                                        <option value="17:00:00">17:00</option>
+                                        <option value="18:00:00">18:00</option>
+                                        <option value="19:00:00">19:00</option>
+                                        <option value="20:00:00">20:00</option>
+                                    </select>
+                                </label>
+                                <label for="cantPersonasReserva">Cantidad de personas
+                                    <select id="cantPersonasReserva" name="cantPersonasReserva" class="form-control" required>
+                                        <option value="" selected>¿Cuantas personas asistirán?</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </label>
+                                <label for="mesaReserva">Mesas *Mirar plano del local* <!--En base a la disponibilidad del establecimiento y cant perosnas, se mostraran las mesas disponibles -->
+                                    <select id="mesaReserva" name="mesaReserva" class="form-control" placeholder="Seleccione la mesa" required>
+                                        <!--Esto devuelve php-->
+                                        <option value="" selected>Seleccione la mesa</option>
+                                        <option value="Mesa 1">1</option>
+                                        <option value="Mesa 2">2</option>
+                                        <option value="Mesa 3">3</option>
+                                        <option value="Mesa 4">4</option>
+                                        <option value="Mesa 5">5</option>
+                                        <option value="Mesa 6">6</option>
+                                        <option value="Mesa 1A">1A</option>
+                                        <option value="Mesa 2A">2A</option>
+                                        <option value="Mesa 3A">3A</option>
+                                        <option value="Mesa 4A">4A</option>
+                                    </select>
+                                </label>
+                                <label for="observacionesReserva">Comentarios
+                                    <textarea id="observacionesReserva" name="observacionesReserva" rows="3" cols="30" placeholder="Comentario que desee realizar..." maxlength="255"></textarea>
+                                </label>
+                            </fieldset>
+                        </div>
+                        <div class="notaImportanteReserva">
+                            <h5>Importante:</h5>
+                            <p>Las reservas cuentan con un margen de tolerancia de 15 minutos. Transcurrido ese tiempo sin presentarse, la reserva será anulada.</p>
+                            <p>Para ser ubicados deberá estar presente al menos el 50% del grupo.</p>
+                            <p>Lamentablemente, no podemos recibir mascotas en el local.</p>
+                            <p>Para validar la reserva, el DNI entregado al empleado de caja debe coincidir con el registrado en la misma.</p>
+                        </div>
+                        <div class="botonesReserva">
+                            <input type="button" value="Volver" onclick="volverSeleccionSucursalReserva(); mostrarSeccion('seleccionSucursalDeReserva', this)" />
+                            <input type="submit" value="Continuar" onclick="guardarValoresDatosReserva(); mostrarSeccion('confirmacionReserva', this)"/>
+                        </div>
+                    </div>
+                </section>
+                <section id="confirmacionReserva">
+                    <div id="imagenConfirmacionReservas">
+                        <img class= "imgLogo" src="img/logo.png" alt="Logo Oveja Negra">
+                        <h1>Confirma tu reserva</h1>
+                    </div>
+                    <div id="mostrarDatosReserva">
+                        <p><strong>Sucursal: </strong><span id="sucursalSeleccionada"></span></p>
+                        <p><strong>Fecha: </strong><br><span id="fechaSeleccionada"></span></p>
+                        <p><strong>Hora: </strong><br><span id="horaSeleccionada"></span></p>
+                        <p><strong>Cantidad de personas: </strong><br><span id="cantPersonasSeleccionada"></span></p>
+                        <p><strong>Mesa: </strong><br><span id="mesaSeleccionada"></span></p> 
+                        <p><strong>Descripcion de la mesa: </strong><br><span ></span></p> <!--Aca se inserta los datos de la base de datos-->
+                        <p><strong>Observaciones: </strong><br><span id="ObservacionDada"></span></p> 
+                    </div>
+                    <div class="notaImportanteReserva">
+                        <h5>Importante:</h5>
+                        <p>Las reservas cuentan con un margen de tolerancia de 15 minutos. Transcurrido ese tiempo sin presentarse, la reserva será anulada.</p>
+                        <p>Para ser ubicados deberá estar presente al menos el 50% del grupo.</p>
+                        <p>Lamentablemente, no podemos recibir mascotas en el local.</p>
+                        <p>Para validar la reserva, el DNI entregado al empleado de caja debe coincidir con el registrado en la misma.</p>
+                    </div>
+                    <div class="botonesReserva">
+                        <input type="button" value="Volver" onclick="mostrarSeccion('datosDeReserva', this)"/>
+                        <input type="submit" value="Completar reserva" onclick="enviarReserva(); mostrarSeccion('finalizoReserva', this)"/>
+                    </div>
+                    <form id="formReservaFinal" method="post" action="procesar_reserva.php" style="display: none;">
+                        <input type="hidden" name="sucursal">
+                        <input type="hidden" name="fecha">
+                        <input type="hidden" name="hora">
+                        <input type="hidden" name="cantidad">
+                        <input type="hidden" name="mesa">
+                        <input type="hidden" name="observaciones">
+                    </form>
+                </section>
+                <section id="finalizoReserva">
+                    <div id="imagenFinalizacionReservas">
+                        <img class= "imgLogo" src="img/logo.png" alt="Logo Oveja Negra">
+                        <h1>¡Gracias por reservar con nosotros!</h1>
+                    </div>
+                    <div class="textoFinalizoGestion">
+                        <p>La reserva se realizó con éxito. En breve recibirá un correo electrónico en la dirección <strong >(dirección del usuario)</strong> con todos los detalles correspondientes a su reserva.</p>
+                        <p>Recuerde asistir al local con su DNI. El tiempo de tolerancia es de <strong>15 minutos</strong>; pasado ese plazo, la reserva será <strong>anulada</strong>.</p>
+                        <p>Si desea visualizar, modificar o cancelar su reserva, puede hacerlo desde su perfil, en la sección "Mis reservas".</p>
+                    </div>
+                    <div class="notaImportanteReserva">
+                        <h5>Importante:</h5>
+                        <p>Las reservas cuentan con un margen de tolerancia de 15 minutos. Transcurrido ese tiempo sin presentarse, la reserva será anulada.</p>
+                        <p>Para ser ubicados deberá estar presente al menos el 50% del grupo.</p>
+                        <p>Lamentablemente, no podemos recibir mascotas en el local.</p>
+                        <p>Para validar la reserva, el DNI entregado al empleado de caja debe coincidir con el registrado en la misma.</p>
+                    </div>
+                    <div>
+                        <a href="index.html" class="botonFinalizar">Finalizar</a>
+                    </div>
+                </section>
+            </div>
+            <div id="empleado-section" style="display: none">
+                <div class="tituloReservas">
+                    <h1>Realizar reserva</h1>
+                </div>
+                <div id="contenido-empleado-section">
+                    <section class="completar-datos-cliente">
+                        <div class="tituloReservas">
+                            <h1>Completar datos de cliente</h1>
+                        </div>
+                        <fieldset id="box-radio-button">
+                            <legend>Tipo de cliente</legend>
+                            <label for="cliente-no-registrado" class="contenedorRadioButton">
+                                <input id="cliente-no-registrado" type="radio" name="tipo-de-registro" class="inline" checked onclick="cambioTipoCliente()"/> No registrado
+                            </label>
+                            <label for="cliente-registrado" class="contenedorRadioButton">
+                                <input id="cliente-registrado" type="radio" name="tipo-de-registro" class="inline" onclick="cambioTipoCliente()"/> Registrado
+                            </label>
+                        </fieldset>
+                        <div id="registrarCliente" style="display: grid">
+                            <form action="">
+                                <fieldset><!--luego poner style="display:none;"-->
+                                    <label for="nombre-registrar-cliente" class="solo-letras">
+                                        <legend>Nombre/s</legend>
+                                        <input id="nombre-registrar-cliente" name="nombre-registrar-cliente" type="text" maxlength="50" required>
+                                    </label>
+                                    <label for="apellido-registrar-cliente" class="solo-letras">
+                                        <legend>Apellido/s</legend>
+                                        <input id="apellido-registrar-cliente" name="apellido-registrar-cliente" type="text" maxlength="50" required>
+                                    </label>
+                                    <label for="dni-registrar-cliente" class="solo-numeros">
+                                        <legend>DNI</legend>
+                                        <input id="dni-registrar-cliente" name="dni-registrar-cliente" type="text" placeholder="00000000" min="1000000" max="99999999" maxlength="11" required>
+                                    </label>
+                                    <label for="email-registrar-cliente">
+                                        <legend>Email</legend> 
+                                        <input id="email-registrar-cliente" name="email-registrar-cliente" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                                    </label> 
+                                    <label for="telefono-registrar-cliente" class="solo-numeros">
+                                        <legend>Telefono</legend> 
+                                        <input id="telefono-registrar-cliente" name="telefono-registrar-cliente" type="text" placeholder="1112345678" min="1000000000" max="99999999" maxlength="20" required>
+                                    </label>        
+                                    <label for="fNacimiento-registrar-cliente">
+                                        <legend>Fecha de nacimiento</legend>
+                                        <input type="date" id="fNacimiento-registrar-cliente" name="fNacimiento-registrar-cliente" required>
+                                    </label>   
+                                    <label for="contrasenia-registrar-cliente">
+                                        <legend>Contraseña = fecha actual(dd/mm/aaaa)</legend> 
+                                        <input id="contrasenia-registrar-cliente" name="contrasenia-registrar-cliente" type="password" maxlength="20" required>
+                                    </label>      
+                                </fieldset>
+                                <div class="notaImportanteReserva">
+                                    <h5>Importante:</h5>
+                                    <p>El empleado debe informar al cliente que, para acceder a su cuenta, deberá ingresar el correo electrónico proporcionado, su DNI y la contraseña asignada, la cual debe ser entregada por escrito.
+                                        Además, debe indicarle que puede modificar la contraseña desde la opción "Olvidé mi contraseña" en la sección de ingreso, o desde su perfil una vez que haya iniciado sesión.</p>
+                                </div>
+                                <input type="submit" value="Registrar cliente">                                                
+                            </form>
+                        </div>
+                        <div id="IngresarCliente" style="display: none">
+                            <fieldset>
+                                <label for="email-cliente-registrado">
+                                    <legend>Email</legend> 
+                                    <input id="email-cliente-registrado" name="email-cliente-registrado" type="email" placeholder="ejemplo@hotmail.com" maxlength="100" required />
+                                </label>
+                                <label for="dni-cliente-registrado" class="solo-numeros">
+                                    <legend>DNI</legend>
+                                    <input id="dni-cliente-registrado" name="dni-cliente-registrado" type="text" placeholder="00000000" min="6000000" max="99999999" maxlength="11" required>
+                                </label>
+                            </fieldset>
+                            <input type="button" value="Verificar usuario">
+                        </div>
+                        
+                    </section>
+                    <section class="completar-datos-reserva">
+                        <div class="tituloReservas">
+                            <h1>Completar datos de reserva</h1>
+                        </div>
+                        <form action="">
+                            <fieldset>
+                                <legend>Sucursal</legend>
+                                <select id="dropdownReservasEmpleado" class="form-select"  aria-label="Default select example">
+                                    <option value="" selected>Seleccioná a qué local te gustaría ir</option>
+                                </select>
+                                <input type="text" id="fechaReservaEmpleado" hidden>
+                                <legend>Fecha</legend>
+                                <div id="calendarioReservas"></div>
+                                <label for="horaReserva">
+                                    <legend>Hora</legend>
+                                    <select id="horaReserva" name="horaReserva" class="form-control" required>
+                                        <option value="" selected>Seleccione hora de reserva</option>
+                                        <option value="11:00:00">11:00</option>
+                                        <option value="12:00:00">12:00</option>
+                                        <option value="13:00:00">13:00</option>
+                                        <option value="14:00:00">14:00</option>
+                                        <option value="15:00:00">15:00</option>
+                                        <option value="16:00:00">16:00</option>
+                                        <option value="17:00:00">17:00</option>
+                                        <option value="18:00:00">18:00</option>
+                                        <option value="19:00:00">19:00</option>
+                                        <option value="20:00:00">20:00</option>
+                                    </select>
+                                </label>
+                                <label for="cantPersonasReserva">
+                                    <legend>Cantidad de personas</legend>
+                                    <select id="cantPersonasReserva" name="cantPersonasReserva" class="form-control" required>
+                                        <option value="" selected>¿Cuantas personas asistirán?</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </label>
+                                <label for="mesaReserva">
+                                    <legend>Mesa</legend>
+                                    <select id="mesaReserva" name="mesaReserva" class="form-control" placeholder="Seleccione la mesa" required>
+                                        <option value="" selected>Seleccione la mesa</option>
+                                    </select>
+                                </label>
+                                <label for="observacionesReserva">
+                                    <legend>Comentarios</legend>
+                                    <textarea id="observacionesReserva" name="observacionesReserva" rows="3" cols="30" placeholder="Comentario que desee realizar..." maxlength="255"></textarea>
+                                </label>
+                            </fieldset>
+                        </form>
+                        <input type="submit" value="Realizar reserva">
+                    </section>
+                </div>
+            </div>
+        </div>
+        <script src="funciones.js"></script>
+    </main>
+    <footer>
+        <div class="footerEnlaces">
+            <img class="logoNav" src="img/logo.png" alt="logo Oveja Negra">
+            <div class="listasFooter">
+              <ol>
+                  <h5>Institucional</h5>
+                  <li><a href="nosotros.html">Quienes somos</a></li>
+                  <li><a href="menu.html">Menú</a></li>
+                  <li><a href="reservas.html">Reservas</a></li>
+                  <li><a href="promociones.html">Promociones</a></li>
+                  <li><a href="tiendaDePuntos.html">Tienda de puntos</a></li>
+              </ol>
+              <ol>
+                  <h5>Cliente</h5>
+                  <li><a class="dropdown-item" onclick="mostrarFormulario('botonCliente')">Ingresar</a></li>
+                  <li><a href="">Mis reservas</a></li>
+              </ol>
+              <ol>
+                  <h5>Empleado</h5>
+                  <li><a class="dropdown-item" onclick="mostrarFormulario('botonEmpleado')">Ingresar</a></li>
+                  <li><a href="">Mis reservas</a></li>
+              </ol>
+              <ol>
+                  <h5>Servicios</h5>
+                  <li><a href="Nosotros.html">Nuestros Locales</a></li>
+              </ol>
+              <select class="footerDropdown" id="dropdownInstitucional" style="display:none;"></select>
+              <select class="footerDropdown" id="dropdownCliente" style="display:none;"></select>
+              <select class="footerDropdown" id="dropdownEmpleado" style="display:none;"></select>
+              <select class="footerDropdown" id="dropdownServicios" style="display:none;"></select>
+            </div>
+        </div>
+        <div class="footerDerechos">
+            <h6>© 2025 Oveja Negra derechos de autor</h6>
+            <img src="img/Logo transparente blanco.png" alt="logo transparente blanco">
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> <!--Calendario flatpickr-->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script><!--Archivo de idioma del calendario flatpickr-->
+</body>
+</html>
