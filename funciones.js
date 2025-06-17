@@ -15,33 +15,33 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     boton.textContent = "Mi Perfil";
     menu.innerHTML = `
-      <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
-      <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-datosPersonales-list')">Datos personales</a></li>
+      <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-misReservas-list')">Mis Reservas</a></li>
       <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesión</a></li>
     `;
   } else if (tipoUsuario === "empleado") {
     boton.textContent = "Empleado";
     if (puesto === "Gerente") {
       menu.innerHTML = `
-        <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
-        <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
-        <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
-        <li><a class="dropdown-item" href="miPerfil.html#list-baseDatos-list">Administrador</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-datosPersonales-list')">Datos personales</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-misReservas-list')">Mis Reservas</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-modificarMenu-list')">Modificar menú</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-baseDatos-list')">Administrador</a></li>
         <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
         `;
     }
     else if (puesto === "Subgerente") {
       menu.innerHTML = `
-        <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
-        <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
-        <li><a class="dropdown-item" href="miPerfil.html#list-modificarMenu-list">Modificar menu</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-datosPersonales-list')">Datos personales</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-misReservas-list')">Mis Reservas</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-modificarMenu-list')">Modificar menú</a></li>
         <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
         `;
     } else {
       menu.innerHTML = `
-          <li><a class="dropdown-item" href="miPerfil.html">Datos personales</a></li>
-          <li><a class="dropdown-item" href="miPerfil.html#list-misReservas-list">Mis Reservas</a></li>
-          <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-datosPersonales-list')">Datos personales</a></li>
+        <li><a class="dropdown-item" href="miPerfil.html" onclick="navegarConTab('list-misReservas-list')">Mis Reservas</a></li>
+        <li><a class="dropdown-item" onclick="cerrarSesion()">Cerrar sesion</a></li>
         `;
     }
   } else {
@@ -53,17 +53,11 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 });
-/*Muestra el contenido correspondiente al boton precionado en Mis reservas Empleado*/
-function mostrarContenidoMisReservasE(opcion) {
-  const secciones = document.querySelectorAll('.seccionEmpleado');
-  secciones.forEach(seccion => {
-    seccion.style.display = 'none';
-  });
-
-  const seccionSeleccionada = document.getElementById(opcion);
-  if (seccionSeleccionada) {
-    seccionSeleccionada.style.display = 'grid';
-  }
+function navegarConTab(tabLinkId) {
+  // Guardamos directamente el hash del tab sin depender del DOM
+  const href = "#" + tabLinkId.replace("-list", ""); // convierte "list-misReservas-list" → "#list-misReservas"
+  sessionStorage.setItem("tabActivo", href);
+  window.location.href = "miPerfil.html";
 }
 /*Muestra contenido distinto segun si es cliente o empleado y que tipo de empleado*/
 document.addEventListener("DOMContentLoaded", function () {
@@ -83,31 +77,36 @@ document.addEventListener("DOMContentLoaded", function () {
     const tab = document.getElementById(`${id}-list`);
     const pane = document.getElementById(id);
 
-    /* Ocultar por defecto */
-    if (tab) tab.style.display = "none";
-    if (pane) pane.style.display = "none";
-  });
-
-  const mostrarSiempre = ["list-datosPersonales", "list-misReservas"];
-  mostrarSiempre.forEach(id => {
-    const tab = document.getElementById(`${id}-list`);
-    const pane = document.getElementById(id);
-    if (tab) tab.style.display = "grid";
-    if (pane) pane.style.display = "grid";
+    // Ocultar por defecto usando clases de Bootstrap
+    if (tab) tab.classList.add("d-none");
+    if (pane) pane.classList.add("d-none");
   });
 
   if (tipoUsuario === "empleado") {
+    // Mostrar siempre estos dos
+    const datosTab = document.getElementById("list-datosPersonales-list");
+    const datosPane = document.getElementById("list-datosPersonales");
+    if (datosTab) datosTab.classList.remove("d-none");
+    if (datosPane) datosPane.classList.remove("d-none");
+
+    const reservasTab = document.getElementById("list-misReservas-list");
+    const reservasPane = document.getElementById("list-misReservas");
+    if (reservasTab) reservasTab.classList.remove("d-none");
+    if (reservasPane) reservasPane.classList.remove("d-none");
+
+    // Luego seguí con el resto como ya está
     if (puesto === "Gerente" || puesto === "Subgerente") {
       const modMenuTab = document.getElementById("list-modificarMenu-list");
       const modMenuPane = document.getElementById("list-modificarMenu");
-      if (modMenuTab) modMenuTab.style.display = "block";
-      if (modMenuPane) modMenuPane.style.display = "block";
+      if (modMenuTab) modMenuTab.classList.remove("d-none");
+      if (modMenuPane) modMenuPane.classList.remove("d-none");
     }
+
     if (puesto === "Gerente") {
       const baseDatosTab = document.getElementById("list-baseDatos-list");
       const baseDatosPane = document.getElementById("list-baseDatos");
-      if (baseDatosTab) baseDatosTab.style.display = "block";
-      if (baseDatosPane) baseDatosPane.style.display = "block";
+      if (baseDatosTab) baseDatosTab.classList.remove("d-none");
+      if (baseDatosPane) baseDatosPane.classList.remove("d-none");
     }
   }
 
@@ -219,7 +218,23 @@ document.addEventListener("DOMContentLoaded", function () {
       `;
     }
   }
+  const tabHash = sessionStorage.getItem("tabActivo");
+  if (tabHash) {
+    const tabLink = document.querySelector(`a[href="${tabHash}"]`);
+    if (tabLink) {
+      // Aseguramos que esté visible (por si fue ocultado por lógica de usuario)
+      tabLink.classList.remove("d-none");
+      const pane = document.querySelector(tabHash);
+      if (pane) pane.classList.remove("d-none");
+
+      // Activar el tab
+      const tab = new bootstrap.Tab(tabLink);
+      tab.show();
+    }
+    sessionStorage.removeItem("tabActivo");
+  }
 });
+
 document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
   tab.addEventListener("shown.bs.tab", function (event) {
     const targetId = event.target.getAttribute("href").replace("#", "");
@@ -235,39 +250,13 @@ document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
     if (activePane) {
       activePane.style.display = "grid";
     }
-    // Cargar el contenido solo cuando corresponde
+
+    // Si corresponde, cargar dinámicamente
     if (targetId === "list-modificarMenu") {
       cargarMenu();
     }
   });
 });
-
-/*borra el contenido del tab antes de cambiar de pagina*/
-document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tabLink => {
-  tabLink.addEventListener('shown.bs.tab', function (e) {
-    const previouslyActiveTab = e.relatedTarget;
-    const previouslyActiveTabId = previouslyActiveTab ? previouslyActiveTab.getAttribute("href") : null;
-
-    if (previouslyActiveTabId === "#list-modificarMenu") {
-      document.getElementById("list-modificarMenu").innerHTML = ""; // limpia cuando se sale
-    }
-  });
-});
-/*Cambiar seccion de dropdown de miPerfil desde la misma pagina*/
-function activarTabPorHash() {
-  const hash = window.location.hash;
-  if (!hash) return;
-
-  const targetTab = document.querySelector(`a[data-bs-toggle="tab"][href="${hash}"]`);
-  if (targetTab) {
-    const tab = new bootstrap.Tab(targetTab);
-    tab.show();
-  }
-}
-document.addEventListener("DOMContentLoaded", activarTabPorHash);
-// También escuchar cambios de hash mientras estás en la página
-window.addEventListener("hashchange", activarTabPorHash);
-
 /*HEADER*/
 /*Hace que el nav sea responsive con un boton hamburguesa*/
 document.addEventListener("DOMContentLoaded", function () {
@@ -1012,37 +1001,46 @@ function mostrarSeccion(idDestino, boton) {
 }
 /*MI PERFIL*/
 /*Obtiene el valor del dato del empleado desde el sessionStorage y lo inserta en un input en datos Personales, mi perfil*/
+/*Permite modificar los datos individualmente y carga los datos en la base de datos*/
 function inicializarInputsEditables() {
-  const botones = document.querySelectorAll('.btn-editar');
+  const botones = document.querySelectorAll('.btn-editar'); /*Selecciona todos los botones "Editar"*/
 
   botones.forEach((btn) => {
-    const inputId = btn.dataset.target;
-    const input = document.getElementById(inputId);
-    const claveSession = inputId.replace('Input', ''); // ej: nombreEmpleado
-    const valorGuardado = sessionStorage.getItem(claveSession);
+    const inputId = btn.dataset.target; /*El ID del input relacionado (usado en data-target)*/
+    const input = document.getElementById(inputId); /*Se obtiene el input correspondiente*/
+    const claveSession = inputId.replace('Input', ''); /*Convierte 'nombreEmpleadoInput' en 'nombreEmpleado'*/
+    const valorGuardado = sessionStorage.getItem(claveSession); /*Obtiene el valor almacenado en sessionStorage*/
 
+    /*Si hay valor guardado, lo muestra en el input*/
     if (valorGuardado) {
       input.value = valorGuardado;
+      /* Si es el campo de contraseña, mostrar el texto en lugar de los puntos codificados*/
       if (inputId === 'contrasenaEmpleadoInput') {
         input.type = 'text';
       }
     }
 
+    /*Se agrega un listener al botón para alternar entre "Editar" y "Confirmar"*/
     btn.addEventListener('click', () => {
       if (btn.textContent === 'Editar') {
+        /*Habilita la edición del input*/
         input.disabled = false;
         input.focus();
         btn.textContent = 'Confirmar';
       } else {
+        /*Obtiene el nuevo valor ingresado*/
         const nuevoValor = input.value.trim();
         if (nuevoValor) {
+          /*Guarda el nuevo valor en sessionStorage*/
           sessionStorage.setItem(claveSession, nuevoValor);
+          /*Desactiva el campo nuevamente*/
           input.disabled = true;
           btn.textContent = 'Editar';
 
-          // Enviar cambio al servidor
+          /*Enviar el cambio al servidor*/
           const idEmpleado = sessionStorage.getItem('idEmpleado');
           if (idEmpleado) {
+            /*Envia la actualización con método POST*/
             fetch('actualizar_empleado.php', {
               method: 'POST',
               headers: {
@@ -1054,7 +1052,7 @@ function inicializarInputsEditables() {
                 id_empleado: idEmpleado
               })
             })
-            .then(response => response.text())
+            .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
             .then(respuesta => {
               console.log('Respuesta del servidor:', respuesta);
             })
@@ -1077,45 +1075,56 @@ function mostrarDatoSoloLectura(idCampo, claveSessionStorage) {
   input.value = sessionStorage.getItem(claveSessionStorage) || '';
   input.disabled = true;
 }
+/* se encarga de consultar al servidor por las funciones asignadas a un empleado específico usando su id_empleado, y luego guarda esos datos en sessionStorage. */
 /*Se debe ingresar el id del empleado y te devuelve las funciones y las horas en las que las realiza*/
-function obtenerFuncionesEmpleado(idEmpleado, callback) {
+function obtenerFuncionesEmpleado(idEmpleado, callback) { /*callback es una función opcional que se ejecuta una vez obtenidas las funciones*/
+  /*Inicia una petición HTTP POST a obtener_empleado_funcion.php, el script que devuelve las funciones del empleado*/
   fetch('obtener_empleado_funcion.php', {
+    /*los datos se enviarán codificados como si fueran los de un formulario HTML (application/x-www-form-urlencoded)*/
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
+    /*El cuerpo de la solicitud incluye el id_empleado codificado para evitar errores por caracteres especiales*/
     body: 'id_empleado=' + encodeURIComponent(idEmpleado),
   })
+  /*Espera una respuesta, si el servidor devuelve un estado que no es 200–299, lanza un error*/
   .then(response => {
+    /*Si es válida, interpreta la respuesta como JSON.Un arreglo de funciones con fecha, hora y nombre*/
     if (!response.ok) {
       throw new Error('Error en la respuesta del servidor');
     }
     return response.json();
   })
+  /*Guarda el JSON recibido en sessionStorage bajo la clave "empleado_funcion", convirtiéndolo a cadena de texto con JSON.stringify*/
   .then(data => {
     sessionStorage.setItem('empleado_funcion', JSON.stringify(data));
-    if (callback) callback(data); // Llama a la función para mostrar la tabla
+    /*Si se pasó una función callback, se ejecuta y se le pasa como argumento los datos recibidos (data)*/
+    if (callback) callback(data); /* Llama a la función para mostrar la tabla*/
   })
+  /*Si ocurre algun error durante la petición lo muestra en la consola para depuración*/
   .catch(error => {
     console.error('Error al obtener funciones del empleado:', error);
   });
 }
-/*Esta tabla rellena dinamicamente la tabla que se encuentra en datos personales, mis reservas empleado*/
+/*Muestra en una tabla HTML las funciones programadas para un empleado, que se encuentra en datos personales, mis reservas empleado*/
 /*Solo muestra las funciones a partir de la fecha actual en adelante*/
 function mostrarTablaFunciones(funciones) {
   const tbody = document.querySelector("#tablaFunciones tbody");
-  tbody.innerHTML = ""; // Limpiar contenido previo
-
+  /*Limpiar el contenido anterior de la tabla*/
+  tbody.innerHTML = "";
+  /*Crear una instancia de la fecha de hoy, y resetea la hora a medianoche*/
   const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0); // Dejar solo la fecha sin hora
+  hoy.setHours(0, 0, 0, 0); /*Esto permite comparar solo la fecha, sin considerar la hora*/
 
-  // Filtrar funciones a partir de hoy
+  /*Filtrar funciones para que solo se muestren las de hoy o fechas futuras*/
   const funcionesFiltradas = funciones.filter(f => {
     const fechaFuncion = new Date(f.dia_hora);
-    fechaFuncion.setHours(0, 0, 0, 0);
+    fechaFuncion.setHours(0, 0, 0, 0);  /*También eliminar hora en las fechas de funciones*/
     return fechaFuncion >= hoy;
   });
 
+  /*Si no hay funciones futuras, mostrar mensaje informativo en la tabla*/
   if (funcionesFiltradas.length === 0) {
     const fila = document.createElement("tr");
     fila.innerHTML = `<td colspan="3">No hay funciones futuras programadas.</td>`;
@@ -1123,22 +1132,25 @@ function mostrarTablaFunciones(funciones) {
     return;
   }
 
+  /*Junta las funciones filtradas y crea una fila por cada una*/
   funcionesFiltradas.forEach(f => {
     const fecha = new Date(f.dia_hora);
-    const dia = fecha.toLocaleDateString(); // ej: "16/06/2025"
-    const hora = fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // ej: "18:00"
+    const dia = fecha.toLocaleDateString(); /*Obtiene la fecha en formato "16/06/2025"*/
+    const hora = fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); /*Obtiene la hora en formato "18:00" hora y min*/
 
     const fila = document.createElement("tr");
+    /*Crea una nueva fila con los datos*/
     fila.innerHTML = `
       <td>${dia}</td>
       <td>${hora}</td>
       <td>${f.funcion}</td>
     `;
+    /*Se agrega la fila a la tabla*/
     tbody.appendChild(fila);
   });
 }
 /*conecta la pagina datosPersonales con la tabla mostrarTablaFunciones*/
-/*Obtiene el idEmpleado desde sessionStorage, llama a obtenerFuncionesEmpleado() para obtener sus datos y usa esos datos para mostrar la tabla con mostrarTablaFunciones().*/
+/*Obtiene el idEmpleado desde sessionStorage, llama a obtenerFuncionesEmpleado() para obtener sus datos y usa esos datos para mostrar la tabla con mostrarTablaFunciones()*/
 document.addEventListener('DOMContentLoaded', () => {
   const idEmpleado = sessionStorage.getItem("idEmpleado");
 
