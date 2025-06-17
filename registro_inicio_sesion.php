@@ -73,9 +73,15 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
     if ($res->num_rows === 1) { // verifico que se encontro al cliente
         $usuario = $res->fetch_assoc();
         // guardo datos del cliente en la variable global _SESSION
-        $_SESSION['id_cliente'] = $usuario['id_cliente'];
-        $_SESSION['nombre'] = $usuario['nombre'];
-        echo "✅ Bienvenido, " . $_SESSION['nombre'];
+        // $_SESSION['id_cliente'] = $usuario['id_cliente'];
+        // $_SESSION['nombre'] = $usuario['nombre'];
+        echo "✅"
+            . "|id_cliente=" . $usuario['id_cliente']
+            . "|nombre=" . $usuario['nombre']
+            . "|apellido=" . $usuario['apellido']
+            . "|dni=" . $usuario['dni']
+            . "|email=" . $usuario['mail']
+            . "|contrasena=" . $usuario['contrasena'];
     } else {
         echo "❌ Credenciales incorrectas."; // por si no se encontro el empleado
     }

@@ -842,9 +842,26 @@ function submitAccederCliente(event) {
     .then(data => {
       alert(data);// mostramos lo que responde el servidor
       if (data.includes("✅")) {  // nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
+        const partes = data.split("|"); // separa los campos
+        const datos = {}; // usamos un objeto para guardar los pares clave:valor
+
+        for (let i = 1; i < partes.length; i++) { //cargamos las partes en los datos, excluyendo el ✅
+          const [clave, valor] = partes[i].split("="); // las separamos en el "="
+          datos[clave] = valor; // y las asignamos
+        }
+
         /*Creamos una variable para indicar que el usuario que ingreso es un cliente*/
         sessionStorage.setItem("usuarioTipo", "cliente");
+        sessionStorage.setItem("idCliente", datos.id_cliente);
+        sessionStorage.setItem("nombreCliente", datos.nombre);
+        sessionStorage.setItem("apellidoCliente", datos.apellido);
+        sessionStorage.setItem("dniCliente", datos.dni);
+        sessionStorage.setItem("emailCliente", datos.email);
+        sessionStorage.setItem("contrasenaCliente", datos.contrasena);
+
         window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
+      } else {
+        alert("Uno o más datos son incorrectos.");
       }
     })
     .catch(error => {
