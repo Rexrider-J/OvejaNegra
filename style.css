@@ -1909,7 +1909,40 @@ input[type=number]::-webkit-outer-spin-button {
 #tablaFunciones tbody tr:last-child td:last-child {
   border-bottom-right-radius: 10px;
 }
+/*Responsive*/
+@media (max-width: 768px) {
+  .datosModificables {
+    flex-direction: column; /* Poner una columna debajo de la otra */
+    gap: 20px;
+    padding: 0 10px;
+  }
 
+  .datosModificables .columna,
+  .datosModificables fieldset {
+    width: 100%;
+    min-width: unset;
+    flex: unset;
+  }
+
+  #list-datosPersonales .form-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #list-datosPersonales button {
+    width: 100%;
+  }
+
+  #tablaFunciones th,
+  #tablaFunciones td {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  #tablaFuncionesContainer {
+    padding: 10px;
+  }
+}
 /*Estilo de mofidicar menu*/
 .contenedor-items-del-menu {
     display: grid;
