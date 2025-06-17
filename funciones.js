@@ -995,26 +995,21 @@ function mostrarSeccion(idDestino, boton) {
 /*MI PERFIL*/
 /*Obtiene el valor del dato del empleado desde el sessionStorage y lo inserta en un input en datos Personales, mi perfil*/
 function inicializarInputsEditables() {
-  // Obtenemos todos los botones que permiten edición
   const botones = document.querySelectorAll('.btn-editar');
 
   botones.forEach((btn) => {
-    const inputId = btn.dataset.target; // ID del input vinculado
+    const inputId = btn.dataset.target;
     const input = document.getElementById(inputId);
-
-    // Cargar valor guardado si existe
-    const claveSession = inputId.replace('Input', ''); // Ej: nombreEmpleado
+    const claveSession = inputId.replace('Input', ''); // ej: nombreEmpleado
     const valorGuardado = sessionStorage.getItem(claveSession);
+
     if (valorGuardado) {
       input.value = valorGuardado;
-
-      // Si el input es la contraseña, la mostramos como texto plano
       if (inputId === 'contrasenaEmpleadoInput') {
-        input.type = 'text'; // Mostrar contraseña en texto plano
+        input.type = 'text';
       }
     }
 
-    // Asignamos evento click a cada botón
     btn.addEventListener('click', () => {
       if (btn.textContent === 'Editar') {
         input.disabled = false;
@@ -1026,6 +1021,32 @@ function inicializarInputsEditables() {
           sessionStorage.setItem(claveSession, nuevoValor);
           input.disabled = true;
           btn.textContent = 'Editar';
+
+          // Enviar cambio al servidor
+          const idEmpleado = sessionStorage.getItem('idEmpleado');
+          if (idEmpleado) {
+            fetch('actualizar_empleado.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                campo: claveSession,
+                valor: nuevoValor,
+                id_empleado: idEmpleado
+              })
+            })
+            .then(response => response.text())
+            .then(respuesta => {
+              console.log('Respuesta del servidor:', respuesta);
+            })
+            .catch(error => {
+              console.error('Error al actualizar en la base de datos:', error);
+            });
+          } else {
+            console.error('No hay idEmpleado en sessionStorage');
+          }
+
         } else {
           alert('El campo no puede estar vacío.');
         }
