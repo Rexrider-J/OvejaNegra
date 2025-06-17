@@ -83,7 +83,7 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
             . "|email=" . $usuario['mail']
             . "|contrasena=" . $usuario['contrasena'];
     } else {
-        echo "❌ Credenciales incorrectas."; // por si no se encontro el empleado
+        echo "❌ Credenciales incorrectas."; // por si no se encontro el cliente
     }
 
     $stmt->close(); // cierro consulta

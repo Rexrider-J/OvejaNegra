@@ -840,16 +840,17 @@ function submitAccederCliente(event) {
   })
     .then(response => response.text())  // esperamos la respuesta del servidor como texto
     .then(data => {
-      alert(data);// mostramos lo que responde el servidor
       if (data.includes("✅")) {  // nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
         const partes = data.split("|"); // separa los campos
         const datos = {}; // usamos un objeto para guardar los pares clave:valor
-
+        
         for (let i = 1; i < partes.length; i++) { //cargamos las partes en los datos, excluyendo el ✅
           const [clave, valor] = partes[i].split("="); // las separamos en el "="
           datos[clave] = valor; // y las asignamos
         }
 
+        alert("Bienvenido " + datos.nombre + "!");// mostramos lo que responde el servidor
+        
         /*Creamos una variable para indicar que el usuario que ingreso es un cliente*/
         sessionStorage.setItem("usuarioTipo", "cliente");
         sessionStorage.setItem("idCliente", datos.id_cliente);
