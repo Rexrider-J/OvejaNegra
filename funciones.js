@@ -1191,6 +1191,32 @@ if (window.location.pathname.includes("reservas.html")) {
       validarHabilitarMesa();
     }
 
+        function cargarMesasDisponibles() {
+      const idLocal = sessionStorage.getItem("sucursalSeleccionada");
+      const fecha = sessionStorage.getItem("fechaReserva");
+      const hora = sessionStorage.getItem("horaReserva");
+      const personas = sessionStorage.getItem("cantPersonasReserva");
+
+      const mesaSelect = document.getElementById("mesaReserva");
+      if (!mesaSelect || !idLocal || !fecha || !hora || !personas) return;
+
+      mesaSelect.innerHTML = "<option>Cargando...</option>";
+      mesaSelect.disabled = true;
+
+      const url = `obtener_mesas_disponibles.php?id_local=${idLocal}&fecha=${fecha}&hora=${hora}&personas=${personas}`;
+      fetch(url)
+        .then(res => res.text())
+        .then(opciones => {
+          mesaSelect.innerHTML = opciones;
+          mesaSelect.disabled = false;
+          console.log("hola 1211")
+        })
+        .catch(err => {
+          console.error("Error al cargar mesas:", err);
+          mesaSelect.innerHTML = "<option>Error al cargar</option>";
+        });
+    }
+
     // Habilita mesa solo si fecha, hora y personas están seleccionadas
     function validarHabilitarMesa() {
       const fecha = sessionStorage.getItem("fechaReserva");
@@ -1198,7 +1224,8 @@ if (window.location.pathname.includes("reservas.html")) {
       const personas = personasSelect.value;
 
       if (fecha && hora && personas) {
-        mesaSelect.disabled = false;
+        cargarMesasDisponibles()
+        // mesaSelect.disabled = false;
       } else {
         mesaSelect.disabled = true;
       }
@@ -1234,49 +1261,54 @@ function guardarValoresDatosReserva() {
     return;
   }
 
+  /*Si no se seleccionó ninguna hora aparece el cartel de alerta*/
   const horaSelect = document.getElementById("horaReserva");
   const horaSeleccionada = horaSelect.value;
-  /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (horaSeleccionada === "") {
     alert("Debe seleccionar un horario antes de continuar.");
     return;
   }
 
+  /*Si no se seleccionó la cantidad de personas aparece el cartel de alerta*/
   const personasSelect = document.getElementById("cantPersonasReserva");
   const personasSeleccionadas = personasSelect.value;
-  /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (personasSeleccionadas === "") {
     alert("Debe indicar la cantidad de personas antes de continuar.");
     return;
   }
 
+  /*Si no se seleccionó ninguna mesa aparece el cartel de alerta*/
   const mesaSelect = document.getElementById("mesaReserva");
   const mesaSeleccionada = mesaSelect.value;
-  sessionStorage.setItem("mesaSeleccionada", mesaSeleccionada);
-  /*Si la opcion elegida tiene un valor de "" aparece el cartel de alerta*/
   if (mesaSeleccionada === "") {
     alert("Debe seleccionar una mesa antes de continuar.");
     return;
   }
 
-  /*Guardar observacion dada por el usuario*/
-  const Observacion = document.getElementById("observacionesReserva");
-  const ObservacionDada = Observacion.value;
-  sessionStorage.setItem("ObservacionDada", ObservacionDada);
+  const observacion = document.getElementById("observacionesReserva").value;
 
-  /*Se guardan los datos actualizados de fecha,hora y cantPersonas*/
-  sessionStorage.setItem("fechaSeleccionada", fechaSeleccionada);
+  sessionStorage.setItem("fecha", fechaSeleccionada); // Guardamos los datos para uso del formulario PHP
+  sessionStorage.setItem("hora", horaSeleccionada);
+  sessionStorage.setItem("cantidad", personasSeleccionadas);
+  sessionStorage.setItem("mesa", mesaSeleccionada);
+  sessionStorage.setItem("observaciones", observacion);
+
+
+  sessionStorage.setItem("fechaSeleccionada", fechaSeleccionada); //datos duplicados con alias para mostrar en pantalla
   sessionStorage.setItem("horaSeleccionada", horaSeleccionada);
   sessionStorage.setItem("personasSeleccionadas", personasSeleccionadas);
+  sessionStorage.setItem("mesaSeleccionada", mesaSeleccionada);
+  sessionStorage.setItem("ObservacionDada", observacion);
 
-  /*Insertar los datos en la siguiente pagina de confirmación*/
+  // Mostramos los datos en la sección de confirmación
   document.getElementById("sucursalSeleccionada").textContent = sessionStorage.getItem("sucursalNombre");
-  document.getElementById("fechaSeleccionada").textContent = sessionStorage.getItem("fechaSeleccionada");
-  document.getElementById("horaSeleccionada").textContent = sessionStorage.getItem("horaSeleccionada");
-  document.getElementById("cantPersonasSeleccionada").textContent = sessionStorage.getItem("personasSeleccionadas") + " persona/s";
-  document.getElementById("mesaSeleccionada").textContent = sessionStorage.getItem("mesaSeleccionada");
-  document.getElementById("ObservacionDada").textContent = sessionStorage.getItem("ObservacionDada");
+  document.getElementById("fechaSeleccionada").textContent = fechaSeleccionada;
+  document.getElementById("horaSeleccionada").textContent = horaSeleccionada;
+  document.getElementById("cantPersonasSeleccionada").textContent = personasSeleccionadas + " persona/s";
+  document.getElementById("mesaSeleccionada").textContent = mesaSeleccionada;
+  document.getElementById("ObservacionDada").textContent = observacion;
 }
+
 function volverSeleccionDatosReserva() {
   /* Ocultar confirmación de reserva*/
   document.getElementById("confirmacionReserva").style.display = "none";
@@ -1285,22 +1317,45 @@ function volverSeleccionDatosReserva() {
   document.getElementById("datosDeReserva").style.display = "grid";
 }
 function enviarReserva() {
-  /* Recupera los datos desde sessionStorage y campos*/
-  const sucursal = sessionStorage.getItem("sucursalSeleccionada");
-  const fecha = sessionStorage.getItem("fechaReserva");
-  const hora = sessionStorage.getItem("horaReserva");
-  const cantidad = sessionStorage.getItem("cantPersonasReserva");
-  const mesa = sessionStorage.getItem("mesaReserva");
-  const observaciones = sessionStorage.getItem("observacionesReserva");
+  const id_cliente = sessionStorage.getItem("idCliente");
+  const id_local = sessionStorage.getItem("sucursalValor");
+  const fecha = sessionStorage.getItem("fecha");
+  const hora = sessionStorage.getItem("hora");
+  const cantidad = sessionStorage.getItem("cantidad");
+  const mesa = sessionStorage.getItem("mesa");
+  const observaciones = sessionStorage.getItem("observaciones");
 
-  /* Asignar al formulario oculto */
-  const form = document.getElementById("formReservaFinal");
-  form.elements["sucursal"].value = sucursal;
-  form.elements["fecha"].value = fecha;
-  form.elements["hora"].value = hora;
-  form.elements["cantidad"].value = cantidad;
-  form.elements["mesa"].value = mesa;
-  form.elements["observaciones"].value = observaciones;
+  if (!id_cliente || !id_local || !fecha || !hora || !cantidad || !mesa) {
+    alert("Faltan datos para completar la reserva.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("id_cliente", id_cliente);
+  formData.append("sucursal", id_local);
+  formData.append("fecha", fecha);
+  formData.append("hora", hora);
+  formData.append("cantidad", cantidad);
+  formData.append("mesa", mesa);
+  formData.append("observaciones", observaciones);
+
+  fetch("procesar_reserva.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(response => response.text())
+    .then(data => {
+      if (data.includes("✅")) {
+        alert("✅ Reserva realizada con éxito.");
+        window.location.href = "index.html";
+      } else {
+        alert("❌ Error: " + data);
+      }
+    })
+    .catch(error => {
+      console.error("Error al enviar la reserva:", error);
+      alert("❌ Error al procesar la reserva. Intente nuevamente.");
+    });
 }
 /*Los botones raddioButton de reservas x empleado cambian el contenido de los datos que se deben completar de cliente segun el seleccionado*/
 function cambioTipoCliente() {
