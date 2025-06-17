@@ -1062,11 +1062,29 @@ function obtenerFuncionesEmpleado(idEmpleado, callback) {
   });
 }
 /*Esta tabla rellena dinamicamente la tabla que se encuentra en datos personales, mis reservas empleado*/
+/*Solo muestra las funciones a partir de la fecha actual en adelante*/
 function mostrarTablaFunciones(funciones) {
   const tbody = document.querySelector("#tablaFunciones tbody");
-  tbody.innerHTML = ""; // Limpia cualquier contenido previo
+  tbody.innerHTML = ""; // Limpiar contenido previo
 
-  funciones.forEach(f => {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // Dejar solo la fecha sin hora
+
+  // Filtrar funciones a partir de hoy
+  const funcionesFiltradas = funciones.filter(f => {
+    const fechaFuncion = new Date(f.dia_hora);
+    fechaFuncion.setHours(0, 0, 0, 0);
+    return fechaFuncion >= hoy;
+  });
+
+  if (funcionesFiltradas.length === 0) {
+    const fila = document.createElement("tr");
+    fila.innerHTML = `<td colspan="3">No hay funciones futuras programadas.</td>`;
+    tbody.appendChild(fila);
+    return;
+  }
+
+  funcionesFiltradas.forEach(f => {
     const fecha = new Date(f.dia_hora);
     const dia = fecha.toLocaleDateString(); // ej: "16/06/2025"
     const hora = fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // ej: "18:00"
