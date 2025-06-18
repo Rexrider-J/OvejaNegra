@@ -82,7 +82,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (pane) pane.classList.add("d-none");
   });
 
-  if (tipoUsuario === "empleado") {
+  if (tipoUsuario === "empleado" || tipoUsuario === "cliente") {
     // Mostrar siempre estos dos
     const datosTab = document.getElementById("list-datosPersonales-list");
     const datosPane = document.getElementById("list-datosPersonales");
@@ -499,7 +499,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (dropdownEmpleado && valorGuardado) {
     dropdownEmpleado.value = valorGuardado;
   }
-  
+
   if (selector) {
     selector.addEventListener("change", function () {
       const valor = selector.value;
