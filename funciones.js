@@ -483,35 +483,34 @@ function guardarSeleccionSucursal(valor) {
 window.addEventListener('DOMContentLoaded', mostrarTodasSucursales);
 /* Al cargar la página, recupera el valor de la selección guardada*/
 document.addEventListener("DOMContentLoaded", function () {
-  const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
-  if (!valorGuardado) return;
-
-  /* Aplica el valor guardado al select del header de la pagina en la que se ubique*/
   const selector = document.getElementById("selectorSucursales");
-  if (selector) {
+
+  const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
+  if (valorGuardado && selector) {
     selector.value = valorGuardado;
   }
 
-  /* Aplica al dropdown de reservas si se encuentra en la pagina pero solo cuando carga la pagina*/
   const dropdown = document.getElementById("dropdownReservas");
-  if (dropdown) {
+  if (dropdown && valorGuardado) {
     dropdown.value = valorGuardado;
   }
-  /* Aplica al dropdownEmpleado de reservas si se encuentra en la pagina pero solo cuando carga la pagina*/
+
   const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
-  if (dropdownEmpleado) {
+  if (dropdownEmpleado && valorGuardado) {
     dropdownEmpleado.value = valorGuardado;
   }
-  /* Aplica el valor guardado al select del header de la pagina en el menu*/
-  const selectorMenu = document.getElementById("selectorSucursales");
-  if (selectorMenu) {
-    selectorMenu.addEventListener("change", function () {
-      const valor = selectorMenu.value;
+  
+  if (selector) {
+    selector.addEventListener("change", function () {
+      const valor = selector.value;
       if (valor !== "") {
         guardarSeleccionSucursal(valor);
         cargarTodasLasCategorias();
       }
     });
+  }
+  if (valorGuardado) {
+    cargarTodasLasCategorias();
   }
 });
 /*Carga el input sobre la sucursal a la que pertenece el empleado en Mi Perfil, datos personales*/
