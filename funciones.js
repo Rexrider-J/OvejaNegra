@@ -502,6 +502,17 @@ document.addEventListener("DOMContentLoaded", function () {
   if (dropdownEmpleado) {
     dropdownEmpleado.value = valorGuardado;
   }
+  /* Aplica el valor guardado al select del header de la pagina en el menu*/
+  const selectorMenu = document.getElementById("selectorSucursales");
+  if (selectorMenu) {
+    selectorMenu.addEventListener("change", function () {
+      const valor = selectorMenu.value;
+      if (valor !== "") {
+        guardarSeleccionSucursal(valor);
+        cargarTodasLasCategorias();
+      }
+    });
+  }
 });
 /*Carga el input sobre la sucursal a la que pertenece el empleado en Mi Perfil, datos personales*/
 function mostrarSucursalEmpleado() {
@@ -1488,7 +1499,14 @@ function cargarCategoria(categoria) { // es la funcion que carga por la categori
       targetDiv.innerHTML = "<p>Error al cargar productos.</p>";
     });
 }
+function cargarTodasLasCategorias() {
+  const seccionesMenu = document.querySelectorAll("[id^='list-']");
 
+  seccionesMenu.forEach(seccion => {
+    const categoria = seccion.id.replace("list-", "");
+    cargarCategoria(categoria);
+  });
+}
 function cargarMenuEstatico(categoriaInicial = "") {
   const idBody = document.body.id;
   if (idBody === "menu" || idBody === "promociones") { //solo se ejecuta si el id del body es igual a uno de esos
