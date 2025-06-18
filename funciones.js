@@ -116,8 +116,50 @@ document.addEventListener("DOMContentLoaded", function () {
   if (datosPersonalesDiv) {
     if (tipoUsuario === "cliente") {
       datosPersonalesDiv.innerHTML = `
-        <h5>Datos del Cliente</h5>
+        <div class="datosModificables"> 
+          <div class="columna">
+            <fieldset>
+              <legend>Nombre/s</legend>
+              <label class="form-group">
+                <input type="text" id="nombreClienteInput" name="nombreClienteInput" maxlength="50" class="solo-letras" disabled />
+                <button class="btn-editar" data-target="nombreClienteInput">Editar</button>
+              </label>
+              <legend>Apellido/s</legend>
+              <label class="form-group">
+                <input type="text" id="apellidoClienteInput" name="apellidoClienteInput" maxlength="50" class="solo-letras" disabled />
+                <button class="btn-editar" data-target="apellidoClienteInput">Editar</button>
+              </label>
+              <legend>DNI</legend> <!--FUNCION APARTE-->
+              <label class="form-group">
+                <input type="text" id="dniClienteInput" name="dniClienteInput" disabled />
+              </label>
+              <legend>Email</legend>
+              <label class="form-group">
+                <input type="email" id="emailClienteInput" name="emailClienteInput" maxlength="100" disabled />
+                <button class="btn-editar" data-target="emailClienteInput">Editar</button>
+              </label>
+              <legend>Telefono</legend>
+              <label class="form-group">
+                <input type="text" id="telefonoClienteInput" name="telefonoClienteInput" min="1000000000" max="999999999" maxlength="20" class="solo-numeros" disabled />
+                <button class="btn-editar" data-target="telefonoClienteInput">Editar</button>
+              </label>
+              <legend>Fecha de nacimiento</legend>
+              <label class="form-group">
+                <input type="date" id="fecha_nacimientoClienteInput" name="fecha_nacimientoClienteInput" disabled />
+                <button class="btn-editar" data-target="fecha_nacimientoClienteInput">Editar</button>
+              </label>
+              <legend>Contraseña</legend>
+              <label class="form-group">
+                <input type="password" id="contrasenaClienteInput" name="contrasenaClienteInput" maxlength="20" disabled />
+                <button class="btn-editar" data-target="contrasenaClienteInput">Editar</button>
+              </label>
+            </fieldset>
+          </div>
+        </div>
       `;
+      aplicarSoloLetras(); 
+      inicializarInputsEditables();
+      mostrarDatoSoloLectura('dniClienteInput', 'dniCliente');
     } else if (tipoUsuario === "empleado") {
       datosPersonalesDiv.innerHTML = `
         <div class="datosModificables">
@@ -857,6 +899,8 @@ function submitAccederCliente(event) {
         sessionStorage.setItem("apellidoCliente", datos.apellido);
         sessionStorage.setItem("dniCliente", datos.dni);
         sessionStorage.setItem("emailCliente", datos.email);
+        sessionStorage.setItem("telefonoCliente", datos.telefono);
+        sessionStorage.setItem("fecha_nacimientoCliente", datos.fecha_nacimiento);
         sessionStorage.setItem("contrasenaCliente", datos.contrasena);
 
         window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
@@ -1025,7 +1069,7 @@ function inicializarInputsEditables() {
     if (valorGuardado) {
       input.value = valorGuardado;
       /* Si es el campo de contraseña, mostrar el texto en lugar de los puntos codificados*/
-      if (inputId === 'contrasenaEmpleadoInput') {
+      if (inputId === 'contrasenaEmpleadoInput' || inputId === 'contrasenaClienteInput') {
         input.type = 'text';
       }
     }
@@ -1065,9 +1109,39 @@ function inicializarInputsEditables() {
             .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
             .then(respuesta => {
               console.log('Respuesta del servidor:', respuesta);
+              alert("✅ Actualización realizada con éxito.");
             })
             .catch(error => {
               console.error('Error al actualizar en la base de datos:', error);
+              alert("❌ Error al actualizar los datos. Intente nuevamente.");
+            });
+          } else {
+            console.error('No hay idEmpleado en sessionStorage');
+          }
+
+          /*Enviar el cambio al servidor*/
+          const idCliente = sessionStorage.getItem('idCliente');
+          if (idCliente) {
+            /*Envia la actualización con método POST*/
+            fetch('actualizar_cliente.php', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                campo: claveSession,
+                valor: nuevoValor,
+                id_cliente: idCliente
+              })
+            })
+            .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
+            .then(respuesta => {
+              console.log('Respuesta del servidor:', respuesta);
+              alert("✅ Actualización realizada con éxito.");
+            })
+            .catch(error => {
+              console.error('Error al actualizar en la base de datos:', error);
+              alert("❌ Error al actualizar los datos. Intente nuevamente.");
             });
           } else {
             console.error('No hay idEmpleado en sessionStorage');

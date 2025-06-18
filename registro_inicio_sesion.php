@@ -81,6 +81,8 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
             . "|apellido=" . $usuario['apellido']
             . "|dni=" . $usuario['dni']
             . "|email=" . $usuario['mail']
+            . "|telefono=" . $usuario['telefono']
+            . "|fecha_nacimiento=" . $usuario['fecha_nacimiento']
             . "|contrasena=" . $usuario['contrasena'];
     } else {
         echo "❌ Credenciales incorrectas."; // por si no se encontro el cliente
