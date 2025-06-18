@@ -642,25 +642,25 @@ INSERT INTO `menu` (`nombre`, `precio`, `categoria`, `descripcion`, `ruta_imagen
 ('Superpancho con papas fritas', 4800.00, 'Hotdogs', 'Superpancho acompañado de papas fritas', 'img/Fotos/Menu/Hotdogs/SuperpanchoPapas.jpg'),
 ('Alemana con papas fritas', 6300.00, 'Hotdogs', 'Salchicha alemana acompañada de papas fritas', 'img/Fotos/Menu/Hotdogs/salchichaAlemanaPapas.png'),
 ('Ensalada Caesar', 11100.00, 'Ensaladas', 'Lechuga, tomate, queso, huevo, pollo crispy y salsa caeser', 'img/Fotos/Menu/Ensaladas/ensaladaCesar.png'),
-('Línea Coca Cola 500ml', 2200.00, 'Bebidas', NULL, 'img/Fotos/Menu/Bebidas/CCl.png'),
-('Línea Coca Cola 1L', 4000.00, 'Bebidas', NULL, 'img/Fotos/Menu/Bebidas/CocaCola1L.png'),
-('Agua saborizada Manzana o Pomelo 500ml', 2200.00, 'Bebidas', NULL, 'img/Fotos/Menu/Bebidas/AQUARIUS-agua-manzana-x500cc.png'),
-('Agua con o sin gas 500ml', 2200.00, 'Bebidas', NULL, 'img/Fotos/Menu/Bebidas/Agua-Villavicencio-Sin-Gas-500-ml.png'),
-('Quilmes 473ml', 3900.00, 'Bebidas', NULL, 'img/Fotos/Menu/Bebidas/Cerveza-QUILMES-CRISTAL-Lata-473ml.png'),
-('Imperial o Andes Rubia/Roja/Negra 473ml', 3900.00, 'Bebidas', NULL, 'img/Fotos/Menu/Bebidas/imperial-lager-cerveza-lata-473-ml-e1603837257931.png'),
+('Línea Coca Cola 500ml', 2200.00, 'Bebidas', ' ', 'img/Fotos/Menu/Bebidas/CCl.png'),
+('Línea Coca Cola 1L', 4000.00, 'Bebidas', ' ', 'img/Fotos/Menu/Bebidas/CocaCola1L.png'),
+('Agua saborizada Manzana o Pomelo 500ml', 2200.00, 'Bebidas', ' ', 'img/Fotos/Menu/Bebidas/AQUARIUS-agua-manzana-x500cc.png'),
+('Agua con o sin gas 500ml', 2200.00, 'Bebidas', ' ', 'img/Fotos/Menu/Bebidas/Agua-Villavicencio-Sin-Gas-500-ml.png'),
+('Quilmes 473ml', 3900.00, 'Bebidas', ' ', 'img/Fotos/Menu/Bebidas/Cerveza-QUILMES-CRISTAL-Lata-473ml.png'),
+('Imperial o Andes Rubia/Roja/Negra 473ml', 3900.00, 'Bebidas', ' ', 'img/Fotos/Menu/Bebidas/imperial-lager-cerveza-lata-473-ml-e1603837257931.png'),
 ('Affogato', 7900.00, 'Postres', '2 bochas de helado de vainilla y café', 'img/Fotos/Menu/Postres/Affogato.png'),
 ('Copa Oreo', 6700.00, 'Postres', '2 bochas de helado de DDL de Oreo', 'img/Fotos/Menu/Postres/CopaOreo.png'),
 ('Copa Rocklet', 6700.00, 'Postres', '2 bochas de helado a elección con rocklets y salsa', 'img/Fotos/Menu/Postres/CopaRocklets.png');
 
 INSERT INTO menu (nombre, precio, categoria, descripcion, ruta_imagen) VALUES
-('Cortado en jarrito + 1 medialuna', 3400.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/cortadoJarrito.png'),
-('Cortado en jarrito + 2 medialunas', 4800.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/cortadoJarrito2Medialunas.jpeg'),
-('Café con leche + 2 medialunas', 5500.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/cafeConLeche2Medialunas.jpeg'),
-('Café con leche XL + 2 medialunas', 6800.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/cafeConLecheXL2Medialunas.jpeg'),
-('Café con leche + donut', 4600.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/cafeConLecheDonut.jpeg'),
-('Café con leche XL', 4700.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/cafeConLecheXL.jpeg'),
-('Cortado + budin de limón', 4400.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/CortadBudinLimon.jpeg'),
-('Jugo de naranja + 1/2 tostado de miga', 3900.00, 'Promo', NULL, 'img/Fotos/Promos y combos/Promos/jugoNaranjaTostado.jpeg');
+('Cortado en jarrito + 1 medialuna', 3400.00, 'Promo',' ', 'img/Fotos/Promos y combos/Promos/cortadoJarrito.png'),
+('Cortado en jarrito + 2 medialunas', 4800.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cortadoJarrito2Medialunas.jpeg'),
+('Café con leche + 2 medialunas', 5500.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLeche2Medialunas.jpeg'),
+('Café con leche XL + 2 medialunas', 6800.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLecheXL2Medialunas.jpeg'),
+('Café con leche + donut', 4600.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLecheDonut.jpeg'),
+('Café con leche XL', 4700.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLecheXL.jpeg'),
+('Cortado + budin de limón', 4400.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/CortadBudinLimon.jpeg'),
+('Jugo de naranja + 1/2 tostado de miga', 3900.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/jugoNaranjaTostado.jpeg');
 
 INSERT INTO menu (nombre, precio, categoria, descripcion, ruta_imagen) VALUES
 ('Brunch Oveja Negra', 14500.00, 'Brunch', 'Infusión (café, café con leche, té), jugo de naranja, huevos revueltos, tostadas con queso en pan de campo.', 'img/Fotos/Promos y combos/Brunch/brunchOvejaNegra.jpeg'),
