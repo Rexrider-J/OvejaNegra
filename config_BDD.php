@@ -14,6 +14,8 @@ if ($conexion->connect_error) {
     die("Conexión fallida: " . $conexion->connect_error); // Mostrar mensaje y detener ejecución si falla
 }
 
+
+
 /* // para hosting:
 <?php
 $host = "sql203.infinityfree.com"; // Dirección del servidor de base de datos (usualmente localhost)
