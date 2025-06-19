@@ -2045,10 +2045,4 @@ input[type=number]::-webkit-outer-spin-button {
     border-color: #4cbfe6;
 }
 
-#list-baseDatos > section {
-  display: none;
-}
 
-#list-baseDatos > section.activa {
-  display: grid; /* o block o flex */
-}

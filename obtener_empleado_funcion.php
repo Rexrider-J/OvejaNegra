@@ -4,26 +4,28 @@ session_start();
 
 /*Incluye el archivo que contiene la configuración y conexión a la base de datos*/
 require_once("config_BDD.php");
-
+function responderError($codigo, $mensaje) {
+    http_response_code($codigo);
+    header('Content-Type: application/json');
+    echo json_encode(["error" => $mensaje]);
+    exit;
+}
 /*Verifica si la variable $conexion está definida y no es nula*/
 if (!isset($conexion) || $conexion === null) {
     /*Si no hay conexión, responde con código 500 (error interno del servidor) y termina*/
-    http_response_code(500);
-    die("Error de conexión con la base de datos.");
+    responderError(500, "Error de conexión con la base de datos.");
 }
 
 /*Asegura que el método usado para acceder a este archivo sea POST*/
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     /*Si se intenta acceder con GET u otro método, responde con código 405 (método no permitido)*/
-    http_response_code(405);
-    die("Método no permitido.");
+    responderError(405, "Método no permitido.");
 }
 
 /*Verifica que se haya recibido el parámetro 'id_empleado' por POST*/
 if (!isset($_POST['id_empleado'])) {
     /*Si no se recibe, responde con código 400 (mala solicitud)*/
-    http_response_code(400);
-    die("Falta ID del empleado.");
+    responderError(400, "Falta ID del empleado.");
 }
 
 /*Convierte el id recibido a entero para evitar inyecciones SQL*/
@@ -38,8 +40,7 @@ $stmt->bind_param("i", $idEmpleado); /*"i" indica que es un valor entero*/
 
 /*Ejecuta la consulta*/
 if (!$stmt->execute()) {
-    http_response_code(500);
-    die("Error en la consulta.");
+    responderError(500, "Error en la consulta.");
 }
 
 /*Obtiene los resultados en forma de arreglo asociativo*/

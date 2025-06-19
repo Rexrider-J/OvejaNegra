@@ -270,7 +270,7 @@ INSERT INTO `clientes` (`nombre`, `apellido`, `dni`, `mail`, `telefono`, `fecha_
 
 -- Tabla: empleados
 INSERT INTO `empleados` (`nombre`, `apellido`, `dni`, `mail`, `puesto`, `contrasena`, `id_local`) VALUES
-('Tom', 'Tom', 12345678, 'tom@tom.com', 'Mozo', '1234', 1),
+('Tom', 'Tom', 12345678, 'tom@tom.com', 'Gerente', '1234', 1),
 ('Pedro', 'Fernandez', 22334455, 'pedrofernandez@example.com', 'Mozo', 'mozo123', 1),
 ('Diego', 'De la Vega', 45202020, 'diegodelavega@admin.com', 'Gerente', '123', 1),
 ('Bernardo', 'El Mudo', 45101010, 'bernardo.m@admin.com', 'Subgerente', '123', 1),

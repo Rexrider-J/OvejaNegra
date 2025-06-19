@@ -560,7 +560,7 @@ function mostrarSucursalEmpleado() {
   const idLocalEmpleado = sessionStorage.getItem('idLocalEmpleado');
   if (idLocalEmpleado && locales.length > 0) {
     const sucursal = locales.find(local => local.id_local === idLocalEmpleado);
-    const texto = sucursal?.nombre || 'Sucursal desconocida';
+    const texto = (sucursal && sucursal.nombre) ? sucursal.nombre : 'Sucursal desconocida';
     const pSucursal = document.getElementById('sucursalEmpleadoText');
     if (pSucursal) pSucursal.value = texto;
   }
