@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         </div>
       `;
-      aplicarSoloLetras(); 
+      aplicarSoloLetras();
       inicializarInputsEditables();
       mostrarDatoSoloLectura('dniClienteInput', 'dniCliente');
     } else if (tipoUsuario === "empleado") {
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
         </div>
       `;
-      aplicarSoloLetras(); 
+      aplicarSoloLetras();
       inicializarInputsEditables();
       mostrarDatoSoloLectura('dniEmpleadoInput', 'dniEmpleado');
 
@@ -376,27 +376,27 @@ function actualizarFooter() {
 /*Muestra la pagina reservas de forma distinta segun si es cliente, empleado o no usuario*/
 if (window.location.pathname.includes("reservas.html")) {
   document.addEventListener("DOMContentLoaded", () => {
-  const tipoUsuario = sessionStorage.getItem("usuarioTipo");
+    const tipoUsuario = sessionStorage.getItem("usuarioTipo");
 
-  const clienteSection = document.getElementById("cliente-section");
-  const empleadoSection = document.getElementById("empleado-section");
+    const clienteSection = document.getElementById("cliente-section");
+    const empleadoSection = document.getElementById("empleado-section");
 
-  if (!clienteSection || !empleadoSection) {
-    console.error("No se encontraron las secciones necesarias.");
-    return;
-  }
+    if (!clienteSection || !empleadoSection) {
+      console.error("No se encontraron las secciones necesarias.");
+      return;
+    }
 
-  if (tipoUsuario === "cliente") {
-    clienteSection.style.display = "grid";
-    empleadoSection.style.display = "none";
-  } else if (tipoUsuario === "empleado") {
-    clienteSection.style.display = "none";
-    empleadoSection.style.display = "grid";
-  } else {
-    alert("Debe iniciar sesión para realizar una reserva.");
-    window.location.href = "ingresar.html#cliente";
-  }
-});
+    if (tipoUsuario === "cliente") {
+      clienteSection.style.display = "grid";
+      empleadoSection.style.display = "none";
+    } else if (tipoUsuario === "empleado") {
+      clienteSection.style.display = "none";
+      empleadoSection.style.display = "grid";
+    } else {
+      alert("Debe iniciar sesión para realizar una reserva.");
+      window.location.href = "ingresar.html#cliente";
+    }
+  });
 }
 
 /*Guarda la sucursal seleccionada en la sección seleccionar sucursal de reseva*/
@@ -562,7 +562,7 @@ function mostrarSucursalEmpleado() {
     const sucursal = locales.find(local => local.id_local === idLocalEmpleado);
     const texto = sucursal?.nombre || 'Sucursal desconocida';
     const pSucursal = document.getElementById('sucursalEmpleadoText');
-    if (pSucursal) pSucursal.value = texto; 
+    if (pSucursal) pSucursal.value = texto;
   }
 }
 /*Genera acordeones con los datos de cada sucursal dinamicamente en la pagina nosotros*/
@@ -626,20 +626,20 @@ if (selector) {
 /*Calendario externo Flatpickr*/
 if (window.location.pathname.includes("reservas.html")) {
   document.addEventListener("DOMContentLoaded", function () {
-      flatpickr("#calendarioReservas", {
-        inline: true,
-        dateFormat: "Y-m-d",
-        locale: "es",
-        minDate: "today",
-        disable: [
-          function (date) {
-            return date.getDay() === 1; // Desactiva lunes
-          }
-        ],
-        onChange: function (selectedDates, dateStr) {
-          document.getElementById("fechaReserva").value = dateStr;
+    flatpickr("#calendarioReservas", {
+      inline: true,
+      dateFormat: "Y-m-d",
+      locale: "es",
+      minDate: "today",
+      disable: [
+        function (date) {
+          return date.getDay() === 1; // Desactiva lunes
         }
-      });
+      ],
+      onChange: function (selectedDates, dateStr) {
+        document.getElementById("fechaReserva").value = dateStr;
+      }
+    });
   });
 }
 function aplicarSoloLetras() {
@@ -884,14 +884,14 @@ function submitAccederCliente(event) {
       if (data.includes("✅")) {  // nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
         const partes = data.split("|"); // separa los campos
         const datos = {}; // usamos un objeto para guardar los pares clave:valor
-        
+
         for (let i = 1; i < partes.length; i++) { //cargamos las partes en los datos, excluyendo el ✅
           const [clave, valor] = partes[i].split("="); // las separamos en el "="
           datos[clave] = valor; // y las asignamos
         }
 
         alert("Bienvenido " + datos.nombre + "!");// mostramos lo que responde el servidor
-        
+
         /*Creamos una variable para indicar que el usuario que ingreso es un cliente*/
         sessionStorage.setItem("usuarioTipo", "cliente");
         sessionStorage.setItem("idCliente", datos.id_cliente);
@@ -1044,13 +1044,15 @@ function mostrarSeccion(idDestino, boton) {
   // Ocultar la sección que contiene al botón (padre más cercano tipo <section>)
   const seccionActual = boton.closest("section");
   if (seccionActual) {
+    seccionActual.classList.remove("activa");
     seccionActual.style.display = "none";
   }
 
-  // Mostrar la sección destino
+  // Mostrar sección destino
   const seccionDestino = document.getElementById(idDestino);
   if (seccionDestino) {
-    seccionDestino.style.display = "grid";
+    seccionDestino.classList.add("activa");
+    seccionDestino.style.removeProperty("display");
   }
 }
 /*MI PERFIL*/
@@ -1106,15 +1108,15 @@ function inicializarInputsEditables() {
                 id_empleado: idEmpleado
               })
             })
-            .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
-            .then(respuesta => {
-              console.log('Respuesta del servidor:', respuesta);
-              alert("✅ Actualización realizada con éxito.");
-            })
-            .catch(error => {
-              console.error('Error al actualizar en la base de datos:', error);
-              alert("❌ Error al actualizar los datos. Intente nuevamente.");
-            });
+              .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
+              .then(respuesta => {
+                console.log('Respuesta del servidor:', respuesta);
+                alert("✅ Actualización realizada con éxito.");
+              })
+              .catch(error => {
+                console.error('Error al actualizar en la base de datos:', error);
+                alert("❌ Error al actualizar los datos. Intente nuevamente.");
+              });
           } else {
             console.error('No hay idEmpleado en sessionStorage');
           }
@@ -1134,15 +1136,15 @@ function inicializarInputsEditables() {
                 id_cliente: idCliente
               })
             })
-            .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
-            .then(respuesta => {
-              console.log('Respuesta del servidor:', respuesta);
-              alert("✅ Actualización realizada con éxito.");
-            })
-            .catch(error => {
-              console.error('Error al actualizar en la base de datos:', error);
-              alert("❌ Error al actualizar los datos. Intente nuevamente.");
-            });
+              .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
+              .then(respuesta => {
+                console.log('Respuesta del servidor:', respuesta);
+                alert("✅ Actualización realizada con éxito.");
+              })
+              .catch(error => {
+                console.error('Error al actualizar en la base de datos:', error);
+                alert("❌ Error al actualizar los datos. Intente nuevamente.");
+              });
           } else {
             console.error('No hay idEmpleado en sessionStorage');
           }
@@ -1172,24 +1174,24 @@ function obtenerFuncionesEmpleado(idEmpleado, callback) { /*callback es una func
     /*El cuerpo de la solicitud incluye el id_empleado codificado para evitar errores por caracteres especiales*/
     body: 'id_empleado=' + encodeURIComponent(idEmpleado),
   })
-  /*Espera una respuesta, si el servidor devuelve un estado que no es 200–299, lanza un error*/
-  .then(response => {
-    /*Si es válida, interpreta la respuesta como JSON.Un arreglo de funciones con fecha, hora y nombre*/
-    if (!response.ok) {
-      throw new Error('Error en la respuesta del servidor');
-    }
-    return response.json();
-  })
-  /*Guarda el JSON recibido en sessionStorage bajo la clave "empleado_funcion", convirtiéndolo a cadena de texto con JSON.stringify*/
-  .then(data => {
-    sessionStorage.setItem('empleado_funcion', JSON.stringify(data));
-    /*Si se pasó una función callback, se ejecuta y se le pasa como argumento los datos recibidos (data)*/
-    if (callback) callback(data); /* Llama a la función para mostrar la tabla*/
-  })
-  /*Si ocurre algun error durante la petición lo muestra en la consola para depuración*/
-  .catch(error => {
-    console.error('Error al obtener funciones del empleado:', error);
-  });
+    /*Espera una respuesta, si el servidor devuelve un estado que no es 200–299, lanza un error*/
+    .then(response => {
+      /*Si es válida, interpreta la respuesta como JSON.Un arreglo de funciones con fecha, hora y nombre*/
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
+      }
+      return response.json();
+    })
+    /*Guarda el JSON recibido en sessionStorage bajo la clave "empleado_funcion", convirtiéndolo a cadena de texto con JSON.stringify*/
+    .then(data => {
+      sessionStorage.setItem('empleado_funcion', JSON.stringify(data));
+      /*Si se pasó una función callback, se ejecuta y se le pasa como argumento los datos recibidos (data)*/
+      if (callback) callback(data); /* Llama a la función para mostrar la tabla*/
+    })
+    /*Si ocurre algun error durante la petición lo muestra en la consola para depuración*/
+    .catch(error => {
+      console.error('Error al obtener funciones del empleado:', error);
+    });
 }
 /*Muestra en una tabla HTML las funciones programadas para un empleado, que se encuentra en datos personales, mis reservas empleado*/
 /*Solo muestra las funciones a partir de la fecha actual en adelante*/
@@ -1287,13 +1289,13 @@ if (window.location.pathname.includes("reservas.html")) {
       validarHabilitarMesa();
     }
 
-        function cargarMesasDisponibles() {
+    function cargarMesasDisponibles() {
       const idLocal = sessionStorage.getItem("sucursalSeleccionada");
       const fecha = sessionStorage.getItem("fechaReserva");
       const hora = sessionStorage.getItem("horaReserva");
       const personas = sessionStorage.getItem("cantPersonasReserva");
 
-      const mesaSelect = document.getElementById("mesaReserva");
+      // const mesaSelect = document.getElementById("mesaReserva");
       if (!mesaSelect || !idLocal || !fecha || !hora || !personas) return;
 
       mesaSelect.innerHTML = "<option>Cargando...</option>";
@@ -1305,7 +1307,6 @@ if (window.location.pathname.includes("reservas.html")) {
         .then(opciones => {
           mesaSelect.innerHTML = opciones;
           mesaSelect.disabled = false;
-          console.log("hola 1211")
         })
         .catch(err => {
           console.error("Error al cargar mesas:", err);
@@ -1341,11 +1342,11 @@ if (window.location.pathname.includes("reservas.html")) {
     validarHabilitarMesa(); // Verifica al cargar la página
   });
   window.addEventListener("beforeunload", function () {
-  // Solo borra los datos de la reserva al salir de la página actual
-  sessionStorage.removeItem("fechaReserva");
-  sessionStorage.removeItem("horaReserva");
-  sessionStorage.removeItem("cantPersonasReserva");
-});
+    // Solo borra los datos de la reserva al salir de la página actual
+    sessionStorage.removeItem("fechaReserva");
+    sessionStorage.removeItem("horaReserva");
+    sessionStorage.removeItem("cantPersonasReserva");
+  });
 }
 
 /*Verifica que esten todos los datos de reserva y los guarda en sessionStorage*/
@@ -1482,6 +1483,7 @@ if (window.location.pathname.includes("miPerfil.html")) {
 }
 
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
+  document.getElementById("list-modificarMenu").innerHTML = "Espere...;"
   fetch("obtener_menu.php") // solicita ese archivo, que carga el HTML del menú
     .then(res => res.text()) // convierte la respuesta en texto
     .then(data => {
@@ -1595,4 +1597,68 @@ function cargarMenuEstatico(categoriaInicial = "") {
       });
     });
   }
+}
+
+// Base de datos en miPerfil.html
+function cargarTabla(tabla) {
+  fetch(`crud_tablas.php?tabla=${tabla}`)
+    .then(response => response.text())
+    .then(html => {
+      const contenedor = document.getElementById(`tabla-${tabla}`);
+      contenedor.innerHTML = `
+  <input type="button" value="volver" onclick="mostrarSeccion('botonesDeTablas', this)">
+  ${html}
+`;
+      inicializarEventosTabla(tabla); // para los botones agregar/modificar/eliminar
+    })
+    .catch(err => console.error("Error al cargar tabla:", err));
+}
+function inicializarEventosTabla(tabla) {
+  // Agregar
+  const formAgregar = document.querySelector(`#tabla-${tabla} form[data-accion="agregar"]`);
+  if (formAgregar) {
+    formAgregar.addEventListener("submit", e => {
+      e.preventDefault();
+      const data = new FormData(formAgregar);
+      data.append("accion", "agregar");
+      data.append("tabla", tabla);
+      fetch("acciones_tabla.php", { method: "POST", body: data })
+        .then(r => r.text())
+        .then(alert)
+        .then(() => cargarTabla(tabla));
+    });
+  }
+
+  // Modificar
+  document.querySelectorAll(`#tabla-${tabla} .btn-modificar`).forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (!confirm("¿Modificar este registro?")) return;
+      const form = btn.closest("form");
+      const data = new FormData(form);
+      data.append("accion", "modificar");
+      data.append("tabla", tabla);
+      data.append("id", btn.dataset.id);
+      fetch("acciones_tabla.php", { method: "POST", body: data })
+        .then(r => r.text())
+        .then(alert)
+        .then(() => cargarTabla(tabla));
+    });
+  });
+
+  // Eliminar
+  document.querySelectorAll(`#tabla-${tabla} .btn-eliminar`).forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (!confirm("¿Eliminar este registro?")) return;
+      const data = new FormData();
+      data.append("accion", "borrar");
+      data.append("tabla", tabla);
+      data.append("id", btn.dataset.id);
+      fetch("acciones_tabla.php", { method: "POST", body: data })
+        .then(r => r.text())
+        .catch(err => console.error("Error al cargar tabla:", err))
+        .then(alert)
+        .then(() => cargarTabla(tabla))
+        .catch(err => console.error("Error al cargar tabla:", err));
+    });
+  });
 }
