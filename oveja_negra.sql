@@ -60,7 +60,7 @@ CREATE TABLE `empleados` (
   `nombre` varchar(50) NOT NULL,
   `apellido` varchar(50) NOT NULL,
   `dni` int(8) NOT NULL,
-  `mail` varchar(100) DEFAULT NULL,
+  `mail` varchar(100) NOT NULL,
   `puesto` ENUM('mozo', 'caja', 'Subgerente', 'Gerente') NOT NULL,
   `contrasena` varchar(20) NOT NULL,
   `id_local` int(11) NOT NULL,

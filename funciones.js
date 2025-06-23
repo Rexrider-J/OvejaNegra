@@ -1041,18 +1041,30 @@ function cerrarSesion() {
   window.location.href = "index.html";
 }
 function mostrarSeccion(idDestino, boton) {
-  // Ocultar la sección que contiene al botón (padre más cercano tipo <section>)
+  // Se oculta la sección que contiene al botón (padre más cercano tipo <section>)
   const seccionActual = boton.closest("section");
   if (seccionActual) {
-    seccionActual.classList.remove("activa");
     seccionActual.style.display = "none";
   }
 
   // Mostrar sección destino
   const seccionDestino = document.getElementById(idDestino);
   if (seccionDestino) {
-    seccionDestino.classList.add("activa");
-    seccionDestino.style.removeProperty("display");
+    seccionDestino.style.display = "grid";
+  }
+}
+/*Muestra el contenido de los botones en Mis reservas de empleado en mi perfil*/
+function mostrarContenidoMisReservasE(seccion) {
+  // Se ocultan todas las secciones
+  const secciones = document.querySelectorAll('.seccionEmpleado');
+  secciones.forEach(s => {
+    s.style.display = 'none';
+  });
+
+  //Se muestra solo la sección seleccionada
+  const seccionMostrada = document.getElementById(seccion);
+  if (seccionMostrada) {
+    seccionMostrada.style.display = 'grid';
   }
 }
 /*MI PERFIL*/
@@ -1195,45 +1207,47 @@ function obtenerFuncionesEmpleado(idEmpleado, callback) { /*callback es una func
 }
 /*Muestra en una tabla HTML las funciones programadas para un empleado, que se encuentra en datos personales, mis reservas empleado*/
 /*Solo muestra las funciones a partir de la fecha actual en adelante*/
-function mostrarTablaFunciones(funciones) {
-  const tbody = document.querySelector("#tablaFunciones tbody");
-  /*Limpiar el contenido anterior de la tabla*/
-  tbody.innerHTML = "";
-  /*Crear una instancia de la fecha de hoy, y resetea la hora a medianoche*/
-  const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0); /*Esto permite comparar solo la fecha, sin considerar la hora*/
+if (window.location.pathname.includes("miPerfil.html")) {
+  function mostrarTablaFunciones(funciones) {
+    const tbody = document.querySelector("#tablaFunciones tbody");
+    /*Limpiar el contenido anterior de la tabla*/
+    tbody.innerHTML = "";
+    /*Crear una instancia de la fecha de hoy, y resetea la hora a medianoche*/
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0); /*Esto permite comparar solo la fecha, sin considerar la hora*/
 
-  /*Filtrar funciones para que solo se muestren las de hoy o fechas futuras*/
-  const funcionesFiltradas = funciones.filter(f => {
-    const fechaFuncion = new Date(f.dia_hora);
-    fechaFuncion.setHours(0, 0, 0, 0);  /*También eliminar hora en las fechas de funciones*/
-    return fechaFuncion >= hoy;
-  });
+    /*Filtrar funciones para que solo se muestren las de hoy o fechas futuras*/
+    const funcionesFiltradas = funciones.filter(f => {
+      const fechaFuncion = new Date(f.dia_hora);
+      fechaFuncion.setHours(0, 0, 0, 0);  /*También eliminar hora en las fechas de funciones*/
+      return fechaFuncion >= hoy;
+    });
 
-  /*Si no hay funciones futuras, mostrar mensaje informativo en la tabla*/
-  if (funcionesFiltradas.length === 0) {
-    const fila = document.createElement("tr");
-    fila.innerHTML = `<td colspan="3">No hay funciones futuras programadas.</td>`;
-    tbody.appendChild(fila);
-    return;
+    /*Si no hay funciones futuras, mostrar mensaje informativo en la tabla*/
+    if (funcionesFiltradas.length === 0) {
+      const fila = document.createElement("tr");
+      fila.innerHTML = `<td colspan="3">No hay funciones futuras programadas.</td>`;
+      tbody.appendChild(fila);
+      return;
+    }
+
+    /*Junta las funciones filtradas y crea una fila por cada una*/
+    funcionesFiltradas.forEach(f => {
+      const fecha = new Date(f.dia_hora);
+      const dia = fecha.toLocaleDateString(); /*Obtiene la fecha en formato "16/06/2025"*/
+      const hora = fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); /*Obtiene la hora en formato "18:00" hora y min*/
+
+      const fila = document.createElement("tr");
+      /*Crea una nueva fila con los datos*/
+      fila.innerHTML = `
+        <td>${dia}</td>
+        <td>${hora}</td>
+        <td>${f.funcion}</td>
+      `;
+      /*Se agrega la fila a la tabla*/
+      tbody.appendChild(fila);
+    });
   }
-
-  /*Junta las funciones filtradas y crea una fila por cada una*/
-  funcionesFiltradas.forEach(f => {
-    const fecha = new Date(f.dia_hora);
-    const dia = fecha.toLocaleDateString(); /*Obtiene la fecha en formato "16/06/2025"*/
-    const hora = fecha.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); /*Obtiene la hora en formato "18:00" hora y min*/
-
-    const fila = document.createElement("tr");
-    /*Crea una nueva fila con los datos*/
-    fila.innerHTML = `
-      <td>${dia}</td>
-      <td>${hora}</td>
-      <td>${f.funcion}</td>
-    `;
-    /*Se agrega la fila a la tabla*/
-    tbody.appendChild(fila);
-  });
 }
 /*conecta la pagina datosPersonales con la tabla mostrarTablaFunciones*/
 /*Obtiene el idEmpleado desde sessionStorage, llama a obtenerFuncionesEmpleado() para obtener sus datos y usa esos datos para mostrar la tabla con mostrarTablaFunciones()*/
