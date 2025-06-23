@@ -834,7 +834,6 @@ function submitRegistrar(event) {
   })
     .then(response => response.text())// esperamos la respuesta del servidor como texto
     .then(data => {
-      alert(data);// mostramos lo que responde el servidor
       if (data.includes("✅")) {// nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
         /*Si el formato es valido aparece este cartel*/
         alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
@@ -904,6 +903,9 @@ function submitAccederCliente(event) {
         sessionStorage.setItem("contrasenaCliente", datos.contrasena);
 
         window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
+
+        sessionStorage.setItem("idEmpleado",null);
+        sessionStorage.setItem("puestoEmpleado", null);
       } else {
         alert("Uno o más datos son incorrectos.");
       }
@@ -1497,7 +1499,7 @@ if (window.location.pathname.includes("miPerfil.html")) {
 }
 
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
-  document.getElementById("list-modificarMenu").innerHTML = "Espere...;"
+  document.getElementById("list-modificarMenu").innerHTML = "Espere..."
   fetch("obtener_menu.php") // solicita ese archivo, que carga el HTML del menú
     .then(res => res.text()) // convierte la respuesta en texto
     .then(data => {
