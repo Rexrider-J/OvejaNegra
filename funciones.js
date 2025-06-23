@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 function navegarConTab(tabLinkId) {
-  // Guardamos directamente el hash del tab sin depender del DOM
+  /* Se guarda directamente el hash del tab sin depender del DOM*/
   const href = "#" + tabLinkId.replace("-list", ""); // convierte "list-misReservas-list" → "#list-misReservas"
   sessionStorage.setItem("tabActivo", href);
   window.location.href = "miPerfil.html";
@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
                   <input type="text" id="apellidoEmpleadoInput" name="apellidoEmpleadoInput" maxlength="50" class="solo-letras" disabled />
                   <button class="btn-editar" data-target="apellidoEmpleadoInput">Editar</button>
                 </label>
-                <legend>DNI</legend> <!--FUNCION APARTE-->
+                <legend>DNI</legend> 
                 <label class="form-group">
                   <input type="text" id="dniEmpleadoInput" name="dniEmpleadoInput" disabled />
                 </label>
@@ -195,6 +195,10 @@ document.addEventListener("DOMContentLoaded", function () {
               <fieldset>
                 <legend>Sucursal</legend>
                 <input type="text" id="sucursalEmpleadoText" name="sucursalEmpleadoText" disabled/>
+                <legend>Puesto principal</legend> 
+                <label class="form-group">
+                  <input type="text" id="puestoEmpleadoInput" name="puestoEmpleadoInput" disabled />
+                </label>
                 <legend>Mis funciones</legend>
                 <table id="tablaFunciones">
                   <thead>
@@ -215,6 +219,7 @@ document.addEventListener("DOMContentLoaded", function () {
       aplicarSoloLetras();
       inicializarInputsEditables();
       mostrarDatoSoloLectura('dniEmpleadoInput', 'dniEmpleado');
+      mostrarDatoSoloLectura('puestoEmpleadoInput', 'puestoEmpleado');
 
       /*Rellena la tabla de datosPersonales, empleado*/
       const idEmpleado = sessionStorage.getItem("idEmpleado");
@@ -335,7 +340,138 @@ function crearDropdown(id, label, opciones) {
     }
   };
 }
+/*Funciona para mostrar formulario de ingresoCliente desde el footer.*/
+/*Si ya ingreso sesion, no hace nada. Si no ingreso sesion, muestra el formulario*/
+function restringirIngresarFooter(tipo) {
+  const usuarioTipo = sessionStorage.getItem("usuarioTipo");
 
+  /*Si se inicio sesión*/
+  if (usuarioTipo) {
+    alert("Ya iniciaste sesión como " + usuarioTipo + ". Cerrá sesión para ingresar con otra cuenta.");
+    return;
+  }
+
+  const hash = tipo.toLowerCase() === "cliente" ? "#cliente" : "#empleado";
+  window.location.href = "ingresar.html" + hash;
+}
+function restringirDatosPersonalesFooter(tipo) {
+  const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+
+  /*No se inicio sesión*/
+  if (!usuarioTipo) {
+    alert("Debe iniciar sesión para acceder al sitio.");
+    const hash = tipo === "cliente" ? "#cliente" : "#empleado";
+    window.location.href = "ingresar.html" + hash;
+    return;
+  }
+
+  /*Se inicio sesión como cliente*/
+  if (usuarioTipo === "cliente") {
+    if (tipo === "cliente") {
+      nnavegarConTab('list-datosPersonales-list')
+    } else {
+      alert("Solo los empleados pueden acceder a esta sección.");
+    }
+    return;
+  }
+
+  /*Se inicio sesión como empleado*/
+  if (usuarioTipo === "empleado") {
+    if (tipo === "empleado") {
+      navegarConTab('list-datosPersonales-list')
+    } else {
+      alert("Solo los clientes pueden acceder a esta sección.");
+    }
+    return;
+  }
+}
+function restringirMisReservasFooter(tipo) {
+  const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+
+  /*No se inicio sesión*/
+  if (!usuarioTipo) {
+    alert("Debe iniciar sesión para acceder al sitio.");
+    const hash = tipo.toLowerCase() === "cliente" ? "#cliente" : "#empleado";
+    window.location.href = "ingresar.html" + hash;
+    return;
+  }
+
+  /*Se inicio sesión como cliente*/
+  if (usuarioTipo === "cliente") {
+    if (tipo === "cliente") {
+      navegarConTab('list-misReservas-list')
+    } else {
+      alert("Solo los empleados pueden acceder a esta sección.");
+    }
+    return;
+  }
+
+  /*Se inicio sesión como empleado*/
+  if (usuarioTipo === "empleado") {
+    if (tipo === "empleado") {
+      navegarConTab('list-misReservas-list')
+    } else {
+      alert("Solo los clientes pueden acceder a esta sección.");
+    }
+    return;
+  }
+}
+function restringirModificarMenuFooter(tipo) {
+  const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+  const puesto = sessionStorage.getItem("puestoEmpleado");
+
+  /*No se inicio sesión*/
+  if (!usuarioTipo) {
+    alert("Sitio solo accesible para empleados.");
+    window.location.href = "ingresar.html" + "#empleado";
+    return;
+  }
+
+  /*Se inicio sesión como cliente*/
+  if (usuarioTipo === "cliente") {
+    alert("Solo los empleados pueden acceder a esta sección.");
+    return;
+  }
+
+  /*Se inicio sesión como empleado*/
+  if (usuarioTipo === "empleado") {
+    /*Si el empleado es subgerente o gerente*/
+    if (puesto === "Subgerente" || puesto === "Gerente") {
+      navegarConTab('list-modificarMenu-list')
+    } else {
+      alert("Solo los gerentes y subgerentes pueden acceder a esta sección.");
+    }
+    return;
+  }
+}
+function restringirAdministradorFooter(tipo) {
+  const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+  const puesto = sessionStorage.getItem("puestoEmpleado");
+
+  /*No se inicio sesión*/
+  if (!usuarioTipo) {
+    alert("Sitio solo accesible para empleados.");
+    window.location.href = "ingresar.html" + "#empleado";
+    return;
+  }
+
+  /*Se inicio sesión como cliente*/
+  if (usuarioTipo === "cliente") {
+    alert("Solo los empleados pueden acceder a esta sección.");
+    return;
+  }
+
+  /*Se inicio sesión como empleado*/
+  if (usuarioTipo === "empleado") {
+    /*Si el empleado es subgerente o gerente*/
+    if (puesto === "Gerente") {
+      navegarConTab('list-baseDatos-list')
+    } else {
+      alert("Solo los gerentes pueden acceder a esta sección.");
+    }
+    return;
+  }
+}
 function actualizarFooter() {
   const width = window.innerWidth;
   const listas = document.querySelectorAll('.listasFooter > ol');

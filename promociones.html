@@ -108,17 +108,22 @@
         </ol>
         <ol>
           <h5>Cliente</h5>
-          <li><a class="dropdown-item" onclick="mostrarFormulario('botonCliente')">Ingresar</a></li>
-          <li><a href="">Mis reservas</a></li>
+          <li><a href="#" onclick="restringirIngresarFooter('cliente')">Ingresar</a></li>
+          <li><a href="#" onclick="restringirDatosPersonalesFooter('cliente')">Datos Personales</a></li>
+          <li><a href="#" onclick="restringirMisReservasFooter('cliente')">Mis reservas</a></li>
         </ol>
         <ol>
           <h5>Empleado</h5>
-          <li><a class="dropdown-item" onclick="mostrarFormulario('botonEmpleado')">Ingresar</a></li>
-          <li><a href="">Mis reservas</a></li>
+          <li><a href="#" onclick="restringirIngresarFooter('empleado')">Ingresar</a></li>
+          <li><a href="#" onclick="restringirDatosPersonalesFooter('empleado')">Datos Personales</a></li>          
+          <li><a href="#" onclick="restringirMisReservasFooter('empleado')">Mis reservas</a></li>
+          <li><a href="#" onclick="restringirModificarMenuFooter('empleado')">Menú</a></li>
+          <li><a href="#" onclick="restringirAdministradorFooter('empleado')">Administrador</a></li>
         </ol>
         <ol>
-          <h5>Servicios</h5>
-          <li><a href="Nosotros.html">Nuestros Locales</a></li>
+          <h5>Nuestras redes sociales</h5>
+          <li><a href="https://www.facebook.com/Ovejanegragrupoteatral/">Facebook</a></li>
+          <li><a href="https://www.instagram.com/ovejanegra.pc/">Intagram</a></li>
         </ol>
         <select class="footerDropdown" id="dropdownInstitucional" style="display:none;"></select>
         <select class="footerDropdown" id="dropdownCliente" style="display:none;"></select>
