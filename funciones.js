@@ -313,33 +313,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 /*FOOTER*/
-function crearDropdown(id, label, opciones) {
-  const dropdown = document.getElementById(id);
-  dropdown.innerHTML = '';
-  const defaultOption = document.createElement('option');
-  defaultOption.textContent = `${label}`;
-  defaultOption.disabled = true;
-  defaultOption.selected = true;
-  dropdown.appendChild(defaultOption);
-
-  opciones.forEach(op => {
-    const option = document.createElement('option');
-    option.textContent = op.text;
-    option.value = op.href || '';
-    dropdown.appendChild(option);
-  });
-
-  dropdown.onchange = function () {
-    const selected = this.options[this.selectedIndex].value;
-    if (selected && selected !== '') {
-      if (selected.includes('mostrarFormulario')) {
-        eval(selected); // solo si es función como mostrarFormulario('algo')
-      } else {
-        window.location.href = selected;
-      }
-    }
-  };
-}
+window.addEventListener("DOMContentLoaded", actualizarFooter);
+window.addEventListener("resize", actualizarFooter);
 /*Funciona para mostrar formulario de ingresoCliente desde el footer.*/
 /*Si ya ingreso sesion, no hace nada. Si no ingreso sesion, muestra el formulario*/
 function restringirIngresarFooter(tipo) {
@@ -472,6 +447,41 @@ function restringirAdministradorFooter(tipo) {
     return;
   }
 }
+function crearDropdown(id, opciones) {
+  const dropdown = document.getElementById(id);
+  if (!dropdown) return;
+
+  dropdown.innerHTML = '';
+
+  label = id.replace('dropdown', ''); // Quita "dropdown"
+  label = label.charAt(0).toUpperCase() + label.slice(1);
+
+  const defaultOption = document.createElement('option');
+  defaultOption.textContent = label;
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  dropdown.appendChild(defaultOption);
+
+  opciones.forEach(op => {
+    const option = document.createElement('option');
+    option.text = op.text;
+    option.value = op.value;
+    dropdown.appendChild(option);
+  });
+
+  dropdown.onchange = function () {
+    const selectedValue = this.value;
+
+    if (selectedValue.startsWith('js:')) {
+      const functionCall = selectedValue.replace('js:', '');
+      eval(functionCall);
+    } else {
+      window.location.href = selectedValue;
+    }
+
+    this.selectedIndex = 0;
+  };
+}
 function actualizarFooter() {
   const width = window.innerWidth;
   const listas = document.querySelectorAll('.listasFooter > ol');
@@ -482,27 +492,31 @@ function actualizarFooter() {
     dropdowns.forEach(dd => dd.style.display = 'block');
 
     // Crear dropdowns con los datos
-    crearDropdown('dropdownInstitucional', 'Institucional', [
-      { text: 'Quiénes somos', href: 'nosotros.html' },
-      { text: 'Menú', href: 'menu.html' },
-      { text: 'Reservas', href: 'reservas.html' },
-      { text: 'Promociones', href: 'promociones.html' },
-      { text: 'Tienda de puntos', href: 'tiendaDePuntos.html' }
+    crearDropdown('dropdownInstitucional', [
+      { text: 'Quiénes somos', value: 'nosotros.html' },
+      { text: 'Menú', value: 'menu.html' },
+      { text: 'Reservas', value: 'reservas.html' },
+      { text: 'Promociones', value: 'promociones.html' },
+      { text: 'Tienda de puntos', value: 'tiendaDePuntos.html' }
     ]);
 
-    crearDropdown('dropdownCliente', 'Cliente', [
-      { text: 'Ingresar', href: "javascript:mostrarFormulario('botonCliente')" },
-      { text: 'Mis reservas', href: '#' }
+    crearDropdown('dropdownCliente', [
+      { text: 'Ingresar', value: "js:restringirIngresarFooter('cliente')" },
+      { text: 'Datos Personales', value: "js:restringirDatosPersonalesFooter('cliente')" },
+      { text: 'Mis reservas', value: "js:restringirMisReservasFooter('cliente')" }
     ]);
 
-    crearDropdown('dropdownEmpleado', 'Empleado', [
-      { text: 'Ingresar', href: "javascript:mostrarFormulario('botonEmpleado')" },
-      { text: 'Mis reservas', href: '#' }
+    crearDropdown('dropdownEmpleado', [
+      { text: 'Ingresar', value: "js:restringirIngresarFooter('empleado')" },
+      { text: 'Datos Personales', value: "js:restringirDatosPersonalesFooter('empleado')" },
+      { text: 'Mis reservas', value: "js:restringirMisReservasFooter('empleado')" },
+      { text: 'Menú', value: "js:restringirModificarMenuFooter('empleado')" },
+      { text: 'Administrador', value: "js:restringirAdministradorFooter('empleado')" }
     ]);
 
-    crearDropdown('dropdownServicios', 'Servicios', [
-      { text: 'Servicios', href: "javascript:mostrarFormulario('botonCliente')" },
-      { text: 'Nuestros Locales', href: '#' }
+    crearDropdown('dropdownRedesSociales', [
+      { text: 'Facebook', value: 'https://www.facebook.com/Ovejanegragrupoteatral/' },
+      { text: 'Instagram', value: 'https://www.instagram.com/ovejanegra.pc/' }
     ]);
   } else {
     listas.forEach(ol => ol.style.display = 'block');
