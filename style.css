@@ -1088,6 +1088,141 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
 }
 
+/*TIENDA DE PUNTOS*/
+#mainTiendaDePuntos {
+    width: auto;
+    max-width: 100%;
+    margin: 0px 15%;
+    text-align: center;
+    padding: 1rem 0px;
+}
+
+.tituloCategoriaPuntos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #000000;
+    border-top: 1px solid #000000;
+    font-size: 20px;
+    padding: 1%;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tituloCategoriaPuntos h2 {
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
+}
+
+.contenedorDescuentos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 1rem;
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+}
+
+.contenedorDescuentos .card {
+    max-width: 18rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.card {
+  width: 100%;
+}
+
+.card-img-top {
+    height: 60%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.card-body {
+    height: 40%;
+    padding: 0;
+    display: flex;
+    width: 100%;
+}
+
+.fila {
+    display: flex;
+    width: 100% !important;
+}
+
+.columna-2,
+.columna-4 {
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+.columna-2 {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid black;
+}
+
+.columna-2 h5{
+    font-size: 2rem;
+    margin: 0;
+}
+
+.columna-2 strong{
+    font-size: 1rem;
+    margin: 0;
+}
+
+.columna-4 {
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+}
+
+.columna-4 h5 {
+    margin: 0 0 5px 0;
+    font-size: 1rem;
+}
+
+.columna-4 span {
+    font-size: 1rem;
+}
+/*Responsive*/
+@media (max-width: 1760px) {
+    #mainTiendaDePuntos {
+        margin: 0px 10%;
+    }
+
+    .contenedorDescuentos {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1160px) {
+    #mainTiendaDePuntos {
+        margin: 0px 5%;
+    }
+
+    .contenedorDescuentos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    #mainTiendaDePuntos {
+        margin: 0px 5%;
+    }
+
+    .contenedorDescuentos {
+        grid-template-columns: 1fr;
+    }    
+}
 /*Reservas*/
 /*MAIN*/
 #mainReservas {
@@ -1801,21 +1936,22 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .datosModificables fieldset {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #f8f9fa;
-  box-shadow: 0px 0px 5px #ccc;
-  height: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa;
+    box-shadow: 0px 0px 5px #ccc;
+    height: 100%;
 }
 
 .tabla-scroll {
-  max-height: 200px; /* 👈 Ajustable */
-  overflow-y: auto;
-  border-radius: 10px;
+    max-height: 200px;
+    /* 👈 Ajustable */
+    overflow-y: auto;
+    border-radius: 10px;
 }
 
 #list-datosPersonales .form-group {
@@ -1838,7 +1974,7 @@ input[type=number]::-webkit-outer-spin-button {
 #list-datosPersonales legend {
     text-align: start;
     font-size: 20px;
-    margin:0;
+    margin: 0;
 }
 
 #list-datosPersonales button {
@@ -1854,95 +1990,103 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 #tablaFuncionesContainer {
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 20px;
-  background-color: #e9ecef; /* Fondo como input disabled */
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #e9ecef;
+    /* Fondo como input disabled */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
 }
 
 #tablaFunciones {
-  width: 100%;
-  border-collapse: separate; /* Necesario para que border-radius funcione */
-  border-spacing: 0;
-  border-radius: 10px;
-  overflow: hidden;
+    width: 100%;
+    border-collapse: separate;
+    /* Necesario para que border-radius funcione */
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 #tablaFunciones thead {
-  background-color: #4cbfe6;
-  color: white;
-  font-weight: bold;
+    background-color: #4cbfe6;
+    color: white;
+    font-weight: bold;
 }
 
 /* Celdas */
 #tablaFunciones th,
 #tablaFunciones td {
-  padding: 12px 15px;
-  text-align: center;
-  border-bottom: 1px solid #ccc;
+    padding: 12px 15px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
 }
 
 /* Zebra striping */
 #tablaFunciones tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
+    background-color: #f8f9fa;
 }
 
 /* Hover opcional */
 #tablaFunciones tbody tr:hover {
-  background-color: #dee2e6;
-  cursor: default;
+    background-color: #dee2e6;
+    cursor: default;
 }
 
 /* Redondeo visual solo en esquinas */
 #tablaFunciones thead tr:first-child th:first-child {
-  border-top-left-radius: 10px;
+    border-top-left-radius: 10px;
 }
+
 #tablaFunciones thead tr:first-child th:last-child {
-  border-top-right-radius: 10px;
+    border-top-right-radius: 10px;
 }
+
 #tablaFunciones tbody tr:last-child td:first-child {
-  border-bottom-left-radius: 10px;
+    border-bottom-left-radius: 10px;
 }
+
 #tablaFunciones tbody tr:last-child td:last-child {
-  border-bottom-right-radius: 10px;
+    border-bottom-right-radius: 10px;
 }
+
 /*Responsive*/
 @media (max-width: 768px) {
-  .datosModificables {
-    flex-direction: column; /* Poner una columna debajo de la otra */
-    gap: 20px;
-    padding: 0 10px;
-  }
+    .datosModificables {
+        flex-direction: column;
+        /* Poner una columna debajo de la otra */
+        gap: 20px;
+        padding: 0 10px;
+    }
 
-  .datosModificables .columna,
-  .datosModificables fieldset {
-    width: 100%;
-    min-width: unset;
-    flex: unset;
-  }
+    .datosModificables .columna,
+    .datosModificables fieldset {
+        width: 100%;
+        min-width: unset;
+        flex: unset;
+    }
 
-  #list-datosPersonales .form-group {
-    flex-direction: column;
-    align-items: stretch;
-  }
+    #list-datosPersonales .form-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-  #list-datosPersonales button {
-    width: 100%;
-  }
+    #list-datosPersonales button {
+        width: 100%;
+    }
 
-  #tablaFunciones th,
-  #tablaFunciones td {
-    padding: 10px;
-    font-size: 14px;
-  }
+    #tablaFunciones th,
+    #tablaFunciones td {
+        padding: 10px;
+        font-size: 14px;
+    }
 
-  #tablaFuncionesContainer {
-    padding: 10px;
-  }
+    #tablaFuncionesContainer {
+        padding: 10px;
+    }
 }
+
 /*Estilo de mofidicar menu*/
 .contenedor-items-del-menu {
     display: grid;
@@ -2044,5 +2188,3 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #4cbfe6;
     border-color: #4cbfe6;
 }
-
-
