@@ -24,12 +24,12 @@ function agregarRegistro($conexion, $tabla)
 {
   switch ($tabla) {
     case 'clientes':
-      $stmt = $conexion->prepare("INSERT INTO clientes (nombre, apellido, dni, mail, telefono, fecha_nacimiento) VALUES (?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param("ssisss", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['telefono'], $_POST['fecha_nacimiento']);
+      $stmt = $conexion->prepare("INSERT INTO clientes (nombre, apellido, dni, mail, telefono, fecha_nacimiento, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      $stmt->bind_param("ssissss", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['telefono'], $_POST['fecha_nacimiento'], $_POST['contrasena']);
       break;
     case 'empleados':
-      $stmt = $conexion->prepare("INSERT INTO empleados (nombre, apellido, dni, mail, puesto, id_local) VALUES (?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param("ssissi", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['puesto'], $_POST['id_local']);
+      $stmt = $conexion->prepare("INSERT INTO empleados (nombre, apellido, dni, mail, puesto, id_local, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      $stmt->bind_param("ssissis", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['puesto'], $_POST['id_local'], $_POST['contrasena']);
       break;
     case 'menu':
       $stmt = $conexion->prepare("INSERT INTO menu (nombre, precio, categoria, descripcion, ruta_imagen) VALUES (?, ?, ?, ?, ?)");
@@ -75,50 +75,84 @@ function modificarRegistro($conexion, $tabla, $id)
 {
   switch ($tabla) {
     case 'clientes':
-      $stmt = $conexion->prepare("UPDATE clientes SET nombre=?, apellido=?, dni=?, mail=?, telefono=?, fecha_nacimiento=? WHERE id_cliente=?");
-      $stmt->bind_param("ssisssi", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['telefono'], $_POST['fecha_nacimiento'], $id);
+      $campos = "nombre=?, apellido=?, dni=?, mail=?, telefono=?, fecha_nacimiento=?";
+      $tipos = "ssisss";
+      $valores = [$_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['telefono'], $_POST['fecha_nacimiento']];
+
+      if (!empty($_POST['contrasena'])) {
+        $campos .= ", contrasena=?";
+        $tipos .= "s";
+        $valores[] = $_POST['contrasena'];
+      }
+
+      $sql = "UPDATE clientes SET $campos WHERE id_cliente=?";
+      $tipos .= "i";
+      $valores[] = $id;
       break;
     case 'empleados':
-      $stmt = $conexion->prepare("UPDATE empleados SET nombre=?, apellido=?, dni=?, mail=?, puesto=?, id_local=? WHERE id_empleado=?");
-      $stmt->bind_param("ssissii", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['puesto'], $_POST['id_local'], $id);
+      $campos = "nombre=?, apellido=?, dni=?, mail=?, puesto=?, id_local=?";
+      $tipos = "ssissi";
+      $valores = [$_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['puesto'], $_POST['id_local']];
+
+      if (!empty($_POST['contrasena'])) {
+        $campos .= ", contrasena=?";
+        $tipos .= "s";
+        $valores[] = $_POST['contrasena'];
+      }
+
+      $sql = "UPDATE empleados SET $campos WHERE id_empleado=?";
+      $tipos .= "i";
+      $valores[] = $id;
       break;
     case 'menu':
-      $stmt = $conexion->prepare("UPDATE menu SET nombre=?, precio=?, categoria=?, descripcion=?, ruta_imagen=? WHERE id_menu=?");
-      $stmt->bind_param("sdsssi", $_POST['nombre'], $_POST['precio'], $_POST['categoria'], $_POST['descripcion'], $_POST['ruta_imagen'], $id);
+      $sql = "UPDATE menu SET nombre=?, precio=?, categoria=?, descripcion=?, ruta_imagen=? WHERE id_menu=?";
+      $tipos = "sdsssi";
+      $valores = [$_POST['nombre'], $_POST['precio'], $_POST['categoria'], $_POST['descripcion'], $_POST['ruta_imagen'], $id];
       break;
     case 'locales':
-      $stmt = $conexion->prepare("UPDATE locales SET nombre=?, direccion=?, telefono=?, estado_disponibilidad=? WHERE id_local=?");
-      $stmt->bind_param("ssssi", $_POST['nombre'], $_POST['direccion'], $_POST['telefono'], $_POST['estado_disponibilidad'], $id);
+      $sql = "UPDATE locales SET nombre=?, direccion=?, telefono=?, estado_disponibilidad=? WHERE id_local=?";
+      $tipos = "ssssi";
+      $valores = [$_POST['nombre'], $_POST['direccion'], $_POST['telefono'], $_POST['estado_disponibilidad'], $id];
       break;
     case 'local_menu':
-      $stmt = $conexion->prepare("UPDATE local_menu SET id_menu=?, id_local=?, estado_disponibilidad=? WHERE id_local_menu=?");
-      $stmt->bind_param("iisi", $_POST['id_menu'], $_POST['id_local'], $_POST['estado_disponibilidad'], $id);
+      $sql = "UPDATE local_menu SET id_menu=?, id_local=?, estado_disponibilidad=? WHERE id_local_menu=?";
+      $tipos = "iisi";
+      $valores = [$_POST['id_menu'], $_POST['id_local'], $_POST['estado_disponibilidad'], $id];
       break;
     case 'mesas':
-      $stmt = $conexion->prepare("UPDATE mesas SET id_local=?, descripcion=?, cupo_maximo=?, estado=? WHERE id_mesa=?");
-      $stmt->bind_param("isisi", $_POST['id_local'], $_POST['descripcion'], $_POST['cupo_maximo'], $_POST['estado'], $id);
+      $sql = "UPDATE mesas SET id_local=?, descripcion=?, cupo_maximo=?, estado=? WHERE id_mesa=?";
+      $tipos = "isisi";
+      $valores = [$_POST['id_local'], $_POST['descripcion'], $_POST['cupo_maximo'], $_POST['estado'], $id];
       break;
     case 'estado_reserva':
-      $stmt = $conexion->prepare("UPDATE estado_reserva SET estados=? WHERE id_estado_reserva=?");
-      $stmt->bind_param("si", $_POST['estados'], $id);
+      $sql = "UPDATE estado_reserva SET estados=? WHERE id_estado_reserva=?";
+      $tipos = "si";
+      $valores = [$_POST['estados'], $id];
       break;
     case 'empleado_funcion':
-      $stmt = $conexion->prepare("UPDATE empleado_funcion SET dia_hora=?, funcion=?, id_empleado=? WHERE id_empleado_funcion=?");
-      $stmt->bind_param("ssii", $_POST['dia_hora'], $_POST['funcion'], $_POST['id_empleado'], $id);
+      $sql = "UPDATE empleado_funcion SET dia_hora=?, funcion=?, id_empleado=? WHERE id_empleado_funcion=?";
+      $tipos = "ssii";
+      $valores = [$_POST['dia_hora'], $_POST['funcion'], $_POST['id_empleado'], $id];
       break;
     case 'reservas':
-      $stmt = $conexion->prepare("UPDATE reservas SET id_cliente=?, id_mesa=?, fecha_reserva=?, observaciones=?, cant_personas=?, id_estado_reserva=? WHERE id_reserva=?");
-      $stmt->bind_param("iissiii", $_POST['id_cliente'], $_POST['id_mesa'], $_POST['fecha_reserva'], $_POST['observaciones'], $_POST['cant_personas'], $_POST['id_estado_reserva'], $id);
+      $sql = "UPDATE reservas SET id_cliente=?, id_mesa=?, fecha_reserva=?, observaciones=?, cant_personas=?, id_estado_reserva=? WHERE id_reserva=?";
+      $tipos = "iissiii";
+      $valores = [$_POST['id_cliente'], $_POST['id_mesa'], $_POST['fecha_reserva'], $_POST['observaciones'], $_POST['cant_personas'], $_POST['id_estado_reserva'], $id];
       break;
     default:
       echo "Tabla no soportada.";
       return;
   }
+  
+  $stmt = $conexion->prepare($sql);
+  $stmt->bind_param($tipos, ...$valores);
+
   if ($stmt->execute()) {
     echo "Registro modificado correctamente.";
   } else {
     echo "Error al modificar: " . $conexion->error;
   }
+
   $stmt->close();
 }
 

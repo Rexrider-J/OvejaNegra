@@ -77,6 +77,7 @@ function mostrarClientes($conexion)
                     <input name='mail' value='{$row['mail']}'>
                     <input name='telefono' value='{$row['telefono']}'>
                     <input name='fecha_nacimiento' type='date' value='{$row['fecha_nacimiento']}'>
+                    <input name='contrasena' type='password' placeholder='Nueva contraseña' autocomplete='new-password'>
                     <button type='button' class='btn-modificar' data-id='{$row['id_cliente']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_cliente']}'>Eliminar</button>
                 </form>
@@ -94,6 +95,7 @@ function mostrarClientes($conexion)
         <input name='mail' placeholder='Email'>
         <input name='telefono' placeholder='Teléfono'>
         <input name='fecha_nacimiento' type='date'>
+        <input name='contrasena' type='password' placeholder='Contraseña' required>
         <input type='submit' value='Agregar'>
     </form>";
 }
@@ -134,6 +136,7 @@ function mostrarEmpleados($conexion)
                     <input name='mail' value='{$row['mail']}'>
                     <input name='puesto' value='{$row['puesto']}'>
                     <input name='id_local' value='{$row['id_local']}'>
+                    <input name='contrasena' type='password' placeholder='Nueva contraseña' autocomplete='new-password'>
                     <button type='button' class='btn-modificar' data-id='{$row['id_empleado']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_empleado']}'>Eliminar</button>
                 </form>
@@ -151,9 +154,11 @@ function mostrarEmpleados($conexion)
         <input name='mail' placeholder='Email'>
         <input name='puesto' placeholder='Puesto'>
         <input name='id_local' placeholder='ID Local'>
+        <input name='contrasena' type='password' placeholder='Contraseña' required>
         <input type='submit' value='Agregar'>
     </form>";
 }
+
 
 function mostrarEmpleadoFuncion($conexion)
 {
