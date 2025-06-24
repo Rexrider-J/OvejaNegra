@@ -1056,8 +1056,6 @@ function submitAccederCliente(event) {
         sessionStorage.setItem("fecha_nacimientoCliente", datos.fecha_nacimiento);
         sessionStorage.setItem("contrasenaCliente", datos.contrasena);
 
-        const idCliente = sessionStorage.getItem("idCliente");
-        obtenerReservasYGuardarSesion(idCliente);
         window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
 
         sessionStorage.setItem("idEmpleado", null);
@@ -1451,13 +1449,17 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 /*TIENDA DE PUNTOS*/
 if (window.location.pathname.includes("tiendaDePuntos.html")) {
-  document.addEventListener("DOMContentLoaded", () => {
-
+  document.addEventListener("DOMContentLoaded", async () => {
     const puntosDelCliente = document.getElementById("puntosDelCliente");
     const usuarioTipo = sessionStorage.getItem("usuarioTipo");
-    const puntos = sessionStorage.getItem("puntosCliente");
+    const idCliente = sessionStorage.getItem("idCliente");
 
-    if (usuarioTipo === "cliente") {
+    if (usuarioTipo === "cliente" && idCliente) {
+      // Esperamos a que obtenga las reservas y actualice sessionStorage
+      await obtenerReservasYGuardarSesion(idCliente);
+
+      const puntos = sessionStorage.getItem("puntosCliente") || 0;
+
       puntosDelCliente.style.display = "grid";
       puntosDelCliente.textContent = `Tus puntos: ${puntos}`;
     } else {
@@ -1779,6 +1781,31 @@ function inicializarEventosMenu() {
         .then(cargarMenu); // y vuelve a cargar el menu actualizado
     });
   });
+}
+
+async function obtenerReservasYGuardarSesion(idCliente) {
+  try {
+    const response = await fetch(`obtener_reservas_cliente.php?idCliente=${idCliente}`);
+    const text = await response.text();
+
+    // Intentar parsear como JSON
+    const reservas = JSON.parse(text);
+
+    // Contar reservas con estado "realizada/concretada"
+    const puntosCliente = reservas.reduce((contador, reserva) => {
+      const estado = reserva.estado_reserva?.trim().toLowerCase();
+      if (estado === 'realizada/concretada') return contador + 1;
+      return contador;
+    }, 0);
+
+    // Guardar en sessionStorage
+    sessionStorage.setItem('reservas', JSON.stringify(reservas));
+    sessionStorage.setItem('puntosCliente', puntosCliente.toString());
+    return reservas;
+
+  } catch (error) {
+    console.error('❌ Error en obtenerReservasYGuardarSesion:', error);
+  }
 }
 
 function cargarCategoria(categoria) { // es la funcion que carga por la categoria que se le pase como argumento
