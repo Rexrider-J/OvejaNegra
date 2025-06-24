@@ -40,11 +40,23 @@ if ($_POST['accion'] === 'registro') { // REGISTRO DE CLIENTE
 
     // vinculo parametros para la consulta
     $stmt->bind_param("ssissss", $nombre, $apellido, $dni, $fecha_nac, $telefono, $email, $contrasena);
-
-    if ($stmt->execute()) { // chequeo que se ejecute la consulta
-        echo "✅ ¡Registro exitoso! Ya podés iniciar sesión.";
-    } else {
-        echo "❌ Error al registrar: " . $stmt->error; //envio un mensaje y el error si lo hubiese
+    try {
+        if ($stmt->execute()) { // chequeo que se ejecute la consulta
+            echo "✅ ¡Registro exitoso! Ya podés iniciar sesión.";
+        }
+    } catch (mysqli_sql_exception $e) {
+        if ($stmt->errno === 1062) { // Detectar si es un error por clave duplicada
+            // Extraer campo duplicado del mensaje de error si es posible
+            if (strpos($stmt->error, 'mail') !== false) {
+                echo "❌ Ya existe un usuario registrado con este correo.";
+            } elseif (strpos($stmt->error, 'dni') !== false) {
+                echo "❌ Ya existe un usuario con este DNI.";
+            } else {
+                echo "❌ Error: Dato duplicado.";
+            }
+        } else {
+            echo "❌ Error al registrar: " . $stmt->error; //envio un mensaje y el error si lo hubiese
+        }
     }
 
     $stmt->close(); // cierro consulta

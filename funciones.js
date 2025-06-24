@@ -988,6 +988,10 @@ function submitRegistrar(event) {
         /*Si el formato es valido aparece este cartel*/
         alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
         window.location.reload(); // recargamos la pagina
+      } else if (data.includes("❌") || data.includes("❗")) {
+        alert(data); // muestra el mensaje de error que viene desde PHP
+      } else {
+        alert("⚠️ Respuesta inesperada del servidor:\n" + data);
       }
     })
     .catch(error => {
@@ -1054,7 +1058,7 @@ function submitAccederCliente(event) {
 
         window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
 
-        sessionStorage.setItem("idEmpleado",null);
+        sessionStorage.setItem("idEmpleado", null);
         sessionStorage.setItem("puestoEmpleado", null);
       } else {
         alert("Uno o más datos son incorrectos.");
