@@ -1043,7 +1043,7 @@ function submitAccederCliente(event) {
           datos[clave] = valor; // y las asignamos
         }
 
-        alert("Bienvenido " + datos.nombre + "!");// mostramos lo que responde el servidor
+        alert("✅ Bienvenido " + datos.nombre + "!");// le damos la bienvenida personalizada al cliente
 
         /*Creamos una variable para indicar que el usuario que ingreso es un cliente*/
         sessionStorage.setItem("usuarioTipo", "cliente");
@@ -1117,6 +1117,8 @@ function submitAccederEmpleado(event) {
           datos[clave] = valor; // y las asignamos
         }
 
+        alert("✅ Bienvenido " + datos.nombre + "!");// le damos la bienvenida personalizada al cliente
+
         /*Creamos una variable para indicar que el usuario que ingreso es un empleado*/
         sessionStorage.setItem("usuarioTipo", "empleado");
         sessionStorage.setItem("idEmpleado", datos.id_empleado);
@@ -1152,16 +1154,6 @@ function submitEnviarMail(event) {
   const cuentaEmpleado = document.getElementById("cuenta-empleado").checked;
   sessionStorage.setItem("cuentaClient", cuentaCliente);
   sessionStorage.setItem("cuentaEmpleado", cuentaEmpleado);
-
-  /*Si el formato es invalido aparece este cartel*/
-  if (!validateEmail(email)) {
-    alert('El email es inválido. Por favor ingresa un email válido.');
-    document.getElementById('email-empleado-login').focus();
-    return false;
-  }
-
-  /*Si el formato es valido aparece este cartel*/
-  alert('Email válido. Los datos serían enviados al servidor (simulado).');
 
   const tipo = document.getElementById("cuenta-cliente").checked ? "cliente" : "empleado";
 
