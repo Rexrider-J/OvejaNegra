@@ -117,16 +117,6 @@
                                     <select id="mesaReserva" name="mesaReserva" class="form-control" placeholder="Seleccione la mesa" required>
                                         <!--Esto devuelve php-->
                                         <option value="" selected>Seleccione la mesa</option>
-                                        <option value="Mesa 1">1</option>
-                                        <option value="Mesa 2">2</option>
-                                        <option value="Mesa 3">3</option>
-                                        <option value="Mesa 4">4</option>
-                                        <option value="Mesa 5">5</option>
-                                        <option value="Mesa 6">6</option>
-                                        <option value="Mesa 1A">1A</option>
-                                        <option value="Mesa 2A">2A</option>
-                                        <option value="Mesa 3A">3A</option>
-                                        <option value="Mesa 4A">4A</option>
                                     </select>
                                 </label>
                                 <label for="observacionesReserva">Comentarios
@@ -142,8 +132,8 @@
                             <p>Para validar la reserva, el DNI entregado al empleado de caja debe coincidir con el registrado en la misma.</p>
                         </div>
                         <div class="botonesReserva">
-                            <input type="button" value="Volver" onclick="volverSeleccionSucursalReserva(); mostrarSeccion('seleccionSucursalDeReserva', this)" />
-                            <input type="submit" value="Continuar" onclick="guardarValoresDatosReserva(); mostrarSeccion('confirmacionReserva', this)"/>
+                            <input type="button" value="Volver" onclick="mostrarSeccion('seleccionSucursalDeReserva', this)" />
+                            <input type="submit" id="btnDatosR-ConfirR" value="Continuar" onclick="guardarValoresDatosReserva(this)"/>
                         </div>
                     </div>
                 </section>
@@ -158,7 +148,6 @@
                         <p><strong>Hora: </strong><br><span id="horaSeleccionada"></span></p>
                         <p><strong>Cantidad de personas: </strong><br><span id="cantPersonasSeleccionada"></span></p>
                         <p><strong>Mesa: </strong><br><span id="mesaSeleccionada"></span></p> 
-                        <p><strong>Descripcion de la mesa: </strong><br><span ></span></p> <!--Aca se inserta los datos de la base de datos-->
                         <p><strong>Observaciones: </strong><br><span id="ObservacionDada"></span></p> 
                     </div>
                     <div class="notaImportanteReserva">

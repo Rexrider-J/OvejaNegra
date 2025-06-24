@@ -1056,6 +1056,8 @@ function submitAccederCliente(event) {
         sessionStorage.setItem("fecha_nacimientoCliente", datos.fecha_nacimiento);
         sessionStorage.setItem("contrasenaCliente", datos.contrasena);
 
+        const idCliente = sessionStorage.getItem("idCliente");
+        obtenerReservasYGuardarSesion(idCliente);
         window.location.href = "index.html"; // redirige a la pagina que queramos (en este caso index.html)
 
         sessionStorage.setItem("idEmpleado", null);
@@ -1142,6 +1144,27 @@ function submitAccederEmpleado(event) {
 
 
   return false;
+}
+/*Funcion para saber la descripción de la mesa segun su id_mesa*/
+function obtenerDescripcionMesa(idMesa) {
+  fetch("obtener_descripcion_mesas.php?id=" + idMesa)
+    .then(async response => {
+      const data = await response.json();
+      if (!response.ok) {
+        console.error("Respuesta con error:", data);
+        throw new Error(data.error || "Error desconocido");
+      }
+      return data;
+    })
+    .then(data => {
+      if (data.descripcion) {
+        document.getElementById("mesaSeleccionada").textContent = data.descripcion;
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error.message);
+      alert("Error: " + error.message);
+    });
 }
 
 /*Funcion que se ejecuta al enviar el formulario en el boton enviar de olvideContraseña*/
@@ -1426,6 +1449,22 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error("No se encontró el idEmpleado en sessionStorage.");
   }
 });
+/*TIENDA DE PUNTOS*/
+if (window.location.pathname.includes("tiendaDePuntos.html")) {
+  document.addEventListener("DOMContentLoaded", () => {
+
+    const puntosDelCliente = document.getElementById("puntosDelCliente");
+    const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+    const puntos = sessionStorage.getItem("puntosCliente");
+
+    if (usuarioTipo === "cliente") {
+      puntosDelCliente.style.display = "grid";
+      puntosDelCliente.textContent = `Tus puntos: ${puntos}`;
+    } else {
+      puntosDelCliente.style.display = "none";
+    }
+  });
+}
 /*RESERVAS*/
 /*Inhabilita el boton mesaReserva hasta que se selecicone fecha,hora y cantPersonas.Guarda estos datos en el sessionStorage*/
 if (window.location.pathname.includes("reservas.html")) {
@@ -1443,6 +1482,13 @@ if (window.location.pathname.includes("reservas.html")) {
     flatpickr(calendario, {
       inline: true, // Hace que el calendario aparezca embebido en el div
       dateFormat: "Y-m-d",
+      locale: "es",
+      minDate: "today", // No permite fechas anteriores al día actual
+      disable: [
+        function (date) {
+          return date.getDay() === 1; // Desactiva los lunes
+        }
+      ],
       defaultDate: sessionStorage.getItem("fechaReserva") || null,
       onChange: function (selectedDates, dateStr) {
         fechaInput.value = dateStr; // Guarda en el input hidden si lo usás
@@ -1530,7 +1576,7 @@ if (window.location.pathname.includes("reservas.html")) {
 }
 
 /*Verifica que esten todos los datos de reserva y los guarda en sessionStorage*/
-function guardarValoresDatosReserva() {
+function guardarValoresDatosReserva(btn) {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/
   const fechaSeleccionada = document.getElementById("fechaReserva").value;
   if (fechaSeleccionada === "") {
@@ -1582,8 +1628,10 @@ function guardarValoresDatosReserva() {
   document.getElementById("fechaSeleccionada").textContent = fechaSeleccionada;
   document.getElementById("horaSeleccionada").textContent = horaSeleccionada;
   document.getElementById("cantPersonasSeleccionada").textContent = personasSeleccionadas + " persona/s";
-  document.getElementById("mesaSeleccionada").textContent = mesaSeleccionada;
+  obtenerDescripcionMesa(mesaSeleccionada);
   document.getElementById("ObservacionDada").textContent = observacion;
+
+  mostrarSeccion('confirmacionReserva', btn);
 }
 
 function volverSeleccionDatosReserva() {
@@ -1593,6 +1641,7 @@ function volverSeleccionDatosReserva() {
   /* Mostrar datos reserva*/
   document.getElementById("datosDeReserva").style.display = "grid";
 }
+
 function enviarReserva() {
   const id_cliente = sessionStorage.getItem("idCliente");
   const id_local = sessionStorage.getItem("sucursalValor");

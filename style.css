@@ -1093,19 +1093,18 @@ input[type=number]::-webkit-outer-spin-button {
     width: auto;
     max-width: 100%;
     margin: 0px 15%;
+    min-height: auto;
     text-align: center;
     padding: 1rem 0px;
+    gap:1rem;
 }
 
 .tituloCategoriaPuntos {
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #000000;
     border-top: 1px solid #000000;
     font-size: 20px;
     padding: 1%;
-    flex-wrap: wrap;
     gap: 10px;
 }
 
@@ -1113,6 +1112,13 @@ input[type=number]::-webkit-outer-spin-button {
     margin: 0;
     font-size: 2rem;
     text-align: center;
+}
+
+#puntosDelCliente{
+    text-align: end;
+    margin: 0;
+    padding:0;
+    font-size: 1.5rem;
 }
 
 .contenedorDescuentos {
