@@ -1163,15 +1163,33 @@ function submitEnviarMail(event) {
   /*Si el formato es valido aparece este cartel*/
   alert('Email válido. Los datos serían enviados al servidor (simulado).');
 
-  /*Ocultar datos-enviar-mail*/
-  document.getElementById("datos-enviar-mail").style.display = "none";
+  const tipo = document.getElementById("cuenta-cliente").checked ? "cliente" : "empleado";
 
-  /*mostrar confirmacion-envio-mail*/
-  document.getElementById("email-confirmado").textContent = email;
-  document.getElementById("confirmacion-envio-mail").style.display = "grid";
+  const formData = new FormData();
+  formData.append("tipo", tipo);
+  formData.append("mail", email);
+  formData.append("dni", dni);
 
-  return false;
+  fetch("validar_dni_mail.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => res.text())
+    .then(result => {
+      if (result.trim() === "existe") {
+        document.getElementById("datos-enviar-mail").style.display = "none"; //Ocultar datos-enviar-mail
+        document.getElementById("email-confirmado").textContent = email; //mostrar confirmacion-envio-mail
+        document.getElementById("confirmacion-envio-mail").style.display = "grid";
+      } else {
+        alert("❌ No se encontró ninguna cuenta con ese email y DNI.");
+      }
+    })
+    .catch(error => {
+      console.error("Error al verificar:", error);
+      alert("❌ Ocurrió un error al verificar los datos.");
+    });
 }
+
 function finalizarRecuperarContrasenia() {
   /*Ocultar confirmacion-envio-mail*/
   document.getElementById("confirmacion-envio-mail").style.display = "none";
