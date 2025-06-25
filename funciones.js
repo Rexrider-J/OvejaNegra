@@ -238,8 +238,35 @@ document.addEventListener("DOMContentLoaded", function () {
   if (misReservasDiv) {
     if (tipoUsuario === "cliente") {
       misReservasDiv.innerHTML = `
-        <h5>Reservas Cliente</h5>
+      <section id="contenedorMisReservasC">
+        <h2>Mis reservas</h2>
+        <div class="table-responsive">
+          <table id="tablaReservasCliente" class="table table-striped table-hover table-bordered align-middle">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Mesa</th>
+                <th>Personas</th>
+                <th>Observaciones</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Acá se agregan las filas con JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
       `;
+
+      /*Se llama a la función externa para obtener y mostrar las reservas*/
+      const idCliente = sessionStorage.getItem("idCliente");
+      if (idCliente) {
+        obtenerReservasYGuardarSesion(idCliente).then(reservas => {
+          mostrarReservasEnTabla(reservas);
+        });
+      }
     } else if (tipoUsuario === "empleado") {
       misReservasDiv.innerHTML = `
         <div id="botonesDeAccion">
@@ -550,7 +577,7 @@ if (window.location.pathname.includes("reservas.html")) {
 }
 
 /*Guarda la sucursal seleccionada en la sección seleccionar sucursal de reseva*/
-function guardarSucursalDeReserva() {
+function guardarSucursalDeReserva(btn) {
   const sucursalSelect = document.getElementById("dropdownReservas");
   const sucursalSeleccionada = sucursalSelect.value;
   const sucursalSeleccionadaNombre = sucursalSelect.options[sucursalSelect.selectedIndex].text;
@@ -564,6 +591,8 @@ function guardarSucursalDeReserva() {
   /*Guardo los valores en el sessionStorage*/
   sessionStorage.setItem("sucursalValor", sucursalSeleccionada);
   sessionStorage.setItem("sucursalNombre", sucursalSeleccionadaNombre);
+
+  mostrarSeccion('datosDeReserva', btn);
 }
 
 let locales = [];
@@ -1518,7 +1547,7 @@ if (window.location.pathname.includes("reservas.html")) {
     }
 
     function cargarMesasDisponibles() {
-      const idLocal = sessionStorage.getItem("sucursalSeleccionada");
+      const idLocal = sessionStorage.getItem("sucursalValor");
       const fecha = sessionStorage.getItem("fechaReserva");
       const hora = sessionStorage.getItem("horaReserva");
       const personas = sessionStorage.getItem("cantPersonasReserva");
@@ -1576,7 +1605,22 @@ if (window.location.pathname.includes("reservas.html")) {
     sessionStorage.removeItem("cantPersonasReserva");
   });
 }
+function volverSeleccionSucursalReserva(btn) {
+  sessionStorage.removeItem("sucursalValor");
+  sessionStorage.removeItem("fechaSeleccionada");
+  sessionStorage.removeItem("horaSeleccionada");
+  sessionStorage.removeItem("personasSeleccionadas");
+  sessionStorage.removeItem("observacioDada");
+  sessionStorage.removeItem("mesaSeleccionada");
 
+  document.getElementById("fechaReserva").value = "";
+  document.getElementById("horaReserva").selectedIndex = 0;
+  document.getElementById("cantPersonasReserva").selectedIndex = 0;
+  document.getElementById("mesaReserva").selectedIndex = 0;
+  document.getElementById("observacionesReserva").value = "";
+
+  mostrarSeccion('seleccionSucursalDeReserva', btn);
+}
 /*Verifica que esten todos los datos de reserva y los guarda en sessionStorage*/
 function guardarValoresDatosReserva(btn) {
   /*Si no se seleccionó ninguna fecha en el calendario aparece el cartel de alerta*/
@@ -1806,6 +1850,29 @@ async function obtenerReservasYGuardarSesion(idCliente) {
   } catch (error) {
     console.error('❌ Error en obtenerReservasYGuardarSesion:', error);
   }
+}
+function mostrarReservasEnTabla(reservas) {
+  const tbody = document.querySelector("#tablaReservasCliente tbody");
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+
+  reservas.forEach(reserva => {
+    const fechaHora = new Date(reserva.fecha_reserva);
+    const fecha = fechaHora.toLocaleDateString();
+    const hora = fechaHora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const fila = document.createElement("tr");
+    fila.innerHTML = `
+      <td>${fecha}</td>
+      <td>${hora}</td>
+      <td>${reserva.descripcion_mesa}</td>
+      <td>${reserva.cant_personas}</td>
+      <td>${reserva.observaciones || "-"}</td>
+      <td>${reserva.estado_reserva}</td>
+    `;
+    tbody.appendChild(fila);
+  });
 }
 
 function cargarCategoria(categoria) { // es la funcion que carga por la categoria que se le pase como argumento

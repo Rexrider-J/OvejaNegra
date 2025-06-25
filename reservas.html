@@ -71,7 +71,7 @@
                         <option value="" selected>Seleccioná a qué local te gustaría ir</option>
                     </select>
                     <div>
-                        <input type="submit" value="Continuar" onclick="guardarSucursalDeReserva(); mostrarSeccion('datosDeReserva', this)"/>
+                        <input type="submit" value="Continuar" onclick="guardarSucursalDeReserva(this)"/>
                     </div>
                 </section>
                 <section id="datosDeReserva" >
@@ -119,7 +119,7 @@
                                         <option value="" selected>Seleccione la mesa</option>
                                     </select>
                                 </label>
-                                <label for="observacionesReserva">Comentarios
+                                <label for="observacionesReserva">Observaciones
                                     <textarea id="observacionesReserva" name="observacionesReserva" rows="3" cols="30" placeholder="Comentario que desee realizar..." maxlength="255"></textarea>
                                 </label>
                             </fieldset>
@@ -132,7 +132,7 @@
                             <p>Para validar la reserva, el DNI entregado al empleado de caja debe coincidir con el registrado en la misma.</p>
                         </div>
                         <div class="botonesReserva">
-                            <input type="button" value="Volver" onclick="mostrarSeccion('seleccionSucursalDeReserva', this)" />
+                            <input type="button" value="Volver" onclick="volverSeleccionSucursalReserva(this)" />
                             <input type="submit" id="btnDatosR-ConfirR" value="Continuar" onclick="guardarValoresDatosReserva(this)"/>
                         </div>
                     </div>

@@ -2173,7 +2173,28 @@ input[type=number]::-webkit-outer-spin-button {
         width: 100%;
     }
 }
+/*Mis reservas Cliente*/
+#contenedorMisReservasC h2 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #333;
+}
 
+#tablaReservasCliente th {
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+}
+
+#tablaReservasCliente td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#tablaReservasCliente tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
 /*Base de datos*/
 #botonesDeTablas {
     width: 100%;
