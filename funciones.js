@@ -1922,16 +1922,24 @@ function modificarReservaCliente(id) {
   alert("Modificar reserva con ID: " + id);
 }
 
-function cancelarReservaCliente(id) {
+function cancelarReservaCliente(id_reserva) {
+  const idCliente = sessionStorage.getItem("idCliente");
+
   if (confirm("¿Estás seguro de que querés cancelar esta reserva?")) {
-    fetch(`cancelar_modificar_reserva_cliente.php?id=${id}`, {
-      method: "POST"
+    const formData = new FormData();
+    formData.append("id_reserva", id_reserva);
+    formData.append("id_cliente", idCliente);
+    formData.append("tipo", "cliente");
+
+    fetch("cancelar_modificar_reserva_cliente.php", {
+      method: "POST",
+      body: formData
     })
       .then(res => res.text())
       .then(data => {
         if (data.includes("✅")) {
           alert("Reserva cancelada con éxito.");
-          location.reload(); // Recargamos para actualizar tablas
+          location.reload();
         } else {
           alert("❌ Error: " + data);
         }

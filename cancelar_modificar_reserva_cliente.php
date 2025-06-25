@@ -1,22 +1,33 @@
 <?php
 include("config_BDD.php");
 
-if ($_SERVER["REQUEST_METHOD"] !== "POST" || !isset($_GET['id'])) {
-    http_response_code(400);
-    echo "❌ Parámetros inválidos.";
-    exit;
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+  exit("Acceso no permitido.");
 }
 
-$id = intval($_GET['id']);
-$id_estado_cancelado = 2; // Estado "cancelada"
+$id_reserva = $_POST['id_reserva'] ?? null;
+$id_cliente = $_POST['id_cliente'] ?? null;
+$tipo = $_POST['tipo'] ?? null;
 
-$stmt = $conexion->prepare("UPDATE reservas SET id_estado_reserva = ? WHERE id_reserva = ?");
-$stmt->bind_param("ii", $id_estado_cancelado, $id);
+if (!$id_reserva || !$id_cliente || !$tipo) {
+  exit("Faltan datos para cancelar la reserva.");
+}
+
+$sql = "
+  UPDATE reservas 
+  SET id_estado_reserva = 2, 
+      modificado_cancelado_por = ?, 
+      tipo_modificado_cancelado = ?
+  WHERE id_reserva = ?
+";
+
+$stmt = $conexion->prepare($sql);
+$stmt->bind_param("isi", $id_cliente, $tipo, $id_reserva);
 
 if ($stmt->execute()) {
-    echo "✅ Reserva cancelada.";
+  echo "✅ Reserva cancelada correctamente.";
 } else {
-    echo "❌ Error al cancelar la reserva: " . $conexion->error;
+  echo "❌ Error al cancelar la reserva: " . $conexion->error;
 }
 
 $stmt->close();
