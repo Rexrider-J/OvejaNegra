@@ -236,38 +236,60 @@ document.addEventListener("DOMContentLoaded", function () {
   const misReservasDiv = document.getElementById("list-misReservas");
 
   if (misReservasDiv) {
-    if (tipoUsuario === "cliente") {
-      misReservasDiv.innerHTML = `
-      <section id="contenedorMisReservasC">
-        <h2>Mis reservas</h2>
-        <div class="table-responsive">
-          <table id="tablaReservasCliente" class="table table-striped table-hover table-bordered align-middle">
-            <thead>
-              <tr>
-                <th>Fecha</th>
-                <th>Hora</th>
-                <th>Mesa</th>
-                <th>Personas</th>
-                <th>Observaciones</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Acá se agregan las filas con JS -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-      `;
+  if (tipoUsuario === "cliente") {
+    misReservasDiv.innerHTML = `
+    <section id="contenedorMisReservasC">
+      <h2>Mis reservas</h2>
 
-      /*Se llama a la función externa para obtener y mostrar las reservas*/
-      const idCliente = sessionStorage.getItem("idCliente");
-      if (idCliente) {
-        obtenerReservasYGuardarSesion(idCliente).then(reservas => {
-          mostrarReservasEnTabla(reservas);
-        });
-      }
-    } else if (tipoUsuario === "empleado") {
+      <h3>📅 Reservas Futuras</h3>
+      <div class="table-responsive">
+        <table id="tablaReservasFuturas" class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Mesa</th>
+              <th>Personas</th>
+              <th>Observaciones</th>
+              <th>Estado</th>
+              <th></th> <!-- Columna vacía para botones -->
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Filas agregadas dinámicamente con JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <h3>📖 Historial de Reservas</h3>
+      <div class="table-responsive">
+        <table id="tablaReservasPasadas" class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Mesa</th>
+              <th>Personas</th>
+              <th>Observaciones</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Se llenará dinámicamente -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+    `;
+
+    // Luego de inyectar el HTML, obtenemos el id y llamamos a la función para traer reservas
+    const idCliente = sessionStorage.getItem("idCliente");
+    if (idCliente) {
+      obtenerReservasYGuardarSesion(idCliente).then(reservas => {
+        mostrarReservasEnTabla(reservas);
+      });
+    }
+  } else if (tipoUsuario === "empleado") {
       misReservasDiv.innerHTML = `
         <div id="botonesDeAccion">
           <input type="button" value="Modificar reservas" onclick="mostrarContenidoMisReservasE('modificar')"/>
@@ -282,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div id="cancelar" class="seccionEmpleado" style="display: none;">
             <h3>Cancelar reservas</h3>
-            <p>Aquí puedes cancelar una reserva. Podria carcelarse la reserva para un solo individuo o masivamente. Debe redactarse una nota que se enviará al mail de la/el/los involucrados(simulado)</p>
+            <p>Aca puedes cancelar una reserva. Podria carcelar la reserva para un solo individuo o masivamente. Debe redactarse una nota que se enviará al mail de la/el/los involucrados(simulado)</p>
           </div>
           <div id="visualizar" class="seccionEmpleado" style="display: none;">
             <h3>Visualizar reservas</h3>
@@ -1851,30 +1873,75 @@ async function obtenerReservasYGuardarSesion(idCliente) {
     console.error('❌ Error en obtenerReservasYGuardarSesion:', error);
   }
 }
+/*Maneja la tabla de reservas pasadas en cliente*/
 function mostrarReservasEnTabla(reservas) {
-  const tbody = document.querySelector("#tablaReservasCliente tbody");
-  if (!tbody) return;
+  const tbodyFuturas = document.querySelector("#tablaReservasFuturas tbody");
+  const tbodyPasadas = document.querySelector("#tablaReservasPasadas tbody");
 
-  tbody.innerHTML = "";
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // para comparar solo la fecha
 
   reservas.forEach(reserva => {
-    const fechaHora = new Date(reserva.fecha_reserva);
-    const fecha = fechaHora.toLocaleDateString();
-    const hora = fechaHora.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const fechaHora = new Date(reserva.fecha_reserva); // Asegurate de que sea tipo Date
+    const estado = reserva.estado_reserva.toLowerCase();
+    const esCanceladaOExpirada = estado === "cancelada" || estado === "expirada";
+    const esFutura = fechaHora >= hoy && !esCanceladaOExpirada;
 
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td>${fecha}</td>
-      <td>${hora}</td>
-      <td>${reserva.descripcion_mesa}</td>
-      <td>${reserva.cant_personas}</td>
-      <td>${reserva.observaciones || "-"}</td>
-      <td>${reserva.estado_reserva}</td>
-    `;
-    tbody.appendChild(fila);
+    if (esFutura) {
+      // Mostrar en tabla de futuras
+      tbodyFuturas.innerHTML += `
+        <tr>
+          <td>${reserva.fecha_reserva.split(' ')[0]}</td>
+          <td>${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</td>
+          <td>${reserva.descripcion_mesa || reserva.id_mesa}</td>
+          <td>${reserva.cant_personas}</td>
+          <td>${reserva.observaciones || "-"}</td>
+          <td>${reserva.estado_reserva}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1" onclick="modificarReservaCliente(${reserva.id})">Modificar</button>
+            <button class="btn btn-danger btn-sm" onclick="cancelarReservaCliente(${reserva.id})">Cancelar</button>
+          </td>
+        </tr>
+      `;
+    } else {
+      // Mostrar en tabla de historial
+      tbodyPasadas.innerHTML += `
+        <tr>
+          <td>${reserva.fecha_reserva.split(' ')[0]}</td>
+          <td>${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</td>
+          <td>${reserva.descripcion_mesa || reserva.id_mesa}</td>
+          <td>${reserva.cant_personas}</td>
+          <td>${reserva.observaciones || "-"}</td>
+          <td>${reserva.estado_reserva}</td>
+        </tr>
+      `;
+    }
   });
 }
+function modificarReservaCliente(id) {
+  alert("Modificar reserva con ID: " + id);
+}
 
+function cancelarReservaCliente(id) {
+  if (confirm("¿Estás seguro de que querés cancelar esta reserva?")) {
+    fetch(`cancelar_modificar_reserva_cliente.php?id=${id}`, {
+      method: "POST"
+    })
+      .then(res => res.text())
+      .then(data => {
+        if (data.includes("✅")) {
+          alert("Reserva cancelada con éxito.");
+          location.reload(); // Recargamos para actualizar tablas
+        } else {
+          alert("❌ Error: " + data);
+        }
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("❌ Error al cancelar la reserva.");
+      });
+  }
+}
 function cargarCategoria(categoria) { // es la funcion que carga por la categoria que se le pase como argumento
   const targetDiv = document.querySelector(`#list-${categoria.toLowerCase()} .listProductos`); // guardamos en una variable el div donde vamos a insertar lo que devuelva el .php
   if (!targetDiv) return; // si no existe el div, la funcion se corta y no devuelve nada

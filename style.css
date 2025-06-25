@@ -2180,20 +2180,34 @@ input[type=number]::-webkit-outer-spin-button {
   color: #333;
 }
 
-#tablaReservasCliente th {
-  background-color: #343a40;
-  color: white;
+#tablaReservasFuturas th {
+  background-color: #ededed;
   text-align: center;
 }
 
-#tablaReservasCliente td {
+#tablaReservasFuturas td {
   text-align: center;
   vertical-align: middle;
+  background-color: white;
+}
+/* Desactiva selección de texto y clics en el historial de reservas */
+#tablaReservasPasadas {
+  pointer-events: none;       /* Evita clics, hovers, etc. */
+  user-select: none;          /* Desactiva selección de texto */
+  opacity: 0.9;               /* Opcional: da un look más "deshabilitado" */
 }
 
-#tablaReservasCliente tr:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
+/* Pero dejá que los encabezados sigan visibles y con color */
+#tablaReservasPasadas th {
+    background-color: #ededed;
+    text-align: center;
+    pointer-events: auto;    
+    user-select: none;
+}
+#tablaReservasPasadas td {
+    text-align: center;
+    vertical-align: middle;
+    background-color: #dedede;
 }
 /*Base de datos*/
 #botonesDeTablas {

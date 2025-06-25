@@ -21,6 +21,7 @@ $idCliente = intval($_GET['idCliente']);
 // Consulta para traer las reservas del cliente con descripción de mesa y estado de reserva
 $sql = "
     SELECT
+        r.id_reserva,
         r.fecha_reserva,
         r.observaciones,
         r.cant_personas,
@@ -49,6 +50,7 @@ $reservas = [];
 
 while ($row = $result->fetch_assoc()) {
     $reservas[] = [
+        'id' => $row['id_reserva'],
         'fecha_reserva' => $row['fecha_reserva'],
         'observaciones' => $row['observaciones'],
         'cant_personas' => (int)$row['cant_personas'],
