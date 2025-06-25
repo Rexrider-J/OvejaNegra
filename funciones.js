@@ -1546,6 +1546,7 @@ if (window.location.pathname.includes("reservas.html")) {
       onChange: function (selectedDates, dateStr) {
         fechaInput.value = dateStr; // Guarda en el input hidden si lo usás
         sessionStorage.setItem("fechaReserva", dateStr);
+        generarOpcionesHorario(dateStr); 
         limpiarYValidarMesa();
       }
     });
@@ -1898,7 +1899,7 @@ function mostrarReservasEnTabla(reservas) {
           <td>${reserva.observaciones || "-"}</td>
           <td>${reserva.estado_reserva}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-1" onclick="modificarReservaCliente(${reserva.id})">Modificar</button>
+            <button class="btn btn-warning btn-sm me-1" onclick="modificarReservaCliente(${reserva.id}, this)">Modificar</button>
             <button class="btn btn-danger btn-sm" onclick="cancelarReservaCliente(${reserva.id})">Cancelar</button>
           </td>
         </tr>
@@ -1918,10 +1919,149 @@ function mostrarReservasEnTabla(reservas) {
     }
   });
 }
-function modificarReservaCliente(id) {
-  alert("Modificar reserva con ID: " + id);
-}
+function modificarReservaCliente(id_reserva, btn) {
+  const fila = btn.closest("tr");
+  if (!fila) return alert("Error: fila no encontrada");
 
+  const fecha = fila.children[0].innerText;
+  const hora = fila.children[1].innerText;
+  const mesa = fila.children[2].innerText;
+  const personas = fila.children[3].innerText;
+  const observaciones = fila.children[4].innerText;
+
+  const hoy = new Date().toISOString().split("T")[0];
+
+  // Reemplazar por inputs
+  fila.children[0].innerHTML = `<input type="date" class="form-control input-fecha" value="${fecha}" min="${hoy}">`;
+  fila.children[1].innerHTML = `
+    <select class="form-control input-hora">
+      <option value="">Seleccione hora</option>
+      ${[11,12,13,14,15,16,17,18,19,20].map(h => {
+        const horaStr = `${h.toString().padStart(2, "0")}:00:00`;
+        return `<option value="${horaStr}" ${hora === horaStr ? "selected" : ""}>${h}:00</option>`;
+      }).join("")}
+    </select>`;
+  fila.children[2].innerHTML = `<select class="form-control input-mesa"><option value="">Seleccione mesa</option></select>`;
+  fila.children[3].innerHTML = `
+    <select class="form-control input-personas">
+      <option value="">¿Cuántas personas?</option>
+      ${[1,2,3,4,5].map(n => `<option value="${n}" ${+personas === n ? "selected" : ""}>${n}</option>`).join("")}
+    </select>`;
+  fila.children[4].innerHTML = `<textarea class="form-control input-observaciones">${observaciones !== "-" ? observaciones : ""}</textarea>`;
+
+  // Botones
+  fila.children[6].innerHTML = `
+    <button class="btn btn-success btn-sm me-1" onclick="guardarModificacionReserva(${id_reserva}, this)">Guardar</button>
+    <button class="btn btn-secondary btn-sm" onclick="location.reload()">Cancelar</button>
+  `;
+
+  // Evento cambio fecha, hora o personas → cargar mesas
+  const fechaInput = fila.querySelector(".input-fecha");
+  const horaInput = fila.querySelector(".input-hora");
+  const personasInput = fila.querySelector(".input-personas");
+  const mesaInput = fila.querySelector(".input-mesa");
+
+  [fechaInput, horaInput, personasInput].forEach(el => {
+    el.addEventListener("change", () => {
+      mesaInput.innerHTML = "<option>Cargando...</option>";
+      mesaInput.disabled = true;
+
+      const fecha = fechaInput.value;
+      const hora = horaInput.value;
+      const personas = personasInput.value;
+      const id_local = sessionStorage.getItem("sucursalValor"); // o definilo vos
+
+      // Validación
+      if (!fecha || !hora || !personas || !id_local) {
+        mesaInput.innerHTML = "<option>Seleccione fecha, hora y personas</option>";
+        return;
+      }
+
+      // Validar que no sea lunes
+      const selectedDate = new Date(fecha);
+      if (selectedDate.getDay() === 1) {
+        alert("Nuestros establecimientos permanecen cerrados los lunes.");
+        mesaInput.innerHTML = "<option>Día no disponible</option>";
+        return;
+      }
+
+      // Fetch mesas disponibles
+      const url = `obtener_mesas_disponibles.php?id_local=${id_local}&fecha=${fecha}&hora=${hora}&personas=${personas}`;
+      fetch(url)
+        .then(res => res.text())
+        .then(opciones => {
+          mesaInput.innerHTML = opciones;
+          mesaInput.disabled = false;
+        })
+        .catch(err => {
+          console.error("Error al cargar mesas:", err);
+          mesaInput.innerHTML = "<option>Error al cargar</option>";
+        });
+    });
+  });
+}
+function generarOpcionesHorario(fechaSeleccionada) {
+  const horaSelect = document.getElementById("horaReserva");
+  const ahora = new Date();
+  const fechaHoy = ahora.toISOString().split("T")[0];
+
+  const horas = [
+    "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00",
+    "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00"
+  ];
+
+  horaSelect.innerHTML = '<option value="" selected>Seleccione hora de reserva</option>';
+
+  horas.forEach(hora => {
+    const [h, m, s] = hora.split(":");
+    const horaCompleta = new Date(`${fechaSeleccionada}T${hora}`);
+
+    // Si es hoy y la hora ya pasó, no la mostramos
+    if (fechaSeleccionada === fechaHoy && horaCompleta <= ahora) return;
+
+    const option = document.createElement("option");
+    option.value = hora;
+    option.textContent = hora.slice(0, 5); // 11:00
+    horaSelect.appendChild(option);
+  });
+}
+function guardarModificacionReserva(id_reserva, btn) {
+  const fila = btn.closest("tr");
+  const nuevaFecha = fila.children[0].querySelector("input").value;
+  const nuevaHora = fila.children[1].querySelector("select").value;
+  const nuevaMesa = fila.children[2].querySelector("select").value;
+  const nuevaCantidad = fila.children[3].querySelector("select").value;
+  const nuevaObs = fila.children[4].querySelector("textarea").value;
+  const idCliente = sessionStorage.getItem("idCliente");
+
+  const formData = new FormData();
+  formData.append("id_reserva", id_reserva);
+  formData.append("fecha", nuevaFecha);
+  formData.append("hora", nuevaHora);
+  formData.append("mesa", nuevaMesa);
+  formData.append("cantidad", nuevaCantidad);
+  formData.append("observaciones", nuevaObs);
+  formData.append("modificado_por", idCliente);
+  formData.append("tipo", "cliente");
+
+  fetch("modificar_reserva_cliente.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => res.text())
+    .then(data => {
+      if (data.includes("✅")) {
+        alert("Reserva modificada correctamente.");
+        location.reload();
+      } else {
+        alert("❌ Error: " + data);
+      }
+    })
+    .catch(error => {
+      console.error("Error:", error);
+      alert("❌ No se pudo modificar la reserva.");
+    });
+}
 function cancelarReservaCliente(id_reserva) {
   const idCliente = sessionStorage.getItem("idCliente");
 
@@ -1931,7 +2071,7 @@ function cancelarReservaCliente(id_reserva) {
     formData.append("id_cliente", idCliente);
     formData.append("tipo", "cliente");
 
-    fetch("cancelar_modificar_reserva_cliente.php", {
+    fetch("cancelar_reserva_cliente.php", {
       method: "POST",
       body: formData
     })
