@@ -61,7 +61,7 @@ CREATE TABLE `empleados` (
   `apellido` varchar(50) NOT NULL,
   `dni` int(8) NOT NULL,
   `mail` varchar(100) NOT NULL,
-  `puesto` ENUM('mozo', 'caja', 'Subgerente', 'Gerente') NOT NULL,
+  `puesto` ENUM('Limpieza', 'Mozo','Caja', 'Subgerente','Gerente') NOT NULL,
   `contrasena` varchar(20) NOT NULL,
   `id_local` int(11) NOT NULL,
   PRIMARY KEY (`id_empleado`),
@@ -118,7 +118,7 @@ CREATE TABLE `menu` (
   `id_menu` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(100) NOT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `categoria` varchar(100) NOT NULL,
+  `categoria` ENUM('Cafeteria', 'Panaderia','Milkshake','Waffles','Starters', 'Burgers','Adicionales','Milanesas','Hotdogs','Ensaladas','Bebidas','Postres','Promo','Brunch') NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
   `ruta_imagen` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id_menu`)
@@ -147,7 +147,8 @@ CREATE TABLE `local_menu` (
   `id_local` INT(11) NOT NULL,
   `estado_disponibilidad` ENUM('disponible', 'no disponible') NOT NULL,
   FOREIGN KEY (`id_menu`) REFERENCES `menu`(`id_menu`),
-  FOREIGN KEY (`id_local`) REFERENCES `locales`(`id_local`)
+  FOREIGN KEY (`id_local`) REFERENCES `locales`(`id_local`),
+  UNIQUE KEY `unique_local_menu` (`id_local`, `id_menu`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -174,7 +175,8 @@ CREATE TABLE `mesas` (
   `estado`ENUM('habilitada', 'deshabilitada') NOT NULL,
   PRIMARY KEY (`id_mesa`),
   KEY `id_local` (`id_local`),
-  CONSTRAINT `mesas_ibfk_1` FOREIGN KEY (`id_local`) REFERENCES `locales` (`id_local`)
+  CONSTRAINT `mesas_ibfk_1` FOREIGN KEY (`id_local`) REFERENCES `locales` (`id_local`),
+  UNIQUE KEY `unique_local_descripcion` (`id_local`, `descripcion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -196,8 +198,9 @@ DROP TABLE IF EXISTS `reservas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservas` (
   `id_reserva` int(11) NOT NULL AUTO_INCREMENT,
-  `id_cliente` int(11) not NULL,
+  `id_cliente` int(11) NOT NULL,
   `id_mesa` int(11) NOT NULL,
+  `id_local` int(11) NOT NULL,
   `fecha_reserva` datetime NOT NULL,
   `observaciones` varchar(255) DEFAULT NULL,
   `fecha_modificacion_cancelacion` datetime DEFAULT NULL,
@@ -205,6 +208,7 @@ CREATE TABLE `reservas` (
   `id_estado_reserva` int(11) NOT NULL,
   `modificado_cancelado_por` int(11) DEFAULT NULL,
   `tipo_modificado_cancelado` ENUM('cliente', 'empleado', 'administrador') DEFAULT NULL,
+  `motivo_cancelacion` varchar(255),
   `cambio_mesa` int(11) DEFAULT NULL, -- Ahora es INT y puede ser NULL
   PRIMARY KEY (`id_reserva`),
   KEY `id_cliente` (`id_cliente`),
@@ -214,7 +218,9 @@ CREATE TABLE `reservas` (
   CONSTRAINT `reservas_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `clientes` (`id_cliente`),
   CONSTRAINT `reservas_ibfk_2` FOREIGN KEY (`id_mesa`) REFERENCES `mesas` (`id_mesa`),
   CONSTRAINT `reservas_ibfk_3` FOREIGN KEY (`id_estado_reserva`) REFERENCES `estado_reserva` (`id_estado_reserva`),
-  CONSTRAINT `reservas_ibfk_4` FOREIGN KEY (`cambio_mesa`) REFERENCES `mesas` (`id_mesa`) -- Nueva clave foránea
+  CONSTRAINT `reservas_ibfk_4` FOREIGN KEY (`cambio_mesa`) REFERENCES `mesas` (`id_mesa`),
+  CONSTRAINT `reservas_ibfk_5` FOREIGN KEY (`id_local`) REFERENCES `locales` (`id_local`),
+  UNIQUE KEY `unica_reserva_mesa_fecha` (`id_local`, `id_mesa`, `fecha_reserva`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -604,9 +610,9 @@ INSERT INTO `menu` (`nombre`, `precio`, `categoria`, `descripcion`, `ruta_imagen
 ('Hamburguesa con queso - Premium 125gr.', 9800.00, 'Burgers', 'Carne, queso cheddar, salsa de cebolla, ketchup y mostaza', 'img/Fotos/Menu/Burgers/HamburguesaQueso.png'),
 ('Hamburguesa con queso - Doble Premium', 12300.00, 'Burgers', 'Carne, queso cheddar, salsa de cebolla, ketchup y mostaza', 'img/Fotos/Menu/Burgers/HamburguesaQueso.png'),
 ('Hamburguesa clásica - Junior 80gr.', 7100.00, 'Burgers', 'Carne, cheddar, lechuga, tomate', 'img/Fotos/Menu/Burgers/HamburguesaClasica.png'),
-('Hamburguesa clásica - Doble Junior', 9900.00, 'Burgers ', 'Carne, cheddar, lechuga, tomate', 'img/Fotos/Menu/Burgers/HamburguesaClasica.png'),
-('Hamburguesa clásica - Premium 125gr.', 10600.00, 'Burgers ', 'Carne, cheddar, lechuga, tomate', 'img/Fotos/Menu/Burgers/HamburguesaClasica.png'),
-('Hamburguesa clásica - Doble Premium', 14000.00, 'Burgers ', 'Carne, cheddar, lechuga, tomate', 'img/Fotos/Menu/Burgers/HamburguesaClasica.png'),
+('Hamburguesa clásica - Doble Junior', 9900.00, 'Burgers', 'Carne, cheddar, lechuga, tomate', 'img/Fotos/Menu/Burgers/HamburguesaClasica.png'),
+('Hamburguesa clásica - Premium 125gr.', 10600.00, 'Burgers', 'Carne, cheddar, lechuga, tomate', 'img/Fotos/Menu/Burgers/HamburguesaClasica.png'),
+('Hamburguesa clásica - Doble Premium', 14000.00, 'Burgers', 'Carne, cheddar, lechuga, tomate', 'img/Fotos/Menu/Burgers/HamburguesaClasica.png'),
 ('Hamburguesa napolitana - Junior 80gr.', 7100.00, 'Burgers', 'Carne, muzzarella, jamón y tomate', 'img/Fotos/Menu/Burgers/HamburguesaNapolitana.png'),
 ('Hamburguesa napolitana - Doble Junior', 9900.00, 'Burgers', 'Carne, muzzarella, jamón y tomate', 'img/Fotos/Menu/Burgers/HamburguesaNapolitana.png'),
 ('Hamburguesa napolitana - Premium 125gr.', 10600.00, 'Burgers', 'Carne, muzzarella, jamón y tomate', 'img/Fotos/Menu/Burgers/HamburguesaNapolitana.png'),
