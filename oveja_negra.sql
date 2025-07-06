@@ -116,7 +116,7 @@ DROP TABLE IF EXISTS `menu`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `menu` (
   `id_menu` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(100) NOT NULL,
+  `nombre` varchar(100) NOT NULL UNIQUE,
   `precio` decimal(10,2) NOT NULL,
   `categoria` ENUM('Cafeteria', 'Panaderia','Milkshake','Waffles','Starters', 'Burgers','Adicionales','Milanesas','Hotdogs','Ensaladas','Bebidas','Postres','Promo','Brunch') NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
@@ -208,7 +208,7 @@ CREATE TABLE `reservas` (
   `id_estado_reserva` int(11) NOT NULL,
   `modificado_cancelado_por` int(11) DEFAULT NULL,
   `tipo_modificado_cancelado` ENUM('cliente', 'empleado', 'administrador') DEFAULT NULL,
-  `motivo_cancelacion` varchar(255),
+  `motivo_cancelacion` varchar(255) DEFAULT NULL,
   `cambio_mesa` int(11) DEFAULT NULL, -- Ahora es INT y puede ser NULL
   PRIMARY KEY (`id_reserva`),
   KEY `id_cliente` (`id_cliente`),
@@ -257,7 +257,7 @@ DROP TABLE IF EXISTS `estado_reserva`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estado_reserva` (
   `id_estado_reserva` int(11) NOT NULL AUTO_INCREMENT,
-  `estados` ENUM('cancelada', 'realizada/concretada', 'realizada/anulada', 'reservada') NOT NULL,
+  `estados` ENUM('cancelada', 'realizada/concretada', 'realizada/anulada', 'reservada') NOT NULL UNIQUE,
   PRIMARY KEY (`id_estado_reserva`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
