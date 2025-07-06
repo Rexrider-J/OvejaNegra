@@ -41,8 +41,8 @@ if ($res->num_rows === 0) {
 }
 
 // Insertar reserva
-$stmt = $conexion->prepare("INSERT INTO reservas (id_cliente, id_mesa, fecha_reserva, observaciones, cant_personas, id_estado_reserva) VALUES (?, ?, ?, ?, ?, ?)");
-$stmt->bind_param("iissii", $id_cliente, $id_mesa, $fecha_reserva, $observaciones, $cant_personas, $id_estado_reserva);
+$stmt = $conexion->prepare("INSERT INTO reservas (id_cliente, id_mesa, id_local, fecha_reserva, observaciones, cant_personas, id_estado_reserva) VALUES (?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("iiissii", $id_cliente, $id_mesa, $id_local, $fecha_reserva, $observaciones, $cant_personas, $id_estado_reserva);
 
 if ($stmt->execute()) {
   echo "✅ Reserva realizada con éxito.";

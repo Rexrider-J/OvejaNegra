@@ -1630,6 +1630,7 @@ if (window.location.pathname.includes("reservas.html")) {
 }
 function volverSeleccionSucursalReserva(btn) {
   sessionStorage.removeItem("sucursalValor");
+  sessionStorage.removeItem("sucursalNombre");
   sessionStorage.removeItem("fechaSeleccionada");
   sessionStorage.removeItem("horaSeleccionada");
   sessionStorage.removeItem("personasSeleccionadas");
