@@ -1417,7 +1417,10 @@ input[type=number]::-webkit-outer-spin-button {
     background: rgb(42, 194, 250) !important;
     border-color: rgb(42, 194, 250) !important;
 }
-
+/*Para que no sea ocultado por el modal de bootstrap*/
+.flatpickr-calendar {
+  z-index: 1056; /* mayor al z-index del modal (1055) */
+}
 /*FIN CAMBIOS CALENDARIO*/
 #formFechaDatosReserva label {
     width: 100%;
@@ -2191,14 +2194,11 @@ input[type=number]::-webkit-outer-spin-button {
   vertical-align: middle;
   background-color: white;
 }
-/* Desactiva selección de texto y clics en el historial de reservas */
+
 #tablaReservasPasadas {
-  pointer-events: none;       /* Evita clics, hovers, etc. */
-  user-select: none;          /* Desactiva selección de texto */
-  opacity: 0.9;               /* Opcional: da un look más "deshabilitado" */
+  opacity: 0.9;              
 }
 
-/* Pero dejá que los encabezados sigan visibles y con color */
 #tablaReservasPasadas th {
     background-color: #ededed;
     text-align: center;

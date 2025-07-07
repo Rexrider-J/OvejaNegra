@@ -308,7 +308,9 @@ INSERT INTO `mesas` (`id_local`, `descripcion`, `cupo_maximo`, `estado`) VALUES
 -- Tabla: estado_reserva
 INSERT INTO `estado_reserva` (`estados`) VALUES
 ('reservada'),
-('cancelada');
+('cancelada'),
+('realizada/concretada'),
+('realizada/anulada');
 
 -- Tabla: reservas
 INSERT INTO `reservas` (`id_cliente`, `id_mesa`, `fecha_reserva`, `observaciones`, `fecha_modificacion_cancelacion`, `cant_personas`, `id_estado_reserva`, `modificado_cancelado_por`, `tipo_modificado_cancelado`, `cambio_mesa`) VALUES

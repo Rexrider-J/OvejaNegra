@@ -248,6 +248,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <tr>
               <th>Fecha</th>
               <th>Hora</th>
+              <th>Local</th>
               <th>Mesa</th>
               <th>Personas</th>
               <th>Observaciones</th>
@@ -268,10 +269,12 @@ document.addEventListener("DOMContentLoaded", function () {
             <tr>
               <th>Fecha</th>
               <th>Hora</th>
+              <th>Local</th>
               <th>Mesa</th>
               <th>Personas</th>
               <th>Observaciones</th>
               <th>Estado</th>
+              <th></th> <!-- Columna vacía para botones -->
             </tr>
           </thead>
           <tbody>
@@ -280,6 +283,56 @@ document.addEventListener("DOMContentLoaded", function () {
         </table>
       </div>
     </section>
+    <!-- Modal para ver detalles de la Reserva -->
+    <div class="modal fade" id="modalDetalleReserva" tabindex="-1" aria-labelledby="modalDetalleReservaLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalDetalleReservaLabel">Detalle de Reserva</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body" id="contenidoModalDetalle">
+            <!-- Aquí se cargará dinámicamente el contenido -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para Modificar datos de la Reserva -->
+    <div class="modal fade" id="modalModificarReserva" tabindex="-1" aria-labelledby="modalModificarReservaLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalModificarReservaLabel">Modificar Reserva</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body" id="contenidoModalModificar">
+            <!-- Aquí se cargará dinámicamente el formulario para modificar -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal para cancelar la Reserva -->
+    <div class="modal fade" id="modalCancelarReserva" tabindex="-1" aria-labelledby="modalCancelarReservaLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalCancelarReservaLabel">Cancelar Reserva</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <p>Por favor, indica el motivo de la cancelación:</p>
+            <textarea id="motivoCancelacionInput" class="form-control" maxlength="255" placeholder="Motivo de la cancelación..."></textarea>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="confirmarCancelacionBtn">Confirmar Cancelación</button>
+          </div>
+        </div>
+      </div>
+    </div>
     `;
 
     // Luego de inyectar el HTML, obtenemos el id y llamamos a la función para traer reservas
@@ -616,135 +669,110 @@ function guardarSucursalDeReserva(btn) {
 
   mostrarSeccion('datosDeReserva', btn);
 }
+if(window.location.pathname.includes("reservas.html")){
+  document.addEventListener("DOMContentLoaded", function () {
+    crearCalendarioEmbed("fechaReserva", "calendarioReservas");
+  });
+}
 
 let locales = [];
 
+/*Obtiene los datos de las sucursales*/
 function mostrarTodasSucursales() {
   fetch('obtener_locales.php')
     .then(response => response.text())
     .then(text => {
-
-      const lineas = text.trim().split("\n"); // limpia espacios y divide por líneas
-
-
-      locales = lineas.map(linea => { // recorremos cada línea
-        const campos = linea.split(";"); // divide por puntoycoma
-        const objeto = {};
-
-        campos.forEach(campo => {
-          if (campo) {
-            const [clave, valor] = campo.split("="); // las separamos en el "="
-            objeto[clave] = valor; // y las asignamos
-          }
-        });
-        return objeto;
-      });
-      /*LLama a la funcion de cargarSelectSucursales para cargar los datos en la pagina*/
-      cargarSelectSucursales();  // Header general
-      cargarDropdownReservas();   //Pagina reservas
-      cargarDropdownReservasEmpleado(); //Pagina reservas
-      crearAcordeones(locales); //pagina nosotros
+      locales = parsearLocales(text); /*Convierte la respuesta en un array de objetos*/
+      /*Con cargarDropdown rellena los dropdown con la informacion de todos los locales*/
+      cargarDropdown("selectorSucursales", false); // Header general
+      cargarDropdown("dropdownReservas", true);    // Cliente - reservas
+      cargarDropdown("dropdownReservasEmpleado", true); // Empleado - reservas
+      /*Funciones adicionales*/
+      crearAcordeones(locales);                    // Nosotros
       mostrarSucursalEmpleado();
-
-      //Aplicar un valor a cada sucursal después de cargar las opciones para poder conservar la sucursal seleccionada en otras paginas
-      const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
-      if (valorGuardado) {
-        const selector = document.getElementById("selectorSucursales");
-        if (selector) selector.value = valorGuardado;
-
-        const dropdown = document.getElementById("dropdownReservas");
-        if (dropdown) dropdown.value = valorGuardado;
-
-        const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
-        if (dropdownEmpleado) dropdownEmpleado.value = valorGuardado;
-      }
+      /*Restaura el valor seleccionado previamente en el header*/
+      aplicarSucursalGuardada(["selectorSucursales", "dropdownReservas", "dropdownReservasEmpleado"]);
     })
     .catch(error => console.error("Error:", error));
 }
-/*Carga selectorSucursales que es el dropdown que esta en el header con el nombre de todas las sucursales en la bdd*/
-function cargarSelectSucursales() {
-  const select = document.getElementById("selectorSucursales");
 
-  /* Limpia todas las opciones menos la primera*/
-  select.length = 1;
-
-  locales.forEach((local, index) => {
-    const option = document.createElement("option");
-    option.value = index + 1;
-    option.textContent = local.nombre;
-    select.appendChild(option);
+/* Convierte texto plano (id_local=1;nombre=Centro;direccion=X) 
+en array de objetos de sucursales()
+[
+  { id_local: "1", nombre: "Centro", direccion: "X" },
+  ...
+]*/
+function parsearLocales(texto) {
+  return texto.trim().split("\n").map(linea => {
+    const campos = linea.split(";");
+    const obj = {};
+    campos.forEach(campo => {
+      const [clave, valor] = campo.split("=");
+      if (clave && valor) obj[clave] = valor;
+    });
+    return obj;
   });
 }
-/*Carga dropdownReservas que es el dropdown que se encuentra en el primer paso del cliente para realizar una reserva*/
-/*Carga el nombre y la direccion de los locales*/
-function cargarDropdownReservas() {
-  const dropdown = document.getElementById("dropdownReservas");
+
+/*Carga cualquier select con el id como parametro, opcionalmente incluye dirección segun true o false*/
+/*Recorre el array locales para llenar el dropdown con opciones dinámicamente*/
+function cargarDropdown(idElemento, incluirDireccion = false) {
+  const dropdown = document.getElementById(idElemento);
   if (!dropdown) return;
 
-  // Limpia todas las opciones menos la primera
+  // Limpia opciones salvo la primera
   dropdown.length = 1;
 
-  locales.forEach((local, index) => {
+  locales.forEach(local => {
     const option = document.createElement("option");
-    option.value = index + 1;
-    option.textContent = `${local.nombre} - ${local.direccion}`;
-    option.setAttribute("name", `${local.nombre} - ${local.direccion}`);
+    option.value = local.id_local; // ✅ Usa ID real
+    option.textContent = incluirDireccion ? `${local.nombre} - ${local.direccion}` : local.nombre;
     dropdown.appendChild(option);
   });
-}/*Carga dropdownReservas que es el dropdown que se encuentra en el primer paso del cliente para realizar una reserva*/
-/*Carga el nombre y la direccion de los locales*/
-function cargarDropdownReservasEmpleado() {
-  const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
-  if (!dropdownEmpleado) return;
+}
 
-  // Limpia todas las opciones menos la primera
-  dropdownEmpleado.length = 1;
+/*Si hay una sucursal guardada en sessionStorage (header), se la aplica como valor al id que tiene como parametro*/
+function aplicarSucursalGuardada(ids) {
+  const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
+  if (!valorGuardado) return;
 
-  locales.forEach((local, index) => {
-    const option = document.createElement("option");
-    option.value = index + 1;
-    option.textContent = `${local.nombre} - ${local.direccion}`;
-    option.setAttribute("name", `${local.nombre} - ${local.direccion}`);
-    dropdownEmpleado.appendChild(option);
+  ids.forEach(id => {
+    const elemento = document.getElementById(id);
+    if (elemento) elemento.value = valorGuardado;
   });
 }
-/* Guarda la sucursal seleccionada en el header*/
+
+/*Guarda selección y sincroniza los dropdowns*/
 function guardarSeleccionSucursal(valor) {
   sessionStorage.setItem("sucursalSeleccionada", valor);
-  cargarMenuEstatico()
+  cargarMenuEstatico(); //para actualizar los elementos de menu
 
-  /*Si se encuentra en la pagina reservas, tambien actualizar el valor de dropdown si se cambia el valor del selectoSucursal en la misma pagina*/
-  const dropdown = document.getElementById("dropdownReservas");
-  if (dropdown) {
-    dropdown.value = valor;
-  }
-  const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
-  if (dropdownEmpleado) {
-    dropdownEmpleado.value = valor;
-  }
+  /*Actualiza visualmente los dropdowns secundarios con la selección guardada.*/
+  aplicarSucursalGuardada(["dropdownReservas", "dropdownReservasEmpleado"]);
 }
-window.addEventListener('DOMContentLoaded', mostrarTodasSucursales);
-/* Al cargar la página, recupera el valor de la selección guardada*/
-document.addEventListener("DOMContentLoaded", function () {
+
+/*Muestra nombre de sucursal asignada al empleado para mostrarla en mi perfil datos personales*/
+function mostrarSucursalEmpleado() {
+  const idLocalEmpleado = sessionStorage.getItem("idLocalEmpleado");
+  if (!idLocalEmpleado || locales.length === 0) return;
+
+  const sucursal = locales.find(local => local.id_local === idLocalEmpleado);
+  const nombreSucursal = sucursal?.nombre || "Sucursal desconocida";
+
+  const inputSucursal = document.getElementById("sucursalEmpleadoText");
+  if (inputSucursal) inputSucursal.value = nombreSucursal;
+}
+
+/*Listener al selector de sucursal del header. Se ejecuta automáticamente cuando la página carga*/
+/*Si el usuario cambia la sucursal en el header, guarda ese valor y actualiza las categorías mostradas*/
+document.addEventListener("DOMContentLoaded", () => {
   const selector = document.getElementById("selectorSucursales");
-
   const valorGuardado = sessionStorage.getItem("sucursalSeleccionada");
-  if (valorGuardado && selector) {
-    selector.value = valorGuardado;
-  }
-
-  const dropdown = document.getElementById("dropdownReservas");
-  if (dropdown && valorGuardado) {
-    dropdown.value = valorGuardado;
-  }
-
-  const dropdownEmpleado = document.getElementById("dropdownReservasEmpleado");
-  if (dropdownEmpleado && valorGuardado) {
-    dropdownEmpleado.value = valorGuardado;
-  }
 
   if (selector) {
-    selector.addEventListener("change", function () {
+    if (valorGuardado) selector.value = valorGuardado;
+
+    selector.addEventListener("change", () => {
       const valor = selector.value;
       if (valor !== "") {
         guardarSeleccionSucursal(valor);
@@ -752,20 +780,15 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
   if (valorGuardado) {
     cargarTodasLasCategorias();
   }
 });
-/*Carga el input sobre la sucursal a la que pertenece el empleado en Mi Perfil, datos personales*/
-function mostrarSucursalEmpleado() {
-  const idLocalEmpleado = sessionStorage.getItem('idLocalEmpleado');
-  if (idLocalEmpleado && locales.length > 0) {
-    const sucursal = locales.find(local => local.id_local === idLocalEmpleado);
-    const texto = (sucursal && sucursal.nombre) ? sucursal.nombre : 'Sucursal desconocida';
-    const pSucursal = document.getElementById('sucursalEmpleadoText');
-    if (pSucursal) pSucursal.value = texto;
-  }
-}
+
+// Ejecutar al cargar
+window.addEventListener("DOMContentLoaded", mostrarTodasSucursales);
+
 /*Genera acordeones con los datos de cada sucursal dinamicamente en la pagina nosotros*/
 /*Tambien despliega el acordeon correspondiente a la sucursal seleccionada previamente en el header*/
 function crearAcordeones(locales) {
@@ -824,25 +847,162 @@ if (selector) {
   });
 }
 /*RESTRICCIONES PARA DATOS INGRESADOS*/
-/*Calendario externo Flatpickr*/
-if (window.location.pathname.includes("reservas.html")) {
-  document.addEventListener("DOMContentLoaded", function () {
-    flatpickr("#calendarioReservas", {
-      inline: true,
-      dateFormat: "Y-m-d",
-      locale: "es",
-      minDate: "today",
-      disable: [
-        function (date) {
-          return date.getDay() === 1; // Desactiva lunes
-        }
-      ],
-      onChange: function (selectedDates, dateStr) {
-        document.getElementById("fechaReserva").value = dateStr;
+/*Calendario externo Flatpickr visible*/
+function crearCalendarioEmbed(idInput, idContenedor, callbackOnChange = null) {
+  const input = document.getElementById(idInput);
+  const contenedor = document.getElementById(idContenedor);
+
+  flatpickr(contenedor, {
+    inline: true,
+    dateFormat: "Y-m-d",
+    locale: "es",
+    minDate: "today",
+    disable: [date => date.getDay() === 1],
+    defaultDate: sessionStorage.getItem(idInput) || null,
+    onChange: function(selectedDates, dateStr) {
+      input.value = dateStr;
+      sessionStorage.setItem(idInput, dateStr);
+      if (typeof callbackOnChange === "function") {
+        callbackOnChange(dateStr);
       }
-    });
+      input.dispatchEvent(new Event("change"));
+    }
   });
 }
+/*Calendario externo Flatpickr para inputs no visible sin clic*/
+function crearCalendarioPopup(idInput) {
+  const input = document.getElementById(idInput);
+
+  if (!input) return;
+
+  flatpickr(input, {
+    dateFormat: "Y-m-d",
+    locale: "es",
+    minDate: "today",
+    disable: [
+      function (date) {
+        return date.getDay() === 1; // desactiva los lunes
+      }
+    ],
+    defaultDate: sessionStorage.getItem(idInput) || null,
+    onChange: function (selectedDates, dateStr) {
+      input.value = dateStr;
+      sessionStorage.setItem(idInput, dateStr);
+    }
+  });
+
+  input.readOnly = true; // importante para prevenir escritura manual
+}
+/*Funcion para que un select de horarios tenga restricciones*/
+/*Solo muestra horarios disponibles en la fecha seleccionada y a partir de la hora actual*/
+
+function generarOpcionesHorarioDisponibles(fechaSeleccionada, selectId) {
+  const horarios = [
+    "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00",
+    "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00"
+  ];
+
+  const select = document.getElementById(selectId);
+  if (!select || !fechaSeleccionada) return;
+
+  fechaSeleccionada = fechaSeleccionada.trim();
+  const ahora = new Date();
+  const hoyStr = ahora.toISOString().split("T")[0];
+  const esHoy = fechaSeleccionada === hoyStr;
+
+  let opciones = "";
+
+  if (esHoy) {
+    const horaActual = ahora.getHours();
+    const minutosActuales = ahora.getMinutes();
+
+    const horariosFiltrados = horarios.filter(h => {
+      const [hora, minutos] = h.split(":").map(Number);
+      const incluir = (hora > horaActual || (hora === horaActual && minutos > minutosActuales));
+      console.log(`Evaluando horario ${h} => incluir: ${incluir}`);
+      return incluir;
+    });
+
+    if (horariosFiltrados.length === 0) {
+      opciones = `<option value="">No hay horarios disponibles</option>`;
+    } else {
+      opciones = `<option value="">Seleccione hora</option>` + 
+        horariosFiltrados.map(h => `<option value="${h}">${h.slice(0, 5)}</option>`).join("");
+    }
+  } else {
+    opciones = `<option value="">Seleccione hora</option>` + 
+      horarios.map(h => `<option value="${h}">${h.slice(0, 5)}</option>`).join("");
+  }
+
+  select.innerHTML = opciones;
+}
+
+function obtenerMesasDisponibles(idSelect, idLocal, fecha, hora, personas, valorDefault = null, descripcionMesaDefault = "") {
+  const select = document.getElementById(idSelect);
+
+  if (!select || !idLocal || !fecha || !hora || !personas) {
+    console.warn("Faltan datos obligatorios para obtener mesas.");
+    if (select) {
+      select.innerHTML = "<option value=''>Complete todos los datos</option>";
+      select.disabled = true;
+    }
+    return;
+  }
+
+  select.innerHTML = "<option value=''>Cargando mesas...</option>";
+  select.disabled = true;
+
+  const url = `obtener_mesas_disponibles.php?id_local=${idLocal}&fecha=${fecha}&hora=${hora}&personas=${personas}`;
+
+  fetch(url)
+    .then(res => res.text())
+    .then(opciones => {
+      select.innerHTML = opciones;
+
+      const tieneOpcionesValidas = [...select.options].some(opt => opt.value !== "");
+
+      if (tieneOpcionesValidas) {
+        let opcionDefault = [...select.options].find(opt => opt.value == valorDefault);
+
+        if (!opcionDefault && valorDefault !== null) {
+          // Agrego la mesa actual con su descripción
+          const opcion = document.createElement("option");
+          opcion.value = valorDefault;
+          opcion.text = descripcionMesaDefault || `Mesa actual (ID ${valorDefault})`;
+          opcion.selected = true;
+          select.appendChild(opcion);
+          select.disabled = false;
+          console.log("Valor default agregado manualmente con descripción.");
+        } else if (opcionDefault) {
+          select.value = valorDefault;
+          select.disabled = false;
+          console.log(`Valor default aplicado: ${valorDefault}`);
+        } else {
+          select.disabled = false;
+        }
+      } else {
+        if (valorDefault !== null) {
+          const opcion = document.createElement("option");
+          opcion.value = valorDefault;
+          opcion.text = descripcionMesaDefault || `Mesa actual (ID ${valorDefault})`;
+          opcion.selected = true;
+          select.innerHTML = "";
+          select.appendChild(opcion);
+          select.disabled = false;
+          console.log("Solo está la mesa actual disponible con descripción.");
+        } else {
+          select.innerHTML = "<option value=''>No hay mesas disponibles</option>";
+          select.disabled = true;
+        }
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      select.innerHTML = "<option value=''>Error al cargar mesas</option>";
+      select.disabled = true;
+    });
+}
+
 function aplicarSoloLetras() {
   document.querySelectorAll('.solo-letras').forEach(function (campo) {
     /*Evento para controlar las teclas que se presionan al escribir*/
@@ -1528,87 +1688,43 @@ if (window.location.pathname.includes("reservas.html")) {
     const personasSelect = document.getElementById("cantPersonasReserva");
     const mesaSelect = document.getElementById("mesaReserva");
 
-    // Inhabilita la selección de mesa inicialmente
     mesaSelect.disabled = true;
 
-    // Inicializa el calendario con Flatpickr
-    flatpickr(calendario, {
-      inline: true, // Hace que el calendario aparezca embebido en el div
-      dateFormat: "Y-m-d",
-      locale: "es",
-      minDate: "today", // No permite fechas anteriores al día actual
-      disable: [
-        function (date) {
-          return date.getDay() === 1; // Desactiva los lunes
-        }
-      ],
-      defaultDate: sessionStorage.getItem("fechaReserva") || null,
-      onChange: function (selectedDates, dateStr) {
-        fechaInput.value = dateStr; // Guarda en el input hidden si lo usás
-        sessionStorage.setItem("fechaReserva", dateStr);
-        generarOpcionesHorario(dateStr); 
-        limpiarYValidarMesa();
-      }
+    crearCalendarioEmbed("fechaReserva", "calendarioReservas", function(dateStr) {
+      generarOpcionesHorarioDisponibles(dateStr, "horaReserva");
+      limpiarYValidarMesa();
     });
 
-    // Evento cambio de hora
     horaSelect.addEventListener("change", function () {
       sessionStorage.setItem("horaReserva", this.value);
       limpiarYValidarMesa();
     });
 
-    // Evento cambio de cantidad de personas
     personasSelect.addEventListener("change", function () {
       sessionStorage.setItem("cantPersonasReserva", this.value);
       limpiarYValidarMesa();
     });
 
-    // Limpia mesa seleccionada y valida si debe habilitarse
     function limpiarYValidarMesa() {
-      mesaSelect.value = ""; // Limpia selección de mesa
+      mesaSelect.value = "";
       validarHabilitarMesa();
     }
 
-    function cargarMesasDisponibles() {
-      const idLocal = sessionStorage.getItem("sucursalValor");
-      const fecha = sessionStorage.getItem("fechaReserva");
-      const hora = sessionStorage.getItem("horaReserva");
-      const personas = sessionStorage.getItem("cantPersonasReserva");
-
-      // const mesaSelect = document.getElementById("mesaReserva");
-      if (!mesaSelect || !idLocal || !fecha || !hora || !personas) return;
-
-      mesaSelect.innerHTML = "<option>Cargando...</option>";
-      mesaSelect.disabled = true;
-
-      const url = `obtener_mesas_disponibles.php?id_local=${idLocal}&fecha=${fecha}&hora=${hora}&personas=${personas}`;
-      fetch(url)
-        .then(res => res.text())
-        .then(opciones => {
-          mesaSelect.innerHTML = opciones;
-          mesaSelect.disabled = false;
-        })
-        .catch(err => {
-          console.error("Error al cargar mesas:", err);
-          mesaSelect.innerHTML = "<option>Error al cargar</option>";
-        });
-    }
-
-    // Habilita mesa solo si fecha, hora y personas están seleccionadas
     function validarHabilitarMesa() {
+      const idLocal = sessionStorage.getItem("sucursalValor");
       const fecha = sessionStorage.getItem("fechaReserva");
       const hora = horaSelect.value;
       const personas = personasSelect.value;
 
-      if (fecha && hora && personas) {
-        cargarMesasDisponibles()
-        // mesaSelect.disabled = false;
+      if (idLocal && fecha && hora && personas) {
+        obtenerMesasDisponibles("mesaReserva", idLocal, fecha, hora, personas);
       } else {
         mesaSelect.disabled = true;
+        mesaSelect.innerHTML = "<option value=''>Seleccione primero fecha, hora y cantidad</option>";
       }
     }
 
-    // Recuperar valores guardados si existen (opcional)
+    // Cargar valores previos (si los hay)
     if (sessionStorage.getItem("fechaReserva")) {
       fechaInput.value = sessionStorage.getItem("fechaReserva");
     }
@@ -1619,15 +1735,16 @@ if (window.location.pathname.includes("reservas.html")) {
       personasSelect.value = sessionStorage.getItem("cantPersonasReserva");
     }
 
-    validarHabilitarMesa(); // Verifica al cargar la página
+    validarHabilitarMesa();
   });
+
   window.addEventListener("beforeunload", function () {
-    // Solo borra los datos de la reserva al salir de la página actual
     sessionStorage.removeItem("fechaReserva");
     sessionStorage.removeItem("horaReserva");
     sessionStorage.removeItem("cantPersonasReserva");
   });
 }
+
 function volverSeleccionSucursalReserva(btn) {
   sessionStorage.removeItem("sucursalValor");
   sessionStorage.removeItem("sucursalNombre");
@@ -1753,6 +1870,7 @@ function enviarReserva() {
       alert("❌ Error al procesar la reserva. Intente nuevamente.");
     });
 }
+/*RESERVAS EMPLEADO*/
 /*Los botones raddioButton de reservas x empleado cambian el contenido de los datos que se deben completar de cliente segun el seleccionado*/
 function cambioTipoCliente() {
   const noRegistrado = document.getElementById('cliente-no-registrado');
@@ -1767,20 +1885,12 @@ function cambioTipoCliente() {
     divIngresar.style.display = 'grid';
   }
 }
-/*Es un boton para scrollear para arriba en modificar menu*/
-if (window.location.pathname.includes("miPerfil.html")) {
-  window.addEventListener('scroll', () => {
-    const btn = document.getElementById('btn-subir');
-    if (btn) {
-      if (window.scrollY > 200) {
-        btn.style.display = 'block';
-      } else {
-        btn.style.display = 'none';
-      }
-    }
+if (window.location.pathname.includes("reservas.html")) {
+  document.addEventListener("DOMContentLoaded", function () {
+    crearCalendarioPopup("fechaReservaEmpleado");
   });
 }
-
+/*MODIFICAR MENU*/
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
   document.getElementById("list-modificarMenu").innerHTML = "Espere..."
   fetch("obtener_menu.php") // solicita ese archivo, que carga el HTML del menú
@@ -1884,10 +1994,12 @@ function mostrarReservasEnTabla(reservas) {
   hoy.setHours(0, 0, 0, 0); // para comparar solo la fecha
 
   reservas.forEach(reserva => {
-    const fechaHora = new Date(reserva.fecha_reserva); // Asegurate de que sea tipo Date
-    const estado = reserva.estado_reserva.toLowerCase();
-    const esCanceladaOExpirada = estado === "cancelada" || estado === "expirada";
-    const esFutura = fechaHora >= hoy && !esCanceladaOExpirada;
+    const fechaHora = new Date(reserva.fecha_reserva); 
+    const estado = reserva.estado_reserva;
+    const esCancelada = estado === "cancelada" || estado === "realizada/concretada" || estado === "realizada/anulada";
+    const esFutura = fechaHora >= hoy && !esCancelada;
+
+    const detalleReservaString = JSON.stringify(reserva).replace(/"/g, '&quot;');
 
     if (esFutura) {
       // Mostrar en tabla de futuras
@@ -1895,12 +2007,13 @@ function mostrarReservasEnTabla(reservas) {
         <tr>
           <td>${reserva.fecha_reserva.split(' ')[0]}</td>
           <td>${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</td>
+          <td>${reserva.nombre_local}</td>
           <td>${reserva.descripcion_mesa || reserva.id_mesa}</td>
           <td>${reserva.cant_personas}</td>
           <td>${reserva.observaciones || "-"}</td>
           <td>${reserva.estado_reserva}</td>
           <td>
-            <button class="btn btn-warning btn-sm me-1" onclick="modificarReservaCliente(${reserva.id}, this)">Modificar</button>
+            <button class="btn btn-warning btn-sm me-1" onclick="abrirModalModificarReserva(${detalleReservaString}, this)">Modificar</button>
             <button class="btn btn-danger btn-sm" onclick="cancelarReservaCliente(${reserva.id})">Cancelar</button>
           </td>
         </tr>
@@ -1911,166 +2024,280 @@ function mostrarReservasEnTabla(reservas) {
         <tr>
           <td>${reserva.fecha_reserva.split(' ')[0]}</td>
           <td>${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</td>
+          <td>${reserva.nombre_local}</td>
           <td>${reserva.descripcion_mesa || reserva.id_mesa}</td>
           <td>${reserva.cant_personas}</td>
           <td>${reserva.observaciones || "-"}</td>
           <td>${reserva.estado_reserva}</td>
+          <td>
+            <button class="btn btn-info btn-sm" onclick="verDetalleReserva(${detalleReservaString},this)">Ver detalle</button>
+          </td>
         </tr>
       `;
     }
   });
 }
-function modificarReservaCliente(id_reserva, btn) {
-  const fila = btn.closest("tr");
-  if (!fila) return alert("Error: fila no encontrada");
+function verDetalleReserva(reserva, botonOrigen) {
+  const modalElement = document.getElementById("modalDetalleReserva");
+  const modalBody = document.getElementById("contenidoModalDetalle");
 
-  const fecha = fila.children[0].innerText;
-  const hora = fila.children[1].innerText;
-  const mesa = fila.children[2].innerText;
-  const personas = fila.children[3].innerText;
-  const observaciones = fila.children[4].innerText;
-
-  const hoy = new Date().toISOString().split("T")[0];
-
-  // Reemplazar por inputs
-  fila.children[0].innerHTML = `<input type="date" class="form-control input-fecha" value="${fecha}" min="${hoy}">`;
-  fila.children[1].innerHTML = `
-    <select class="form-control input-hora">
-      <option value="">Seleccione hora</option>
-      ${[11,12,13,14,15,16,17,18,19,20].map(h => {
-        const horaStr = `${h.toString().padStart(2, "0")}:00:00`;
-        return `<option value="${horaStr}" ${hora === horaStr ? "selected" : ""}>${h}:00</option>`;
-      }).join("")}
-    </select>`;
-  fila.children[2].innerHTML = `<select class="form-control input-mesa"><option value="">Seleccione mesa</option></select>`;
-  fila.children[3].innerHTML = `
-    <select class="form-control input-personas">
-      <option value="">¿Cuántas personas?</option>
-      ${[1,2,3,4,5].map(n => `<option value="${n}" ${+personas === n ? "selected" : ""}>${n}</option>`).join("")}
-    </select>`;
-  fila.children[4].innerHTML = `<textarea class="form-control input-observaciones">${observaciones !== "-" ? observaciones : ""}</textarea>`;
-
-  // Botones
-  fila.children[6].innerHTML = `
-    <button class="btn btn-success btn-sm me-1" onclick="guardarModificacionReserva(${id_reserva}, this)">Guardar</button>
-    <button class="btn btn-secondary btn-sm" onclick="location.reload()">Cancelar</button>
+  const detalleHTML = `
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item"><strong>📅 Fecha:</strong> ${reserva.fecha_reserva.split(' ')[0]}</li>
+      <li class="list-group-item"><strong>⏰ Hora:</strong> ${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</li>
+      <li class="list-group-item"><strong>📍 Local:</strong> ${reserva.nombre_local}</li>
+      <li class="list-group-item"><strong>🪑 Mesa:</strong> ${reserva.descripcion_mesa || "-"}</li>
+      <li class="list-group-item"><strong>👥 Personas:</strong> ${reserva.cant_personas}</li>
+      <li class="list-group-item"><strong>📝 Observaciones:</strong> ${reserva.observaciones || "-"}</li>
+      <li class="list-group-item"><strong>📌 Estado:</strong> ${reserva.estado_reserva}</li>
+      <li class="list-group-item"><strong>🧑‍💼 Modificado por:</strong> ${reserva.modif_canc_por || "-"}</li>
+      <li class="list-group-item"><strong>❗ Motivo:</strong> ${reserva.motivo_cancelacion || "-"}</li>
+      <li class="list-group-item"><strong>🕓 Fecha modificación:</strong> ${reserva.fecha_modificacion || "-"}</li>
+    </ul>
   `;
 
-  // Evento cambio fecha, hora o personas → cargar mesas
-  const fechaInput = fila.querySelector(".input-fecha");
-  const horaInput = fila.querySelector(".input-hora");
-  const personasInput = fila.querySelector(".input-personas");
-  const mesaInput = fila.querySelector(".input-mesa");
+  modalBody.innerHTML = detalleHTML;
 
-  [fechaInput, horaInput, personasInput].forEach(el => {
-    el.addEventListener("change", () => {
-      mesaInput.innerHTML = "<option>Cargando...</option>";
-      mesaInput.disabled = true;
+  const modal = new bootstrap.Modal(modalElement);
+  modal.show();
 
-      const fecha = fechaInput.value;
-      const hora = horaInput.value;
-      const personas = personasInput.value;
-      const id_local = sessionStorage.getItem("sucursalValor"); // o definilo vos
+  // 🔒 Soluciona el warning aria-hidden y restaura el foco
+  modalElement.addEventListener("hide.bs.modal", () => {
+    document.activeElement?.blur(); // Evita que el foco quede en un elemento dentro del modal oculto
+  }, { once: true });
 
-      // Validación
-      if (!fecha || !hora || !personas || !id_local) {
-        mesaInput.innerHTML = "<option>Seleccione fecha, hora y personas</option>";
-        return;
+  modalElement.addEventListener("hidden.bs.modal", () => {
+    botonOrigen?.focus?.(); // Devuelve el foco al botón de origen
+  });
+}
+
+function abrirModalModificarReserva(reserva, botonOrigen) {
+  const modalElement = document.getElementById("modalModificarReserva");
+  const modalBody = document.getElementById("contenidoModalModificar");
+
+  // Estructura HTML del modal
+  const id = reserva.id;
+  const id_local = reserva.id_local;
+  const fechaCompleta = reserva.fecha_reserva;
+  const [fecha, hora] = fechaCompleta.split(" ");
+  const observaciones = reserva.observaciones || "";
+  const id_mesa = reserva.id_mesa;
+  const descripcion_mesa = reserva.descripcion_mesa;
+  const personas = reserva.cant_personas;
+  const estado = reserva.estado_reserva;
+
+  modalBody.innerHTML = `
+    <div class="mb-3">
+      <label class="form-label">Sucursal</label>
+      <select id="dropdownModificarReservas" class="form-control" required>
+        <option value="">Seleccione una sucursal</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label for="fechaModifCliente" class="form-label">Fecha</label>
+      <input type="text" id="fechaModifCliente" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="horaModifCliente" class="form-label">Hora</label>
+      <select id="horaModifCliente" class="form-control input-hora" required>
+        <option value="">Seleccione hora</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Observaciones</label>
+      <textarea class="form-control input-observaciones" maxlength="255">${observaciones !== "-" ? observaciones : ""}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Cantidad de personas</label>
+      <select id="cant_personasModifCliente" class="form-control input-personas" required>
+        <option value="">¿Cuántas personas?</option>
+        ${[...Array(8)].map((_, i) => `<option value="${i + 1}">${i + 1}</option>`).join("")}
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Mesa asignada</label>
+      <select id="mesaModifCliente" class="form-control" disabled required>
+        <option value="">Seleccione una mesa</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Estado</label>
+      <input type="text" class="form-control" value="${estado}" readonly>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Motivo del cambio</label>
+      <textarea class="form-control input-motivo" maxlength="255" placeholder="Explica el motivo de la modificación..."></textarea>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+      <button type="button" class="btn btn-primary" onclick="guardarModificacionReserva(${id}, ${id_mesa})">Guardar cambios</button>
+    </div>
+  `;
+
+  // Mostrar el modal
+  const modal = new bootstrap.Modal(modalElement);
+  modal.show();
+
+  // 🔒 Arregla el warning de aria-hidden y restaura el foco
+  modalElement.addEventListener("hide.bs.modal", () => {
+    document.activeElement?.blur();
+  }, { once: true });
+
+  modalElement.addEventListener("hidden.bs.modal", () => {
+    botonOrigen?.focus?.();
+  });
+
+  // Esperar a que el contenido esté en el DOM
+  setTimeout(() => {
+    // Sucursal
+    cargarDropdown("dropdownModificarReservas", true);
+    setTimeout(() => {
+      const sucursal = document.getElementById("dropdownModificarReservas");
+      if (sucursal) sucursal.value = id_local;
+    }, 100);
+
+    // Cantidad de personas
+    const cantInput = document.getElementById("cant_personasModifCliente");
+    if (cantInput) cantInput.value = personas;
+
+    // Fecha y calendario
+    const fechaInput = document.getElementById("fechaModifCliente");
+    if (fechaInput) {
+      fechaInput.value = fecha;
+      crearCalendarioPopup("fechaModifCliente");
+    }
+
+    // Horario
+    generarOpcionesHorarioDisponibles(fecha, "horaModifCliente");
+
+    setTimeout(() => {
+      const horaInput = document.getElementById("horaModifCliente");
+      if (horaInput) horaInput.value = hora;
+
+      // Cargar mesas disponibles
+      const local = document.getElementById("dropdownModificarReservas")?.value;
+      const personasVal = document.getElementById("cant_personasModifCliente")?.value;
+      const mesaSelectId = "mesaModifCliente";
+
+      if (local && fecha && hora && personasVal) {
+        obtenerMesasDisponibles(mesaSelectId, local, fecha, hora, personasVal, id_mesa, descripcion_mesa);
       }
+    }, 150);
 
-      // Validar que no sea lunes
-      const selectedDate = new Date(fecha);
-      if (selectedDate.getDay() === 1) {
-        alert("Nuestros establecimientos permanecen cerrados los lunes.");
-        mesaInput.innerHTML = "<option>Día no disponible</option>";
-        return;
-      }
-
-      // Fetch mesas disponibles
-      const url = `obtener_mesas_disponibles.php?id_local=${id_local}&fecha=${fecha}&hora=${hora}&personas=${personas}`;
-      fetch(url)
-        .then(res => res.text())
-        .then(opciones => {
-          mesaInput.innerHTML = opciones;
-          mesaInput.disabled = false;
-        })
-        .catch(err => {
-          console.error("Error al cargar mesas:", err);
-          mesaInput.innerHTML = "<option>Error al cargar</option>";
-        });
+    // Evento para cambiar horarios según fecha
+    fechaInput?.addEventListener("change", () => {
+      generarOpcionesHorarioDisponibles(fechaInput.value, "horaModifCliente");
     });
-  });
+
+    // Evento para actualizar mesas si cambian datos clave
+    ["dropdownModificarReservas", "fechaModifCliente", "horaModifCliente", "cant_personasModifCliente"].forEach(id => {
+      const el = document.getElementById(id);
+      el?.addEventListener("change", () => {
+        const local = document.getElementById("dropdownModificarReservas")?.value;
+        const fechaVal = document.getElementById("fechaModifCliente")?.value;
+        const horaVal = document.getElementById("horaModifCliente")?.value;
+        const personasVal = document.getElementById("cant_personasModifCliente")?.value;
+        const mesaSelect = document.getElementById("mesaModifCliente");
+
+        if (!local || !fechaVal || !horaVal || !personasVal) {
+          mesaSelect.innerHTML = "<option value=''>Seleccione una mesa</option>";
+          mesaSelect.disabled = true;
+          return;
+        }
+
+        obtenerMesasDisponibles("mesaModifCliente", local, fechaVal, horaVal, personasVal);
+      });
+    });
+
+  }, 100);
 }
-function generarOpcionesHorario(fechaSeleccionada) {
-  const horaSelect = document.getElementById("horaReserva");
-  const ahora = new Date();
-  const fechaHoy = ahora.toISOString().split("T")[0];
+function guardarModificacionReserva(idReserva, mesaOriginal) {
+  const idLocal = document.getElementById("dropdownModificarReservas").value;
+  const fecha = document.getElementById("fechaModifCliente").value;
+  const hora = document.getElementById("horaModifCliente").value;
+  const personas = document.getElementById("cant_personasModifCliente").value;
+  const mesa = document.getElementById("mesaModifCliente").value;
+  const observaciones = document.querySelector(".input-observaciones").value.trim();
+  const motivo = document.querySelector(".input-motivo").value.trim();
+  const modificadoPor = sessionStorage.getItem("idCliente");
 
-  const horas = [
-    "11:00:00", "12:00:00", "13:00:00", "14:00:00", "15:00:00",
-    "16:00:00", "17:00:00", "18:00:00", "19:00:00", "20:00:00"
-  ];
+  if (!idLocal || !fecha || !hora || !personas) {
+    alert("Por favor, completá todos los campos obligatorios.");
+    return;
+  }
 
-  horaSelect.innerHTML = '<option value="" selected>Seleccione hora de reserva</option>';
+  const datos = new FormData();
+  datos.append("id_reserva", idReserva);
+  datos.append("id_local", idLocal);
+  datos.append("fecha", fecha);
+  datos.append("hora", hora);
+  datos.append("cantidad", personas);
+  datos.append("observaciones", observaciones || "-");
+  datos.append("motivo_cancelacion", motivo);
+  datos.append("modificado_por", modificadoPor);
 
-  horas.forEach(hora => {
-    const [h, m, s] = hora.split(":");
-    const horaCompleta = new Date(`${fechaSeleccionada}T${hora}`);
-
-    // Si es hoy y la hora ya pasó, no la mostramos
-    if (fechaSeleccionada === fechaHoy && horaCompleta <= ahora) return;
-
-    const option = document.createElement("option");
-    option.value = hora;
-    option.textContent = hora.slice(0, 5); // 11:00
-    horaSelect.appendChild(option);
-  });
-}
-function guardarModificacionReserva(id_reserva, btn) {
-  const fila = btn.closest("tr");
-  const nuevaFecha = fila.children[0].querySelector("input").value;
-  const nuevaHora = fila.children[1].querySelector("select").value;
-  const nuevaMesa = fila.children[2].querySelector("select").value;
-  const nuevaCantidad = fila.children[3].querySelector("select").value;
-  const nuevaObs = fila.children[4].querySelector("textarea").value;
-  const idCliente = sessionStorage.getItem("idCliente");
-
-  const formData = new FormData();
-  formData.append("id_reserva", id_reserva);
-  formData.append("fecha", nuevaFecha);
-  formData.append("hora", nuevaHora);
-  formData.append("mesa", nuevaMesa);
-  formData.append("cantidad", nuevaCantidad);
-  formData.append("observaciones", nuevaObs);
-  formData.append("modificado_por", idCliente);
-  formData.append("tipo", "cliente");
+  if (mesa !== mesaOriginal) {
+    datos.append("mesa", mesa);
+  }
 
   fetch("modificar_reserva_cliente.php", {
     method: "POST",
-    body: formData
+    body: datos
   })
     .then(res => res.text())
-    .then(data => {
-      if (data.includes("✅")) {
-        alert("Reserva modificada correctamente.");
-        location.reload();
-      } else {
-        alert("❌ Error: " + data);
+    .then(msg => {
+      alert(msg);
+      if (msg.includes("✅")) {
+        const modal = bootstrap.Modal.getInstance(document.getElementById("modalModificarReserva"));
+        modal.hide();
+        navegarConTab('list-misReservas-list');
       }
     })
-    .catch(error => {
-      console.error("Error:", error);
-      alert("❌ No se pudo modificar la reserva.");
+    .catch(err => {
+      console.error("Error al guardar la reserva:", err);
+      alert("Ocurrió un error al guardar la reserva.");
     });
 }
-function cancelarReservaCliente(id_reserva) {
-  const idCliente = sessionStorage.getItem("idCliente");
 
-  if (confirm("¿Estás seguro de que querés cancelar esta reserva?")) {
+function cancelarReservaCliente(id_reserva, botonOrigen) {
+  const idCliente = sessionStorage.getItem("idCliente");
+  const modalElement = document.getElementById("modalCancelarReserva");
+  const motivoInput = document.getElementById("motivoCancelacionInput");
+  const btnConfirmar = document.getElementById("confirmarCancelacionBtn");
+
+  // Limpiar textarea al abrir el modal
+  motivoInput.value = "";
+
+  // Crear instancia Bootstrap Modal (si ya existe, devuelve la instancia)
+  const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+
+  // Mostrar el modal
+  modal.show();
+
+  // Poner foco en el textarea cuando el modal esté visible
+  modalElement.addEventListener("shown.bs.modal", () => {
+    motivoInput.focus();
+  }, { once: true });
+
+  // Quitar cualquier listener previo para evitar múltiples envíos
+  btnConfirmar.onclick = null;
+
+  btnConfirmar.onclick = () => {
+    const motivo = motivoInput.value.trim();
+
     const formData = new FormData();
     formData.append("id_reserva", id_reserva);
     formData.append("id_cliente", idCliente);
     formData.append("tipo", "cliente");
+    formData.append("motivo_cancelacion", motivo);
 
     fetch("cancelar_reserva_cliente.php", {
       method: "POST",
@@ -2078,19 +2305,30 @@ function cancelarReservaCliente(id_reserva) {
     })
       .then(res => res.text())
       .then(data => {
+        alert(data);
         if (data.includes("✅")) {
-          alert("Reserva cancelada con éxito.");
-          location.reload();
-        } else {
-          alert("❌ Error: " + data);
+          modal.hide();
+          navegarConTab('list-misReservas-list');
         }
       })
       .catch(error => {
         console.error("Error:", error);
         alert("❌ Error al cancelar la reserva.");
       });
-  }
+  };
+
+  // 🔒 Soluciona el warning aria-hidden y restaura el foco al botón que abrió el modal
+  modalElement.addEventListener("hide.bs.modal", () => {
+    document.activeElement?.blur(); // Evita que el foco quede en un elemento dentro del modal oculto
+  }, { once: true });
+
+  modalElement.addEventListener("hidden.bs.modal", () => {
+    botonOrigen?.focus?.(); // Devuelve el foco al botón de origen
+  });
 }
+
+
+
 function cargarCategoria(categoria) { // es la funcion que carga por la categoria que se le pase como argumento
   const targetDiv = document.querySelector(`#list-${categoria.toLowerCase()} .listProductos`); // guardamos en una variable el div donde vamos a insertar lo que devuelva el .php
   if (!targetDiv) return; // si no existe el div, la funcion se corta y no devuelve nada
