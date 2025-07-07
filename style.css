@@ -2210,6 +2210,14 @@ input[type=number]::-webkit-outer-spin-button {
     vertical-align: middle;
     background-color: #dedede;
 }
+#contenedorMisReservasC .notaImportanteReserva{
+    margin: 12px 0;
+}
+#contenedorMisReservasC .encabezadoMisReservas{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 /*Base de datos*/
 #botonesDeTablas {
     width: 100%;

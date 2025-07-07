@@ -239,8 +239,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (tipoUsuario === "cliente") {
     misReservasDiv.innerHTML = `
     <section id="contenedorMisReservasC">
-      <h2>Mis reservas</h2>
-
+      <div class="encabezadoMisReservas"> 
+        <h2>Mis reservas</h2>
+        <h2 id="puntosDelCliente">Mis puntos:</h2>
+      </div>
       <h3>📅 Reservas Futuras</h3>
       <div class="table-responsive">
         <table id="tablaReservasFuturas" class="table table-hover table-bordered">
@@ -261,7 +263,15 @@ document.addEventListener("DOMContentLoaded", function () {
           </tbody>
         </table>
       </div>
-
+      <div class="notaImportanteReserva">
+        <h5>📝Estados de reserva</h3>
+        <p>
+          Reservada: La reserva fue registrada correctamente y se encuentra vigente para la fecha y hora seleccionadas.<br>
+          Cancelada: La reserva fue anulada por el cliente o por el personal del local debido a causas imprevistas.<br>
+          Realizada / Concretada: La reserva se llevó a cabo en la fecha y hora previstas. Este tipo de reservas otorgan un punto al perfil del cliente, se pueden visualizar en la tienda de puntos.<br>
+          Realizada / Anulada: La reserva fue anulada por el personal del local debido a la inasistencia del cliente en la fecha y hora programadas.<br>
+        </p>
+      </div>
       <h3>📖 Historial de Reservas</h3>
       <div class="table-responsive">
         <table id="tablaReservasPasadas" class="table table-hover table-bordered">
@@ -1659,7 +1669,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 /*TIENDA DE PUNTOS*/
-if (window.location.pathname.includes("tiendaDePuntos.html")) {
+if (window.location.pathname.includes("tiendaDePuntos.html")||window.location.pathname.includes("miPerfil.html")) {
   document.addEventListener("DOMContentLoaded", async () => {
     const puntosDelCliente = document.getElementById("puntosDelCliente");
     const usuarioTipo = sessionStorage.getItem("usuarioTipo");
