@@ -313,9 +313,27 @@ INSERT INTO `estado_reserva` (`estados`) VALUES
 ('realizada/anulada');
 
 -- Tabla: reservas
-INSERT INTO `reservas` (`id_cliente`, `id_mesa`, `fecha_reserva`, `observaciones`, `fecha_modificacion_cancelacion`, `cant_personas`, `id_estado_reserva`, `modificado_cancelado_por`, `tipo_modificado_cancelado`, `cambio_mesa`) VALUES
-(1, 1, '2025-05-01 20:00:00', 'Mesa junto a la ventana', NULL, 4, 1, 1, 'cliente', NULL),
-(2, 2, '2025-05-02 21:30:00', 'Cumpleaños', NULL, 6, 1, 2, 'empleado', NULL);
+INSERT INTO `reservas` (`id_cliente`, `id_mesa`, `id_local`, `fecha_reserva`, `observaciones`, `fecha_modificacion_cancelacion`, `cant_personas`, `id_estado_reserva`, `modificado_cancelado_por`, `tipo_modificado_cancelado`, `cambio_mesa`) VALUES
+(1, 3, 1, '2025-07-09 19:00:00', 'Cena romántica', NULL, 2, 1, NULL, NULL, NULL),
+(2, 4, 1, '2025-07-10 18:30:00', 'Reunión de trabajo', NULL, 5, 1, NULL, NULL, NULL),
+(3, 5, 2, '2025-07-11 20:15:00', 'Celebración de aniversario', NULL, 4, 1, NULL, NULL, NULL),
+(4, 6, 2, '2025-07-12 21:00:00', 'Cena de negocios', NULL, 3, 1, NULL, NULL, NULL),
+(1, 7, 1, '2025-07-13 19:30:00', 'Cena en grupo', NULL, 6, 1, NULL, NULL, NULL),
+(2, 8, 1, '2025-07-14 22:00:00', 'Cena de despedida', NULL, 2, 1, NULL, NULL, NULL),
+(3, 9, 2, '2025-07-15 20:45:00', 'Reunión familiar', NULL, 8, 1, NULL, NULL, NULL),
+(4, 10, 2, '2025-07-16 18:00:00', 'Evento de networking', NULL, 4, 1, NULL, NULL, NULL),
+(1, 11, 1, '2025-07-17 19:15:00', 'Celebración de promoción', NULL, 3, 1, NULL, NULL, NULL),
+(2, 12, 1, '2025-07-18 21:30:00', 'Cena romántica de aniversario', NULL, 2, 1, NULL, NULL, NULL),
+(3, 13, 2, '2025-07-19 20:00:00', 'Fiesta de cumpleaños', NULL, 7, 1, NULL, NULL, NULL),
+(4, 14, 2, '2025-07-20 19:30:00', 'Cena con amigos', NULL, 5, 1, NULL, NULL, NULL),
+(1, 15, 1, '2025-07-21 18:45:00', 'Cena de celebración personal', NULL, 2, 1, NULL, NULL, NULL),
+(2, 16, 1, '2025-07-22 20:30:00', 'Reunión de trabajo importante', NULL, 6, 1, NULL, NULL, NULL),
+(3, 17, 2, '2025-07-23 21:00:00', 'Cena con la familia', NULL, 4, 1, NULL, NULL, NULL),
+(4, 18, 2, '2025-07-24 19:00:00', 'Evento especial', NULL, 10, 1, NULL, NULL, NULL),
+(1, 19, 1, '2025-07-25 21:15:00', 'Cena para dos', NULL, 2, 1, NULL, NULL, NULL),
+(2, 20, 1, '2025-07-26 20:00:00', 'Reunión social', NULL, 5, 1, NULL, NULL, NULL),
+(3, 1, 2, '2025-07-27 18:30:00', 'Cena previa al espectáculo', NULL, 4, 1, NULL, NULL, NULL),
+(4, 2, 2, '2025-07-28 21:30:00', 'Reunión de equipo', NULL, 3, 1, NULL, NULL, NULL);
 
 -- Tabla: empleado_funcion
 INSERT INTO `empleado_funcion` (`dia_hora`, `funcion`, `id_empleado`) VALUES
@@ -325,7 +343,7 @@ INSERT INTO `empleado_funcion` (`dia_hora`, `funcion`, `id_empleado`) VALUES
 ('2025-06-17 19:00:00', 'Gerente', 4),  
 ('2025-06-16 19:00:00', 'Subgerente', 6), 
 ('2025-06-15 19:00:00', 'Caja', 6), 
-('2025-06-15 10:00:00', 'Suberente', 6); 
+('2025-06-15 10:00:00', 'Subgerente', 6); 
 
 INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES
 (1, 1, 'disponible'),
@@ -666,7 +684,6 @@ INSERT INTO menu (nombre, precio, categoria, descripcion, ruta_imagen) VALUES
 ('Café con leche + 2 medialunas', 5500.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLeche2Medialunas.jpeg'),
 ('Café con leche XL + 2 medialunas', 6800.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLecheXL2Medialunas.jpeg'),
 ('Café con leche + donut', 4600.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLecheDonut.jpeg'),
-('Café con leche XL', 4700.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/cafeConLecheXL.jpeg'),
 ('Cortado + budin de limón', 4400.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/CortadBudinLimon.jpeg'),
 ('Jugo de naranja + 1/2 tostado de miga', 3900.00, 'Promo', ' ', 'img/Fotos/Promos y combos/Promos/jugoNaranjaTostado.jpeg');
 
