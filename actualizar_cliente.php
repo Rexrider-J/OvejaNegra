@@ -22,13 +22,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { /*Verifica si la solicitud fue reali
             'nombreCliente' => 'nombre',
             'apellidoCliente' => 'apellido',
             'dniCliente' => 'dni',
-            'emailCliente' => 'email',
+            'emailCliente' => 'mail',
             'telefonoCliente' => 'telefono',
             'fecha_nacimientoCliente' => 'fecha_nacimiento',
             'contrasenaCliente' => 'contrasena'
         ];
 
         $campo_bd = $mapa[$campo];  /*Se obtiene el nombre real del campo en la base de datos*/
+
+        if ($campo === 'emailCliente') {
+            /* Verificar si ya existe el mail en otro cliente*/
+            $verificar = $conexion->prepare("SELECT id_cliente FROM clientes WHERE mail = ? AND id_cliente != ?");
+            $verificar->bind_param("si", $valor, $id_cliente);
+            $verificar->execute();
+            $verificar->store_result();
+
+            if ($verificar->num_rows > 0) {
+                echo "duplicado";
+                $verificar->close();
+                exit;
+            }
+            $verificar->close();
+        }
 
         /*Prepara una consulta segura con placeholders para evitar inyecciones SQL*/
         $stmt = $conexion->prepare("UPDATE clientes SET $campo_bd = ? WHERE id_cliente = ?");

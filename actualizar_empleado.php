@@ -22,11 +22,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") { /*Verifica si la solicitud fue reali
             'nombreEmpleado' => 'nombre',
             'apellidoEmpleado' => 'apellido',
             'dniEmpleado' => 'dni',
-            'emailEmpleado' => 'email',
+            'emailEmpleado' => 'mail',
             'contrasenaEmpleado' => 'contrasena'
         ];
 
         $campo_bd = $mapa[$campo];  /*Se obtiene el nombre real del campo en la base de datos*/
+
+        if ($campo === 'emailEmpleado') {
+            $verificar = $conexion->prepare("SELECT id_empleado FROM empleados WHERE mail = ? AND id_empleado != ?");
+            $verificar->bind_param("si", $valor, $id_empleado);
+            $verificar->execute();
+            $verificar->store_result();
+
+            if ($verificar->num_rows > 0) {
+                echo "duplicado";
+                $verificar->close();
+                exit;
+            }
+            $verificar->close();
+        }
 
         /*Prepara una consulta segura con placeholders para evitar inyecciones SQL*/
         $stmt = $conexion->prepare("UPDATE empleados SET $campo_bd = ? WHERE id_empleado = ?");

@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </label>
               <legend>Telefono</legend>
               <label class="form-group">
-                <input type="text" id="telefonoClienteInput" name="telefonoClienteInput" min="1000000000" max="999999999" maxlength="20" class="solo-numeros" disabled />
+                <input type="text" id="telefonoClienteInput" name="telefonoClienteInput" minlength="10" max="999999999" maxlength="20" class="solo-numeros" disabled />
                 <button class="btn-editar" data-target="telefonoClienteInput">Editar</button>
               </label>
               <legend>Fecha de nacimiento</legend>
@@ -158,6 +158,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       `;
       aplicarSoloLetras();
+      aplicarSoloNumeros();
       inicializarInputsEditables();
       mostrarDatoSoloLectura('dniClienteInput', 'dniCliente');
     } else if (tipoUsuario === "empleado") {
@@ -1046,62 +1047,60 @@ function aplicarSoloLetras() {
     });
   });
 }
-document.querySelectorAll('.solo-numeros').forEach(function (campo) {
-  /*Permite solo números y tab, delete, enter y las fechas de direccion izquierda y derecha*/
-  campo.addEventListener('keydown', function (e) {
-    const tecla = e.key;
-    const numerosPermitidos = /^[0-9]$/;
-    const teclasEspeciales = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+function aplicarSoloNumeros() {
+  document.querySelectorAll('.solo-numeros').forEach(function (campo) {
+    /*Permite solo números y tab, delete, enter y las fechas de direccion izquierda y derecha*/
+    campo.addEventListener('keydown', function (e) {
+      const tecla = e.key;
+      const numerosPermitidos = /^[0-9]$/;
+      const teclasEspeciales = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
 
-    /*Si la tecla no está permitida y no es especial, se bloquea la acción*/
-    if (!numerosPermitidos.test(tecla) && !teclasEspeciales.includes(tecla)) {
-      e.preventDefault();
-    }
+      /*Si la tecla no está permitida y no es especial, se bloquea la acción*/
+      if (!numerosPermitidos.test(tecla) && !teclasEspeciales.includes(tecla)) {
+        e.preventDefault();
+      }
+    });
+
+    /* Limpia cualquier caracter no numérico en el input, útil para pegar o escribir de otras formas*/
+    campo.addEventListener('input', function () {
+      campo.value = campo.value.replace(/[^0-9]/g, '');
+    });
+
+    /* Bloquea pegar texto con caracteres no numéricos*/
+    campo.addEventListener('paste', function (e) {
+      /* Obtiene el texto que se intenta pegar*/
+      const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
+      /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
+      if (/[^0-9]/.test(textoPegado)) {
+        e.preventDefault();
+        alert('Solo se permiten números.');
+      }
+    });
   });
-
-  /* Limpia cualquier caracter no numérico en el input, útil para pegar o escribir de otras formas*/
-  campo.addEventListener('input', function () {
-    campo.value = campo.value.replace(/[^0-9]/g, '');
-  });
-
-  /* Bloquea pegar texto con caracteres no numéricos*/
-  campo.addEventListener('paste', function (e) {
-    /* Obtiene el texto que se intenta pegar*/
-    const textoPegado = (e.clipboardData || window.clipboardData).getData('text');
-    /* Si el texto pegado contiene caracteres no permitidos, se bloquea el pegado y muestra alerta*/
-    if (/[^0-9]/.test(textoPegado)) {
-      e.preventDefault();
-      alert('Solo se permiten números.');
-    }
-  });
-});
-/*Valida el numero de telefono en los formatos: */
-function validarTelefono() {
-  const tel = document.getElementById("telefono").value;
-  const regex = /^\+?[\d\s\-()]{7,15}$/;
-
-  if (regex.test(tel)) {
-    alert("Número válido");
-  } else {
-    alert("Número inválido");
-  }
 }
 /*Para validad el input date de la fecha de nacimiento en la parte de registrarse cliente*/
-document.addEventListener('DOMContentLoaded', () => {
-  const fechaInput = document.getElementById('fecha-nacimiento-registro');
+function aplicarRestriccionFechaNacimiento(selector) {
+  const fechaInput = document.querySelector(selector);
   if (fechaInput) {
     /*Se coloca el año actual y la fecha de hoy en variables*/
     const hoy = new Date();
     const anioActual = hoy.getFullYear();
+    
     /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/
     /*Minimo (este año - 80) -01-01*/
     const min = `${anioActual - 80}-01-01`;
     /*Maximo el 31 de diciembre de (este año -14)*/
     const max = `${anioActual - 14}-12-31`;
+
     /*Se colocan las variables en los valores maximos y minimos que puede tomar el input*/
     fechaInput.min = min;
     fechaInput.max = max;
   }
+}
+/*Se aplica la funcion de restriccion de fecha de nacimiento a los siguientes inputs*/
+document.addEventListener('DOMContentLoaded', () => {
+  aplicarRestriccionFechaNacimiento('#fecha-nacimiento-registro');  //Ingresar.html registrarse
+  aplicarRestriccionFechaNacimiento('#fecha_nacimientoClienteInput'); //miPerfil.html datos personales cliente
 });
 /* Validar formato de email ejemplo@ejemplo.ejemplo*/
 function validateEmail(email) {
@@ -1445,6 +1444,29 @@ function finalizarRecuperarContrasenia() {
 }
 /*Sirve para cerrar sesion*/
 function cerrarSesion() {
+  if(sessionStorage.getItem("usuarioTipo") === "cliente"){
+    sessionStorage.removeItem("idCliente");
+    sessionStorage.removeItem("apellidoCliente");
+    sessionStorage.removeItem("contrasenaCliente");
+    sessionStorage.removeItem("dniCliente");
+    sessionStorage.removeItem("emailCliente");
+    sessionStorage.removeItem("fecha_nacimientoCliente");
+    sessionStorage.removeItem("nombreCliente");
+    sessionStorage.removeItem("puntosCliente");
+    sessionStorage.removeItem("reservas");
+    sessionStorage.removeItem("telefonoCliente");
+  }else{
+    sessionStorage.removeItem("idEmpleado");
+    sessionStorage.removeItem("apellidoEmpleado");
+    sessionStorage.removeItem("contrasenaEmpleado");
+    sessionStorage.removeItem("dniEmpleado");
+    sessionStorage.removeItem("emailEmpleado");
+    sessionStorage.removeItem("empleado_funcion");
+    sessionStorage.removeItem("idLocalEmpleado");
+    sessionStorage.removeItem("nombreEmpleado");
+    sessionStorage.removeItem("reservas");
+    sessionStorage.removeItem("puestoEmpleado");
+  }
   sessionStorage.removeItem("usuarioTipo");
   window.location.href = "index.html";
 }
@@ -1479,96 +1501,119 @@ function mostrarContenidoMisReservasE(seccion) {
 /*Obtiene el valor del dato del empleado desde el sessionStorage y lo inserta en un input en datos Personales, mi perfil*/
 /*Permite modificar los datos individualmente y carga los datos en la base de datos*/
 function inicializarInputsEditables() {
-  const botones = document.querySelectorAll('.btn-editar'); /*Selecciona todos los botones "Editar"*/
+  const botones = document.querySelectorAll('.btn-editar');
 
   botones.forEach((btn) => {
-    const inputId = btn.dataset.target; /*El ID del input relacionado (usado en data-target)*/
-    const input = document.getElementById(inputId); /*Se obtiene el input correspondiente*/
-    const claveSession = inputId.replace('Input', ''); /*Convierte 'nombreEmpleadoInput' en 'nombreEmpleado'*/
-    const valorGuardado = sessionStorage.getItem(claveSession); /*Obtiene el valor almacenado en sessionStorage*/
+    const inputId = btn.dataset.target;
+    const input = document.getElementById(inputId);
+    const claveSession = inputId.replace('Input', '');
+    const valorGuardado = sessionStorage.getItem(claveSession);
 
-    /*Si hay valor guardado, lo muestra en el input*/
     if (valorGuardado) {
       input.value = valorGuardado;
-      /* Si es el campo de contraseña, mostrar el texto en lugar de los puntos codificados*/
       if (inputId === 'contrasenaEmpleadoInput' || inputId === 'contrasenaClienteInput') {
         input.type = 'text';
       }
     }
 
-    /*Se agrega un listener al botón para alternar entre "Editar" y "Confirmar"*/
     btn.addEventListener('click', () => {
       if (btn.textContent === 'Editar') {
-        /*Habilita la edición del input*/
         input.disabled = false;
         input.focus();
         btn.textContent = 'Confirmar';
       } else {
-        /*Obtiene el nuevo valor ingresado*/
         const nuevoValor = input.value.trim();
+
+        /* Validación estándar del navegador para que tome las restricciones puestas en los input*/
+        if (!input.checkValidity()) {
+          input.reportValidity();
+          return;
+        }
+
+        /* Validación especial para teléfono*/
+        if (inputId.includes('telefono')) {
+          const soloNumeros = nuevoValor.replace(/\D/g, ''); // Quita todo excepto dígitos
+          if (soloNumeros.length < 10) {
+            alert("El número debe tener al menos 10 dígitos válidos.");
+            input.focus();
+            return;
+          }
+        }
+
+        /* Validación especial para teléfono*/
+        if (inputId.toLowerCase().includes('email')) {
+          if (!validateEmail(nuevoValor)) {
+            alert("El correo electrónico no es válido. Por favor ingresa un email correcto.");
+            input.focus();
+            return; // no sigue, queda en modo edición
+          }
+        }        
+
         if (nuevoValor) {
-          /*Guarda el nuevo valor en sessionStorage*/
           sessionStorage.setItem(claveSession, nuevoValor);
-          /*Desactiva el campo nuevamente*/
           input.disabled = true;
           btn.textContent = 'Editar';
 
-          /*Enviar el cambio al servidor*/
           const idEmpleado = sessionStorage.getItem('idEmpleado');
+          const idCliente = sessionStorage.getItem('idCliente');
+
           if (idEmpleado) {
-            /*Envia la actualización con método POST*/
             fetch('actualizar_empleado.php', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: new URLSearchParams({
                 campo: claveSession,
                 valor: nuevoValor,
                 id_empleado: idEmpleado
               })
             })
-              .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
+              .then(response => response.text())
               .then(respuesta => {
                 console.log('Respuesta del servidor:', respuesta);
+                if (respuesta.includes('duplicado')) {
+                  alert("❌ El correo electrónico ya está en uso. Elija otro.");
+                  input.disabled = false;
+                  input.focus();
+                  btn.textContent = 'Confirmar'; 
+                  return;
+                }
+
                 alert("✅ Actualización realizada con éxito.");
               })
               .catch(error => {
                 console.error('Error al actualizar en la base de datos:', error);
                 alert("❌ Error al actualizar los datos. Intente nuevamente.");
               });
-          } else {
-            console.error('No hay idEmpleado en sessionStorage');
           }
-
-          /*Enviar el cambio al servidor*/
-          const idCliente = sessionStorage.getItem('idCliente');
+          
           if (idCliente) {
-            /*Envia la actualización con método POST*/
             fetch('actualizar_cliente.php', {
               method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-              },
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: new URLSearchParams({
                 campo: claveSession,
                 valor: nuevoValor,
                 id_cliente: idCliente
               })
             })
-              .then(response => response.text()) /*Se recibe la respuesta como texto plano*/
+              .then(response => response.text())
               .then(respuesta => {
                 console.log('Respuesta del servidor:', respuesta);
+                if (respuesta.includes('duplicado')) {
+                  alert("❌ El correo electrónico ya está en uso. Elija otro.");
+                  input.disabled = false;
+                  input.focus();
+                  btn.textContent = 'Confirmar'; 
+                  return;
+                }
+
                 alert("✅ Actualización realizada con éxito.");
               })
               .catch(error => {
                 console.error('Error al actualizar en la base de datos:', error);
                 alert("❌ Error al actualizar los datos. Intente nuevamente.");
               });
-          } else {
-            console.error('No hay idEmpleado en sessionStorage');
           }
-
         } else {
           alert('El campo no puede estar vacío.');
         }
