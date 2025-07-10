@@ -51,6 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
       <li><a class="dropdown-item" href="ingresar.html#cliente" onclick="mostrarFormularioIngresar('botonCliente')">Cliente</a></li>
       <li><a class="dropdown-item" href="ingresar.html#empleado" onclick="mostrarFormularioIngresar('botonEmpleado')">Empleado</a></li>
     `;
+    aplicarSoloLetras();
+    aplicarSoloNumeros();
   }
 });
 function navegarConTab(tabLinkId) {
@@ -655,6 +657,8 @@ if (window.location.pathname.includes("reservas.html")) {
     } else if (tipoUsuario === "empleado") {
       clienteSection.style.display = "none";
       empleadoSection.style.display = "grid";
+      aplicarSoloLetras();
+      aplicarSoloNumeros();
     } else {
       alert("Debe iniciar sesión para realizar una reserva.");
       window.location.href = "ingresar.html#cliente";
@@ -1078,6 +1082,10 @@ function aplicarSoloNumeros() {
     });
   });
 }
+if (window.location.pathname.includes("Ingresar.html")) {
+  aplicarSoloLetras();
+  aplicarSoloNumeros();
+}
 /*Para validad el input date de la fecha de nacimiento en la parte de registrarse cliente*/
 function aplicarRestriccionFechaNacimiento(selector) {
   const fechaInput = document.querySelector(selector);
@@ -1099,14 +1107,47 @@ function aplicarRestriccionFechaNacimiento(selector) {
 }
 /*Se aplica la funcion de restriccion de fecha de nacimiento a los siguientes inputs*/
 document.addEventListener('DOMContentLoaded', () => {
-  aplicarRestriccionFechaNacimiento('#fecha-nacimiento-registro');  //Ingresar.html registrarse
+  aplicarRestriccionFechaNacimiento('#fecha-nacimiento-usuario-registro');  //Ingresar.html registrarse
   aplicarRestriccionFechaNacimiento('#fecha_nacimientoClienteInput'); //miPerfil.html datos personales cliente
+  aplicarRestriccionFechaNacimiento('#fecha-nacimiento-registrar-cliente'); //Reservas empleado
 });
 /* Validar formato de email ejemplo@ejemplo.ejemplo*/
 function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})$/;
   return re.test(email);
 }
+/*Validar que no exista un dni con el mismo nombre, apellido y mail */
+function validarDniMail(dni, mail, tipo) {
+  return new Promise((resolve, reject) => {
+    if (!dni || !mail) {
+      resolve("error");
+      return;
+    }
+
+    if (dni.length < 7 || dni.length > 11) {
+        alert("El DNI debe contener solo números entre 7 y 11 dígitos.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("dni", dni);
+    formData.append("mail", mail);
+    formData.append("tipo", tipo); // "cliente" o "empleado"
+
+    fetch("verificar_dni_mail.php", {
+      method: "POST",
+      body: formData
+    })
+      .then(response => response.text())
+      .then(resultado => resolve(resultado.trim()))
+      .catch(error => {
+        console.error("Error al verificar dni/mail:", error);
+        resolve("error");
+      });
+  });
+}
+
+
 /*INGRESAR, REGISTRARSE, EMPLEADO*/
 /*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
 function mostrarFormularioIngresar(tipo) {
@@ -1163,63 +1204,72 @@ if (linkOlvideEmpleado) {
 }
 
 /* Función que se ejecuta al enviar el formulario en el boton registrarse*/
-function submitRegistrar(event) {
-  event.preventDefault(); // Evita que se envíe el formulario por ahora
+function submitRegistrar(event, sufijo) {
+  event.preventDefault();
 
-  //tomamos los valores del form
-  const nombre = document.getElementById('nombre-usuario-registro').value.trim();
-  const apellido = document.getElementById('apellido-usuario-registro').value.trim();
-  const dni = document.getElementById('dni-usuario-registro').value.trim();
-  const fechaNacimiento = document.getElementById('fecha-nacimiento-registro').value.trim();
-  const telefono = document.getElementById('telefono-usuario-registro').value.trim();
-  const email = document.getElementById('email-usuario-registro').value.trim();
-  const contraseña = document.getElementById('contraseña-usuario-registro').value.trim();
+  const nombre = document.getElementById(`nombre-${sufijo}`).value.trim();
+  const apellido = document.getElementById(`apellido-${sufijo}`).value.trim();
+  const dni = document.getElementById(`dni-${sufijo}`).value.trim();
+  const fechaNacimiento = document.getElementById(`fecha-nacimiento-${sufijo}`).value.trim();
+  const telefono = document.getElementById(`telefono-${sufijo}`).value.trim();
+  const email = document.getElementById(`email-${sufijo}`).value.trim();
+  const contrasenia = document.getElementById(`contrasenia-${sufijo}`).value.trim();
+  const form = document.getElementById('form-registro');
 
-  /*Si el formato es invalido aparece este cartel*/
-  if (!validateEmail(email)) {
-    alert('El email es inválido. Por favor ingresa un email válido.');
-    document.getElementById('email-usuario-registro').focus();
-    return false;
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
   }
 
-  /*verificamos que existan todos los campos*/
-  if (!nombre || !apellido || !dni || !fechaNacimiento || !telefono || !email || !contraseña) {
-    alert("Por favor, completá todos los campos.");
-    return false;
+  const soloNumeros = telefono.replace(/\D/g, '');
+  if (soloNumeros.length < 10) {
+    alert("El número de teléfono debe tener al menos 10 dígitos válidos.");
+    document.getElementById(`telefono-${sufijo}`).focus();
+    return;
   }
 
-  const formData = new FormData();// creamos un objeto FormData para empaquetar los datos como si fuera un formulario
-  formData.append("accion", "registro");//indicamos que tipo de accion es y le pasamos los datos del form
-  formData.append("nombre", nombre);
-  formData.append("apellido", apellido);
-  formData.append("dni", dni);
-  formData.append("fecha_nacimiento", fechaNacimiento);
-  formData.append("telefono", telefono);
-  formData.append("email", email);
-  formData.append("contraseña", contraseña);
+  validarDniMail(dni, email, "cliente").then(resultado => {
+    if (resultado === "existe") {
+      alert("Ya existe un cliente con ese correo y DNI.");
+      return; // corta solo el `then`, pero no se ejecuta el resto de este bloque
+    }
 
-  fetch("registro_inicio_sesion.php", {// enviamos la solicitud al servidor con fetch
-    method: "POST",
-    body: formData//enviamos el objeto creado previamente como cuerpo del POST
-  })
-    .then(response => response.text())// esperamos la respuesta del servidor como texto
-    .then(data => {
-      if (data.includes("✅")) {// nos fijamos que la respuesta contiene "✅", se puede cambiar en el archivo php
-        /*Si el formato es valido aparece este cartel*/
-        alert("¡Registro exitoso!\nYa podés iniciar sesión con tu correo electrónico, DNI y contraseña.");
-        window.location.reload(); // recargamos la pagina
-      } else if (data.includes("❌") || data.includes("❗")) {
-        alert(data); // muestra el mensaje de error que viene desde PHP
-      } else {
-        alert("⚠️ Respuesta inesperada del servidor:\n" + data);
-      }
+    if (resultado === "error") {
+      alert("Error al verificar DNI y correo.");
+      return;
+    }
+
+    // Solo llega acá si no existe el cliente
+    const formData = new FormData();
+    formData.append("accion", "registro");
+    formData.append("nombre", nombre);
+    formData.append("apellido", apellido);
+    formData.append("dni", dni);
+    formData.append("fecha_nacimiento", fechaNacimiento);
+    formData.append("telefono", telefono);
+    formData.append("email", email);
+    formData.append("contrasenia", contrasenia);
+
+    fetch("registro_inicio_sesion.php", {
+      method: "POST",
+      body: formData
     })
-    .catch(error => {
-      console.error("Error en registro:", error);//mostramos el error en consola
-      alert("Hubo un problema al registrarse.");// y un alert para el usuario
-    });
-
-  return false;
+      .then(response => response.text())
+      .then(data => {
+        if (data.includes("✅")) {
+          alert("¡Registro exitoso!");
+          window.location.reload();
+        } else if (data.includes("❌") || data.includes("❗")) {
+          alert(data);
+        } else {
+          alert("⚠️ Respuesta inesperada del servidor:\n" + data);
+        }
+      })
+      .catch(error => {
+        console.error("Error en registro:", error);
+        alert("Hubo un problema al registrarse.");
+      });
+  });
 }
 
 /*Funcion que se ejecuta al enviar el formulario en el boton iniciar sesion cliente*/
@@ -1228,7 +1278,7 @@ function submitAccederCliente(event) {
 
   const email = document.getElementById('email-usuario-login').value.trim(); //tomamos los valores del form
   const dni = document.getElementById('dni-usuario-login').value.trim();
-  const contraseña = document.getElementById('contraseña-usuario-login').value.trim();
+  const contrasenia = document.getElementById('contrasenia-usuario-login').value.trim();
 
   /*Si el formato es invalido aparece este cartel*/
   if (!validateEmail(email)) {
@@ -1237,7 +1287,7 @@ function submitAccederCliente(event) {
     return false;
   }
 
-  if (!email || !dni || !contraseña) { //verificamos que existan todos los campos
+  if (!email || !dni || !contrasenia) { //verificamos que existan todos los campos
     alert("Por favor, completá todos los campos.");
     return false;
   }
@@ -1246,7 +1296,7 @@ function submitAccederCliente(event) {
   formData.append("accion", "login"); //indicamos que tipo de accion es y le pasamos los datos del form
   formData.append("email", email);
   formData.append("dni", dni);
-  formData.append("contraseña", contraseña);
+  formData.append("contrasenia", contrasenia);
 
   fetch("registro_inicio_sesion.php", {   // enviamos la solicitud al servidor con fetch
     method: "POST",
@@ -1299,7 +1349,7 @@ function submitAccederEmpleado(event) {
   //tomamos los valores del form
   const email = document.getElementById('email-empleado-login').value.trim();
   const dni = document.getElementById('dni-empleado-login').value.trim();
-  const contraseña = document.getElementById('contraseña-empleado-login').value.trim();
+  const contrasenia = document.getElementById('contrasenia-empleado-login').value.trim();
 
   /*Si el formato es invalido aparece este cartel*/
   if (!validateEmail(email)) {
@@ -1308,7 +1358,7 @@ function submitAccederEmpleado(event) {
     return false;
   }
 
-  if (!email || !dni || !contraseña) { //verificamos que existan todos los campos
+  if (!email || !dni || !contrasenia) { //verificamos que existan todos los campos
     alert("Por favor, completá todos los campos.");
     return false;
   }
@@ -1318,7 +1368,7 @@ function submitAccederEmpleado(event) {
   formData.append("accion", "login_empleado"); // Distinguimos que es un login de empleado
   formData.append("email", email);
   formData.append("dni", dni);
-  formData.append("contraseña", contraseña);
+  formData.append("contrasenia", contrasenia);
 
   fetch("registro_inicio_sesion.php", {
     method: "POST",
@@ -1540,7 +1590,7 @@ function inicializarInputsEditables() {
           }
         }
 
-        /* Validación especial para teléfono*/
+        /* Validación especial para mail*/
         if (inputId.toLowerCase().includes('email')) {
           if (!validateEmail(nuevoValor)) {
             alert("El correo electrónico no es válido. Por favor ingresa un email correcto.");
@@ -1557,7 +1607,7 @@ function inicializarInputsEditables() {
           const idEmpleado = sessionStorage.getItem('idEmpleado');
           const idCliente = sessionStorage.getItem('idCliente');
 
-          if (idEmpleado) {
+          if (idEmpleado && idCliente == "null") {
             fetch('actualizar_empleado.php', {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1571,14 +1621,14 @@ function inicializarInputsEditables() {
               .then(respuesta => {
                 console.log('Respuesta del servidor:', respuesta);
                 if (respuesta.includes('duplicado')) {
-                  alert("❌ El correo electrónico ya está en uso. Elija otro.");
+                  alert("❌ Ya existe un usuario registrado con este correo.");
                   input.disabled = false;
                   input.focus();
                   btn.textContent = 'Confirmar'; 
                   return;
+                }else{
+                  alert("✅ Actualización realizada con éxito.");
                 }
-
-                alert("✅ Actualización realizada con éxito.");
               })
               .catch(error => {
                 console.error('Error al actualizar en la base de datos:', error);
@@ -1586,7 +1636,7 @@ function inicializarInputsEditables() {
               });
           }
           
-          if (idCliente) {
+          if (idCliente && idEmpleado == "null") {
             fetch('actualizar_cliente.php', {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -1605,9 +1655,10 @@ function inicializarInputsEditables() {
                   input.focus();
                   btn.textContent = 'Confirmar'; 
                   return;
+                }else{
+                  alert("✅ Actualización realizada con éxito.");
                 }
-
-                alert("✅ Actualización realizada con éxito.");
+                
               })
               .catch(error => {
                 console.error('Error al actualizar en la base de datos:', error);
@@ -1735,68 +1786,116 @@ if (window.location.pathname.includes("tiendaDePuntos.html")||window.location.pa
 }
 /*RESERVAS*/
 /*Inhabilita el boton mesaReserva hasta que se selecicone fecha,hora y cantPersonas.Guarda estos datos en el sessionStorage*/
-if (window.location.pathname.includes("reservas.html")) {
+if(window.location.pathname.includes("reservas.html")){
   document.addEventListener("DOMContentLoaded", function () {
-    const calendario = document.getElementById("calendarioReservas");
-    const fechaInput = document.getElementById("fechaReserva");
-    const horaSelect = document.getElementById("horaReserva");
-    const personasSelect = document.getElementById("cantPersonasReserva");
-    const mesaSelect = document.getElementById("mesaReserva");
+    const usuarioTipo = sessionStorage.getItem("usuarioTipo");
 
-    mesaSelect.disabled = true;
+    if (usuarioTipo === "cliente") {
+      const fechaInput = document.getElementById("fechaReserva");
+      const horaSelect = document.getElementById("horaReserva");
+      const personasSelect = document.getElementById("cantPersonasReserva");
+      const mesaSelect = document.getElementById("mesaReserva");
 
-    crearCalendarioEmbed("fechaReserva", "calendarioReservas", function(dateStr) {
-      generarOpcionesHorarioDisponibles(dateStr, "horaReserva");
-      limpiarYValidarMesa();
-    });
+      crearCalendarioEmbed("fechaReserva", "calendarioReservas");
 
-    horaSelect.addEventListener("change", function () {
-      sessionStorage.setItem("horaReserva", this.value);
-      limpiarYValidarMesa();
-    });
+      fechaInput.addEventListener("change", function () {
+        const dateStr = this.value;
+        sessionStorage.setItem("fechaReserva", dateStr);
+        generarOpcionesHorarioDisponibles(dateStr, "horaReserva");
+        limpiarYValidarMesa();
+      });
 
-    personasSelect.addEventListener("change", function () {
-      sessionStorage.setItem("cantPersonasReserva", this.value);
-      limpiarYValidarMesa();
-    });
+      horaSelect.addEventListener("change", function () {
+        sessionStorage.setItem("horaReserva", this.value);
+        limpiarYValidarMesa();
+      });
 
-    function limpiarYValidarMesa() {
-      mesaSelect.value = "";
-      validarHabilitarMesa();
-    }
+      personasSelect.addEventListener("change", function () {
+        sessionStorage.setItem("cantPersonasReserva", this.value);
+        limpiarYValidarMesa();
+      });
 
-    function validarHabilitarMesa() {
-      const idLocal = sessionStorage.getItem("sucursalValor");
-      const fecha = sessionStorage.getItem("fechaReserva");
-      const hora = horaSelect.value;
-      const personas = personasSelect.value;
-
-      if (idLocal && fecha && hora && personas) {
-        obtenerMesasDisponibles("mesaReserva", idLocal, fecha, hora, personas);
-      } else {
-        mesaSelect.disabled = true;
-        mesaSelect.innerHTML = "<option value=''>Seleccione primero fecha, hora y cantidad</option>";
+      function limpiarYValidarMesa() {
+        mesaSelect.innerHTML = "<option value=''>Seleccione la mesa</option>";
+        validarHabilitarMesa();
       }
-    }
 
-    // Cargar valores previos (si los hay)
-    if (sessionStorage.getItem("fechaReserva")) {
-      fechaInput.value = sessionStorage.getItem("fechaReserva");
-    }
-    if (sessionStorage.getItem("horaReserva")) {
-      horaSelect.value = sessionStorage.getItem("horaReserva");
-    }
-    if (sessionStorage.getItem("cantPersonasReserva")) {
-      personasSelect.value = sessionStorage.getItem("cantPersonasReserva");
-    }
+      function validarHabilitarMesa() {
+        const idLocal = sessionStorage.getItem("sucursalValor");
+        const fecha = sessionStorage.getItem("fechaReserva");
+        const hora = horaSelect.value;
+        const personas = personasSelect.value;
 
-    validarHabilitarMesa();
-  });
+        if (idLocal && fecha && hora && personas) {
+          obtenerMesasDisponibles("mesaReserva", idLocal, fecha, hora, personas);
+          mesaSelect.disabled = false;
+        } else {
+          mesaSelect.disabled = true;
+          mesaSelect.innerHTML = "<option value=''>Seleccione primero fecha, hora y cantidad</option>";
+        }
+      }
 
-  window.addEventListener("beforeunload", function () {
-    sessionStorage.removeItem("fechaReserva");
-    sessionStorage.removeItem("horaReserva");
-    sessionStorage.removeItem("cantPersonasReserva");
+      limpiarYValidarMesa(); // <<-- llamado inicial
+
+    } else if (usuarioTipo === "empleado") {
+      const dropdownSucursal = document.getElementById("dropdownReservasEmpleado");
+      const fechaInput = document.getElementById("fechaReservaEmpleado");
+      const horaSelect = document.getElementById("horaReservaEmpleado");
+      const personasSelect = document.getElementById("cantPersonasReservaEmpleado");
+      const mesaSelect = document.getElementById("mesaReservaEmpleado");
+
+      crearCalendarioPopup("fechaReservaEmpleado");
+
+      dropdownSucursal?.addEventListener("change", limpiarYValidarMesa);
+
+      fechaInput.addEventListener("change", function () {
+        const dateStr = this.value;
+        sessionStorage.setItem("fechaReservaEmpleado", dateStr);
+        generarOpcionesHorarioDisponibles(dateStr, "horaReservaEmpleado");
+        limpiarYValidarMesa();
+      });
+
+      horaSelect.addEventListener("change", function () {
+        sessionStorage.setItem("horaReservaEmpleado", this.value);
+        limpiarYValidarMesa();
+      });
+
+      personasSelect.addEventListener("change", function () {
+        sessionStorage.setItem("cantPersonasReservaEmpleado", this.value);
+        limpiarYValidarMesa();
+      });
+      function limpiarYValidarMesa() {
+        mesaSelect.innerHTML = "<option value=''>Seleccione la mesa</option>";
+        validarHabilitarMesa();
+      }
+
+      function validarHabilitarMesa() {
+        const idLocal = dropdownSucursal ? dropdownSucursal.value : null;
+        const fecha = sessionStorage.getItem("fechaReservaEmpleado");
+        const hora = horaSelect.value;
+        const personas = personasSelect.value;
+
+        if (idLocal && fecha && hora && personas) {
+          obtenerMesasDisponibles(
+            "mesaReservaEmpleado",
+            idLocal,
+            fecha,
+            hora,
+            personas
+          );
+          mesaSelect.disabled = false;
+        } else {
+          mesaSelect.disabled = true;
+          mesaSelect.innerHTML =
+            "<option value=''>Seleccione primero fecha, hora y cantidad</option>";
+        }
+      }
+
+      //  Llamada inicial con un pequeño delay para asegurar que el dropdown ya tenga su valor por defecto renderizado.
+      setTimeout(() => {
+        limpiarYValidarMesa();
+      }, 50);                            
+    }
   });
 }
 
@@ -1915,6 +2014,7 @@ function enviarReserva() {
     .then(data => {
       if (data.includes("✅")) {
         alert("✅ Reserva realizada con éxito.");
+        limpiarSessionStorage();
         window.location.href = "index.html";
       } else {
         alert("❌ Error: " + data);
@@ -1926,6 +2026,18 @@ function enviarReserva() {
     });
 }
 /*RESERVAS EMPLEADO*/
+/*Al cargar la pagina, inhabilita la columna de datos reserva*/
+window.addEventListener("DOMContentLoaded", () => {
+    const reservaSection = document.querySelector(".completar-datos-reserva");
+    
+    if (reservaSection) {
+        reservaSection.classList.add("disabled");
+
+        reservaSection.querySelectorAll("input, select, textarea, button").forEach(el => {
+            el.disabled = true;
+        });
+    }
+});
 /*Los botones raddioButton de reservas x empleado cambian el contenido de los datos que se deben completar de cliente segun el seleccionado*/
 function cambioTipoCliente() {
   const noRegistrado = document.getElementById('cliente-no-registrado');
@@ -1935,16 +2047,180 @@ function cambioTipoCliente() {
   if (noRegistrado.checked) {
     divRegistrar.style.display = 'grid';
     divIngresar.style.display = 'none';
+
+    // Activar inputs de registrarCliente
+    divRegistrar.querySelectorAll('input, select, textarea').forEach(input => {
+      input.disabled = false;
+    });
+
+    // Desactivar inputs de IngresarCliente
+    divIngresar.querySelectorAll('input, select, textarea').forEach(input => {
+      input.disabled = true;
+    });
+
   } else {
     divRegistrar.style.display = 'none';
     divIngresar.style.display = 'grid';
+
+    // Desactivar inputs de registrarCliente
+    divRegistrar.querySelectorAll('input, select, textarea').forEach(input => {
+      input.disabled = true;
+    });
+
+    // Activar inputs de IngresarCliente
+    divIngresar.querySelectorAll('input, select, textarea').forEach(input => {
+      input.disabled = false;
+    });
   }
 }
-if (window.location.pathname.includes("reservas.html")) {
-  document.addEventListener("DOMContentLoaded", function () {
-    crearCalendarioPopup("fechaReservaEmpleado");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const btnVerificar = document.getElementById("btn-verificar-cliente");
+  if (!btnVerificar) return;
+
+  btnVerificar.addEventListener("click", () => {
+    const email = document.getElementById("email-cliente-registrado").value.trim();
+    const dni = document.getElementById("dni-cliente-registrado").value.trim();
+
+    if (!email || !dni) {
+      alert("Por favor completá el correo y el DNI.");
+      return;
+    }
+
+    // Validación simple del email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      alert("El correo electrónico no tiene un formato válido.");
+      return;
+    }
+
+    // Validación DNI numérico y longitud razonable
+    if (dni.length < 7 || dni.length > 11 || !/^\d+$/.test(dni)) {
+      alert("El DNI debe tener entre 7 y 11 dígitos numéricos.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("tipo", "cliente");
+    formData.append("mail", email);
+    formData.append("dni", dni);
+    formData.append("retornar_id", "true");
+
+    fetch("validar_dni_mail.php", { method: "POST", body: formData })
+      .then(response => response.text())
+      .then(text => {
+        try {
+          const json = JSON.parse(text);
+
+          if (json.estado === "existe") {
+            alert("✅ El usuario se encuentra registrado.");
+
+            // Guardar en sessionStorage
+            sessionStorage.setItem("idClienteReservaEnCurso", json.id);
+
+            // Habilitar campos de reserva
+            const reservaSection = document.querySelector(".completar-datos-reserva");
+            if (reservaSection) {
+              reservaSection.classList.remove("disabled");
+
+              // Habilitar inputs/selects manualmente
+              reservaSection.querySelectorAll("input, select, textarea, button").forEach(el => {
+                el.disabled = false;
+              });
+            }
+
+          } else {
+            alert("❌ No se encontró un usuario con ese correo y DNI.");
+          }
+        } catch (e) {
+          if (text.trim() === "no_existe") {
+            alert("❌ No se encontró un usuario con ese correo y DNI.");
+          } else {
+            alert("⚠️ Respuesta inesperada del servidor: " + text);
+            console.error("Respuesta inesperada:", text);
+          }
+        }
+      })
+      .catch(error => {
+        console.error("Error al verificar usuario:", error);
+        alert("❌ Hubo un problema al verificar el usuario.");
+      });
   });
+});
+
+function enviarReservaEmpleado() {
+  const id_cliente = sessionStorage.getItem("idClienteReservaEnCurso");
+  const id_local = document.getElementById("dropdownReservasEmpleado").value;
+  const fecha = sessionStorage.getItem("fechaReservaEmpleado");
+  const hora = sessionStorage.getItem("horaReservaEmpleado");
+  const cantidad = sessionStorage.getItem("cantPersonasReservaEmpleado");
+  const mesa = document.getElementById("mesaReservaEmpleado").value;
+  const observaciones = document.getElementById("observacionesReservaEmpleado")?.value ?? "";
+
+  if (!id_cliente || !id_local || !fecha || !hora || !cantidad || !mesa) {
+    alert("Faltan datos para completar la reserva.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("id_cliente", id_cliente);
+  formData.append("sucursal", id_local);
+  formData.append("fecha", fecha);
+  formData.append("hora", hora);
+  formData.append("cantidad", cantidad);
+  formData.append("mesa", mesa);
+  formData.append("observaciones", observaciones);
+
+  fetch("procesar_reserva.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(response => response.text())
+    .then(data => {
+      if (data.includes("✅")) {
+        alert("✅ Reserva realizada con éxito.");
+        limpiarSessionStorage();
+        window.location.href = "reservas.html";
+      } else {
+        alert("❌ Error: " + data);
+      }
+    })
+    .catch(error => {
+      console.error("Error al enviar la reserva:", error);
+      alert("❌ Error al procesar la reserva. Intente nuevamente.");
+    });
 }
+
+function limpiarSessionStorage(){
+  if(sessionStorage.getItem("usuarioTipo").value === "cliente"){
+    sessionStorage.removeItem("fecha");
+    sessionStorage.removeItem("sucursalValor");
+    sessionStorage.removeItem("hora");
+    sessionStorage.removeItem("cantidad");
+    sessionStorage.removeItem("mesa");
+    sessionStorage.removeItem("observaciones");
+    sessionStorage.removeItem("ObservacionDada");
+    sessionStorage.removeItem("cantPersonasReserva");
+    sessionStorage.removeItem("fechaReserva");
+    sessionStorage.removeItem("fechaSeleccionada");
+    sessionStorage.removeItem("mesaSeleccionada");
+    sessionStorage.removeItem("horaReserva");
+    sessionStorage.removeItem("horaSeleccionada");
+    sessionStorage.removeItem("sucursalSeleccionada");
+  }else{
+    sessionStorage.removeItem("idClienteReservaEnCurso");
+    sessionStorage.removeItem("dropdownReservasEmpleado");
+    sessionStorage.removeItem("fechaReservaEmpleado");
+    sessionStorage.removeItem("horaReservaEmpleado");
+    sessionStorage.removeItem("cantPersonasReservaEmpleado");
+    sessionStorage.removeItem("mesaReservaEmpleado");
+    sessionStorage.removeItem("observacionesReservaEmpleado");
+    sessionStorage.removeItem("cantPersonasReserva");
+    sessionStorage.removeItem("mesaSeleccionada");
+    sessionStorage.removeItem("personasSeleccionadas");
+  }
+}
+
 /*MODIFICAR MENU*/
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
   document.getElementById("list-modificarMenu").innerHTML = "Espere..."
