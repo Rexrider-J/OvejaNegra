@@ -11,7 +11,7 @@ $cantidad = intval($_POST['cantidad']);
 $observaciones = $_POST['observaciones'];
 $modificado_por = intval($_POST['modificado_por']);
 $motivo_cancelacion = $_POST['motivo_cancelacion'] ?? '';
-$tipo_modificado_cancelado = "cliente";
+$tipo_modificado_cancelado = $_POST['tipo_usuario'] ?? 'cliente';
 $datetime = "$fecha $hora";
 $id_local = intval($_POST['id_local']);
 

@@ -374,10 +374,47 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div id="visualizar" class="seccionEmpleado" style="display: none;">
             <h3>Visualizar reservas</h3>
-            <p>Tabla o datos de reservas existentes.Se va poder sumar puntos, anular reserva y concretar reserva</p>
+            <div id="resultadoReservasEmpleado"></div>
           </div>
         </div>
+      <!-- Modal Detalle Reserva -->
+      <div class="modal fade" id="modalDetalleReserva" tabindex="-1" aria-labelledby="tituloModalDetalleReserva" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="tituloModalDetalleReserva">Detalle de la Reserva</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body" id="contenidoModalDetalle">
+              <!-- Aquí se cargará dinámicamente el detalle -->
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal cambio de mesa -->
+      <div class="modal fade" id="modalCambioMesa" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Cambiar Mesa de Reserva</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <label for="selectNuevaMesa" class="form-label">Seleccionar nueva mesa:</label>
+              <select id="selectNuevaMesa" class="form-select"></select>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+              <button class="btn btn-primary" id="btnConfirmarCambioMesa">Confirmar</button>
+            </div>
+          </div>
+        </div>
+      </div>
       `;
+      inicializarEventosMisReservasEmpleado();
     }
   }
   const tabHash = sessionStorage.getItem("tabActivo");
@@ -2769,4 +2806,192 @@ function inicializarEventosTabla(tabla) {
         .catch(err => console.error("Error al cargar tabla:", err));
     });
   });
+}
+
+// Mis reservas del Empleado
+// Visualizar
+
+function filtrarReservas() {
+  const input = document.getElementById("inputBuscarReservasEmpleado").value.toLowerCase();
+  const filas = document.querySelectorAll(".reserva-row");
+
+  filas.forEach(fila => {
+    const textoFila = fila.innerText.toLowerCase();
+    fila.style.display = textoFila.includes(input) ? "" : "none";
+  });
+}
+
+function cargarVisualizarReservas() {
+  // Obtener los datos del empleado desde sessionStorage
+  const idEmpleado = sessionStorage.getItem("idEmpleado");
+  const puesto = sessionStorage.getItem("puestoEmpleado");
+  const idLocalEmpleado = sessionStorage.getItem("idLocalEmpleado");
+
+  // Asegúrate de que los datos necesarios están disponibles
+  if (!idEmpleado || !puesto || !idLocalEmpleado) {
+    alert("⚠️ No se han encontrado los datos del empleado.");
+    return;
+  }
+
+  // Preparamos los datos para enviarlos al servidor
+  const data = new FormData();
+  data.append("idEmpleado", idEmpleado);
+  data.append("puesto", puesto);
+  data.append("idLocal", idLocalEmpleado);
+console.log("Empleado:", idEmpleado, "Puesto:", puesto, "Local:", idLocalEmpleado);
+
+  fetch("reservas_visualizar.php", {
+    method: "POST",
+    body: data
+  })
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("resultadoReservasEmpleado").innerHTML = html;
+
+    // volver a asociar el evento de filtrado si el input se regenera
+    const input = document.getElementById("inputBuscarReservasEmpleado");
+    if (input) {
+      input.addEventListener("input", filtrarReservas);
+    }
+  });
+}
+
+function cambiarEstadoReserva(id, nuevoEstado) {
+  if (!confirm(`¿Seguro que querés marcar como "${nuevoEstado}" esta reserva?`)) return;
+
+  const idEmpleado = sessionStorage.getItem("idEmpleado");
+
+    let motivo = "";
+  if (nuevoEstado === "realizada/anulada") {
+    motivo = prompt("📋 Ingresá el motivo de la anulación:");
+    if (!motivo || motivo.trim() === "") {
+      alert("⚠️ Debés ingresar un motivo para anular la reserva.");
+      return;
+    }
+  }
+
+  const data = new FormData();
+  data.append("id_reserva", id);
+  data.append("estado", nuevoEstado);
+  data.append("id_empleado", idEmpleado);
+  if (motivo) data.append("motivo", motivo);
+
+  fetch("reservas_visualizar.php", {
+    method: "POST",
+    body: data
+  })
+  .then(res => res.text())
+  .then(alert)
+  .then(() => cargarVisualizarReservas(document.getElementById("inputBuscarReservasEmpleado")?.value || ""));
+}
+
+function buscarReservas(event) {
+  event.preventDefault();
+  const form = event.target;
+  const columna = form.columna.value;
+  const valor = form.valor.value;
+
+  if (!columna || !valor) return alert("⚠️ Completá los campos");
+
+  // Obtener los datos del empleado desde sessionStorage
+  const idEmpleado = sessionStorage.getItem("idEmpleado");
+  const puesto = sessionStorage.getItem("puestoEmpleado");
+  const idLocalEmpleado = sessionStorage.getItem("idLocalEmpleado");
+
+  // Preparamos los datos para enviarlos al servidor
+  const data = new FormData();
+  data.append("columna", columna);
+  data.append("valor", valor);
+  data.append("idEmpleado", idEmpleado);
+  data.append("puesto", puesto);
+  data.append("idLocal", idLocalEmpleado);
+
+  fetch("reservas_visualizar.php", {
+    method: "POST",
+    body: data
+  })
+  .then(r => r.text())
+  .then(html => {
+    document.getElementById("resultadoBusquedaReservas").innerHTML = html;
+  });
+}
+
+let reservaActualCambioMesa = null;
+function mostrarCambioMesa(reserva) {
+  reservaActualCambioMesa = reserva;
+
+  // Petición para obtener mesas disponibles
+  const data = new FormData();
+  data.append("accion", "obtener_mesas_disponibles");
+  data.append("fecha_reserva", reserva.fecha_reserva);
+  data.append("cant_personas", reserva.cant_personas);
+  data.append("id_mesa_actual", reserva.id_mesa);
+  data.append("id_local", sessionStorage.getItem("idLocalEmpleado"));
+
+  fetch("reservas_visualizar.php", {
+    method: "POST",
+    body: data
+  })
+  .then(r => r.json())
+  .then(mesas => {
+    const select = document.getElementById("selectNuevaMesa");
+    select.innerHTML = "";
+
+    mesas.forEach(mesa => {
+      const option = document.createElement("option");
+      option.value = mesa.id_mesa;
+      option.textContent = `Mesa ${mesa.descripcion} (capacidad: ${mesa.cupo_maximo})`;
+      select.appendChild(option);
+    });
+
+    new bootstrap.Modal(document.getElementById("modalCambioMesa")).show();
+  });
+}
+
+// Confirmar cambio de mesa
+function confirmarCambioMesa() {
+  const nuevaMesa = document.getElementById("selectNuevaMesa").value;
+  if (!nuevaMesa || !reservaActualCambioMesa) return;
+
+  const data = new FormData();
+  data.append("accion", "cambiar_mesa");
+  data.append("id_reserva", reservaActualCambioMesa.id_reserva);
+  data.append("nueva_mesa", nuevaMesa);
+  data.append("mesa_anterior", reservaActualCambioMesa.id_mesa);
+  data.append("id_empleado", sessionStorage.getItem("idEmpleado"));
+
+  fetch("reservas_visualizar.php", {
+    method: "POST",
+    body: data
+  })
+    .then(r => r.text())
+    .then(alert)
+    .then(() => {
+      cargarVisualizarReservas();
+      const modal = bootstrap.Modal.getInstance(document.getElementById("modalCambioMesa"));
+      modal.hide(); // opcional: cerrar modal automáticamente
+    });
+}
+
+function inicializarEventosMisReservasEmpleado() {
+  const btnModificar = document.querySelector('#botonesDeAccion input[value="Modificar reservas"]');
+  const btnCancelar = document.querySelector('#botonesDeAccion input[value="Cancelar reservas"]');
+  const btnVisualizar = document.querySelector('#botonesDeAccion input[value="Visualizar reservas"]');
+  const btnConfirmarCambioMesa = document.getElementById("btnConfirmarCambioMesa");
+
+  if (btnModificar) {
+    btnModificar.addEventListener('click', () => mostrarContenidoMisReservasE('modificar'));
+  }
+  if (btnCancelar) {
+    btnCancelar.addEventListener('click', () => mostrarContenidoMisReservasE('cancelar'));
+  }
+  if (btnVisualizar) {
+    btnVisualizar.addEventListener('click', () => {
+      mostrarContenidoMisReservasE('visualizar');
+      cargarVisualizarReservas();
+    });
+  }
+  if (btnConfirmarCambioMesa) {
+    btnConfirmarCambioMesa.addEventListener("click", confirmarCambioMesa);
+  }
 }
