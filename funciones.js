@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 function navegarConTab(tabLinkId) {
-  /* Se guarda directamente el hash del tab sin depender del DOM*/
-  const href = "#" + tabLinkId.replace("-list", ""); // convierte "list-misReservas-list" → "#list-misReservas"
+  const href = "#" + tabLinkId.replace("-list", "");
   sessionStorage.setItem("tabActivo", href);
   window.location.href = "miPerfil.html";
 }
@@ -239,8 +238,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const misReservasDiv = document.getElementById("list-misReservas");
 
   if (misReservasDiv) {
-  if (tipoUsuario === "cliente") {
-    misReservasDiv.innerHTML = `
+    if (tipoUsuario === "cliente") {
+      misReservasDiv.innerHTML = `
     <section id="contenedorMisReservasC">
       <div class="encabezadoMisReservas"> 
         <h2>Mis reservas</h2>
@@ -348,14 +347,14 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
     `;
 
-    // Luego de inyectar el HTML, obtenemos el id y llamamos a la función para traer reservas
-    const idCliente = sessionStorage.getItem("idCliente");
-    if (idCliente) {
-      obtenerReservasYGuardarSesion(idCliente).then(reservas => {
-        mostrarReservasEnTabla(reservas);
-      });
-    }
-  } else if (tipoUsuario === "empleado") {
+      // Luego de inyectar el HTML, obtenemos el id y llamamos a la función para traer reservas
+      const idCliente = sessionStorage.getItem("idCliente");
+      if (idCliente) {
+        obtenerReservasYGuardarSesion(idCliente).then(reservas => {
+          mostrarReservasEnTabla(reservas);
+        });
+      }
+    } else if (tipoUsuario === "empleado") {
       misReservasDiv.innerHTML = `
         <div id="botonesDeAccion">
           <input type="button" value="Modificar reservas" onclick="mostrarContenidoMisReservasE('modificar')"/>
@@ -364,9 +363,69 @@ document.addEventListener("DOMContentLoaded", function () {
           <a href="reservas.html" class="btn btn-primary">Crear reservas</a>
         </div>
         <div id="contenidoBtnEmpleado">
-          <div id="modificar" class="seccionEmpleado" style="display: none;">
+
             <h3>Modificar reservas</h3>
-            <p>Aca se modificarán las reservas ya realizadas. Podria agregarse un filtro por mail, fecha, hora, dni</p>
+            <section>
+              <h2>Buscar reservas del cliente</h2>
+              <form id="formBusquedaCliente" class="form-busqueda" onsubmit="busquedaCliente(event)">
+                <input type="text" id="dniModificarEmpleado" name="dniModificarEmpleado" placeholder="DNI" required class="solo-numeros"/>
+                <input type="email" id="emailModificarEmpleado" name="emailModificarEmpleado" placeholder="Mail" maxlength="100" required />
+                <button type="submit">Buscar</button>
+                <button type="button" onclick="limpiarTabla('tablaReservasVigentes', 'formBusquedaCliente')">Limpiar</button>
+              </form>
+            </section>
+              <h2>Reservas del cliente</h2>
+              <div class="table-responsive">
+                <table id="tablaReservasVigentes" class="table table-hover table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>Local</th>
+                      <th>Mesa</th>
+                      <th>Personas</th>
+                      <th>Observaciones</th>
+                      <th>Estado</th>
+                      <th></th> <!-- Columna vacía para botones -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Filas agregadas dinámicamente con JS -->
+                  </tbody>
+                </table>
+              </div>
+            </section>
+            <!-- Modal para ver detalles de la Reserva -->
+            <div class="modal fade" id="modalDetalleReserva" tabindex="-1" aria-labelledby="modalDetalleReservaLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalDetalleReservaLabel">Detalle de Reserva</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body" id="contenidoModalDetalle">
+                    <!-- Aquí se cargará dinámicamente el contenido -->
+                  </div>
+                  <div class="modal-footer">
+                    <button type="buttom" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal para Modificar datos de la Reserva -->
+            <div class="modal fade" id="modalModificarReserva" tabindex="-1" aria-labelledby="modalModificarReservaLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalModificarReservaLabel">Modificar Reserva</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body" id="contenidoModalModificar">
+                    <!-- Aquí se cargará dinámicamente el formulario para modificar -->
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div id="cancelar" class="seccionEmpleado" style="display: none;">
             <h3>Cancelar reservas</h3>
@@ -415,6 +474,13 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       `;
       inicializarEventosMisReservasEmpleado();
+      setTimeout(() => {
+        const accion = sessionStorage.getItem("accionEmpleado");
+        if (accion) {
+          mostrarContenidoMisReservasE(accion); // ejemplo: 'modificar'
+          sessionStorage.removeItem("accionEmpleado");
+        }
+      }, 100);
     }
   }
   const tabHash = sessionStorage.getItem("tabActivo");
@@ -432,8 +498,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     sessionStorage.removeItem("tabActivo");
   }
-});
+  const accionEmpleado = sessionStorage.getItem("accionEmpleado");
+  if (accionEmpleado && sessionStorage.getItem("usuarioTipo") === "empleado") {
+    mostrarContenidoMisReservasE(accionEmpleado);
+    sessionStorage.removeItem("accionEmpleado");
+  }
+  window.addEventListener("load", () => {
+    const dni = sessionStorage.getItem("busquedaDNI");
+    const email = sessionStorage.getItem("busquedaEmail");
 
+    if (dni) document.getElementById("dniModificarEmpleado").value = dni;
+    if (email) document.getElementById("emailModificarEmpleado").value = email;
+
+    if (dni || email) {
+      busquedaCliente(new Event('submit'));
+    }
+  });
+});
 document.querySelectorAll('a[data-bs-toggle="list"]').forEach(tab => {
   tab.addEventListener("shown.bs.tab", function (event) {
     const targetId = event.target.getAttribute("href").replace("#", "");
@@ -721,7 +802,7 @@ function guardarSucursalDeReserva(btn) {
 
   mostrarSeccion('datosDeReserva', btn);
 }
-if(window.location.pathname.includes("reservas.html")){
+if (window.location.pathname.includes("reservas.html")) {
   document.addEventListener("DOMContentLoaded", function () {
     crearCalendarioEmbed("fechaReserva", "calendarioReservas");
   });
@@ -911,7 +992,7 @@ function crearCalendarioEmbed(idInput, idContenedor, callbackOnChange = null) {
     minDate: "today",
     disable: [date => date.getDay() === 1],
     defaultDate: sessionStorage.getItem(idInput) || null,
-    onChange: function(selectedDates, dateStr) {
+    onChange: function (selectedDates, dateStr) {
       input.value = dateStr;
       sessionStorage.setItem(idInput, dateStr);
       if (typeof callbackOnChange === "function") {
@@ -978,11 +1059,11 @@ function generarOpcionesHorarioDisponibles(fechaSeleccionada, selectId) {
     if (horariosFiltrados.length === 0) {
       opciones = `<option value="">No hay horarios disponibles</option>`;
     } else {
-      opciones = `<option value="">Seleccione hora</option>` + 
+      opciones = `<option value="">Seleccione hora</option>` +
         horariosFiltrados.map(h => `<option value="${h}">${h.slice(0, 5)}</option>`).join("");
     }
   } else {
-    opciones = `<option value="">Seleccione hora</option>` + 
+    opciones = `<option value="">Seleccione hora</option>` +
       horarios.map(h => `<option value="${h}">${h.slice(0, 5)}</option>`).join("");
   }
 
@@ -1041,7 +1122,6 @@ function obtenerMesasDisponibles(idSelect, idLocal, fecha, hora, personas, valor
           select.innerHTML = "";
           select.appendChild(opcion);
           select.disabled = false;
-          console.log("Solo está la mesa actual disponible con descripción.");
         } else {
           select.innerHTML = "<option value=''>No hay mesas disponibles</option>";
           select.disabled = true;
@@ -1130,7 +1210,7 @@ function aplicarRestriccionFechaNacimiento(selector) {
     /*Se coloca el año actual y la fecha de hoy en variables*/
     const hoy = new Date();
     const anioActual = hoy.getFullYear();
-    
+
     /*en la variable minimo se pone la fecha 1921-01-01 y en la maxima el año anterior al actual, mes 12, dia 31*/
     /*Minimo (este año - 80) -01-01*/
     const min = `${anioActual - 80}-01-01`;
@@ -1154,7 +1234,7 @@ function validateEmail(email) {
   return re.test(email);
 }
 /*Validar que no exista un dni con el mismo nombre, apellido y mail */
-function validarDniMail(dni, mail, tipo) {
+function validarDniMail(dni, mail, tipo, retornarId = false) {
   return new Promise((resolve, reject) => {
     if (!dni || !mail) {
       resolve("error");
@@ -1162,16 +1242,25 @@ function validarDniMail(dni, mail, tipo) {
     }
 
     if (dni.length < 7 || dni.length > 11) {
-        alert("El DNI debe contener solo números entre 7 y 11 dígitos.");
-        return;
+      alert("El DNI debe contener solo números entre 7 y 11 dígitos.");
+      return;
+    }
+
+    if (!validateEmail(mail)) {
+      alert('El email es inválido. Por favor ingresa un email válido.');
+      return false;
     }
 
     const formData = new FormData();
     formData.append("dni", dni);
     formData.append("mail", mail);
-    formData.append("tipo", tipo); // "cliente" o "empleado"
+    formData.append("tipo", tipo);
 
-    fetch("verificar_dni_mail.php", {
+    if (retornarId) {
+      formData.append("retornar_id", "true");
+    }
+
+    fetch("validar_dni_mail.php", {
       method: "POST",
       body: formData
     })
@@ -1183,7 +1272,6 @@ function validarDniMail(dni, mail, tipo) {
       });
   });
 }
-
 
 /*INGRESAR, REGISTRARSE, EMPLEADO*/
 /*Funciona para mostrar el formulario de ingresoCliente e ingresoEmpleado desde alguno de estos.*/
@@ -1474,7 +1562,7 @@ function obtenerDescripcionMesa(idMesa) {
 
 /*Funcion que se ejecuta al enviar el formulario en el boton enviar de olvideContraseña*/
 function submitEnviarMail(event) {
-  event.preventDefault(); // Evita que se envíe el formulario por ahora
+  event.preventDefault();
 
   const email = document.getElementById('email-recuperar-contrasenia').value.trim();
   const dni = document.getElementById('dni-recuperar-contrasenia').value.trim();
@@ -1483,25 +1571,27 @@ function submitEnviarMail(event) {
   sessionStorage.setItem("cuentaClient", cuentaCliente);
   sessionStorage.setItem("cuentaEmpleado", cuentaEmpleado);
 
-  const tipo = document.getElementById("cuenta-cliente").checked ? "cliente" : "empleado";
+  const tipo = cuentaCliente ? "cliente" : "empleado";
 
-  const formData = new FormData();
-  formData.append("tipo", tipo);
-  formData.append("mail", email);
-  formData.append("dni", dni);
+  validarDniMail(dni, email, tipo)
+    .then(resultado => {
+      try {
+        const json = JSON.parse(resultado);
 
-  fetch("validar_dni_mail.php", {
-    method: "POST",
-    body: formData
-  })
-    .then(res => res.text())
-    .then(result => {
-      if (result.trim() === "existe") {
-        document.getElementById("datos-enviar-mail").style.display = "none"; //Ocultar datos-enviar-mail
-        document.getElementById("email-confirmado").textContent = email; //mostrar confirmacion-envio-mail
-        document.getElementById("confirmacion-envio-mail").style.display = "grid";
-      } else {
-        alert("❌ No se encontró ninguna cuenta con ese email y DNI.");
+        if (json.estado === "existe") {
+          document.getElementById("datos-enviar-mail").style.display = "none";
+          document.getElementById("email-confirmado").textContent = email;
+          document.getElementById("confirmacion-envio-mail").style.display = "grid";
+        } else {
+          alert("❌ No se encontró ninguna cuenta con ese email y DNI.");
+        }
+      } catch (e) {
+        if (resultado === "no_existe") {
+          alert("❌ No se encontró ninguna cuenta con ese email y DNI.");
+        } else {
+          alert("⚠️ Respuesta inesperada del servidor: " + resultado);
+          console.error("Respuesta inesperada:", resultado);
+        }
       }
     })
     .catch(error => {
@@ -1531,7 +1621,7 @@ function finalizarRecuperarContrasenia() {
 }
 /*Sirve para cerrar sesion*/
 function cerrarSesion() {
-  if(sessionStorage.getItem("usuarioTipo") === "cliente"){
+  if (sessionStorage.getItem("usuarioTipo") === "cliente") {
     sessionStorage.removeItem("idCliente");
     sessionStorage.removeItem("apellidoCliente");
     sessionStorage.removeItem("contrasenaCliente");
@@ -1542,7 +1632,7 @@ function cerrarSesion() {
     sessionStorage.removeItem("puntosCliente");
     sessionStorage.removeItem("reservas");
     sessionStorage.removeItem("telefonoCliente");
-  }else{
+  } else {
     sessionStorage.removeItem("idEmpleado");
     sessionStorage.removeItem("apellidoEmpleado");
     sessionStorage.removeItem("contrasenaEmpleado");
@@ -1571,8 +1661,7 @@ function mostrarSeccion(idDestino, boton) {
   }
 }
 /*Muestra el contenido de los botones en Mis reservas de empleado en mi perfil*/
-function mostrarContenidoMisReservasE(seccion) {
-  // Se ocultan todas las secciones
+function mostrarContenidoMisReservasE(seccion) {// Se ocultan todas las secciones
   const secciones = document.querySelectorAll('.seccionEmpleado');
   secciones.forEach(s => {
     s.style.display = 'none';
@@ -1634,7 +1723,7 @@ function inicializarInputsEditables() {
             input.focus();
             return; // no sigue, queda en modo edición
           }
-        }        
+        }
 
         if (nuevoValor) {
           sessionStorage.setItem(claveSession, nuevoValor);
@@ -1661,9 +1750,9 @@ function inicializarInputsEditables() {
                   alert("❌ Ya existe un usuario registrado con este correo.");
                   input.disabled = false;
                   input.focus();
-                  btn.textContent = 'Confirmar'; 
+                  btn.textContent = 'Confirmar';
                   return;
-                }else{
+                } else {
                   alert("✅ Actualización realizada con éxito.");
                 }
               })
@@ -1672,7 +1761,7 @@ function inicializarInputsEditables() {
                 alert("❌ Error al actualizar los datos. Intente nuevamente.");
               });
           }
-          
+
           if (idCliente && idEmpleado == "null") {
             fetch('actualizar_cliente.php', {
               method: 'POST',
@@ -1690,12 +1779,12 @@ function inicializarInputsEditables() {
                   alert("❌ El correo electrónico ya está en uso. Elija otro.");
                   input.disabled = false;
                   input.focus();
-                  btn.textContent = 'Confirmar'; 
+                  btn.textContent = 'Confirmar';
                   return;
-                }else{
+                } else {
                   alert("✅ Actualización realizada con éxito.");
                 }
-                
+
               })
               .catch(error => {
                 console.error('Error al actualizar en la base de datos:', error);
@@ -1801,8 +1890,92 @@ document.addEventListener('DOMContentLoaded', () => {
     console.error("No se encontró el idEmpleado en sessionStorage.");
   }
 });
+/*Modificar reservas empleado*/
+function busquedaCliente(event) {
+  if (event) {
+    event.preventDefault();
+  }
+
+  // Intentar obtener el formulario desde event.target, si no, buscarlo por ID
+  const form = event?.target?.closest("form") || document.getElementById("formBusquedaCliente");
+
+  if (!form) {
+    console.error("No se encontró el formulario 'formBusquedaCliente'");
+    return;
+  }
+
+  const dni = form.querySelector('input[id="dniModificarEmpleado"]').value.trim();
+  const email = form.querySelector('input[id="emailModificarEmpleado"]').value.trim();
+
+  aplicarSoloNumeros();
+
+  validarDniMail(dni, email, "cliente", true).then(resultado => {
+    try {
+      const json = JSON.parse(resultado);
+
+      if (json.estado === "existe") {
+        const idCliente = json.id;
+
+        sessionStorage.setItem("idClienteTemporal", idCliente);
+
+        obtenerReservasYGuardarSesion(idCliente)
+          .then(reservas => {
+            mostrarReservasEnTablaModificarEmpleado(reservas, "tablaReservasVigentes");
+          })
+          .catch(err => {
+            console.error("Error al obtener reservas:", err);
+            alert("No se pudieron obtener las reservas.");
+            limpiarTabla("tablaReservasVigentes");
+          });
+
+      } else if (json.estado === "no_existe") {
+        alert("No existe un cliente con ese correo y DNI.");
+        limpiarTabla("tablaReservasVigentes");
+      } else {
+        alert("Error inesperado en la verificación.");
+        limpiarTabla("tablaReservasVigentes");
+      }
+    } catch (e) {
+      console.error("Error al parsear respuesta de validación:", resultado);
+      alert("Respuesta inesperada del servidor.");
+      limpiarTabla("tablaReservasVigentes");
+    }
+  });
+}
+
+function limpiarTabla(idTabla, idFormulario) {
+  // Limpiar inputs y tabla
+  const form = document.getElementById(idFormulario);
+  if (form) form.reset();
+
+  // Limpiar la tabla
+  const tabla = document.getElementById(idTabla);
+  if (tabla) tabla.querySelector("tbody").innerHTML = "";
+
+  // Limpiar sessionStorage de búsqueda
+  sessionStorage.removeItem("busquedaDNI");
+  sessionStorage.removeItem("busquedaEmail");
+}
+
 /*TIENDA DE PUNTOS*/
-if (window.location.pathname.includes("tiendaDePuntos.html")||window.location.pathname.includes("miPerfil.html")) {
+if (window.location.pathname.includes("tiendaDePuntos.html") || window.location.pathname.includes("miPerfil.html")) {
+  document.addEventListener("DOMContentLoaded", async () => {
+    const puntosDelCliente = document.getElementById("puntosDelCliente");
+    const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+    const idCliente = sessionStorage.getItem("idCliente");
+
+    if (usuarioTipo === "cliente" && idCliente) {
+      // Esperamos a que obtenga las reservas y actualice sessionStorage
+      await obtenerReservasYGuardarSesion(idCliente);
+
+      const puntos = sessionStorage.getItem("puntosCliente") || 0;
+
+      puntosDelCliente.style.display = "grid";
+      puntosDelCliente.textContent = `Tus puntos: ${puntos}`;
+    }
+  });
+}
+if (window.location.pathname.includes("tiendaDePuntos.html") || window.location.pathname.includes("miPerfil.html")) {
   document.addEventListener("DOMContentLoaded", async () => {
     const puntosDelCliente = document.getElementById("puntosDelCliente");
     const usuarioTipo = sessionStorage.getItem("usuarioTipo");
@@ -1823,7 +1996,7 @@ if (window.location.pathname.includes("tiendaDePuntos.html")||window.location.pa
 }
 /*RESERVAS*/
 /*Inhabilita el boton mesaReserva hasta que se selecicone fecha,hora y cantPersonas.Guarda estos datos en el sessionStorage*/
-if(window.location.pathname.includes("reservas.html")){
+if (window.location.pathname.includes("reservas.html")) {
   document.addEventListener("DOMContentLoaded", function () {
     const usuarioTipo = sessionStorage.getItem("usuarioTipo");
 
@@ -1931,7 +2104,7 @@ if(window.location.pathname.includes("reservas.html")){
       //  Llamada inicial con un pequeño delay para asegurar que el dropdown ya tenga su valor por defecto renderizado.
       setTimeout(() => {
         limpiarYValidarMesa();
-      }, 50);                            
+      }, 50);
     }
   });
 }
@@ -2065,15 +2238,15 @@ function enviarReserva() {
 /*RESERVAS EMPLEADO*/
 /*Al cargar la pagina, inhabilita la columna de datos reserva*/
 window.addEventListener("DOMContentLoaded", () => {
-    const reservaSection = document.querySelector(".completar-datos-reserva");
-    
-    if (reservaSection) {
-        reservaSection.classList.add("disabled");
+  const reservaSection = document.querySelector(".completar-datos-reserva");
 
-        reservaSection.querySelectorAll("input, select, textarea, button").forEach(el => {
-            el.disabled = true;
-        });
-    }
+  if (reservaSection) {
+    reservaSection.classList.add("disabled");
+
+    reservaSection.querySelectorAll("input, select, textarea, button").forEach(el => {
+      el.disabled = true;
+    });
+  }
 });
 /*Los botones raddioButton de reservas x empleado cambian el contenido de los datos que se deben completar de cliente segun el seleccionado*/
 function cambioTipoCliente() {
@@ -2124,43 +2297,31 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    // Validación simple del email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       alert("El correo electrónico no tiene un formato válido.");
       return;
     }
 
-    // Validación DNI numérico y longitud razonable
     if (dni.length < 7 || dni.length > 11 || !/^\d+$/.test(dni)) {
       alert("El DNI debe tener entre 7 y 11 dígitos numéricos.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("tipo", "cliente");
-    formData.append("mail", email);
-    formData.append("dni", dni);
-    formData.append("retornar_id", "true");
-
-    fetch("validar_dni_mail.php", { method: "POST", body: formData })
-      .then(response => response.text())
-      .then(text => {
+    validarDniMail(dni, email, "cliente", true)
+      .then(resultado => {
         try {
-          const json = JSON.parse(text);
+          const json = JSON.parse(resultado);
 
           if (json.estado === "existe") {
             alert("✅ El usuario se encuentra registrado.");
 
-            // Guardar en sessionStorage
             sessionStorage.setItem("idClienteReservaEnCurso", json.id);
 
-            // Habilitar campos de reserva
             const reservaSection = document.querySelector(".completar-datos-reserva");
             if (reservaSection) {
               reservaSection.classList.remove("disabled");
 
-              // Habilitar inputs/selects manualmente
               reservaSection.querySelectorAll("input, select, textarea, button").forEach(el => {
                 el.disabled = false;
               });
@@ -2170,11 +2331,11 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("❌ No se encontró un usuario con ese correo y DNI.");
           }
         } catch (e) {
-          if (text.trim() === "no_existe") {
+          if (resultado === "no_existe") {
             alert("❌ No se encontró un usuario con ese correo y DNI.");
           } else {
-            alert("⚠️ Respuesta inesperada del servidor: " + text);
-            console.error("Respuesta inesperada:", text);
+            alert("⚠️ Respuesta inesperada del servidor: " + resultado);
+            console.error("Respuesta inesperada:", resultado);
           }
         }
       })
@@ -2228,8 +2389,8 @@ function enviarReservaEmpleado() {
     });
 }
 
-function limpiarSessionStorage(){
-  if(sessionStorage.getItem("usuarioTipo").value === "cliente"){
+function limpiarSessionStorage() {
+  if (sessionStorage.getItem("usuarioTipo").value === "cliente") {
     sessionStorage.removeItem("fecha");
     sessionStorage.removeItem("sucursalValor");
     sessionStorage.removeItem("hora");
@@ -2244,7 +2405,7 @@ function limpiarSessionStorage(){
     sessionStorage.removeItem("horaReserva");
     sessionStorage.removeItem("horaSeleccionada");
     sessionStorage.removeItem("sucursalSeleccionada");
-  }else{
+  } else {
     sessionStorage.removeItem("idClienteReservaEnCurso");
     sessionStorage.removeItem("dropdownReservasEmpleado");
     sessionStorage.removeItem("fechaReservaEmpleado");
@@ -2362,7 +2523,7 @@ function mostrarReservasEnTabla(reservas) {
   hoy.setHours(0, 0, 0, 0); // para comparar solo la fecha
 
   reservas.forEach(reserva => {
-    const fechaHora = new Date(reserva.fecha_reserva); 
+    const fechaHora = new Date(reserva.fecha_reserva);
     const estado = reserva.estado_reserva;
     const esCancelada = estado === "cancelada" || estado === "realizada/concretada" || estado === "realizada/anulada";
     const esFutura = fechaHora >= hoy && !esCancelada;
@@ -2398,6 +2559,46 @@ function mostrarReservasEnTabla(reservas) {
           <td>${reserva.observaciones || "-"}</td>
           <td>${reserva.estado_reserva}</td>
           <td>
+            <button class="btn btn-info btn-sm" onclick="verDetalleReserva(${detalleReservaString},this)">Ver detalle</button>
+          </td>
+        </tr>
+      `;
+    }
+  });
+}
+function mostrarReservasEnTablaModificarEmpleado(reservas, idTabla) {
+  const tabla = document.getElementById(idTabla);
+
+  if (!tabla) {
+    console.error(`No se encontró la tabla con id "${idTabla}"`);
+    return;
+  }
+
+  const tbody = tabla.querySelector("tbody");
+  tbody.innerHTML = ""; // limpiar contenido previo
+
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0); // comparar solo fechas, sin hora
+
+  reservas.forEach(reserva => {
+    const fechaHora = new Date(reserva.fecha_reserva);
+    const estado = reserva.estado_reserva;
+    const esCancelada = estado === "cancelada" || estado === "realizada/concretada" || estado === "realizada/anulada";
+    const estaVigente = fechaHora >= hoy && !esCancelada;
+
+    if (estaVigente) {
+      const detalleReservaString = JSON.stringify(reserva).replace(/"/g, '&quot;');
+      tbody.innerHTML += `
+        <tr>
+          <td>${reserva.fecha_reserva.split(' ')[0]}</td>
+          <td>${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</td>
+          <td>${reserva.nombre_local}</td>
+          <td>${reserva.descripcion_mesa || reserva.id_mesa}</td>
+          <td>${reserva.cant_personas}</td>
+          <td>${reserva.observaciones || "-"}</td>
+          <td>${reserva.estado_reserva}</td>
+          <td>
+            <button class="btn btn-warning btn-sm me-1" onclick="abrirModalModificarReserva(${detalleReservaString}, this)">Modificar</button>
             <button class="btn btn-info btn-sm" onclick="verDetalleReserva(${detalleReservaString},this)">Ver detalle</button>
           </td>
         </tr>
@@ -2595,7 +2796,8 @@ function guardarModificacionReserva(idReserva, mesaOriginal) {
   const mesa = document.getElementById("mesaModifCliente").value;
   const observaciones = document.querySelector(".input-observaciones").value.trim();
   const motivo = document.querySelector(".input-motivo").value.trim();
-  const modificadoPor = sessionStorage.getItem("idCliente");
+
+  const usuarioTipo = sessionStorage.getItem("usuarioTipo");
 
   if (!idLocal || !fecha || !hora || !personas) {
     alert("Por favor, completá todos los campos obligatorios.");
@@ -2609,11 +2811,22 @@ function guardarModificacionReserva(idReserva, mesaOriginal) {
   datos.append("hora", hora);
   datos.append("cantidad", personas);
   datos.append("observaciones", observaciones || "-");
-  datos.append("motivo_cancelacion", motivo);
-  datos.append("modificado_por", modificadoPor);
+  datos.append("motivo_cancelacion", motivo || "-");
+  datos.append("tipo_usuario", usuarioTipo); // Útil para el backend
 
   if (mesa !== mesaOriginal) {
     datos.append("mesa", mesa);
+  }
+
+  if (usuarioTipo === "empleado") {
+    if (!motivo) {
+      alert("Por favor, ingresá un motivo para la modificación.");
+      return;
+    }
+    datos.append("modificado_por", sessionStorage.getItem("idEmpleado"));
+  } else {
+    // Cliente
+    datos.append("modificado_por", sessionStorage.getItem("idCliente"));
   }
 
   fetch("modificar_reserva_cliente.php", {
@@ -2626,6 +2839,17 @@ function guardarModificacionReserva(idReserva, mesaOriginal) {
       if (msg.includes("✅")) {
         const modal = bootstrap.Modal.getInstance(document.getElementById("modalModificarReserva"));
         modal.hide();
+
+        if (sessionStorage.getItem("usuarioTipo") === "empleado") {
+          // Guardar datos actuales del formulario para mantenerlos luego
+          const dni = document.getElementById("dniModificarEmpleado")?.value || "";
+          const email = document.getElementById("emailModificarEmpleado")?.value || "";
+          sessionStorage.setItem("busquedaDNI", dni);
+          sessionStorage.setItem("busquedaEmail", email);
+
+          sessionStorage.setItem("accionEmpleado", "modificar");
+        }
+
         navegarConTab('list-misReservas-list');
       }
     })
@@ -2694,8 +2918,6 @@ function cancelarReservaCliente(id_reserva, botonOrigen) {
     botonOrigen?.focus?.(); // Devuelve el foco al botón de origen
   });
 }
-
-
 
 function cargarCategoria(categoria) { // es la funcion que carga por la categoria que se le pase como argumento
   const targetDiv = document.querySelector(`#list-${categoria.toLowerCase()} .listProductos`); // guardamos en una variable el div donde vamos a insertar lo que devuelva el .php
@@ -2838,22 +3060,22 @@ function cargarVisualizarReservas() {
   data.append("idEmpleado", idEmpleado);
   data.append("puesto", puesto);
   data.append("idLocal", idLocalEmpleado);
-console.log("Empleado:", idEmpleado, "Puesto:", puesto, "Local:", idLocalEmpleado);
+  console.log("Empleado:", idEmpleado, "Puesto:", puesto, "Local:", idLocalEmpleado);
 
   fetch("reservas_visualizar.php", {
     method: "POST",
     body: data
   })
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById("resultadoReservasEmpleado").innerHTML = html;
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("resultadoReservasEmpleado").innerHTML = html;
 
-    // volver a asociar el evento de filtrado si el input se regenera
-    const input = document.getElementById("inputBuscarReservasEmpleado");
-    if (input) {
-      input.addEventListener("input", filtrarReservas);
-    }
-  });
+      // volver a asociar el evento de filtrado si el input se regenera
+      const input = document.getElementById("inputBuscarReservasEmpleado");
+      if (input) {
+        input.addEventListener("input", filtrarReservas);
+      }
+    });
 }
 
 function cambiarEstadoReserva(id, nuevoEstado) {
@@ -2861,7 +3083,7 @@ function cambiarEstadoReserva(id, nuevoEstado) {
 
   const idEmpleado = sessionStorage.getItem("idEmpleado");
 
-    let motivo = "";
+  let motivo = "";
   if (nuevoEstado === "realizada/anulada") {
     motivo = prompt("📋 Ingresá el motivo de la anulación:");
     if (!motivo || motivo.trim() === "") {
@@ -2880,9 +3102,9 @@ function cambiarEstadoReserva(id, nuevoEstado) {
     method: "POST",
     body: data
   })
-  .then(res => res.text())
-  .then(alert)
-  .then(() => cargarVisualizarReservas(document.getElementById("inputBuscarReservasEmpleado")?.value || ""));
+    .then(res => res.text())
+    .then(alert)
+    .then(() => cargarVisualizarReservas(document.getElementById("inputBuscarReservasEmpleado")?.value || ""));
 }
 
 function buscarReservas(event) {
@@ -2910,10 +3132,10 @@ function buscarReservas(event) {
     method: "POST",
     body: data
   })
-  .then(r => r.text())
-  .then(html => {
-    document.getElementById("resultadoBusquedaReservas").innerHTML = html;
-  });
+    .then(r => r.text())
+    .then(html => {
+      document.getElementById("resultadoBusquedaReservas").innerHTML = html;
+    });
 }
 
 let reservaActualCambioMesa = null;
@@ -2932,20 +3154,20 @@ function mostrarCambioMesa(reserva) {
     method: "POST",
     body: data
   })
-  .then(r => r.json())
-  .then(mesas => {
-    const select = document.getElementById("selectNuevaMesa");
-    select.innerHTML = "";
+    .then(r => r.json())
+    .then(mesas => {
+      const select = document.getElementById("selectNuevaMesa");
+      select.innerHTML = "";
 
-    mesas.forEach(mesa => {
-      const option = document.createElement("option");
-      option.value = mesa.id_mesa;
-      option.textContent = `Mesa ${mesa.descripcion} (capacidad: ${mesa.cupo_maximo})`;
-      select.appendChild(option);
+      mesas.forEach(mesa => {
+        const option = document.createElement("option");
+        option.value = mesa.id_mesa;
+        option.textContent = `${mesa.descripcion} (capacidad: ${mesa.cupo_maximo})`;
+        select.appendChild(option);
+      });
+
+      new bootstrap.Modal(document.getElementById("modalCambioMesa")).show();
     });
-
-    new bootstrap.Modal(document.getElementById("modalCambioMesa")).show();
-  });
 }
 
 // Confirmar cambio de mesa
