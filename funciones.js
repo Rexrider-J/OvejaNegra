@@ -363,7 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <a href="reservas.html" class="btn btn-primary">Crear reservas</a>
         </div>
         <div id="contenidoBtnEmpleado">
-
+          <div id="modificar" class="seccionEmpleado" style="display: none;">
             <h3>Modificar reservas</h3>
             <section>
               <h2>Buscar reservas del cliente</h2>
@@ -395,23 +395,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 </table>
               </div>
             </section>
-            <!-- Modal para ver detalles de la Reserva -->
-            <div class="modal fade" id="modalDetalleReserva" tabindex="-1" aria-labelledby="modalDetalleReservaLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="modalDetalleReservaLabel">Detalle de Reserva</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                  </div>
-                  <div class="modal-body" id="contenidoModalDetalle">
-                    <!-- Aquí se cargará dinámicamente el contenido -->
-                  </div>
-                  <div class="modal-footer">
-                    <button type="buttom" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                  </div>
-                </div>
-              </div>
-            </div>
             <!-- Modal para Modificar datos de la Reserva -->
             <div class="modal fade" id="modalModificarReserva" tabindex="-1" aria-labelledby="modalModificarReservaLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-lg">
