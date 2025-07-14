@@ -2405,7 +2405,10 @@ function limpiarSessionStorage() {
 /*MODIFICAR MENU*/
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
   document.getElementById("list-modificarMenu").innerHTML = "Espere..."
-  fetch("obtener_menu.php") // solicita ese archivo, que carga el HTML del menú
+  const data = new FormData();
+  data.append("id_local_empleado", sessionStorage.getItem("idLocalEmpleado"));
+  data.append("puesto_empleado", sessionStorage.getItem("puestoEmpleado"));
+  fetch("obtener_menu.php", { method: "POST", body: data }) // solicita ese archivo, que carga el HTML del menú
     .then(res => res.text()) // convierte la respuesta en texto
     .then(data => {
       document.getElementById("list-modificarMenu").innerHTML = data; //lo inserta en el contenedor con ese id
@@ -2438,7 +2441,9 @@ function inicializarEventosMenu() {
     formAgregar.addEventListener("submit", e => { // espera que se apriete el boton de agregar
       e.preventDefault(); // previene el envio tradicional del formulario
       const data = new FormData(formAgregar); // crea un obj con los datos del form
-      data.append("submit", "1"); // añadimos el campo "submit", para que el back sepa que hacer
+      data.append("submit", "1"); // añadimos el campo "submit", para que el back sepa que hacer (agregar)
+      data.append("id_local_empleado", sessionStorage.getItem("idLocalEmpleado"));
+      data.append("puesto_empleado", sessionStorage.getItem("puestoEmpleado"));
       fetch("acciones_menu.php", { method: "POST", body: data })
         .then(r => r.text()) // convierte la respuesta del servidor en texto
         .then(alert) // muestra el mensaje en un alert

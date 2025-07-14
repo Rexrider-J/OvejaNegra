@@ -1,6 +1,13 @@
 <?php
 include("config_BDD.php");
 
+$idLocalEmpleado = $_POST['id_local_empleado'] ?? null;
+$puestoEmpleado = $_POST['puesto_empleado'] ?? null;
+
+if (!$idLocalEmpleado || !$puestoEmpleado) {
+  exit("❌ Faltan datos del empleado.");
+}
+
 $sql = "SELECT id_menu, nombre, precio, categoria, descripcion, ruta_imagen FROM menu"; // preparamos la consulta
 $result = $conexion->query($sql); // y la ejecutamos (trae todos los items de la tabla menu)
 ?>
@@ -47,7 +54,7 @@ $result = $conexion->query($sql); // y la ejecutamos (trae todos los items de la
     <input type="text" id="busqueda" onkeyup="filtrarMenu()" class="form-control" placeholder="Buscar en el menú...">
   </div>
   <div class="contenedor-items-del-menu">
-  <?php
+    <?php
     if ($result && $result->num_rows > 0) { // verifica que haya resultados y los recorre si los hay
       while ($fila = $result->fetch_assoc()) {
     ?>
@@ -84,6 +91,36 @@ $result = $conexion->query($sql); // y la ejecutamos (trae todos los items de la
                 <div class="mb-2">
                   <label class="form-label">URL Imagen</label>
                   <input type="text" name="ruta_imagen" class="form-control form-control-sm" value="<?= htmlspecialchars($fila['ruta_imagen']) ?>">
+                </div>
+              </div>
+              <div class="mb-2">
+                <label class="form-label">Disponibilidad por local:</label>
+                <div class="form-check">
+                  <?php
+                  $idMenu = $fila['id_menu'];
+                  $queryLocales = $conexion->query("SELECT id_local, nombre FROM locales");
+
+                  while ($local = $queryLocales->fetch_assoc()) {
+                    $idLocal = $local['id_local'];
+                    $nombreLocal = htmlspecialchars($local['nombre']);
+
+                    // Consultar si está disponible ese ítem en ese local
+                    $dispoQuery = $conexion->prepare("SELECT estado_disponibilidad FROM local_menu WHERE id_menu = ? AND id_local = ?");
+                    $dispoQuery->bind_param("ii", $idMenu, $idLocal);
+                    $dispoQuery->execute();
+                    $dispoRes = $dispoQuery->get_result();
+                    $estado = ($dispoRes->fetch_assoc()['estado_disponibilidad'] ?? '') === 'disponible';
+
+                    // Mostrar checkbox
+                    echo "
+                          <div class='form-check form-check-inline'>
+                            <input class='form-check-input' type='checkbox' name='disponibilidad[$idLocal]' value='1' id='disp_{$idMenu}_{$idLocal}' " . ($estado ? 'checked' : '') . ">
+                            <label class='form-check-label' for='disp_{$idMenu}_{$idLocal}'>$nombreLocal</label>
+                          </div>
+                        ";
+                    $dispoQuery->close();
+                  }
+                  ?>
                 </div>
               </div>
 

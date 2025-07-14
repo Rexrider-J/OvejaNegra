@@ -137,9 +137,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['columna'])) {
                 m.descripcion AS mesa_desc, 
                 e.estados, 
                 l.nombre AS nombre_local
+                ,m_anterior.descripcion AS mesa_anterior
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
+          LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
           JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
           WHERE $columna_sql LIKE ?
@@ -157,9 +159,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['columna'])) {
                 m.descripcion AS mesa_desc, 
                 e.estados, 
                 l.nombre AS nombre_local
+                ,m_anterior.descripcion AS mesa_anterior
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
+          LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
           JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
           WHERE $columna_sql LIKE ?
@@ -172,7 +176,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['columna'])) {
   $res = $stmt->get_result();
 
   echo "<h5>Resultados de búsqueda histórica</h5>";
-  mostrarTablaReservas($res, false);
+  mostrarTablaReservas($res, false, $puesto);
   exit;
 }
 
@@ -188,10 +192,12 @@ if ($puesto !== 'Gerente' && $puesto !== 'Subgerente') {
                  m.descripcion AS mesa_desc, 
                  e.estados,
                  m_anterior.descripcion AS mesa_anterior 
+                ,l.nombre AS nombre_local
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
           LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
+          JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
           WHERE DATE(r.fecha_reserva) = ?
             AND e.estados = 'reservada'
@@ -209,10 +215,12 @@ if ($puesto !== 'Gerente' && $puesto !== 'Subgerente') {
                  m.descripcion AS mesa_desc, 
                  e.estados,
                  m_anterior.descripcion AS mesa_anterior 
+                ,l.nombre AS nombre_local
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
           LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
+          JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
           WHERE DATE(r.fecha_reserva) = ?
             AND e.estados = 'reservada'
@@ -227,7 +235,7 @@ $res = $stmt->get_result();
 
 // Input de búsqueda
 echo "<input id='inputBuscarReservasEmpleado' oninput='filtrarReservas()' class='form-control mb-3' placeholder='Buscar...'>";
-mostrarTablaReservas($res, true);
+mostrarTablaReservas($res, true, $puesto);
 
 // Formulario de búsqueda histórica
 ?>
@@ -247,7 +255,7 @@ mostrarTablaReservas($res, true);
 <div id="resultadoBusquedaReservas"></div>
 
 <?php
-function mostrarTablaReservas($res, $conBotones)
+function mostrarTablaReservas($res, $conBotones, $puesto = null)
 {
   echo "<table class='table table-bordered table-striped'>";
   echo "<thead><tr>
@@ -259,6 +267,9 @@ function mostrarTablaReservas($res, $conBotones)
           <th>Personas</th>
           <th>Estado</th>
           <th>Cambio Mesa</th>";
+  if ($puesto === 'Gerente' || $puesto === 'Subgerente') {
+    echo "<th>Local</th>";
+  }
   if ($conBotones) echo "<th>Acciones</th>";
   echo "</tr></thead><tbody>";
 
@@ -272,6 +283,9 @@ function mostrarTablaReservas($res, $conBotones)
             <td>{$row['cant_personas']}</td>
             <td>{$row['estados']}</td>
             <td>" . ($row['mesa_anterior'] ?? '-') . "</td>";
+    if ($puesto === 'Gerente' || $puesto === 'Subgerente') {
+      echo "<td>" . ($row['nombre_local'] ?? '-') . "</td>";
+    }
     if ($conBotones) {
       echo "<td>
           <button class='btn btn-success btn-sm' onclick=\"cambiarEstadoReserva({$row['id_reserva']}, 'realizada/concretada')\">Concretar</button>

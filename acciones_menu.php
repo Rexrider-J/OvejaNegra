@@ -1,6 +1,11 @@
 <?php
 include("config_BDD.php");
 
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    http_response_code(403);
+    exit("⛔ Acceso no permitido.");
+}
+
 // AGREGAR UN NUEVO ÍTEM
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) { //nos aseguramos que la solicitud sea POST y submit
     $nombre = trim($_POST["nombre"]); //obtenemos los datos enviados del form
@@ -8,6 +13,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) { //nos as
     $categoria = trim($_POST["categoria"]);
     $descripcion = trim($_POST["descripcion"]);
     $ruta_imagen = trim($_POST["ruta_imagen"]);
+    // del empleado logueado
+    $idLocalEmpleado = $_POST["id_local_empleado"] ?? null;
+    $puestoEmpleado = $_POST["puesto_empleado"] ?? null;
+
+    if (!$idLocalEmpleado || !$puestoEmpleado) {
+        exit("❌ Faltan datos de sesión del empleado.");
+    }
 
     if (empty($nombre) || empty($precio) || empty($categoria)) { // validamos que los campos relevantes no esten vacios
         exit("<script>alert('Por favor complete todos los campos requeridos.'); history.back();</script>");
@@ -18,9 +30,40 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) { //nos as
     $stmt->bind_param("sdsss", $nombre, $precio, $categoria, $descripcion, $ruta_imagen);
 
     if ($stmt->execute()) { //condicional que ejecuta y se fija que funcione y responde acorde
-        echo "Ítem agregado correctamente";
+        $idMenuNuevo = $conexion->insert_id;
+
+        // Obtener todos los locales
+        $resLocales = $conexion->query("SELECT id_local FROM locales");
+
+        while ($row = $resLocales->fetch_assoc()) {
+            $idLocal = $row["id_local"];
+            $estado = "no disponible";
+
+            // Si NO es gerente/subgerente y este es su local, marcar como disponible
+            if ($puestoEmpleado !== "Gerente" && $puestoEmpleado !== "Subgerente" && $idLocal == $idLocalEmpleado) {
+                $estado = "disponible";
+            }
+
+            $stmtLocal = $conexion->prepare("INSERT INTO local_menu (id_local, id_menu, estado_disponibilidad) VALUES (?, ?, ?)");
+            $stmtLocal->bind_param("iis", $idLocal, $idMenuNuevo, $estado);
+            $stmtLocal->execute();
+        }
+
+        echo "✅ Ítem agregado correctamente en el local.";
     } else {
-        echo "error: " . $conexion->error;
+        switch ($conexion->errno) {
+            case 1062:
+                echo "⚠️ Hay un campo duplicado en el item que esta intentando crear.";
+                break;
+            case 1048:
+                echo "⚠️ Hay un campo obligatorio que está vacío.";
+                break;
+            case 1452:
+                echo "❌ No se puede vincular el ítem con su local (clave foránea inválida).";
+                break;
+            default:
+                echo "❌ Error inesperado al agregar ítem. Código: " . $conexion->errno;
+        }
     }
 
     $stmt->close();
@@ -44,11 +87,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["modificar"])) {//nos 
     //preparamos la consulta a SQL
     $stmt = $conexion->prepare("UPDATE menu SET nombre=?, precio=?, categoria=?, descripcion=?, ruta_imagen=? WHERE id_menu=?");
     $stmt->bind_param("sdsssi", $nombre, $precio, $categoria, $descripcion, $ruta_imagen, $id);
+    // Actualizar disponibilidad por local
+    $idMenu = $id; // el ID del ítem actual
+    $conexion->query("DELETE FROM local_menu WHERE id_menu = $idMenu");
+
+    if (isset($_POST['disponibilidad']) && is_array($_POST['disponibilidad'])) {
+    foreach ($_POST['disponibilidad'] as $idLocal => $valor) {
+        $stmtDispo = $conexion->prepare("INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES (?, ?, 'disponible')");
+        $stmtDispo->bind_param("ii", $idMenu, $idLocal);
+        $stmtDispo->execute();
+        $stmtDispo->close();
+    }
+    }
 
     if ($stmt->execute()) { //condicional que ejecuta y se fija que funcione y responde acorde
-        echo 'Ítem actualizado correctamente.';
+        echo '✅Ítem actualizado correctamente.';
     } else {
-        echo "Error al actualizar ítem: " . $conexion->error;
+        echo "❌Error al actualizar ítem: " . $conexion->error;
     }
 
     $stmt->close();
@@ -59,12 +114,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["modificar"])) {//nos 
 // ELIMINAR
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["borrar"]) && isset($_POST["id"])) {//nos aseguramos que la solicitud sea POST y borrar, y el id
     $id = intval($_POST["id"]); //convertimos el id recivido a entero
-    $sql = "DELETE FROM menu WHERE id_menu = $id"; //guardamos la consulta en una variable
 
-    if ($conexion->query($sql)) { //condicional que ejecuta y se fija que funcione y responde acorde
-        echo 'Ítem eliminado correctamente.';
-    } else {
-        echo "Error al eliminar ítem: " . $conexion->error;
+    $conexion->begin_transaction(); // iniciamos transacción por seguridad
+    try {
+        $conexion->query("DELETE FROM local_menu WHERE id_menu = $id");//eliminamos primero las referencias en local_menu
+        $conexion->query("DELETE FROM menu WHERE id_menu = $id");
+        $conexion->commit();
+        echo "✅ Ítem eliminado correctamente.";
+    } catch (mysqli_sql_exception $e) {
+        $conexion->rollback();
+        echo "❌ Error al eliminar ítem: " . $e->getMessage();
     }
 
     $conexion->close();
