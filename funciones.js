@@ -367,7 +367,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <h3>Modificar reservas</h3>
             <section>
               <h2>Buscar reservas del cliente</h2>
-              <form id="formBusquedaCliente" class="form-busqueda" onsubmit="busquedaCliente(event)">
+              <form id="formBusquedaCliente" class="form-busqueda" onsubmit="busquedaCliente(event,'dniModificarEmpleado','emailModificarEmpleado','formBusquedaCliente','tablaReservasVigentes','modificar')">
                 <input type="text" id="dniModificarEmpleado" name="dniModificarEmpleado" placeholder="DNI" required class="solo-numeros"/>
                 <input type="email" id="emailModificarEmpleado" name="emailModificarEmpleado" placeholder="Mail" maxlength="100" required />
                 <button type="submit">Buscar</button>
@@ -412,7 +412,90 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div id="cancelar" class="seccionEmpleado" style="display: none;">
             <h3>Cancelar reservas</h3>
-            <p>Aca puedes cancelar una reserva. Podria carcelar la reserva para un solo individuo o masivamente. Debe redactarse una nota que se enviará al mail de la/el/los involucrados(simulado)</p>
+            <div id="selectorModoCancelacion" style="margin-bottom: 1rem;">
+              <button type="button" onclick="mostrarVistaCancelacion('individual')">
+                Cancelación individual
+              </button>
+              <button type="button" id="btnModoMasivo" onclick="mostrarVistaCancelacion('masiva')">
+                Cancelación masiva
+              </button>
+            </div>
+
+            <div id="vistaCancelacionIndividual">
+              <h2>Buscar reservas del cliente</h2>
+              <section>
+                <form id="formBusquedaClienteCancelar" class="form-busqueda" onsubmit="busquedaCliente(event, 'dniCancelarEmpleado', 'emailCancelarEmpleado', 'formBusquedaClienteCancelar', 'tablaReservasVigentesCancelar', 'cancelar')">
+                  <input type="text" id="dniCancelarEmpleado" name="dniCancelarEmpleado" placeholder="DNI" required class="solo-numeros"/>
+                  <input type="email" id="emailCancelarEmpleado" name="emailCancelarEmpleado" placeholder="Mail" maxlength="100" required />
+                  <button type="submit">Buscar</button>
+                  <button type="button" onclick="limpiarTabla('tablaReservasVigentesCancelar', 'formBusquedaClienteCancelar')">Limpiar</button>
+                </form>
+              </section>
+              <section>
+                <h2>Reservas del cliente</h2>
+                <div class="table-responsive">
+                  <table id="tablaReservasVigentesCancelar" class="table table-hover table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Local</th>
+                        <th>Mesa</th>
+                        <th>Personas</th>
+                        <th>Observaciones</th>
+                        <th>Estado</th>
+                        <th></th> <!-- Columna vacía para botones -->
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Filas agregadas dinámicamente con JS -->
+                    </tbody>
+                  </table>
+                </div>              
+              </section>
+            </div>
+            <div id="vistaCancelacionMasiva" style="display: none;">
+              <form id="formCancelacionMasiva" onsubmit="event.preventDefault(); cancelacionMasiva();">
+                <label>Local:</label>
+                <select id="localCancelacionMasiva" />
+                  <option value="">Seleccionar...</option>
+                  <!-- Opciones dinámicas -->
+                </select>
+
+                <label>Fecha:</label>
+                <input type="date" id="fechaCancelacionMasiva" />
+
+                <label>Hora:</label>
+                <select id="horaCancelacionMasiva">
+                  <option value="">Seleccionar...</option>
+                    <!-- Opciones dinámicas -->
+                </select>
+
+                <label>Motivo de cancelación:</label>
+                <textarea id="motivoCancelacionMasiva" rows="3" cols="30" placeholder="Ingrese el motivo de la cancelación" maxlength="255" required></textarea>
+
+                <button type="submit" class="btn btn-danger">Confirmar cancelación masiva</button>
+              </form>
+            </div>
+            <!-- Modal para cancelar la Reserva -->
+            <div class="modal fade" id="modalCancelarReserva" tabindex="-1" aria-labelledby="modalCancelarReservaLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalCancelarReservaLabel">Cancelar Reserva</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p>Por favor, indica el motivo de la cancelación:</p>
+                    <textarea id="motivoCancelacionInput" class="form-control" maxlength="255" placeholder="Motivo de la cancelación..."></textarea>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="confirmarCancelacionBtn">Confirmar Cancelación</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div id="visualizar" class="seccionEmpleado" style="display: none;">
             <h3>Visualizar reservas</h3>
@@ -494,7 +577,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (email) document.getElementById("emailModificarEmpleado").value = email;
 
     if (dni || email) {
-      busquedaCliente(new Event('submit'));
+      busquedaCliente(new Event('submit'),'dniModificarEmpleado','emailModificarEmpleado','formBusquedaCliente','tablaReservasVigentes','modificar');
+    }
+    if (dni) document.getElementById("dniCancelarEmpleado").value = dni;
+    if (email) document.getElementById("emailCancelarEmpleado").value = email;
+
+    if (dni || email) {
+      busquedaCliente(new Event('submit'),'dniCancelarEmpleado','emailCancelarEmpleado','formBusquedaClienteCancelar','tablaReservasVigentesCancelar','cancelar');
     }
   });
 });
@@ -803,6 +892,7 @@ function mostrarTodasSucursales() {
       cargarDropdown("selectorSucursales", false); // Header general
       cargarDropdown("dropdownReservas", true);    // Cliente - reservas
       cargarDropdown("dropdownReservasEmpleado", true); // Empleado - reservas
+      cargarDropdown("localCancelacionMasiva",true);
       /*Funciones adicionales*/
       crearAcordeones(locales);                    // Nosotros
       mostrarSucursalEmpleado();
@@ -1052,7 +1142,6 @@ function generarOpcionesHorarioDisponibles(fechaSeleccionada, selectId) {
 
   select.innerHTML = opciones;
 }
-
 function obtenerMesasDisponibles(idSelect, idLocal, fecha, hora, personas, valorDefault = null, descripcionMesaDefault = "") {
   const select = document.getElementById(idSelect);
 
@@ -1226,6 +1315,11 @@ function validarDniMail(dni, mail, tipo, retornarId = false) {
 
     if (dni.length < 7 || dni.length > 11) {
       alert("El DNI debe contener solo números entre 7 y 11 dígitos.");
+      return;
+    }
+
+    if (dni.value <= 5000000) {
+      alert("El DNI debe superar los 5 millones.");
       return;
     }
 
@@ -1874,21 +1968,22 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 /*Modificar reservas empleado*/
-function busquedaCliente(event) {
-  if (event) {
-    event.preventDefault();
-  }
+function busquedaCliente(evento, inputDniId, inputEmailId, formId, idTabla, uso) {
+  if (evento) evento.preventDefault();
 
-  // Intentar obtener el formulario desde event.target, si no, buscarlo por ID
-  const form = event?.target?.closest("form") || document.getElementById("formBusquedaCliente");
-
+  const form = evento?.target?.closest("form") || document.getElementById(formId);
   if (!form) {
-    console.error("No se encontró el formulario 'formBusquedaCliente'");
+    console.error(`No se encontró el formulario con id '${formId}'`);
     return;
   }
 
-  const dni = form.querySelector('input[id="dniModificarEmpleado"]').value.trim();
-  const email = form.querySelector('input[id="emailModificarEmpleado"]').value.trim();
+  const dni = document.getElementById(inputDniId)?.value?.trim();
+  const email = document.getElementById(inputEmailId)?.value?.trim();
+
+  if (!dni || !email) {
+    alert("Por favor completá el DNI y el correo.");
+    return;
+  }
 
   aplicarSoloNumeros();
 
@@ -1900,28 +1995,32 @@ function busquedaCliente(event) {
         const idCliente = json.id;
 
         sessionStorage.setItem("idClienteTemporal", idCliente);
-
+        sessionStorage.setItem("busquedaDNI", dni);
+        sessionStorage.setItem("busquedaEmail", email);
         obtenerReservasYGuardarSesion(idCliente)
           .then(reservas => {
-            mostrarReservasEnTablaModificarEmpleado(reservas, "tablaReservasVigentes");
+            if (uso === "modificar") {
+              mostrarReservasEnTablaEmpleado(reservas, idTabla, "modificar");
+            } else if (uso === "cancelar") {
+              mostrarReservasEnTablaEmpleado(reservas, idTabla, "cancelar");
+            } else {
+              console.warn("Uso no reconocido:", uso);
+            }
           })
           .catch(err => {
             console.error("Error al obtener reservas:", err);
             alert("No se pudieron obtener las reservas.");
-            limpiarTabla("tablaReservasVigentes");
+            limpiarTabla(idTabla, formId);
           });
 
-      } else if (json.estado === "no_existe") {
-        alert("No existe un cliente con ese correo y DNI.");
-        limpiarTabla("tablaReservasVigentes");
       } else {
-        alert("Error inesperado en la verificación.");
-        limpiarTabla("tablaReservasVigentes");
+        alert("No existe un cliente con ese correo y DNI.");
+        limpiarTabla(idTabla, formId);
       }
     } catch (e) {
       console.error("Error al parsear respuesta de validación:", resultado);
-      alert("Respuesta inesperada del servidor.");
-      limpiarTabla("tablaReservasVigentes");
+      alert("⚠️ Respuesta inesperada del servidor.");
+      limpiarTabla(idTabla, formId);
     }
   });
 }
@@ -1938,6 +2037,7 @@ function limpiarTabla(idTabla, idFormulario) {
   // Limpiar sessionStorage de búsqueda
   sessionStorage.removeItem("busquedaDNI");
   sessionStorage.removeItem("busquedaEmail");
+  sessionStorage.removeItem("reservasMostradas");
 }
 
 /*TIENDA DE PUNTOS*/
@@ -1972,8 +2072,6 @@ if (window.location.pathname.includes("tiendaDePuntos.html") || window.location.
 
       puntosDelCliente.style.display = "grid";
       puntosDelCliente.textContent = `Tus puntos: ${puntos}`;
-    } else {
-      puntosDelCliente.style.display = "none";
     }
   });
 }
@@ -2401,7 +2499,105 @@ function limpiarSessionStorage() {
     sessionStorage.removeItem("personasSeleccionadas");
   }
 }
+/*CANCELAR RESERVAS EMPLEADO*/
+/*Si es mozo, caja o limpieza el puesto del empleado, el boton masiva no estara habilitado*/
+document.addEventListener("DOMContentLoaded", () => {
+  const puesto = sessionStorage.getItem("puestoEmpleado");
+  const btnMasivo = document.getElementById("btnModoMasivo");
 
+  if (puesto === "Mozo" || puesto === "Caja" || puesto === "Limpieza") {
+    btnMasivo.disabled = true; // Inhabilitar para roles básicos
+    btnMasivo.classList.add("btn-secondary");
+    btnMasivo.classList.remove("btn-outline-danger");
+    btnMasivo.title = "Solo disponible para Subgerente y Gerente";
+  }
+});
+/*Sirve para cambiar el contenido de cancelar reservas segun el boton que se presione "individual/masiva"*/
+function mostrarVistaCancelacion(tipo) {
+  const vistaInd = document.getElementById("vistaCancelacionIndividual");
+  const vistaMas = document.getElementById("vistaCancelacionMasiva");
+
+  if (tipo === "individual") {
+    vistaInd.style.display = "block";
+    vistaMas.style.display = "none";
+  } else if (tipo === "masiva") {
+    vistaInd.style.display = "none";
+    vistaMas.style.display = "block";
+  }
+}
+/*Contenido de cancelacion masiva*/
+document.addEventListener("DOMContentLoaded", () => {
+  const puestoEmpleado = sessionStorage.getItem("puestoEmpleado");
+  const id_sucursal_empleado = sessionStorage.getItem("idLocalEmpleado"); // Subgerente trabaja en esta sucursal
+  const contenedorForm = document.getElementById("formCancelacionMasiva");
+  const fechaSeleccionada = document.getElementById("fechaCancelacionMasiva");
+
+  crearCalendarioPopup("fechaCancelacionMasiva");
+  generarOpcionesHorarioDisponibles(fechaSeleccionada.value, "horaCancelacionMasiva")
+
+  /*Seguridad por si falta información*/
+  if (!puestoEmpleado || !id_sucursal_empleado) {
+    contenedorForm?.remove(); 
+    return;
+  }
+
+  if (puestoEmpleado === "Subgerente") {
+    cargarDropdown("localCancelacionMasiva", true);
+
+    setTimeout(() => {
+      const sucursal = document.getElementById("localCancelacionMasiva");
+      if (sucursal) {
+        sucursal.value = String(id_sucursal_empleado);
+        sucursal.disabled = true;
+      }
+    }, 100); // ⏱️ Da tiempo al DOM para agregar las opciones
+  }
+});
+/*funcion para cancelar varias reservas por fecha y hora*/
+function cancelacionMasiva() {
+  const idLocal = document.getElementById("localCancelacionMasiva")?.value;
+  const fecha = document.getElementById("fechaCancelacionMasiva")?.value;
+  const hora = document.getElementById("horaCancelacionMasiva")?.value;
+  const motivo = document.getElementById("motivoCancelacionMasiva")?.value.trim();
+  const idEmpleado = sessionStorage.getItem("idEmpleado");
+
+  if (!idLocal || !fecha || !motivo || !hora) {
+    alert("Por favor completá todos los campos: local, fecha, hora y motivo.");
+    return;
+  }
+
+  if (!idEmpleado) {
+    alert("No se encontró el ID del empleado.");
+    return;
+  }
+
+  if (!confirm(`¿Estás seguro de cancelar todas las reservas del local seleccionado para la fecha ${fecha} a la hora ${hora}?`)) {
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("id_local", idLocal);
+  formData.append("fecha", fecha);
+  formData.append("hora", hora);
+  formData.append("motivo_cancelacion", motivo);
+  formData.append("id_empleado", idEmpleado);
+
+  fetch("cancelacion_masiva.php", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => res.text())
+    .then(data => {
+      alert(data);
+      if (data.includes("✅")) {
+        document.getElementById("formCancelacionMasiva")?.reset();
+      }
+    })
+    .catch(error => {
+      console.error("Error en la cancelación masiva:", error);
+      alert("❌ Hubo un error al realizar la cancelación masiva.");
+    });
+}
 /*MODIFICAR MENU*/
 function cargarMenu() { // se ejecuta en mi perfil cuando clickean Modificar Menu
   document.getElementById("list-modificarMenu").innerHTML = "Espere..."
@@ -2495,7 +2691,12 @@ async function obtenerReservasYGuardarSesion(idCliente) {
 
     // Guardar en sessionStorage
     sessionStorage.setItem('reservas', JSON.stringify(reservas));
-    sessionStorage.setItem('puntosCliente', puntosCliente.toString());
+
+    const usuarioTipo = sessionStorage.getItem("usuarioTipo");
+
+    if (usuarioTipo === "cliente"){
+      sessionStorage.setItem('puntosCliente', puntosCliente.toString());
+    }
     return reservas;
 
   } catch (error) {
@@ -2531,7 +2732,7 @@ function mostrarReservasEnTabla(reservas) {
           <td>${reserva.estado_reserva}</td>
           <td>
             <button class="btn btn-warning btn-sm me-1" onclick="abrirModalModificarReserva(${detalleReservaString}, this)">Modificar</button>
-            <button class="btn btn-danger btn-sm" onclick="cancelarReservaCliente(${reserva.id})">Cancelar</button>
+            <button class="btn btn-danger btn-sm" onclick="cancelarReserva(${reserva.id},this)">Cancelar</button>
           </td>
         </tr>
       `;
@@ -2554,7 +2755,7 @@ function mostrarReservasEnTabla(reservas) {
     }
   });
 }
-function mostrarReservasEnTablaModificarEmpleado(reservas, idTabla) {
+function mostrarReservasEnTablaEmpleado(reservas, idTabla, modo) {
   const tabla = document.getElementById(idTabla);
 
   if (!tabla) {
@@ -2566,7 +2767,8 @@ function mostrarReservasEnTablaModificarEmpleado(reservas, idTabla) {
   tbody.innerHTML = ""; // limpiar contenido previo
 
   const hoy = new Date();
-  hoy.setHours(0, 0, 0, 0); // comparar solo fechas, sin hora
+  hoy.setHours(0, 0, 0, 0); // comparar solo fechas
+  let reservasMostradas = 0;
 
   reservas.forEach(reserva => {
     const fechaHora = new Date(reserva.fecha_reserva);
@@ -2575,8 +2777,11 @@ function mostrarReservasEnTablaModificarEmpleado(reservas, idTabla) {
     const estaVigente = fechaHora >= hoy && !esCancelada;
 
     if (estaVigente) {
+      reservasMostradas++;
       const detalleReservaString = JSON.stringify(reserva).replace(/"/g, '&quot;');
-      tbody.innerHTML += `
+
+      if (modo === "modificar") {
+        tbody.innerHTML += `
         <tr>
           <td>${reserva.fecha_reserva.split(' ')[0]}</td>
           <td>${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</td>
@@ -2587,12 +2792,37 @@ function mostrarReservasEnTablaModificarEmpleado(reservas, idTabla) {
           <td>${reserva.estado_reserva}</td>
           <td>
             <button class="btn btn-warning btn-sm me-1" onclick="abrirModalModificarReserva(${detalleReservaString}, this)">Modificar</button>
-            <button class="btn btn-info btn-sm" onclick="verDetalleReserva(${detalleReservaString},this)">Ver detalle</button>
+            <button class="btn btn-info btn-sm" onclick="verDetalleReserva(${detalleReservaString}, this)">Ver detalle</button>
           </td>
         </tr>
       `;
+      } else if (modo === "cancelar") {
+        tbody.innerHTML += `
+          <tr>
+            <td>${reserva.fecha_reserva.split(' ')[0]}</td>
+            <td>${reserva.fecha_reserva.split(' ')[1].slice(0, 5)}</td>
+            <td>${reserva.nombre_local}</td>
+            <td>${reserva.descripcion_mesa || reserva.id_mesa}</td>
+            <td>${reserva.cant_personas}</td>
+            <td>${reserva.observaciones || "-"}</td>
+            <td>${reserva.estado_reserva}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" onclick="cancelarReserva(${reserva.id},this)">Cancelar</button>
+              <button class="btn btn-info btn-sm" onclick="verDetalleReserva(${detalleReservaString}, this)">Ver detalle</button>
+            </td>
+          </tr>
+        `;
+      }
     }
   });
+  // Si no se encuentran reservas vigentes, se muestra este mensaje
+  if (reservasMostradas === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" class="text-center text-muted">No hay reservas vigentes.</td>
+      </tr>
+    `;
+  }
 }
 function verDetalleReserva(reserva, botonOrigen) {
   const modalElement = document.getElementById("modalDetalleReserva");
@@ -2847,8 +3077,7 @@ function guardarModificacionReserva(idReserva, mesaOriginal) {
     });
 }
 
-function cancelarReservaCliente(id_reserva, botonOrigen) {
-  const idCliente = sessionStorage.getItem("idCliente");
+function cancelarReserva(id_reserva, botonOrigen) {
   const modalElement = document.getElementById("modalCancelarReserva");
   const motivoInput = document.getElementById("motivoCancelacionInput");
   const btnConfirmar = document.getElementById("confirmarCancelacionBtn");
@@ -2872,11 +3101,19 @@ function cancelarReservaCliente(id_reserva, botonOrigen) {
 
   btnConfirmar.onclick = () => {
     const motivo = motivoInput.value.trim();
+    const tipoUsuario = sessionStorage.getItem("usuarioTipo");
+    let id_cliente = tipoUsuario === "empleado" ? sessionStorage.getItem("idClienteTemporal") : sessionStorage.getItem("idCliente");
+    
+    if (tipoUsuario === "empleado" && !motivo) {
+      alert("Por favor, indicá el motivo de la cancelación.");
+      motivoInput.focus();
+      return;
+    }
 
     const formData = new FormData();
     formData.append("id_reserva", id_reserva);
-    formData.append("id_cliente", idCliente);
-    formData.append("tipo", "cliente");
+    formData.append("id_cliente", id_cliente);
+    formData.append("tipo", tipoUsuario === "empleado" ? "empleado" : "cliente");
     formData.append("motivo_cancelacion", motivo);
 
     fetch("cancelar_reserva_cliente.php", {
@@ -2887,7 +3124,17 @@ function cancelarReservaCliente(id_reserva, botonOrigen) {
       .then(data => {
         alert(data);
         if (data.includes("✅")) {
+          const modal = bootstrap.Modal.getInstance(document.getElementById("modalCancelarReserva"));
           modal.hide();
+          if (sessionStorage.getItem("usuarioTipo") === "empleado") {
+            // Guardar datos actuales del formulario para mantenerlos luego
+            const dni = document.getElementById("dniCancelarEmpleado")?.value || "";
+            const email = document.getElementById("emailCancelarEmpleado")?.value || "";
+            sessionStorage.setItem("busquedaDNI", dni);
+            sessionStorage.setItem("busquedaEmail", email);
+
+            sessionStorage.setItem("accionEmpleado", "cancelar");
+          }
           navegarConTab('list-misReservas-list');
         }
       })
@@ -2897,7 +3144,7 @@ function cancelarReservaCliente(id_reserva, botonOrigen) {
       });
   };
 
-  // 🔒 Soluciona el warning aria-hidden y restaura el foco al botón que abrió el modal
+  //Soluciona el warning aria-hidden y restaura el foco al botón que abrió el modal
   modalElement.addEventListener("hide.bs.modal", () => {
     document.activeElement?.blur(); // Evita que el foco quede en un elemento dentro del modal oculto
   }, { once: true });
