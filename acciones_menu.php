@@ -32,21 +32,23 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) { //nos as
     if ($stmt->execute()) { //condicional que ejecuta y se fija que funcione y responde acorde
         $idMenuNuevo = $conexion->insert_id;
 
-        // Obtener todos los locales
-        $resLocales = $conexion->query("SELECT id_local FROM locales");
+        $idMenuNuevo = $stmt->insert_id;
 
-        while ($row = $resLocales->fetch_assoc()) {
-            $idLocal = $row["id_local"];
-            $estado = "no disponible";
+        // Insertar disponibilidad según checkboxes
+        if (isset($_POST['disponibilidad']) && is_array($_POST['disponibilidad'])) {
+            foreach ($_POST['disponibilidad'] as $idLocal => $valor) {
+                $idLocal = intval($idLocal);
 
-            // Si NO es gerente/subgerente y este es su local, marcar como disponible
-            if ($puestoEmpleado !== "Gerente" && $puestoEmpleado !== "Subgerente" && $idLocal == $idLocalEmpleado) {
-                $estado = "disponible";
+                // Si es Subgerente, solo permitir su propio local
+                if ($puestoEmpleado === 'Subgerente' && $idLocal != $idLocalEmpleado) {
+                    continue;
+                }
+
+                $stmtLocal = $conexion->prepare("INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES (?, ?, 'disponible')");
+                $stmtLocal->bind_param("ii", $idMenuNuevo, $idLocal);
+                $stmtLocal->execute();
+                $stmtLocal->close();
             }
-
-            $stmtLocal = $conexion->prepare("INSERT INTO local_menu (id_local, id_menu, estado_disponibilidad) VALUES (?, ?, ?)");
-            $stmtLocal->bind_param("iis", $idLocal, $idMenuNuevo, $estado);
-            $stmtLocal->execute();
         }
 
         echo "✅ Ítem agregado correctamente en el local.";
@@ -79,6 +81,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["modificar"])) {//nos 
     $categoria = trim($_POST["categoria"]);
     $descripcion = trim($_POST["descripcion"]);
     $ruta_imagen = trim($_POST["ruta_imagen"]);
+    // del empleado logueado
+    $idLocalEmpleado = $_POST["id_local_empleado"] ?? null;
+    $puestoEmpleado = $_POST["puesto_empleado"] ?? null;
 
     if (empty($id) || empty($nombre) || empty($precio) || empty($categoria)) {// validamos que los campos relevantes no esten vacios
         exit("<script>alert('Todos los campos son obligatorios.'); window.location.href = 'miperfil.html';</script>");
@@ -92,12 +97,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["modificar"])) {//nos 
     $conexion->query("DELETE FROM local_menu WHERE id_menu = $idMenu");
 
     if (isset($_POST['disponibilidad']) && is_array($_POST['disponibilidad'])) {
-    foreach ($_POST['disponibilidad'] as $idLocal => $valor) {
-        $stmtDispo = $conexion->prepare("INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES (?, ?, 'disponible')");
-        $stmtDispo->bind_param("ii", $idMenu, $idLocal);
-        $stmtDispo->execute();
-        $stmtDispo->close();
-    }
+        foreach ($_POST['disponibilidad'] as $idLocal => $valor) {
+            $idLocal = intval($idLocal);
+
+            // ❗ Subgerente solo puede modificar su local
+            if ($puestoEmpleado === 'Subgerente' && $idLocal != $idLocalEmpleado) {
+                continue;
+            }
+
+            $stmtDispo = $conexion->prepare("INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES (?, ?, 'disponible')");
+            $stmtDispo->bind_param("ii", $idMenu, $idLocal);
+            $stmtDispo->execute();
+            $stmtDispo->close();
+        }
     }
 
     if ($stmt->execute()) { //condicional que ejecuta y se fija que funcione y responde acorde
