@@ -1,5 +1,6 @@
 <?php
 include("config_BDD.php");
+mysqli_report(MYSQLI_REPORT_OFF); // desactiva errores fatales, para evitar "<b>Fatal error</b>: Uncaught mysqli_sql_exception: "
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(403);
@@ -11,8 +12,56 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["submit"])) { //nos as
     $nombre = trim($_POST["nombre"]); //obtenemos los datos enviados del form
     $precio = $_POST["precio"];
     $categoria = trim($_POST["categoria"]);
+    $categoriasValidas = [
+        'Cafeteria', 'Panaderia', 'Milkshake', 'Waffles', 'Starters',
+        'Burgers', 'Adicionales', 'Milanesas', 'Hotdogs', 'Ensaladas',
+        'Bebidas', 'Postres'
+    ];
+
+    if (!in_array($categoria, $categoriasValidas)) {
+        exit("❌ Categoría inválida. Elegí una opción del listado permitido.");
+    }
     $descripcion = trim($_POST["descripcion"]);
-    $ruta_imagen = trim($_POST["ruta_imagen"]);
+    $ruta_imagen = null;
+    if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] !== UPLOAD_ERR_OK) {
+        exit("❌ Debés subir una imagen para el ítem.");
+    }
+
+    $nombreTemporal = $_FILES['imagen']['tmp_name'];
+    $nombreArchivo = basename($_FILES['imagen']['name']);
+
+    // Validar tipo MIME
+    $mime = mime_content_type($nombreTemporal);
+    $tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+    if (!in_array($mime, $tiposPermitidos)) {
+        exit("❌ Solo se permiten imágenes JPG, PNG, WEBP o GIF.");
+    }
+
+    // Validar tamaño (ej: máximo 2MB)
+    $pesoMaximo = 2 * 1024 * 1024; // 2MB
+    if ($_FILES['imagen']['size'] > $pesoMaximo) {
+        exit("❌ La imagen es demasiado grande. Máximo permitido: 2MB.");
+    }
+
+    // Validar dimensiones (ej: máximo 1000x1000 px)
+    $dimensiones = getimagesize($nombreTemporal);
+    $ancho = $dimensiones[0];
+    $alto = $dimensiones[1];
+    if ($ancho > 1000 || $alto > 1000) {
+        exit("❌ La imagen es muy grande. Máximo permitido: 1000x1000 píxeles.");
+    }
+
+    // Crear nombre único y mover la imagen
+    $nombreSeguro = uniqid() . "_" . preg_replace("/[^A-Za-z0-9.\-_]/", "", $nombreArchivo);
+    $rutaDestino = "img/" . $nombreSeguro;
+
+    if (!move_uploaded_file($nombreTemporal, $rutaDestino)) {
+        exit("❌ Error al guardar la imagen.");
+    }
+
+    $ruta_imagen = $rutaDestino;
+
     // del empleado logueado
     $idLocalEmpleado = $_POST["id_local_empleado"] ?? null;
     $puestoEmpleado = $_POST["puesto_empleado"] ?? null;

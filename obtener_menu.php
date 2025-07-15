@@ -16,33 +16,48 @@ $result = $conexion->query($sql); // y la ejecutamos (trae todos los items de la
 <div class="list-group" id="contenedor-menu">
   <button id="btn-subir" title="Volver arriba">↑</button>
   <h4>Agregar nuevo ítem</h4>
-  <form method="POST" action="acciones_menu.php" id="form-agregar-menu">
+  <form method="POST" action="acciones_menu.php" id="form-agregar-menu" enctype="multipart/form-data">
     <div class="row">
-      <div class="col-md-3">
 
+      <div class="col-md-3">
         <label>Nombre</label>
         <input type="text" name="nombre" class="form-control form-control-sm" required>
       </div>
-      <div class="col-md-2">
 
+      <div class="col-md-2">
         <label>Precio</label>
         <input type="number" step="0.01" name="precio" class="form-control form-control-sm" required>
       </div>
+
       <div class="col-md-3">
-
         <label>Categoría</label>
-        <input type="text" name="categoria" class="form-control form-control-sm" required>
+        <select name="categoria" class="form-control form-control-sm" required>
+          <option value="">Seleccionar</option>
+          <option>Cafeteria</option>
+          <option>Panaderia</option>
+          <option>Milkshake</option>
+          <option>Waffles</option>
+          <option>Starters</option>
+          <option>Burgers</option>
+          <option>Adicionales</option>
+          <option>Milanesas</option>
+          <option>Hotdogs</option>
+          <option>Ensaladas</option>
+          <option>Bebidas</option>
+          <option>Postres</option>
+        </select>
       </div>
-      <div class="col-md-4">
 
+      <div class="col-md-4">
         <label>Descripción</label>
         <input type="text" name="descripcion" class="form-control form-control-sm">
       </div>
-      <div class="col-md-6 mt-2">
 
-        <label>URL Imagen</label>
-        <input type="text" name="ruta_imagen" class="form-control form-control-sm">
+      <div class="col-md-6 mt-2">
+        <label>Imagen</label>
+        <input type="file" name="imagen" class="form-control form-control-sm" accept="image/*">
       </div>
+
       <div class="col-md-12 mt-2">
         <label class="form-label">Disponibilidad inicial por local:</label>
         <div class="form-check">
