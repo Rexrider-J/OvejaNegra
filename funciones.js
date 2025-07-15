@@ -2649,6 +2649,8 @@ function inicializarEventosMenu() {
       const form = btn.closest("form"); // selecciona el form mas cercano a ese boton 
       const data = new FormData(form); // crea un obj con los datos del form
       data.append("modificar", "1"); // añadimos el campo "edit", para que el back sepa que hacer
+      data.append("id_local_empleado", sessionStorage.getItem("idLocalEmpleado"));
+      data.append("puesto_empleado", sessionStorage.getItem("puestoEmpleado"));
       fetch("acciones_menu.php", { method: "POST", body: data })
         .then(r => r.text()) // convierte la respuesta del servidor en texto
         .then(alert) // muestra el mensaje en un alert

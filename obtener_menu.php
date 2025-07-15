@@ -43,6 +43,28 @@ $result = $conexion->query($sql); // y la ejecutamos (trae todos los items de la
         <label>URL Imagen</label>
         <input type="text" name="ruta_imagen" class="form-control form-control-sm">
       </div>
+      <div class="col-md-12 mt-2">
+        <label class="form-label">Disponibilidad inicial por local:</label>
+        <div class="form-check">
+          <?php
+          $resLocales = $conexion->query("SELECT id_local, nombre FROM locales");
+
+          while ($local = $resLocales->fetch_assoc()) {
+            $id = $local['id_local'];
+            $nombre = htmlspecialchars($local['nombre']);
+            $checked = ($puestoEmpleado === 'Gerente' || $puestoEmpleado === 'Subgerente' || $id == $idLocalEmpleado) ? 'checked' : '';
+            $disabled = ($puestoEmpleado === 'Subgerente' && $id != $idLocalEmpleado) ? 'disabled' : '';
+
+            echo "
+        <div class='form-check form-check-inline'>
+          <input class='form-check-input' type='checkbox' name='disponibilidad[$id]' value='1' id='crear_disp_$id' $checked $disabled>
+          <label class='form-check-label' for='crear_disp_$id'>$nombre</label>
+        </div>
+      ";
+          }
+          ?>
+        </div>
+      </div>
       <div class="col-md-6 mt-4 d-flex align-items-end">
         <button type="submit" class="btn btn-primary btn-sm">Agregar ítem</button>
       </div>
@@ -110,14 +132,21 @@ $result = $conexion->query($sql); // y la ejecutamos (trae todos los items de la
                     $dispoQuery->execute();
                     $dispoRes = $dispoQuery->get_result();
                     $estado = ($dispoRes->fetch_assoc()['estado_disponibilidad'] ?? '') === 'disponible';
+                    $disabled = ($puestoEmpleado === 'Subgerente' && $idLocal != $idLocalEmpleado) ? 'disabled' : '';
+                    $title = ($disabled) ? "title='Solo podés modificar tu propio local'" : '';
 
-                    // Mostrar checkbox
-                    echo "
-                          <div class='form-check form-check-inline'>
-                            <input class='form-check-input' type='checkbox' name='disponibilidad[$idLocal]' value='1' id='disp_{$idMenu}_{$idLocal}' " . ($estado ? 'checked' : '') . ">
-                            <label class='form-check-label' for='disp_{$idMenu}_{$idLocal}'>$nombreLocal</label>
-                          </div>
-                        ";
+
+                    // Determinar si debe estar deshabilitado
+                    $disabled = ($puestoEmpleado === 'Subgerente' && $idLocal != $idLocalEmpleado) ? 'disabled' : '';
+                  ?>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="disponibilidad[<?= $idLocal ?>]" value="1"
+                        id="disp_<?= $idMenu ?>_<?= $idLocal ?>" <?= $estado ? 'checked' : '' ?> <?= $disabled ?>>
+                      <label class="form-check-label" for="disp_<?= $idMenu ?>_<?= $idLocal ?>">
+                        <?= $nombreLocal ?>
+                      </label>
+                    </div>
+                  <?php
                     $dispoQuery->close();
                   }
                   ?>
