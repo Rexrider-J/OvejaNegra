@@ -461,19 +461,15 @@ document.addEventListener("DOMContentLoaded", function () {
                   <option value="">Seleccionar...</option>
                   <!-- Opciones dinámicas -->
                 </select>
-
                 <label>Fecha:</label>
                 <input type="date" id="fechaCancelacionMasiva" />
-
                 <label>Hora:</label>
                 <select id="horaCancelacionMasiva">
                   <option value="">Seleccionar...</option>
                     <!-- Opciones dinámicas -->
                 </select>
-
                 <label>Motivo de cancelación:</label>
                 <textarea id="motivoCancelacionMasiva" rows="3" cols="30" placeholder="Ingrese el motivo de la cancelación" maxlength="255" required></textarea>
-
                 <button type="submit" class="btn btn-danger">Confirmar cancelación masiva</button>
               </form>
             </div>
@@ -3208,9 +3204,11 @@ function cargarTabla(tabla) {
     .then(html => {
       const contenedor = document.getElementById(`tabla-${tabla}`);
       contenedor.innerHTML = `
-  <input type="button" value="volver" onclick="mostrarSeccion('botonesDeTablas', this)">
-  ${html}
-`;
+        <input type="button" value="volver" onclick="mostrarSeccion('botonesDeTablas', this)">
+        ${html}
+      `;
+      aplicarSoloLetras();
+      aplicarSoloNumeros();
       inicializarEventosTabla(tabla); // para los botones agregar/modificar/eliminar
     })
     .catch(err => console.error("Error al cargar tabla:", err));

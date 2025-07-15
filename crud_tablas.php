@@ -268,10 +268,13 @@ function mostrarLocales($conexion)
             <td>{$row['estado_disponibilidad']}</td>
             <td>
                 <form>
-                    <input name='nombre' value='{$row['nombre']}'>
-                    <input name='direccion' value='{$row['direccion']}'>
-                    <input name='telefono' value='{$row['telefono']}'>
-                    <input name='estado_disponibilidad' value='{$row['estado_disponibilidad']}'>
+                    <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' value='{$row['nombre']}' required>
+                    <input name='direccion' placeholder='Dirección' maxlength='255' value='{$row['direccion']}' required>
+                    <input name='telefono'placeholder='Teléfono' min='1000000000' max='99999999' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
+                    <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
+                        <option value='disponible'>disponible</option>
+                        <option value='no disponible'>no disponible</option>
+                    </select>
                     <button type='button' class='btn-modificar' data-id='{$row['id_local']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_local']}'>Eliminar</button>
                 </form>
@@ -279,16 +282,19 @@ function mostrarLocales($conexion)
         </tr>";
   }
 
-  echo "</tbody>
-    </table>
-    <h4>Agregar nuevo local</h4>
-    <form data-accion='agregar'>
-        <input name='nombre' placeholder='Nombre'>
-        <input name='direccion' placeholder='Dirección'>
-        <input name='telefono' placeholder='Teléfono'>
-        <input name='estado_disponibilidad' placeholder='Estado'>
-        <input type='submit' value='Agregar'>
-    </form>";
+    echo "</tbody>
+        </table>
+        <h4>Agregar nuevo local</h4>
+        <form data-accion='agregar'>
+            <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' required>
+            <input name='direccion' placeholder='Dirección' maxlength='255' required>
+            <input name='telefono' placeholder='Teléfono' min='1000000000' max='99999999' maxlength='20' class='solo-numeros' required>
+            <select name='estado_disponibilidad' required>
+                <option value='disponible'>disponible</option>
+                <option value='no disponible'>no disponible</option>
+            </select>
+            <input type='submit' value='Agregar'>
+        </form>";
 }
 
 function mostrarLocalMenu($conexion)
