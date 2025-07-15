@@ -321,9 +321,12 @@ function mostrarLocalMenu($conexion)
             <td>{$row['estado_disponibilidad']}</td>
             <td>
                 <form>
-                    <input name='id_menu' value='{$row['id_menu']}'>
-                    <input name='id_local' value='{$row['id_local']}'>
-                    <input name='estado_disponibilidad' value='{$row['estado_disponibilidad']}'>
+                    <input name='id_menu' class='solo-numeros' maxlength='11' value='{$row['id_menu']}' required>
+                    <input name='id_local' class='solo-numeros'maxlength='11'  value='{$row['id_local']}' required>
+                    <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
+                        <option value='disponible'>disponible</option>
+                        <option value='no disponible'>no disponible</option>
+                    </select>
                     <button type='button' class='btn-modificar' data-id='{$row['id_local_menu']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_local_menu']}'>Eliminar</button>
                 </form>
@@ -335,9 +338,12 @@ function mostrarLocalMenu($conexion)
     </table>
     <h4>Agregar ítem a local</h4>
     <form data-accion='agregar'>
-        <input name='id_menu' placeholder='ID Menu'>
-        <input name='id_local' placeholder='ID Local'>
-        <input name='estado_disponibilidad' placeholder='Disponibilidad'>
+        <input name='id_menu' class='solo-numeros' maxlength='11' placeholder='ID Menu' required>
+        <input name='id_local' class='solo-numeros' maxlength='11' placeholder='ID Local' required>
+        <select name='estado_disponibilidad' placeholder='Disponibilidad' required>
+            <option value='disponible'>disponible</option>
+            <option value='no disponible'>no disponible</option>
+        </select>
         <input type='submit' value='Agregar'>
     </form>";
 }

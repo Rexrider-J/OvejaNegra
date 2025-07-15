@@ -22,6 +22,14 @@ switch ($accion) {
 
 function agregarRegistro($conexion, $tabla)
 {
+  /*Función reutilizable para validar existencia en tablas*/
+  function existeEnTabla($conexion, $tabla, $columna, $valor) {
+    $stmt = $conexion->prepare("SELECT 1 FROM $tabla WHERE $columna = ? LIMIT 1");
+    $stmt->bind_param("i", $valor);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->num_rows > 0;
+  }
   switch ($tabla) {
     case 'clientes':
       $stmt = $conexion->prepare("INSERT INTO clientes (nombre, apellido, dni, mail, telefono, fecha_nacimiento, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -40,8 +48,21 @@ function agregarRegistro($conexion, $tabla)
       $stmt->bind_param("ssss", $_POST['nombre'], $_POST['direccion'], $_POST['telefono'], $_POST['estado_disponibilidad']);
       break;
     case 'local_menu':
+      /*Validar que los IDs existan antes de insertar*/
+      $id_menu = $_POST['id_menu'];
+      $id_local = $_POST['id_local'];
+      /*Validaciones*/
+      if (!existeEnTabla($conexion, 'menu', 'id_menu', $id_menu)) {
+        echo "❌ El ID del menú ($id_menu) no existe.";
+        exit;
+      }
+      if (!existeEnTabla($conexion, 'locales', 'id_local', $id_local)) {
+        echo "❌ El ID del local ($id_local) no existe.";
+        exit;
+      }
+      /*Si pasa la validación, se prepara el insert*/
       $stmt = $conexion->prepare("INSERT INTO local_menu (id_menu, id_local, estado_disponibilidad) VALUES (?, ?, ?)");
-      $stmt->bind_param("iis", $_POST['id_menu'], $_POST['id_local'], $_POST['estado_disponibilidad']);
+      $stmt->bind_param("iis", $id_menu, $id_local, $_POST['estado_disponibilidad']);
       break;
     case 'mesas':
       $stmt = $conexion->prepare("INSERT INTO mesas (id_local, descripcion, cupo_maximo, estado) VALUES (?, ?, ?, ?)");
@@ -64,7 +85,7 @@ function agregarRegistro($conexion, $tabla)
       return;
   }
   if ($stmt->execute()) {
-    echo "Registro agregado correctamente.";
+    echo "✅Registro agregado correctamente.";
   } else {
     echo "Error al agregar: " . $conexion->error;
   }
@@ -148,7 +169,7 @@ function modificarRegistro($conexion, $tabla, $id)
   $stmt->bind_param($tipos, ...$valores);
 
   if ($stmt->execute()) {
-    echo "Registro modificado correctamente.";
+    echo "✅Registro modificado correctamente.";
   } else {
     echo "Error al modificar: " . $conexion->error;
   }
@@ -180,7 +201,7 @@ function eliminarRegistro($conexion, $tabla, $id)
   $stmt->bind_param("i", $id);
 
   if ($stmt->execute()) {
-    echo "Registro eliminado correctamente.";
+    echo "✅Registro eliminado correctamente.";
   } else {
     echo "Error al eliminar: " . $conexion->error;
   }
