@@ -65,7 +65,7 @@ CREATE TABLE `empleados` (
   `contrasena` varchar(20) NOT NULL,
   `id_local` int(11) NOT NULL,
   PRIMARY KEY (`id_empleado`),
-  UNIQUE KEY `dni` (`dni`),
+  UNIQUE KEY `mail` (`mail`),
   KEY `id_local` (`id_local`),
   UNIQUE KEY `unq_dni_nombre_apellido` (`dni`, `nombre`, `apellido`),
   CONSTRAINT `empleados_ibfk_1` FOREIGN KEY (`id_local`) REFERENCES `locales` (`id_local`)

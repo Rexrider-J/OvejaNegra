@@ -134,7 +134,7 @@ function mostrarEmpleados($conexion)
                 <form>
                     <input name='nombre' maxlength='50' class='solo-letras' value='{$row['nombre']}' required>
                     <input name='apellido' maxlength='50' class='solo-letras' value='{$row['apellido']}' required>
-                    <input name='dni' min='1000000' max='99999999' maxlength='11' class='solo-numeros' value='{$row['dni']}' required>
+                    <input name='dni' type='number' min='1000000' max='99999999999' maxlength='11' class='solo-numeros' value='{$row['dni']}' required>
                     <input name='mail' type='email' maxlength='100' value='{$row['mail']}' required>
                     <select name='puesto' value='{$row['puesto']}' required>
                         <option value='Mozo' " . ($row['puesto'] === 'Mozo' ? 'selected' : '') . ">Mozo</option>
@@ -158,7 +158,7 @@ function mostrarEmpleados($conexion)
     <form data-accion='agregar'>
         <input name='nombre' maxlength='50' class='solo-letras' placeholder='Nombre' required>
         <input name='apellido' maxlength='50' class='solo-letras' placeholder='Apellido' required>
-        <input name='dni' min='1000000' max='99999999' maxlength='11' class='solo-numeros' placeholder='DNI' required>
+        <input name='dni' min='1000000' max='99999999' minlength='7' maxlength='11' class='solo-numeros' placeholder='DNI' required>
         <input name='mail' type='email' maxlength='100' placeholder='Email' required>
         <select name='puesto' required>
             <option value='Mozo'>Mozo</option>
@@ -284,7 +284,7 @@ function mostrarLocales($conexion)
                 <form>
                     <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' value='{$row['nombre']}' required>
                     <input name='direccion' placeholder='Dirección' maxlength='255' value='{$row['direccion']}' required>
-                    <input name='telefono'placeholder='Teléfono' min='1000000000' max='99999999' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
+                    <input name='telefono'placeholder='Teléfono' min='1000000000' max='99999999' minlength='10' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
                     <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
                         <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
                         <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
@@ -302,7 +302,7 @@ function mostrarLocales($conexion)
         <form data-accion='agregar'>
             <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' required>
             <input name='direccion' placeholder='Dirección' maxlength='255' required>
-            <input name='telefono' placeholder='Teléfono' min='1000000000' max='99999999' maxlength='20' class='solo-numeros' required>
+            <input name='telefono' placeholder='Teléfono' min='1000000000' maxlength='20' class='solo-numeros' required>
             <select name='estado_disponibilidad' required>
                 <option value='disponible'>disponible</option>
                 <option value='no disponible'>no disponible</option>

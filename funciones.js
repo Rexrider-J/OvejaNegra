@@ -1301,7 +1301,7 @@ function validateEmail(email) {
   const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})$/;
   return re.test(email);
 }
-/*Validar que no exista un dni con el mismo nombre, apellido y mail */
+/*Validar que no exista un dni con el mismo mail */
 function validarDniMail(dni, mail, tipo, retornarId = false) {
   return new Promise((resolve, reject) => {
     if (!dni || !mail) {
