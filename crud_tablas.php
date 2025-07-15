@@ -113,6 +113,7 @@ function mostrarEmpleados($conexion)
                 <th>DNI</th>
                 <th>Mail</th>
                 <th>Puesto</th>
+                <th>Contrasena</th>
                 <th>ID Local</th>
                 <th>Acciones</th>
             </tr>
@@ -127,16 +128,23 @@ function mostrarEmpleados($conexion)
             <td>{$row['dni']}</td>
             <td>{$row['mail']}</td>
             <td>{$row['puesto']}</td>
+            <td>{$row['contrasena']}</td>
             <td>{$row['id_local']}</td>
             <td>
                 <form>
-                    <input name='nombre' value='{$row['nombre']}'>
-                    <input name='apellido' value='{$row['apellido']}'>
-                    <input name='dni' value='{$row['dni']}'>
-                    <input name='mail' value='{$row['mail']}'>
-                    <input name='puesto' value='{$row['puesto']}'>
-                    <input name='id_local' value='{$row['id_local']}'>
-                    <input name='contrasena' type='password' placeholder='Nueva contraseña' autocomplete='new-password'>
+                    <input name='nombre' maxlength='50' class='solo-letras' value='{$row['nombre']}' required>
+                    <input name='apellido' maxlength='50' class='solo-letras' value='{$row['apellido']}' required>
+                    <input name='dni' min='1000000' max='99999999' maxlength='11' class='solo-numeros' value='{$row['dni']}' required>
+                    <input name='mail' type='email' maxlength='100' value='{$row['mail']}' required>
+                    <select name='puesto' value='{$row['puesto']}' required>
+                        <option value='Mozo' " . ($row['puesto'] === 'Mozo' ? 'selected' : '') . ">Mozo</option>
+                        <option value='Caja' " . ($row['puesto'] === 'Caja' ? 'selected' : '') . ">Caja</option>
+                        <option value='Limpieza' " . ($row['puesto'] === 'Limpieza' ? 'selected' : '') . ">Limpieza</option>
+                        <option value='Subgerente' " . ($row['puesto'] === 'Subgerente' ? 'selected' : '') . ">Subgerente</option>
+                        <option value='Gerente' " . ($row['puesto'] === 'Gerente' ? 'selected' : '') . ">Gerente</option>
+                    </select>
+                    <input name='id_local' maxlength='11' class='solo-numeros' value='{$row['id_local']}'>
+                    <input name='contrasena' maxlength='20' type='password' placeholder='Nueva contraseña' autocomplete='new-password'>
                     <button type='button' class='btn-modificar' data-id='{$row['id_empleado']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_empleado']}'>Eliminar</button>
                 </form>
@@ -148,13 +156,19 @@ function mostrarEmpleados($conexion)
     </table>
     <h4>Agregar nuevo empleado</h4>
     <form data-accion='agregar'>
-        <input name='nombre' placeholder='Nombre' required>
-        <input name='apellido' placeholder='Apellido' required>
-        <input name='dni' placeholder='DNI' required>
-        <input name='mail' placeholder='Email'>
-        <input name='puesto' placeholder='Puesto'>
-        <input name='id_local' placeholder='ID Local'>
-        <input name='contrasena' type='password' placeholder='Contraseña' required>
+        <input name='nombre' maxlength='50' class='solo-letras' placeholder='Nombre' required>
+        <input name='apellido' maxlength='50' class='solo-letras' placeholder='Apellido' required>
+        <input name='dni' min='1000000' max='99999999' maxlength='11' class='solo-numeros' placeholder='DNI' required>
+        <input name='mail' type='email' maxlength='100' placeholder='Email' required>
+        <select name='puesto' required>
+            <option value='Mozo'>Mozo</option>
+            <option value='Caja'>Caja</option>
+            <option value='Limpieza'>Limpieza</option>
+            <option value='Subgerente'>Subgerente</option>
+            <option value='Gerente'>Gerente</option>
+        </select>
+        <input name='id_local' maxlength='11' class='solo-numeros' placeholder='ID Local' required>
+        <input name='contrasena' maxlength='20' type='password' placeholder='Contraseña' required>
         <input type='submit' value='Agregar'>
     </form>";
 }
@@ -272,8 +286,8 @@ function mostrarLocales($conexion)
                     <input name='direccion' placeholder='Dirección' maxlength='255' value='{$row['direccion']}' required>
                     <input name='telefono'placeholder='Teléfono' min='1000000000' max='99999999' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
                     <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
-                        <option value='disponible'>disponible</option>
-                        <option value='no disponible'>no disponible</option>
+                        <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
+                        <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
                     </select>
                     <button type='button' class='btn-modificar' data-id='{$row['id_local']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_local']}'>Eliminar</button>
@@ -324,8 +338,8 @@ function mostrarLocalMenu($conexion)
                     <input name='id_menu' class='solo-numeros' maxlength='11' value='{$row['id_menu']}' required>
                     <input name='id_local' class='solo-numeros'maxlength='11'  value='{$row['id_local']}' required>
                     <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
-                        <option value='disponible'>disponible</option>
-                        <option value='no disponible'>no disponible</option>
+                        <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
+                        <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
                     </select>
                     <button type='button' class='btn-modificar' data-id='{$row['id_local_menu']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_local_menu']}'>Eliminar</button>
