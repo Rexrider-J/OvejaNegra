@@ -55,10 +55,15 @@ function mostrarClientes($conexion)
                 <th>Mail</th>
                 <th>Teléfono</th>
                 <th>Fecha Nac</th>
+                <th>Contraseña</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>";
+    
+    $anioActual = date("Y");
+    $minFecha = ($anioActual - 80) . "-01-01";
+    $maxFecha = ($anioActual - 14) . "-12-31";
 
   while ($row = $res->fetch_assoc()) {
     echo "<tr>
@@ -69,15 +74,16 @@ function mostrarClientes($conexion)
             <td>{$row['mail']}</td>
             <td>{$row['telefono']}</td>
             <td>{$row['fecha_nacimiento']}</td>
+            <td>{$row['contrasena']}</td>
             <td>
                 <form>
-                    <input name='nombre' value='{$row['nombre']}'>
-                    <input name='apellido' value='{$row['apellido']}'>
-                    <input name='dni' value='{$row['dni']}'>
-                    <input name='mail' value='{$row['mail']}'>
-                    <input name='telefono' value='{$row['telefono']}'>
-                    <input name='fecha_nacimiento' type='date' value='{$row['fecha_nacimiento']}'>
-                    <input name='contrasena' type='password' placeholder='Nueva contraseña' autocomplete='new-password'>
+                    <input name='nombre' maxlength='50' class='solo-letras' value='{$row['nombre']}' required>
+                    <input name='apellido' maxlength='50' class='solo-letras' value='{$row['apellido']}' required>
+                    <input name='dni' type='number' min='1000000' max='99999999999' maxlength='11' class='solo-numeros' value='{$row['dni']}' required>
+                    <input name='mail' type='email' maxlength='100' value='{$row['mail']}' required>
+                    <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
+                    <input name='fecha_nacimiento' type='date' value='{$row['fecha_nacimiento']}' min='$minFecha' max='$maxFecha' required>
+                    <input name='contrasena' maxlength='20' type='password' placeholder='Nueva contraseña' autocomplete='new-password' required>
                     <button type='button' class='btn-modificar' data-id='{$row['id_cliente']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_cliente']}'>Eliminar</button>
                 </form>
@@ -89,13 +95,13 @@ function mostrarClientes($conexion)
     </table>
     <h4>Agregar nuevo cliente</h4>
     <form data-accion='agregar'>
-        <input name='nombre' placeholder='Nombre' required>
-        <input name='apellido' placeholder='Apellido' required>
-        <input name='dni' placeholder='DNI' required>
-        <input name='mail' placeholder='Email'>
-        <input name='telefono' placeholder='Teléfono'>
-        <input name='fecha_nacimiento' type='date'>
-        <input name='contrasena' type='password' placeholder='Contraseña' required>
+        <input name='nombre' maxlength='50' class='solo-letras' placeholder='Nombre' required>
+        <input name='apellido' maxlength='50' class='solo-letras' placeholder='Apellido' required>
+        <input name='dni' min='1000000' max='99999999' minlength='7' maxlength='11' class='solo-numeros' placeholder='DNI' required>
+        <input name='mail' type='email' maxlength='100' placeholder='Email'>
+        <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' placeholder='Teléfono' required>
+        <input name='fecha_nacimiento' type='date' min='$minFecha' max='$maxFecha'>
+        <input name='contrasena' maxlength='20' type='password' placeholder='Contraseña' required>
         <input type='submit' value='Agregar'>
     </form>";
 }
@@ -284,7 +290,7 @@ function mostrarLocales($conexion)
                 <form>
                     <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' value='{$row['nombre']}' required>
                     <input name='direccion' placeholder='Dirección' maxlength='255' value='{$row['direccion']}' required>
-                    <input name='telefono'placeholder='Teléfono' min='1000000000' max='99999999' minlength='10' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
+                    <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
                     <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
                         <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
                         <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
@@ -302,7 +308,7 @@ function mostrarLocales($conexion)
         <form data-accion='agregar'>
             <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' required>
             <input name='direccion' placeholder='Dirección' maxlength='255' required>
-            <input name='telefono' placeholder='Teléfono' min='1000000000' maxlength='20' class='solo-numeros' required>
+            <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' placeholder='Teléfono' required>
             <select name='estado_disponibilidad' required>
                 <option value='disponible'>disponible</option>
                 <option value='no disponible'>no disponible</option>

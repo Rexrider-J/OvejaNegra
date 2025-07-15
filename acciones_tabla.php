@@ -135,13 +135,84 @@ function validarEmpleado($conexion, $datos, $id = null) {
 
     return true;
 }
+function validarCliente($conexion, $datos, $id = null) {
+    // Validar DNI
+    $dniValidacion = validarLongitudDni($datos['dni']);
+    if ($dniValidacion !== true) return $dniValidacion;
+
+    $dniValorValidacion = validarValorDni($datos['dni']);
+    if ($dniValorValidacion !== true) return $dniValorValidacion;
+
+    // Validar email
+    $emailValidacion = validarFormatoEmail($datos['mail']);
+    if ($emailValidacion !== true) return $emailValidacion;
+
+    // Verificar si el mail ya existe (en tabla clientes)
+    $queryMail = "SELECT id_cliente FROM clientes WHERE mail = ?";
+    if ($id !== null) {
+        $queryMail .= " AND id_cliente != ?";
+        $stmt = $conexion->prepare($queryMail);
+        $stmt->bind_param("si", $datos['mail'], $id);
+    } else {
+        $stmt = $conexion->prepare($queryMail);
+        $stmt->bind_param("s", $datos['mail']);
+    }
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows > 0) {
+        $stmt->close();
+        return "Ya existe un cliente con ese mail.";
+    }
+    $stmt->close();
+
+    // Verificar si existe un cliente con el mismo DNI y mismos nombre y apellido
+    $queryDni = "SELECT id_cliente FROM clientes WHERE nombre = ? AND apellido = ? AND dni = ?";
+    if ($id !== null) {
+        $queryDni .= " AND id_cliente != ?";
+        $stmt = $conexion->prepare($queryDni);
+        $stmt->bind_param("ssii", $datos['nombre'], $datos['apellido'], $datos['dni'], $id);
+    } else {
+        $stmt = $conexion->prepare($queryDni);
+        $stmt->bind_param("ssi", $datos['nombre'], $datos['apellido'], $datos['dni']);
+    }
+    $stmt->execute();
+    $stmt->store_result();
+    if ($stmt->num_rows > 0) {
+        $stmt->close();
+        return "Ya existe un cliente con ese DNI, nombre y apellido.";
+    }
+    $stmt->close();
+
+    // Validar teléfono (solo números y longitud 10–20)
+    if (!preg_match('/^\d{10,20}$/', $datos['telefono'])) {
+        return "El teléfono debe contener solo números y tener entre 10 y 20 dígitos.";
+    }
+
+    return true;
+}
+
 
 function agregarRegistro($conexion, $tabla)
 {
   switch ($tabla) {
     case 'clientes':
+      $datosCliente = [
+        'nombre' => $_POST['nombre'],
+        'apellido' => $_POST['apellido'],
+        'dni' => $_POST['dni'],
+        'mail' => $_POST['mail'],
+        'telefono' => $_POST['telefono'],
+        'fecha_nacimiento' => $_POST['fecha_nacimiento'],
+        'contrasena' => $_POST['contrasena'],
+      ];
+      $validacion = validarCliente($conexion, $datosCliente);
+      if ($validacion !== true) {
+        echo $validacion;
+        return;
+      }
+
       $stmt = $conexion->prepare("INSERT INTO clientes (nombre, apellido, dni, mail, telefono, fecha_nacimiento, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param("ssissss", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['telefono'], $_POST['fecha_nacimiento'], $_POST['contrasena']);
+      $stmt->bind_param("ssissss", ...array_values($datosCliente));
       break;
     case 'empleados':
       $datosEmpleado = [
@@ -217,9 +288,23 @@ function modificarRegistro($conexion, $tabla, $id)
 {
   switch ($tabla) {
     case 'clientes':
+      $datosCliente = [
+        'nombre' => $_POST['nombre'],
+        'apellido' => $_POST['apellido'],
+        'dni' => $_POST['dni'],
+        'mail' => $_POST['mail'],
+        'telefono' => $_POST['telefono'],
+        'fecha_nacimiento' => $_POST['fecha_nacimiento'],
+      ];
+      $validacion = validarCliente($conexion, $datosCliente, $id);
+      if ($validacion !== true) {
+        echo $validacion;
+        return;
+      }
+
       $campos = "nombre=?, apellido=?, dni=?, mail=?, telefono=?, fecha_nacimiento=?";
       $tipos = "ssisss";
-      $valores = [$_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['telefono'], $_POST['fecha_nacimiento']];
+      $valores = array_values($datosCliente);
 
       if (!empty($_POST['contrasena'])) {
         $campos .= ", contrasena=?";
@@ -343,8 +428,20 @@ function eliminarRegistro($conexion, $tabla, $id) {
     return;
   }
 
+  // 🔸 Si es cliente, eliminar primero sus reservas
+  if ($tabla === 'clientes') {
+    $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_cliente = ?");
+    $stmt->bind_param("i", $id);
+    if (!$stmt->execute()) {
+      echo "Error al eliminar reservas del cliente: " . $conexion->error;
+      $stmt->close();
+      return;
+    }
+    $stmt->close();
+  }
+
+  // 🔸 Si es empleado, eliminar dependencias de funciones
   if ($tabla === 'empleados') {
-    // Primero borrar dependencias en empleado_funcion
     $stmt = $conexion->prepare("DELETE FROM empleado_funcion WHERE id_empleado = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
@@ -355,7 +452,7 @@ function eliminarRegistro($conexion, $tabla, $id) {
     $stmt->close();
   }
 
-  // Luego borrar el registro principal
+  // 🔸 Eliminar registro principal
   $stmt = $conexion->prepare("DELETE FROM $tabla WHERE $id_col = ?");
   $stmt->bind_param("i", $id);
 
