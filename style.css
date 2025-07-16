@@ -13,12 +13,20 @@ body {
 }
 
 
-a, button, .btn,input, .dropdown-toggle, select, option {
-  cursor: url('img/cursor_pointer.png') 4 4, pointer !important;;
+a, button, .btn, .dropdown-toggle, select, option {
+  cursor: url('img/cursor_pointer.png') 4 4, pointer !important;
 }
 
-input, textarea {
-  cursor: url('img/cursor_text.png') 16 16, text !important;;
+input[type="button"], input[type="submit"], input[type="reset"], input[type="file"],input[type="checkbox"],input[type="date"] {
+  cursor: url('img/cursor_pointer.png') 4 4, pointer !important;
+}
+
+input[type="text"], input[type="number"],input[type="email"],input[type="tel"],input {
+  cursor: url('img/cursor_text.png') 4 4, text !important;
+}
+
+ textarea {
+  cursor: url('img/cursor_text.png') 16 16, text !important;
 }
 
 .waiting, .loading {
