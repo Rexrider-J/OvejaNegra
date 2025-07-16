@@ -437,8 +437,8 @@ function mostrarMenu($conexion)
                             echo "<option value='$cat'>$cat</option>";
                         }
                     echo "</select>
-                    <input name='descripcion' value='{$row['descripcion']}'>
-                    <input name='imagen' type='file' accept='image/*'>
+                    <input name='descripcion' maxlength='255' value='{$row['descripcion']}' required>
+                    <input name='imagen' type='file' accept='image/*' required>
                     <button type='button' class='btn-modificar' data-id='{$row['id_menu']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_menu']}'>Eliminar</button>
                 </form>
@@ -458,7 +458,7 @@ function mostrarMenu($conexion)
                 echo "<option value='$cat'>$cat</option>";
             }
         echo "</select>
-        <input name='descripcion' placeholder='Descripción'>
+        <input name='descripcion' maxlength='255' placeholder='Descripción' required>
         <input type='file' name='imagen' accept='image/*' required>
         <input type='submit' value='Agregar'>
     </form>";
@@ -490,10 +490,18 @@ function mostrarMesas($conexion)
             <td>{$row['estado']}</td>
             <td>
                 <form>
-                    <input name='id_local' value='{$row['id_local']}'>
-                    <input name='descripcion' value='{$row['descripcion']}'>
-                    <input name='cupo_maximo' value='{$row['cupo_maximo']}'>
-                    <input name='estado' value='{$row['estado']}'>
+                    <input name='id_local' class='solo-numeros' maxlength='11' value='{$row['id_local']}' required>
+                    <input name='descripcion' maxlength='255' value='{$row['descripcion']}' required>
+                    <select name='cupo_maximo' value='{$row['cupo_maximo']}' required>
+                        <option value='2' " . ($row['cupo_maximo'] === '2' ? 'selected' : '') . ">2</option>
+                        <option value='4' " . ($row['cupo_maximo'] === '4' ? 'selected' : '') . ">4</option>
+                        <option value='6' " . ($row['cupo_maximo'] === '6' ? 'selected' : '') . ">6</option>
+                        <option value='8' " . ($row['cupo_maximo'] === '8' ? 'selected' : '') . ">8</option>
+                    </select>
+                    <select name='estado' value='{$row['estado']}' required>
+                        <option value='habilitada' " . ($row['estado'] === 'habilitada' ? 'selected' : '') . ">habilitada</option>
+                        <option value='deshabilitada' " . ($row['estado'] === 'deshabilitada' ? 'selected' : '') . ">deshabilitada</option>
+                    </select>
                     <button type='button' class='btn-modificar' data-id='{$row['id_mesa']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_mesa']}'>Eliminar</button>
                 </form>
@@ -505,10 +513,18 @@ function mostrarMesas($conexion)
     </table>
     <h4>Agregar nueva mesa</h4>
     <form data-accion='agregar'>
-        <input name='id_local' placeholder='ID Local'>
-        <input name='descripcion' placeholder='Descripción'>
-        <input name='cupo_maximo' placeholder='Cupo Máximo'>
-        <input name='estado' placeholder='Estado'>
+        <input name='id_local' class='solo-numeros' maxlength='11' placeholder='ID Local' required>
+        <input name='descripcion' maxlength='255' placeholder='Descripción' required>
+        <select name='cupo_maximo' required>
+            <option value='2'>2</option>
+            <option value='4'>4</option>
+            <option value='6'>6</option>
+            <option value='8'>8</option>
+        </select>
+        <select name='estado' required>
+            <option value='habilitada'>habilitada</option>
+            <option value='deshabilitada'>deshabilitada</option>
+        </select>
         <input type='submit' value='Agregar'>
     </form>";
 }

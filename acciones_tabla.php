@@ -306,6 +306,26 @@ function agregarRegistro($conexion, $tabla)
       $stmt->bind_param("iis", $id_menu, $id_local, $_POST['estado_disponibilidad']);
       break;
     case 'mesas':
+      // Validar existencia del local
+      if (!existeEnTabla($conexion, 'locales', 'id_local', $_POST['id_local'])) {
+        echo "❌ Error: El ID del local no existe.";
+        return;
+      }
+
+      // Verificar unicidad (id_local + descripcion)
+      $stmt_check = $conexion->prepare("SELECT 1 FROM mesas WHERE id_local = ? AND descripcion = ?");
+      $stmt_check->bind_param("is", $_POST['id_local'], $_POST['descripcion']);
+      $stmt_check->execute();
+      $resultado = $stmt_check->get_result();
+
+      if ($resultado->num_rows > 0) {
+        echo "❌ Error: Ya existe una mesa con esa descripción en el local.";
+        $stmt_check->close();
+        return;
+      }
+      $stmt_check->close();
+
+      // Insertar mesa si pasa validaciones
       $stmt = $conexion->prepare("INSERT INTO mesas (id_local, descripcion, cupo_maximo, estado) VALUES (?, ?, ?, ?)");
       $stmt->bind_param("isis", $_POST['id_local'], $_POST['descripcion'], $_POST['cupo_maximo'], $_POST['estado']);
       break;
@@ -507,6 +527,26 @@ function modificarRegistro($conexion, $tabla, $id)
       $valores = [$id_menu, $id_local, $_POST['estado_disponibilidad'], $id];
       break;
     case 'mesas':
+      // Validar existencia del local
+      if (!existeEnTabla($conexion, 'locales', 'id_local', $_POST['id_local'])) {
+        echo "❌ Error: El ID del local no existe.";
+        return;
+      }
+
+      // Verificar unicidad (id_local + descripcion), excluyendo la mesa actual que se esta modificando
+      $stmt_check = $conexion->prepare("SELECT 1 FROM mesas WHERE id_local = ? AND descripcion = ? AND id_mesa != ?");
+      $stmt_check->bind_param("isi", $_POST['id_local'], $_POST['descripcion'], $id);
+      $stmt_check->execute();
+      $resultado = $stmt_check->get_result();
+
+      if ($resultado->num_rows > 0) {
+        echo "❌ Error: Ya existe una mesa con esa descripción en el local.";
+        $stmt_check->close();
+        return;
+      }
+      $stmt_check->close();
+
+      // Actualizar si pasa validaciones
       $sql = "UPDATE mesas SET id_local=?, descripcion=?, cupo_maximo=?, estado=? WHERE id_mesa=?";
       $tipos = "isisi";
       $valores = [$_POST['id_local'], $_POST['descripcion'], $_POST['cupo_maximo'], $_POST['estado'], $id];
@@ -594,7 +634,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     return;
   }
 
-  // 🔸 Si es cliente, eliminar primero sus reservas
+  /*Si es cliente, eliminar primero sus reservas*/
   if ($tabla === 'clientes') {
     $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_cliente = ?");
     $stmt->bind_param("i", $id);
@@ -606,7 +646,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt->close();
   }
 
-  // 🔸 Si es empleado, eliminar dependencias de funciones
+  /*Si es empleado, eliminar dependencias de funciones*/
   if ($tabla === 'empleados') {
     $stmt = $conexion->prepare("DELETE FROM empleado_funcion WHERE id_empleado = ?");
     $stmt->bind_param("i", $id);
@@ -619,7 +659,7 @@ function eliminarRegistro($conexion, $tabla, $id)
   }
 
   if ($tabla === 'locales') {
-    // 🔹 Eliminar reservas del local
+    /*Eliminar reservas del local*/
     $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
@@ -629,7 +669,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     }
     $stmt->close();
 
-    // 🔹 Eliminar mesas del local
+    /*Eliminar mesas del local*/
     $stmt = $conexion->prepare("DELETE FROM mesas WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
@@ -639,7 +679,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     }
     $stmt->close();
 
-    // 🔹 Eliminar empleados del local
+    /*Eliminar empleados del local*/
     $stmt = $conexion->prepare("DELETE FROM empleados WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
@@ -649,7 +689,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     }
     $stmt->close();
 
-    // 🔹 Eliminar menú del local
+    /*Eliminar menú del local*/
     $stmt = $conexion->prepare("DELETE FROM local_menu WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
@@ -663,8 +703,18 @@ function eliminarRegistro($conexion, $tabla, $id)
   if ($tabla === 'menu') {  // si la tabla es menu, eliminar primero en local_menu
     $conexion->query("DELETE FROM local_menu WHERE id_menu = $id");
   }
-
-  // 🔸 Eliminar registro principal
+  if ($tabla === 'mesas') {
+    /*Eliminar reservas donde esta mesa fue usada directamente o como cambio*/
+    $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_mesa = ? OR cambio_mesa = ?");
+    $stmt->bind_param("ii", $id, $id);
+    if (!$stmt->execute()) {
+      echo "Error al eliminar reservas asociadas a la mesa: " . $conexion->error;
+      $stmt->close();
+      return;
+    }
+    $stmt->close();
+  }
+  /*Eliminar registro principal*/
   $stmt = $conexion->prepare("DELETE FROM $tabla WHERE $id_col = ?");
   $stmt->bind_param("i", $id);
 
