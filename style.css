@@ -13,7 +13,7 @@ body {
 }
 
 
-a, button, .btn, .dropdown-toggle, select, option {
+a, button, .btn, .dropdown-toggle, select, option, legend {
   cursor: url('img/cursor_pointer.png') 4 4, pointer !important;
 }
 
