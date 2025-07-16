@@ -9,6 +9,24 @@ body {
     /* Elimina rellenos */
     background-color: white;
     /* Color de fondo */
+    cursor: url('img/cursor_pointer.png') 0 0, auto;
+}
+
+
+a, button, .btn,input, .dropdown-toggle, select, option {
+  cursor: url('img/cursor_pointer.png') 4 4, pointer !important;;
+}
+
+input, textarea {
+  cursor: url('img/cursor_text.png') 16 16, text !important;;
+}
+
+.waiting, .loading {
+  cursor: url('img/cursor_wait.png') 24 24, wait;
+}
+
+.crosshair-zone {
+  cursor: url('img/cursor_crosshair.png') 16 16, crosshair;
 }
 
 /*INDEX*/
