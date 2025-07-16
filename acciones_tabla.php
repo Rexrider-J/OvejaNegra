@@ -423,9 +423,63 @@ function modificarRegistro($conexion, $tabla, $id)
       $valores[] = $id;
       break;
     case 'menu':
+      $nombre = trim($_POST['nombre']);
+      $precio = $_POST['precio'];
+      $categoria = trim($_POST['categoria']);
+      $descripcion = trim($_POST['descripcion']);
+      $categoriasValidas = ['Cafeteria', 'Panaderia', 'Milkshake', 'Waffles', 'Starters', 'Burgers', 'Adicionales', 'Milanesas', 'Hotdogs', 'Ensaladas', 'Bebidas', 'Postres', 'Promo', 'Brunch'];
+
+      if (!in_array($categoria, $categoriasValidas)) {
+        echo "❌ Categoría inválida.";
+        return;
+      }
+      $ruta_imagen = '';
+      // Si no se sube nueva imagen, recuperar la actual desde la BDD
+      if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] !== UPLOAD_ERR_OK) {
+        $stmt = $conexion->prepare("SELECT ruta_imagen FROM menu WHERE id_menu = ?");
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $stmt->bind_result($ruta_imagen);
+        $stmt->fetch();
+        $stmt->close();
+      } else {
+        // Se subió una nueva imagen
+        $nombreTemporal = $_FILES['imagen']['tmp_name'];
+        $nombreArchivo = basename($_FILES['imagen']['name']);
+
+        $mime = mime_content_type($nombreTemporal);
+        $tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+
+        if (!in_array($mime, $tiposPermitidos)) {
+          echo "❌ Solo se permiten imágenes JPG, PNG, WEBP o GIF.";
+          return;
+        }
+
+        if ($_FILES['imagen']['size'] > 2 * 1024 * 1024) {
+          echo "❌ La imagen es demasiado grande. Máximo 2MB.";
+          return;
+        }
+
+        list($ancho, $alto) = getimagesize($nombreTemporal);
+        if ($ancho > 1000 || $alto > 1000) {
+          echo "❌ La imagen supera los 1000x1000 píxeles permitidos.";
+          return;
+        }
+
+        $nombreSeguro = uniqid() . "_" . preg_replace("/[^A-Za-z0-9.\-_]/", "", $nombreArchivo);
+        $rutaDestino = "img/" . $nombreSeguro;
+
+        if (!move_uploaded_file($nombreTemporal, $rutaDestino)) {
+          echo "❌ Error al guardar la imagen.";
+          return;
+        }
+
+        $ruta_imagen = $rutaDestino;
+      }
+
       $sql = "UPDATE menu SET nombre=?, precio=?, categoria=?, descripcion=?, ruta_imagen=? WHERE id_menu=?";
       $tipos = "sdsssi";
-      $valores = [$_POST['nombre'], $_POST['precio'], $_POST['categoria'], $_POST['descripcion'], $_POST['ruta_imagen'], $id];
+      $valores = [$nombre, $precio, $categoria, $descripcion, $ruta_imagen, $id];
       break;
     case 'locales':
       $sql = "UPDATE locales SET nombre=?, direccion=?, telefono=?, estado_disponibilidad=? WHERE id_local=?";
@@ -606,9 +660,6 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt->close();
   }
 
-  if ($tabla === 'menu') {  // si la tabla es menu, eliminar primero en local_menu
-    $conexion->query("DELETE FROM local_menu WHERE id_menu = $id");
-  }
 
   // 🔸 Eliminar registro principal
   $stmt = $conexion->prepare("DELETE FROM $tabla WHERE $id_col = ?");
