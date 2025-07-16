@@ -80,7 +80,7 @@ function existeOtroGerenteEnLocal($conexion, $id_local, $id_actual)
   $resultado = $stmt->get_result();
   $fila = $resultado->fetch_assoc();
   $stmt->close();
-  
+
   return $fila['cantidad'] > 0;
 }
 
@@ -200,6 +200,29 @@ function esLunes($fechaHora)
   $fecha = new DateTime($fechaHora);
   return $fecha->format('N') == 1; // 1 = lunes
 }
+
+function existeReservaConMismosDatos($conexion, $id_cliente, $id_mesa, $fechaHora, $id_estado_reserva, $id_reserva_actual = null)
+{
+    $query = "SELECT 1 FROM reservas 
+              WHERE id_cliente = ? AND id_mesa = ? AND fecha_reserva = ? AND id_estado_reserva = ?";
+
+    if ($id_reserva_actual !== null) {
+        $query .= " AND id_reserva != ?"; // Excluir la actual
+    }
+
+    $stmt = $conexion->prepare($query);
+
+    if ($id_reserva_actual !== null) {
+        $stmt->bind_param("iisii", $id_cliente, $id_mesa, $fechaHora, $id_estado_reserva, $id_reserva_actual);
+    } else {
+        $stmt->bind_param("iisi", $id_cliente, $id_mesa, $fechaHora, $id_estado_reserva);
+    }
+
+    $stmt->execute();
+    $stmt->store_result();
+    return $stmt->num_rows > 0;
+}
+
 
 function agregarRegistro($conexion, $tabla)
 {
@@ -364,8 +387,78 @@ function agregarRegistro($conexion, $tabla)
       $stmt->bind_param("ssi", $dia_hora, $funcion, $id_empleado);
       break;
     case 'reservas':
-      $stmt = $conexion->prepare("INSERT INTO reservas (id_cliente, id_mesa, fecha_reserva, observaciones, cant_personas, id_estado_reserva) VALUES (?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param("iissii", $_POST['id_cliente'], $_POST['id_mesa'], $_POST['fecha_reserva'], $_POST['observaciones'], $_POST['cant_personas'], $_POST['id_estado_reserva']);
+      // Validaciones
+      $id_cliente = $_POST['id_cliente'];
+      $id_mesa = $_POST['id_mesa'];
+      $id_local = $_POST['id_local'];
+      $fecha = $_POST['fecha'];
+      $hora = $_POST['hora'];
+      $fecha_reserva = "$fecha $hora";
+      $observaciones = $_POST['observaciones'];
+      $cant_personas = $_POST['cant_personas'];
+      $id_estado = $_POST['id_estado_reserva'];
+      $fecha_mod_cancel = $_POST['fecha_mod_cancel'];
+      $hora_mod_cancel = $_POST['hora_mod_cancel'];
+      $fecha_modificacion_cancelacion = "$fecha_mod_cancel $hora_mod_cancel";
+      $mod_por = $_POST['modificado_cancelado_por'];
+      $tipo_mod = $_POST['tipo_modificado_cancelado'];
+      $motivo = $_POST['motivo_cancelacion'];
+      $cambio_mesa = $_POST['cambio_mesa'];
+
+      if (
+          !existeEnTabla($conexion, 'clientes', 'id_cliente', $id_cliente) ||
+          !existeEnTabla($conexion, 'mesas', 'id_mesa', $id_mesa) ||
+          !existeEnTabla($conexion, 'locales', 'id_local', $id_local) ||
+          !existeEnTabla($conexion, 'estado_reserva', 'id_estado_reserva', $id_estado)
+      ) {
+          echo "Error: Uno de los IDs no existe.";
+          return;
+      }
+
+      if ($tipo_mod === 'cliente' && !existeEnTabla($conexion, 'clientes', 'id_cliente', $mod_por)) {
+          echo "Error: El cliente que modificó/canceló no existe.";
+          return;
+      }
+
+      if ($tipo_mod === 'empleado' && !existeEnTabla($conexion, 'empleados', 'id_empleado', $mod_por)) {
+          echo "Error: El empleado que modificó/canceló no existe.";
+          return;
+      }
+
+      if (!existeEnTabla($conexion, 'mesas', 'id_mesa', $cambio_mesa)) {
+          echo "Error: El ID de la mesa de cambio no existe.";
+          return;
+      }
+
+      // Verificar clave única
+      $stmt = $conexion->prepare("SELECT 1 FROM reservas WHERE id_local = ? AND id_mesa = ? AND fecha_reserva = ?");
+      $stmt->bind_param("iis", $id_local, $id_mesa, $fecha_reserva);
+      $stmt->execute();
+      $stmt->store_result();
+      if ($stmt->num_rows > 0) {
+          echo "Error: Ya existe una reserva con ese local, mesa y fecha.";
+          return;
+      }
+
+      // Insertar reserva
+      $stmt = $conexion->prepare("INSERT INTO reservas (
+          id_cliente, id_mesa, id_local, fecha_reserva, observaciones,
+          cant_personas, id_estado_reserva, fecha_modificacion_cancelacion,
+          modificado_cancelado_por, tipo_modificado_cancelado, motivo_cancelacion, cambio_mesa
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+      $stmt->bind_param("iiissississi",
+          $id_cliente, $id_mesa, $id_local, $fecha_reserva, $observaciones,
+          $cant_personas, $id_estado, $fecha_modificacion_cancelacion,
+          $mod_por, $tipo_mod, $motivo, $cambio_mesa
+      );
+
+      if ($stmt->execute()) {
+          echo "Reserva agregada correctamente.";
+      } else {
+          echo "Error al agregar reserva: " . $stmt->error;
+      }
+
       break;
     default:
       echo "Tabla no soportada.";
@@ -588,9 +681,86 @@ function modificarRegistro($conexion, $tabla, $id)
       $valores = [$dia_hora, $funcion, $id_empleado, $id];
       break;
     case 'reservas':
-      $sql = "UPDATE reservas SET id_cliente=?, id_mesa=?, fecha_reserva=?, observaciones=?, cant_personas=?, id_estado_reserva=? WHERE id_reserva=?";
-      $tipos = "iissiii";
-      $valores = [$_POST['id_cliente'], $_POST['id_mesa'], $_POST['fecha_reserva'], $_POST['observaciones'], $_POST['cant_personas'], $_POST['id_estado_reserva'], $id];
+      $id = $_POST['id']; // ID de la reserva a modificar
+      $id_cliente = $_POST['id_cliente'];
+      $id_mesa = $_POST['id_mesa'];
+      $id_local = $_POST['id_local'];
+      $fecha = $_POST['fecha'];
+      $hora = $_POST['hora'];
+      $fecha_reserva = "$fecha $hora";
+      $observaciones = $_POST['observaciones'];
+      $cant_personas = $_POST['cant_personas'];
+      $id_estado = $_POST['id_estado_reserva'];
+
+      // Campos opcionales
+      $fecha_mod_cancel = $_POST['fecha_mod_cancel'];
+      $hora_mod_cancel = $_POST['hora_mod_cancel'];
+      $fecha_modificacion_cancelacion_param = (!empty($fecha_mod_cancel) && !empty($hora_mod_cancel))
+          ? "$fecha_mod_cancel $hora_mod_cancel"
+          : null;
+
+      $mod_por = isset($_POST['modificado_cancelado_por']) && $_POST['modificado_cancelado_por'] !== '' ? $_POST['modificado_cancelado_por'] : null;
+      $tipo_mod = isset($_POST['tipo_modificado_cancelado']) && $_POST['tipo_modificado_cancelado'] !== '' ? $_POST['tipo_modificado_cancelado'] : null;
+      $motivo = isset($_POST['motivo_cancelacion']) && $_POST['motivo_cancelacion'] !== '' ? $_POST['motivo_cancelacion'] : null;
+      $cambio_mesa = isset($_POST['cambio_mesa']) && $_POST['cambio_mesa'] !== '' ? $_POST['cambio_mesa'] : null;
+
+      // Validaciones de existencia
+      if (
+          !existeEnTabla($conexion, 'clientes', 'id_cliente', $id_cliente) ||
+          !existeEnTabla($conexion, 'mesas', 'id_mesa', $id_mesa) ||
+          !existeEnTabla($conexion, 'locales', 'id_local', $id_local) ||
+          !existeEnTabla($conexion, 'estado_reserva', 'id_estado_reserva', $id_estado)
+      ) {
+          echo "Error: Uno de los IDs no existe.";
+          return;
+      }
+
+      if ($tipo_mod === 'cliente' && !existeEnTabla($conexion, 'clientes', 'id_cliente', $mod_por)) {
+          echo "Error: El cliente que modificó/canceló no existe.";
+          return;
+      }
+
+      if ($tipo_mod === 'empleado' && !existeEnTabla($conexion, 'empleados', 'id_empleado', $mod_por)) {
+          echo "Error: El empleado que modificó/canceló no existe.";
+          return;
+      }
+
+      if (!empty($cambio_mesa) && !existeEnTabla($conexion, 'mesas', 'id_mesa', $cambio_mesa)) {
+          echo "Error: El ID de la mesa de cambio no existe.";
+          return;
+      }
+
+      // Clave única: evitar duplicados salvo esta misma reserva
+      $stmt = $conexion->prepare("SELECT 1 FROM reservas WHERE id_local = ? AND id_mesa = ? AND fecha_reserva = ? AND id_reserva != ?");
+      $stmt->bind_param("iisi", $id_local, $id_mesa, $fecha_reserva, $id);
+      $stmt->execute();
+      $stmt->store_result();
+      if ($stmt->num_rows > 0) {
+          echo "Error: Ya existe una reserva con ese local, mesa y fecha.";
+          return;
+      }
+
+      // Actualizar reserva
+      $stmt = $conexion->prepare("UPDATE reservas SET
+          id_cliente=?, id_mesa=?, id_local=?, fecha_reserva=?, observaciones=?,
+          cant_personas=?, id_estado_reserva=?, fecha_modificacion_cancelacion=?,
+          modificado_cancelado_por=?, tipo_modificado_cancelado=?, motivo_cancelacion=?, cambio_mesa=?
+          WHERE id_reserva=?");
+
+      $stmt->bind_param("iiissississii",
+          $id_cliente, $id_mesa, $id_local, $fecha_reserva, $observaciones,
+          $cant_personas, $id_estado, $fecha_modificacion_cancelacion_param,
+          $mod_por, $tipo_mod, $motivo, $cambio_mesa, $id
+      );
+
+      if ($stmt->execute()) {
+          echo "✅Reserva actualizada correctamente.";
+          return;
+      } else {
+          echo "Error al actualizar reserva: " . $stmt->error;
+          return;
+      }
+
       break;
     default:
       echo "Tabla no soportada.";
@@ -628,6 +798,18 @@ function eliminarRegistro($conexion, $tabla, $id)
     echo "Tabla no soportada.";
     return;
   }
+
+  // Validar que el ID exista antes de intentar eliminar
+  $stmt = $conexion->prepare("SELECT 1 FROM $tabla WHERE $id_col = ?");
+  $stmt->bind_param("i", $id);
+  $stmt->execute();
+  $stmt->store_result();
+  if ($stmt->num_rows === 0) {
+    echo "El registro no existe.";
+    $stmt->close();
+    return;
+  }
+  $stmt->close();
 
   /*Si es cliente, eliminar primero sus reservas*/
   if ($tabla === 'clientes') {
