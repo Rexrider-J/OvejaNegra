@@ -190,7 +190,10 @@ function validarCliente($conexion, $datos, $id = null) {
 
     return true;
 }
-
+function esLunes($fechaHora) {
+    $fecha = new DateTime($fechaHora);
+    return $fecha->format('N') == 1; // 1 = lunes
+}
 
 function agregarRegistro($conexion, $tabla)
 {
@@ -265,8 +268,39 @@ function agregarRegistro($conexion, $tabla)
       $stmt->bind_param("s", $_POST['estados']);
       break;
     case 'empleado_funcion':
+      if (isset($_POST['fecha'], $_POST['hora'])) {
+        $_POST['dia_hora'] = $_POST['fecha'] . ' ' . $_POST['hora'];
+      }
+      $dia_hora = $_POST['dia_hora'];
+      $funcion = $_POST['funcion'];
+      $id_empleado = (int)$_POST['id_empleado'];
+
+      /*Validar si es lunes*/
+      $fecha = new DateTime($dia_hora);
+      if ($fecha->format('N') == 1) { // 1 = lunes
+        echo "<script>alert('Los lunes el local se encuentra cerrado.');</script>";
+        return false;
+      }
+
+      /*Verificar que el empleado exista*/
+      if (!existeEnTabla($conexion, 'empleados', 'id_empleado', $id_empleado)) {
+        echo "<script>alert('El ID del empleado no existe.');</script>";
+        return false;
+      }
+
+      /*Valida combinación única id_empleado + dia_hora*/
+      $stmtCheck = $conexion->prepare("SELECT 1 FROM empleado_funcion WHERE id_empleado = ? AND dia_hora = ? LIMIT 1");
+      $stmtCheck->bind_param("is", $id_empleado, $dia_hora);
+      $stmtCheck->execute();
+      $resCheck = $stmtCheck->get_result();
+      if ($resCheck->num_rows > 0) {
+        echo "<script>alert('Este empleado ya tiene una función asignada en esa fecha y hora.');</script>";
+        return false;
+      }
+
+      /*Si todo OK, preparar el insert*/
       $stmt = $conexion->prepare("INSERT INTO empleado_funcion (dia_hora, funcion, id_empleado) VALUES (?, ?, ?)");
-      $stmt->bind_param("ssi", $_POST['dia_hora'], $_POST['funcion'], $_POST['id_empleado']);
+      $stmt->bind_param("ssi", $dia_hora, $funcion, $id_empleado);
       break;
     case 'reservas':
       $stmt = $conexion->prepare("INSERT INTO reservas (id_cliente, id_mesa, fecha_reserva, observaciones, cant_personas, id_estado_reserva) VALUES (?, ?, ?, ?, ?, ?)");
@@ -383,9 +417,40 @@ function modificarRegistro($conexion, $tabla, $id)
       $valores = [$_POST['estados'], $id];
       break;
     case 'empleado_funcion':
+      if (isset($_POST['fecha'], $_POST['hora'])) {
+        $_POST['dia_hora'] = $_POST['fecha'] . ' ' . $_POST['hora'];
+      }
+      $dia_hora = $_POST['dia_hora'];
+      $funcion = $_POST['funcion'];
+      $id_empleado = (int)$_POST['id_empleado'];
+
+      /*Validar si es lunes*/
+      $fecha = new DateTime($dia_hora);
+      if ($fecha->format('N') == 1) { // 1 = lunes
+        echo "<script>alert('Los lunes el local se encuentra cerrado.');</script>";
+        return false;
+      }
+
+      /*Verifica que el empleado exista*/
+      if (!existeEnTabla($conexion, 'empleados', 'id_empleado', $id_empleado)) {
+        echo "<script>alert('El ID del empleado no existe.');</script>";
+        return false;
+      }
+
+      /*Validar que no exista otro registro con misma combinación id_empleado + dia_hora*/
+      $stmtCheck = $conexion->prepare("SELECT 1 FROM empleado_funcion WHERE id_empleado = ? AND dia_hora = ? AND id_empleado_funcion != ? LIMIT 1");
+      $stmtCheck->bind_param("isi", $id_empleado, $dia_hora, $id);
+      $stmtCheck->execute();
+      $resCheck = $stmtCheck->get_result();
+      if ($resCheck->num_rows > 0) {
+        echo "<script>alert('Este empleado ya tiene una función asignada en esa fecha y hora.');</script>";
+        return false;
+      }
+
+      /*Si todo OK, preparar update*/
       $sql = "UPDATE empleado_funcion SET dia_hora=?, funcion=?, id_empleado=? WHERE id_empleado_funcion=?";
       $tipos = "ssii";
-      $valores = [$_POST['dia_hora'], $_POST['funcion'], $_POST['id_empleado'], $id];
+      $valores = [$dia_hora, $funcion, $id_empleado, $id];
       break;
     case 'reservas':
       $sql = "UPDATE reservas SET id_cliente=?, id_mesa=?, fecha_reserva=?, observaciones=?, cant_personas=?, id_estado_reserva=? WHERE id_reserva=?";
