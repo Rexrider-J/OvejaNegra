@@ -660,6 +660,9 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt->close();
   }
 
+  if ($tabla === 'menu') {  // si la tabla es menu, eliminar primero en local_menu
+    $conexion->query("DELETE FROM local_menu WHERE id_menu = $id");
+  }
 
   // 🔸 Eliminar registro principal
   $stmt = $conexion->prepare("DELETE FROM $tabla WHERE $id_col = ?");
