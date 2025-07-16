@@ -2546,7 +2546,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sucursal.value = String(id_sucursal_empleado);
         sucursal.disabled = true;
       }
-    }, 100); // ⏱️ Da tiempo al DOM para agregar las opciones
+    }, 150); // ⏱️ Da tiempo al DOM para agregar las opciones
   }
 });
 /*funcion para cancelar varias reservas por fecha y hora*/
