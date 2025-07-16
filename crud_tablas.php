@@ -282,7 +282,6 @@ function mostrarEstadoReserva($conexion)
             <tr>
                 <th>ID</th>
                 <th>Estado</th>
-                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>";
@@ -291,23 +290,8 @@ function mostrarEstadoReserva($conexion)
     echo "<tr>
             <td>{$row['id_estado_reserva']}</td>
             <td>{$row['estados']}</td>
-            <td>
-                <form>
-                    <input name='estados' value='{$row['estados']}'>
-                    <button type='button' class='btn-modificar' data-id='{$row['id_estado_reserva']}'>Modificar</button>
-                    <button type='button' class='btn-eliminar' data-id='{$row['id_estado_reserva']}'>Eliminar</button>
-                </form>
-            </td>
         </tr>";
   }
-
-  echo "</tbody>
-    </table>
-    <h4>Agregar nuevo estado</h4>
-    <form data-accion='agregar'>
-        <input name='estados' placeholder='Estado'>
-        <input type='submit' value='Agregar'>
-    </form>";
 }
 
 function mostrarLocales($conexion)
