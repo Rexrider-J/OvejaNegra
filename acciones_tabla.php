@@ -20,179 +20,190 @@ switch ($accion) {
     break;
 }
 /*Función reutilizable para validar existencia en tablas*/
-function existeEnTabla($conexion, $tabla, $columna, $valor) {
+function existeEnTabla($conexion, $tabla, $columna, $valor)
+{
   $stmt = $conexion->prepare("SELECT 1 FROM $tabla WHERE $columna = ? LIMIT 1");
   $stmt->bind_param("i", $valor);
   $stmt->execute();
   $result = $stmt->get_result();
   return $result->num_rows > 0;
 }
-function validarLongitudDni($dni) {
-    if (strlen($dni) < 7 || strlen($dni) > 11) {
-        return "El DNI debe contener entre 7 y 11 dígitos.";
-    }
-    return true;
+function validarLongitudDni($dni)
+{
+  if (strlen($dni) < 7 || strlen($dni) > 11) {
+    return "El DNI debe contener entre 7 y 11 dígitos.";
+  }
+  return true;
 }
-function validarValorDni($dni) {
-    if ((int)$dni <= 5000000) {
-        return "El DNI debe ser mayor a 5 millones.";
-    }
-    return true;
-}
-
-function validarFormatoEmail($mail) {
-    if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-        return "El email es inválido. Por favor ingresa un email válido.";
-    }
-    return true;
+function validarValorDni($dni)
+{
+  if ((int)$dni <= 5000000) {
+    return "El DNI debe ser mayor a 5 millones.";
+  }
+  return true;
 }
 
-function existeMail($conexion, $mail, $id = null) {
-    $query = "SELECT id_empleado FROM empleados WHERE mail = ?";
-    if ($id !== null) {
-        $query .= " AND id_empleado != ?";
-    }
-    $stmt = $conexion->prepare($query);
-    if ($id !== null) {
-        $stmt->bind_param("si", $mail, $id);
-    } else {
-        $stmt->bind_param("s", $mail);
-    }
-    $stmt->execute();
-    $stmt->store_result();
-    $existe = $stmt->num_rows > 0;
-    $stmt->close();
-    return $existe;
+function validarFormatoEmail($mail)
+{
+  if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+    return "El email es inválido. Por favor ingresa un email válido.";
+  }
+  return true;
+}
+
+function existeMail($conexion, $mail, $id = null)
+{
+  $query = "SELECT id_empleado FROM empleados WHERE mail = ?";
+  if ($id !== null) {
+    $query .= " AND id_empleado != ?";
+  }
+  $stmt = $conexion->prepare($query);
+  if ($id !== null) {
+    $stmt->bind_param("si", $mail, $id);
+  } else {
+    $stmt->bind_param("s", $mail);
+  }
+  $stmt->execute();
+  $stmt->store_result();
+  $existe = $stmt->num_rows > 0;
+  $stmt->close();
+  return $existe;
 }
 
 
-function existeGerenteEnLocal($conexion, $id_local, $id = null) {
-    $query = "SELECT id_empleado FROM empleados WHERE puesto = 'Gerente' AND id_local = ?";
-    if ($id !== null) {
-        $query .= " AND id_empleado != ?";
-    }
-    $stmt = $conexion->prepare($query);
-    if ($id !== null) {
-        $stmt->bind_param("ii", $id_local, $id);
-    } else {
-        $stmt->bind_param("i", $id_local);
-    }
-    $stmt->execute();
-    $stmt->store_result();
-    $existe = $stmt->num_rows > 0;
-    $stmt->close();
-    return $existe;
-}
-
-function existeLocal($conexion, $id_local) {
-    $stmt = $conexion->prepare("SELECT 1 FROM locales WHERE id_local = ? LIMIT 1");
+function existeGerenteEnLocal($conexion, $id_local, $id = null)
+{
+  $query = "SELECT id_empleado FROM empleados WHERE puesto = 'Gerente' AND id_local = ?";
+  if ($id !== null) {
+    $query .= " AND id_empleado != ?";
+  }
+  $stmt = $conexion->prepare($query);
+  if ($id !== null) {
+    $stmt->bind_param("ii", $id_local, $id);
+  } else {
     $stmt->bind_param("i", $id_local);
-    $stmt->execute();
-    $stmt->store_result();
-    $existe = $stmt->num_rows > 0;
-    $stmt->close();
-    return $existe;
+  }
+  $stmt->execute();
+  $stmt->store_result();
+  $existe = $stmt->num_rows > 0;
+  $stmt->close();
+  return $existe;
 }
 
-function existeNombreApellidoDni($conexion, $nombre, $apellido, $dni, $id = null) {
-    $query = "SELECT id_empleado FROM empleados WHERE nombre = ? AND apellido = ? AND dni = ?";
-    if ($id !== null) {
-        $query .= " AND id_empleado != ?";
-    }
-    $stmt = $conexion->prepare($query);
-    if ($id !== null) {
-        $stmt->bind_param("ssii", $nombre, $apellido, $dni, $id);
-    } else {
-        $stmt->bind_param("ssi", $nombre, $apellido, $dni);
-    }
-    $stmt->execute();
-    $stmt->store_result();
-    $existe = $stmt->num_rows > 0;
-    $stmt->close();
-    return $existe;
+function existeLocal($conexion, $id_local)
+{
+  $stmt = $conexion->prepare("SELECT 1 FROM locales WHERE id_local = ? LIMIT 1");
+  $stmt->bind_param("i", $id_local);
+  $stmt->execute();
+  $stmt->store_result();
+  $existe = $stmt->num_rows > 0;
+  $stmt->close();
+  return $existe;
+}
+
+function existeNombreApellidoDni($conexion, $nombre, $apellido, $dni, $id = null)
+{
+  $query = "SELECT id_empleado FROM empleados WHERE nombre = ? AND apellido = ? AND dni = ?";
+  if ($id !== null) {
+    $query .= " AND id_empleado != ?";
+  }
+  $stmt = $conexion->prepare($query);
+  if ($id !== null) {
+    $stmt->bind_param("ssii", $nombre, $apellido, $dni, $id);
+  } else {
+    $stmt->bind_param("ssi", $nombre, $apellido, $dni);
+  }
+  $stmt->execute();
+  $stmt->store_result();
+  $existe = $stmt->num_rows > 0;
+  $stmt->close();
+  return $existe;
 }
 
 // Función principal que usa las anteriores para validar el empleado
-function validarEmpleado($conexion, $datos, $id = null) {
-    $dni = $datos['dni'];
-    $mail = $datos['mail'];
-    $puesto = $datos['puesto'];
-    $id_local = $datos['id_local'];
-    $nombre = $datos['nombre'];
-    $apellido = $datos['apellido'];
+function validarEmpleado($conexion, $datos, $id = null)
+{
+  $dni = $datos['dni'];
+  $mail = $datos['mail'];
+  $puesto = $datos['puesto'];
+  $id_local = $datos['id_local'];
+  $nombre = $datos['nombre'];
+  $apellido = $datos['apellido'];
 
-    if (($res = validarLongitudDni($dni)) !== true) return $res;
-    if (($res = validarValorDni($dni)) !== true) return $res;
-    if (($res = validarFormatoEmail($mail)) !== true) return $res;
-    if (!existeLocal($conexion, $id_local)) return "El local seleccionado no existe.";
-    if (existeMail($conexion, $mail, $id)) return "Ya existe un empleado con ese mail.";
-    if (existeNombreApellidoDni($conexion, $nombre, $apellido, $dni, $id)) {
-        return "Ya existe un empleado con el mismo nombre, apellido y DNI.";
-    }
-    if (strtolower($puesto) === 'gerente' && existeGerenteEnLocal($conexion, $id_local, $id)) {
-        return "Ya existe un gerente en ese local.";
-    }
+  if (($res = validarLongitudDni($dni)) !== true) return $res;
+  if (($res = validarValorDni($dni)) !== true) return $res;
+  if (($res = validarFormatoEmail($mail)) !== true) return $res;
+  if (!existeLocal($conexion, $id_local)) return "El local seleccionado no existe.";
+  if (existeMail($conexion, $mail, $id)) return "Ya existe un empleado con ese mail.";
+  if (existeNombreApellidoDni($conexion, $nombre, $apellido, $dni, $id)) {
+    return "Ya existe un empleado con el mismo nombre, apellido y DNI.";
+  }
+  if (strtolower($puesto) === 'gerente' && existeGerenteEnLocal($conexion, $id_local, $id)) {
+    return "Ya existe un gerente en ese local.";
+  }
 
-    return true;
+  return true;
 }
-function validarCliente($conexion, $datos, $id = null) {
-    // Validar DNI
-    $dniValidacion = validarLongitudDni($datos['dni']);
-    if ($dniValidacion !== true) return $dniValidacion;
+function validarCliente($conexion, $datos, $id = null)
+{
+  // Validar DNI
+  $dniValidacion = validarLongitudDni($datos['dni']);
+  if ($dniValidacion !== true) return $dniValidacion;
 
-    $dniValorValidacion = validarValorDni($datos['dni']);
-    if ($dniValorValidacion !== true) return $dniValorValidacion;
+  $dniValorValidacion = validarValorDni($datos['dni']);
+  if ($dniValorValidacion !== true) return $dniValorValidacion;
 
-    // Validar email
-    $emailValidacion = validarFormatoEmail($datos['mail']);
-    if ($emailValidacion !== true) return $emailValidacion;
+  // Validar email
+  $emailValidacion = validarFormatoEmail($datos['mail']);
+  if ($emailValidacion !== true) return $emailValidacion;
 
-    // Verificar si el mail ya existe (en tabla clientes)
-    $queryMail = "SELECT id_cliente FROM clientes WHERE mail = ?";
-    if ($id !== null) {
-        $queryMail .= " AND id_cliente != ?";
-        $stmt = $conexion->prepare($queryMail);
-        $stmt->bind_param("si", $datos['mail'], $id);
-    } else {
-        $stmt = $conexion->prepare($queryMail);
-        $stmt->bind_param("s", $datos['mail']);
-    }
-    $stmt->execute();
-    $stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $stmt->close();
-        return "Ya existe un cliente con ese mail.";
-    }
+  // Verificar si el mail ya existe (en tabla clientes)
+  $queryMail = "SELECT id_cliente FROM clientes WHERE mail = ?";
+  if ($id !== null) {
+    $queryMail .= " AND id_cliente != ?";
+    $stmt = $conexion->prepare($queryMail);
+    $stmt->bind_param("si", $datos['mail'], $id);
+  } else {
+    $stmt = $conexion->prepare($queryMail);
+    $stmt->bind_param("s", $datos['mail']);
+  }
+  $stmt->execute();
+  $stmt->store_result();
+  if ($stmt->num_rows > 0) {
     $stmt->close();
+    return "Ya existe un cliente con ese mail.";
+  }
+  $stmt->close();
 
-    // Verificar si existe un cliente con el mismo DNI y mismos nombre y apellido
-    $queryDni = "SELECT id_cliente FROM clientes WHERE nombre = ? AND apellido = ? AND dni = ?";
-    if ($id !== null) {
-        $queryDni .= " AND id_cliente != ?";
-        $stmt = $conexion->prepare($queryDni);
-        $stmt->bind_param("ssii", $datos['nombre'], $datos['apellido'], $datos['dni'], $id);
-    } else {
-        $stmt = $conexion->prepare($queryDni);
-        $stmt->bind_param("ssi", $datos['nombre'], $datos['apellido'], $datos['dni']);
-    }
-    $stmt->execute();
-    $stmt->store_result();
-    if ($stmt->num_rows > 0) {
-        $stmt->close();
-        return "Ya existe un cliente con ese DNI, nombre y apellido.";
-    }
+  // Verificar si existe un cliente con el mismo DNI y mismos nombre y apellido
+  $queryDni = "SELECT id_cliente FROM clientes WHERE nombre = ? AND apellido = ? AND dni = ?";
+  if ($id !== null) {
+    $queryDni .= " AND id_cliente != ?";
+    $stmt = $conexion->prepare($queryDni);
+    $stmt->bind_param("ssii", $datos['nombre'], $datos['apellido'], $datos['dni'], $id);
+  } else {
+    $stmt = $conexion->prepare($queryDni);
+    $stmt->bind_param("ssi", $datos['nombre'], $datos['apellido'], $datos['dni']);
+  }
+  $stmt->execute();
+  $stmt->store_result();
+  if ($stmt->num_rows > 0) {
     $stmt->close();
+    return "Ya existe un cliente con ese DNI, nombre y apellido.";
+  }
+  $stmt->close();
 
-    // Validar teléfono (solo números y longitud 10–20)
-    if (!preg_match('/^\d{10,20}$/', $datos['telefono'])) {
-        return "El teléfono debe contener solo números y tener entre 10 y 20 dígitos.";
-    }
+  // Validar teléfono (solo números y longitud 10–20)
+  if (!preg_match('/^\d{10,20}$/', $datos['telefono'])) {
+    return "El teléfono debe contener solo números y tener entre 10 y 20 dígitos.";
+  }
 
-    return true;
+  return true;
 }
-function esLunes($fechaHora) {
-    $fecha = new DateTime($fechaHora);
-    return $fecha->format('N') == 1; // 1 = lunes
+function esLunes($fechaHora)
+{
+  $fecha = new DateTime($fechaHora);
+  return $fecha->format('N') == 1; // 1 = lunes
 }
 
 function agregarRegistro($conexion, $tabla)
@@ -235,8 +246,43 @@ function agregarRegistro($conexion, $tabla)
       $stmt->bind_param("ssissis", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['puesto'], $_POST['id_local'], $_POST['contrasena']);
       break;
     case 'menu':
+      if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] !== UPLOAD_ERR_OK) {
+        echo "❌ Debés subir una imagen.";
+        return;
+      }
+
+      // Validaciones
+      $tmp = $_FILES['imagen']['tmp_name'];
+      $mime = mime_content_type($tmp);
+      $permitidos = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!in_array($mime, $permitidos)) {
+        echo "❌ Formato de imagen no permitido.";
+        return;
+      }
+
+      $pesoMax = 2 * 1024 * 1024;
+      if ($_FILES['imagen']['size'] > $pesoMax) {
+        echo "❌ La imagen excede el tamaño permitido (2MB).";
+        return;
+      }
+
+      $dim = getimagesize($tmp);
+      if ($dim[0] > 1000 || $dim[1] > 1000) {
+        echo "❌ Dimensiones máximas: 1000x1000 píxeles.";
+        return;
+      }
+
+      // Guardar imagen
+      $nombreSeguro = uniqid() . "_" . preg_replace("/[^A-Za-z0-9.\-_]/", "", $_FILES['imagen']['name']);
+      $ruta = "img/" . $nombreSeguro;
+      if (!move_uploaded_file($tmp, $ruta)) {
+        echo "❌ Error al guardar la imagen.";
+        return;
+      }
+
+      // Insertar registro
       $stmt = $conexion->prepare("INSERT INTO menu (nombre, precio, categoria, descripcion, ruta_imagen) VALUES (?, ?, ?, ?, ?)");
-      $stmt->bind_param("sdsss", $_POST['nombre'], $_POST['precio'], $_POST['categoria'], $_POST['descripcion'], $_POST['ruta_imagen']);
+      $stmt->bind_param("sdsss", $_POST['nombre'], $_POST['precio'], $_POST['categoria'], $_POST['descripcion'], $ruta);
       break;
     case 'locales':
       $stmt = $conexion->prepare("INSERT INTO locales (nombre, direccion, telefono, estado_disponibilidad) VALUES (?, ?, ?, ?)");
@@ -461,7 +507,7 @@ function modificarRegistro($conexion, $tabla, $id)
       echo "Tabla no soportada.";
       return;
   }
-  
+
   $stmt = $conexion->prepare($sql);
   $stmt->bind_param($tipos, ...$valores);
 
@@ -474,7 +520,8 @@ function modificarRegistro($conexion, $tabla, $id)
   $stmt->close();
 }
 
-function eliminarRegistro($conexion, $tabla, $id) {
+function eliminarRegistro($conexion, $tabla, $id)
+{
   $id_col = match ($tabla) {
     'clientes' => 'id_cliente',
     'empleados' => 'id_empleado',
@@ -516,8 +563,8 @@ function eliminarRegistro($conexion, $tabla, $id) {
     }
     $stmt->close();
   }
-  
-    if ($tabla === 'locales') {
+
+  if ($tabla === 'locales') {
     // 🔹 Eliminar reservas del local
     $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_local = ?");
     $stmt->bind_param("i", $id);
@@ -559,6 +606,9 @@ function eliminarRegistro($conexion, $tabla, $id) {
     $stmt->close();
   }
 
+  if ($tabla === 'menu') {  // si la tabla es menu, eliminar primero en local_menu
+    $conexion->query("DELETE FROM local_menu WHERE id_menu = $id");
+  }
 
   // 🔸 Eliminar registro principal
   $stmt = $conexion->prepare("DELETE FROM $tabla WHERE $id_col = ?");

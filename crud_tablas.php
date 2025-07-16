@@ -419,6 +419,7 @@ function mostrarLocalMenu($conexion)
 function mostrarMenu($conexion)
 {
   $res = $conexion->query("SELECT * FROM menu");
+  $categorias = ['Cafeteria', 'Panaderia', 'Milkshake', 'Waffles', 'Starters', 'Burgers', 'Adicionales', 'Milanesas', 'Hotdogs', 'Ensaladas', 'Bebidas', 'Postres', 'Promo', 'Brunch'];
   echo "<h3>Menú</h3>
     <table class='table'>
         <thead>
@@ -443,12 +444,17 @@ function mostrarMenu($conexion)
             <td>{$row['descripcion']}</td>
             <td>{$row['ruta_imagen']}</td>
             <td>
-                <form>
-                    <input name='nombre' value='{$row['nombre']}'>
-                    <input name='precio' value='{$row['precio']}'>
-                    <input name='categoria' value='{$row['categoria']}'>
+                <form enctype='multipart/form-data'>
+                    <input name='nombre' maxlength='50' class='solo-letras' value='{$row['nombre']}' required>
+                    <input name='precio' type='number' step='0.01' value='{$row['precio']}' required>
+                    <select name='categoria' required>
+                        <option selected value='{$row['categoria']}'>{$row['categoria']}</option>";
+                        foreach ($categorias as $cat) {
+                            echo "<option value='$cat'>$cat</option>";
+                        }
+                    echo "</select>
                     <input name='descripcion' value='{$row['descripcion']}'>
-                    <input name='ruta_imagen' value='{$row['ruta_imagen']}'>
+                    <input name='imagen' type='file' accept='image/*'>
                     <button type='button' class='btn-modificar' data-id='{$row['id_menu']}'>Modificar</button>
                     <button type='button' class='btn-eliminar' data-id='{$row['id_menu']}'>Eliminar</button>
                 </form>
@@ -459,12 +465,17 @@ function mostrarMenu($conexion)
   echo "</tbody>
     </table>
     <h4>Agregar nuevo ítem</h4>
-    <form data-accion='agregar'>
-        <input name='nombre' placeholder='Nombre'>
-        <input name='precio' placeholder='Precio'>
-        <input name='categoria' placeholder='Categoría'>
+    <form data-accion='agregar' enctype='multipart/form-data'>
+        <input name='nombre' maxlength='50' class='solo-letras' placeholder='Nombre' required>
+        <input name='precio' type='number' step='0.01' placeholder='Precio' required>
+        <select name='categoria' required>
+        <option disabled selected value=''>Categoría...</option>";
+            foreach ($categorias as $cat) {
+                echo "<option value='$cat'>$cat</option>";
+            }
+        echo "</select>
         <input name='descripcion' placeholder='Descripción'>
-        <input name='ruta_imagen' placeholder='Imagen'>
+        <input type='file' name='imagen' accept='image/*' required>
         <input type='submit' value='Agregar'>
     </form>";
 }
