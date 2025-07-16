@@ -98,9 +98,9 @@ function mostrarClientes($conexion)
         <input name='nombre' maxlength='50' class='solo-letras' placeholder='Nombre' required>
         <input name='apellido' maxlength='50' class='solo-letras' placeholder='Apellido' required>
         <input name='dni' min='1000000' max='99999999' minlength='7' maxlength='11' class='solo-numeros' placeholder='DNI' required>
-        <input name='mail' type='email' maxlength='100' placeholder='Email'>
+        <input name='mail' type='email' maxlength='100' placeholder='Email'required>
         <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' placeholder='Teléfono' required>
-        <input name='fecha_nacimiento' type='date' min='$minFecha' max='$maxFecha'>
+        <input name='fecha_nacimiento' type='date' min='$minFecha' max='$maxFecha' required>
         <input name='contrasena' maxlength='20' type='password' placeholder='Contraseña' required>
         <input type='submit' value='Agregar'>
     </form>";
