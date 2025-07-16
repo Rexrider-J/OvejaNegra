@@ -71,24 +71,19 @@ function existeMail($conexion, $mail, $id = null)
 }
 
 
-function existeGerenteEnLocal($conexion, $id_local, $id = null)
+function existeOtroGerenteEnLocal($conexion, $id_local, $id_actual)
 {
-  $query = "SELECT id_empleado FROM empleados WHERE puesto = 'Gerente' AND id_local = ?";
-  if ($id !== null) {
-    $query .= " AND id_empleado != ?";
-  }
+  $query = "SELECT COUNT(*) AS cantidad FROM empleados WHERE puesto = 'Gerente' AND id_local = ? AND id_empleado != ?";
   $stmt = $conexion->prepare($query);
-  if ($id !== null) {
-    $stmt->bind_param("ii", $id_local, $id);
-  } else {
-    $stmt->bind_param("i", $id_local);
-  }
+  $stmt->bind_param("ii", $id_local, $id_actual);
   $stmt->execute();
-  $stmt->store_result();
-  $existe = $stmt->num_rows > 0;
+  $resultado = $stmt->get_result();
+  $fila = $resultado->fetch_assoc();
   $stmt->close();
-  return $existe;
+  
+  return $fila['cantidad'] > 0;
 }
+
 
 function existeLocal($conexion, $id_local)
 {
@@ -138,7 +133,7 @@ function validarEmpleado($conexion, $datos, $id = null)
   if (existeNombreApellidoDni($conexion, $nombre, $apellido, $dni, $id)) {
     return "Ya existe un empleado con el mismo nombre, apellido y DNI.";
   }
-  if (strtolower($puesto) === 'gerente' && existeGerenteEnLocal($conexion, $id_local, $id)) {
+  if (strtolower($puesto) === 'gerente' && existeOtroGerenteEnLocal($conexion, $id_local, $id)) {
     return "Ya existe un gerente en ese local.";
   }
 
