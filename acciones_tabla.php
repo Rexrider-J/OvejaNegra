@@ -900,27 +900,53 @@ function eliminarRegistro($conexion, $tabla, $id)
   }
 
   if ($tabla === 'locales') {
-    /*Eliminar reservas del local*/
-    $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_local = ?");
+    //Obtener todas las mesas del local
+    $stmt = $conexion->prepare("SELECT id_mesa FROM mesas WHERE id_local = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $mesas = [];
+    while ($row = $result->fetch_assoc()) {
+      $mesas[] = $row['id_mesa'];
+    }
+    $stmt->close();
+
+    //Borrar reservas relacionadas con esas mesas (como mesa actual o cambio)
+    foreach ($mesas as $id_mesa) {
+      $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_mesa = ? OR cambio_mesa = ?");
+      $stmt->bind_param("ii", $id_mesa, $id_mesa);
+      if (!$stmt->execute()) {
+        echo "❌Error al eliminar reservas asociadas a la mesa $id_mesa: " . $conexion->error;
+        $stmt->close();
+        return;
+      }
+      $stmt->close();
+    }
+
+    //Borrar local_menu del local
+    $stmt = $conexion->prepare("DELETE FROM local_menu WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "❌Error al eliminar reservas del local: " . $conexion->error;
+      echo "❌Error al eliminar menú del local: " . $conexion->error;
       $stmt->close();
       return;
     }
     $stmt->close();
 
-    /*Eliminar mesas del local*/
-    $stmt = $conexion->prepare("DELETE FROM mesas WHERE id_local = ?");
+    //Borrar funciones de los empleados del local
+    $stmt = $conexion->prepare("DELETE ef FROM empleado_funcion ef
+                            JOIN empleados e ON ef.id_empleado = e.id_empleado
+                            WHERE e.id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "❌Error al eliminar mesas del local: " . $conexion->error;
+      echo "❌Error al eliminar funciones de empleados del local: " . $conexion->error;
       $stmt->close();
       return;
     }
     $stmt->close();
 
-    /*Eliminar empleados del local*/
+    //Borrar empleados del local
     $stmt = $conexion->prepare("DELETE FROM empleados WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
@@ -930,11 +956,11 @@ function eliminarRegistro($conexion, $tabla, $id)
     }
     $stmt->close();
 
-    /*Eliminar menú del local*/
-    $stmt = $conexion->prepare("DELETE FROM local_menu WHERE id_local = ?");
+    //Borrar mesas del local
+    $stmt = $conexion->prepare("DELETE FROM mesas WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "❌Error al eliminar menú del local: " . $conexion->error;
+      echo "❌Error al eliminar mesas del local: " . $conexion->error;
       $stmt->close();
       return;
     }
