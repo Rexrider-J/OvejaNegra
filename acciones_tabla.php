@@ -364,19 +364,19 @@ function agregarRegistro($conexion, $tabla)
 
       // Validar que no sea lunes
       if ($fecha->format('N') == 1) { // 1 = lunes
-          echo "<script>alert('Los lunes el local se encuentra cerrado.');</script>";
+          echo "❌Los lunes el local se encuentra cerrado.";
           return false;
       }
 
       // Validar que no sea fecha y hora pasada
       if ($fecha < $ahora) {
-          echo "<script>alert('No se puede asignar una función en fecha y hora pasada.');</script>";
+          echo "❌No se puede asignar una función en fecha y hora pasada.";
           return false;
       }
 
       // Verificar que el empleado exista
       if (!existeEnTabla($conexion, 'empleados', 'id_empleado', $id_empleado)) {
-          echo "<script>alert('El ID del empleado no existe.');</script>";
+          echo "❌El ID del empleado no existe.";
           return false;
       }
 
@@ -386,7 +386,7 @@ function agregarRegistro($conexion, $tabla)
       $stmtCheck->execute();
       $resCheck = $stmtCheck->get_result();
       if ($resCheck->num_rows > 0) {
-          echo "<script>alert('Este empleado ya tiene una función asignada en esa fecha y hora.');</script>";
+          echo "❌Este empleado ya tiene una función asignada en esa fecha y hora.";
           return false;
       }
 
@@ -396,10 +396,10 @@ function agregarRegistro($conexion, $tabla)
       $stmt->execute();
 
       if ($stmt->affected_rows > 0) {
-          echo "<script>alert('Función asignada correctamente.');</script>";
+          echo "✅Función asignada correctamente.";
           return true;
       } else {
-          echo "<script>alert('Error al asignar función.');</script>";
+          echo "❌Error al asignar función.";
           return false;
       }
       break;
@@ -488,7 +488,7 @@ function agregarRegistro($conexion, $tabla)
       if ($stmt->execute()) {
           echo "Reserva agregada correctamente.";
       } else {
-          echo "Error al agregar reserva: " . $stmt->error;
+          echo "❌Error al agregar reserva: " . $stmt->error;
       }
 
       break;
@@ -499,7 +499,7 @@ function agregarRegistro($conexion, $tabla)
   if ($stmt->execute()) {
     echo "✅Registro agregado correctamente.";
   } else {
-    echo "Error al agregar: " . $conexion->error;
+    echo "❌Error al agregar: " . $conexion->error;
   }
   $stmt->close();
 }
@@ -689,19 +689,19 @@ function modificarRegistro($conexion, $tabla, $id)
 
       // Validar que no sea lunes
       if ($fecha->format('N') == 1) {
-          echo "<script>alert('Los lunes el local se encuentra cerrado.');</script>";
+          echo "❌Los lunes el local se encuentra cerrado.";
           return false;
       }
 
       // Validar que no sea fecha y hora pasada
       if ($fecha < $ahora) {
-          echo "<script>alert('No se puede asignar una función en fecha y hora pasada.');</script>";
+          echo "❌No se puede asignar una función en fecha y hora pasada.";
           return false;
       }
 
       // Verificar que el empleado exista
       if (!existeEnTabla($conexion, 'empleados', 'id_empleado', $id_empleado)) {
-          echo "<script>alert('El ID del empleado no existe.');</script>";
+          echo "❌El ID del empleado no existe.";
           return false;
       }
 
@@ -711,7 +711,7 @@ function modificarRegistro($conexion, $tabla, $id)
       $stmtCheck->execute();
       $resCheck = $stmtCheck->get_result();
       if ($resCheck->num_rows > 0) {
-          echo "<script>alert('Este empleado ya tiene una función asignada en esa fecha y hora.');</script>";
+          echo "❌Este empleado ya tiene una función asignada en esa fecha y hora.";
           return false;
       }
 
@@ -721,10 +721,10 @@ function modificarRegistro($conexion, $tabla, $id)
       $stmt->execute();
 
       if ($stmt->affected_rows > 0) {
-          echo "<script>alert('Función modificada correctamente.');</script>";
+          echo "✅Función modificada correctamente.";
           return true;
       } else {
-          echo "<script>alert('No se realizó ningún cambio o hubo un error.');</script>";
+          echo "❌No se realizó ningún cambio o hubo un error.";
           return false;
       }
       break;
@@ -821,7 +821,7 @@ function modificarRegistro($conexion, $tabla, $id)
           echo "✅Reserva actualizada correctamente.";
           return;
       } else {
-          echo "Error al actualizar reserva: " . $stmt->error;
+          echo "❌Error al actualizar reserva: " . $stmt->error;
           return;
       }
 
@@ -837,7 +837,7 @@ function modificarRegistro($conexion, $tabla, $id)
   if ($stmt->execute()) {
     echo "✅Registro modificado correctamente.";
   } else {
-    echo "Error al modificar: " . $conexion->error;
+    echo "❌Error al modificar: " . $conexion->error;
   }
 
   $stmt->close();
@@ -880,7 +880,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_cliente = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "Error al eliminar reservas del cliente: " . $conexion->error;
+      echo "❌Error al eliminar reservas del cliente: " . $conexion->error;
       $stmt->close();
       return;
     }
@@ -892,7 +892,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt = $conexion->prepare("DELETE FROM empleado_funcion WHERE id_empleado = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "Error al eliminar dependencias: " . $conexion->error;
+      echo "❌Error al eliminar dependencias: " . $conexion->error;
       $stmt->close();
       return;
     }
@@ -904,7 +904,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "Error al eliminar reservas del local: " . $conexion->error;
+      echo "❌Error al eliminar reservas del local: " . $conexion->error;
       $stmt->close();
       return;
     }
@@ -914,7 +914,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt = $conexion->prepare("DELETE FROM mesas WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "Error al eliminar mesas del local: " . $conexion->error;
+      echo "❌Error al eliminar mesas del local: " . $conexion->error;
       $stmt->close();
       return;
     }
@@ -924,7 +924,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt = $conexion->prepare("DELETE FROM empleados WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "Error al eliminar empleados del local: " . $conexion->error;
+      echo "❌Error al eliminar empleados del local: " . $conexion->error;
       $stmt->close();
       return;
     }
@@ -934,7 +934,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt = $conexion->prepare("DELETE FROM local_menu WHERE id_local = ?");
     $stmt->bind_param("i", $id);
     if (!$stmt->execute()) {
-      echo "Error al eliminar menú del local: " . $conexion->error;
+      echo "❌Error al eliminar menú del local: " . $conexion->error;
       $stmt->close();
       return;
     }
@@ -949,7 +949,7 @@ function eliminarRegistro($conexion, $tabla, $id)
     $stmt = $conexion->prepare("DELETE FROM reservas WHERE id_mesa = ? OR cambio_mesa = ?");
     $stmt->bind_param("ii", $id, $id);
     if (!$stmt->execute()) {
-      echo "Error al eliminar reservas asociadas a la mesa: " . $conexion->error;
+      echo "❌Error al eliminar reservas asociadas a la mesa: " . $conexion->error;
       $stmt->close();
       return;
     }
@@ -962,7 +962,7 @@ function eliminarRegistro($conexion, $tabla, $id)
   if ($stmt->execute()) {
     echo "✅ Registro eliminado correctamente.";
   } else {
-    echo "Error al eliminar: " . $conexion->error;
+    echo "❌Error al eliminar: " . $conexion->error;
   }
 
   $stmt->close();
