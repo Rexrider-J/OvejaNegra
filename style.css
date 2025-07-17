@@ -1990,8 +1990,7 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .tabla-scroll {
-    max-height: 200px;
-    /* 👈 Ajustable */
+    max-height: 700px;
     overflow-y: auto;
     border-radius: 10px;
 }
@@ -2122,12 +2121,6 @@ textarea.input-estilizado {
     border-bottom-right-radius: 10px;
 }
 
-.tabla-scroll {
-    max-height: calc(7 * 50px); /* 7 filas de ~50px c/u */
-    overflow-y: auto;
-    border-radius: 10px;
-}
-
 /* Opcional: Asegurarte que el tbody pueda expandirse sin cortar encabezado */
 .tabla-scroll table {
     width: 100%;
@@ -2243,6 +2236,33 @@ textarea.input-estilizado {
     width: 180px;
     max-width: 100%;
     text-align: center;
+}
+/*Visualizar reservas como empleado*/
+#formBuscarHistorico select, input[type="submit"], input[name="valor"]{
+    width: 180px;
+    max-width: 100%;
+}
+#formBuscarHistorico {
+  display: flex;
+  flex-wrap: wrap;          
+  gap: 10px;
+  align-items: center;      
+  justify-content: center;
+  margin: 1rem auto;
+  max-width: 800px;
+  padding: 10px;
+}
+
+#formBuscarHistorico .input-estilizado,
+#formBuscarHistorico .boton-estilizado {
+  min-width: 150px;
+  max-width: 200px;
+  flex: 1 1 150px;
+}
+
+#formBuscarHistorico .label-estilizado {
+  font-weight: 500;
+  margin-right: 5px;
 }
 /*Estilo de mofidicar menu*/
 .contenedor-items-del-menu {
@@ -2365,7 +2385,7 @@ textarea.input-estilizado {
     justify-content: space-between;
     align-items: center;
 }
-/*Base de datos*/
+/*BASE DE DATOS*/
 #botonesDeTablas {
     width: 100%;
     display: grid;
@@ -2384,4 +2404,81 @@ textarea.input-estilizado {
     font-size: 1.1rem;
     background-color: #4cbfe6;
     border-color: #4cbfe6;
+}
+.separador-borde {
+  width: 100%;
+  border-bottom: 2px solid #898989;
+  margin: 20px 0;
+}
+/*BASE DE DATOS*/
+#volverTablas{
+    width: 120px;
+}
+/*reservas*/
+#tabla-reservas input.input-estilizado, #tabla-reservas select.input-estilizado {
+    width: 100%;
+    box-sizing: border-box; /* Para que el padding no haga que el input se salga */
+}
+.contenedor-scroll-horizontal{
+    overflow-x: auto;
+    width: 100%;   
+}
+#tabla-reservas .contenedor-scroll-horizontal {
+    overflow-x: auto;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+#tabla-reservas .tabla-estilizada {
+    border-collapse: collapse;
+    min-width: 1200px; /* o el ancho que quieras */
+    width: max-content;
+}
+#tabla-reservas table.tabla-estilizada {
+    border-collapse: collapse;
+    width: 1500px; /* más ancho para que scrollee */
+}
+table.tabla-estilizada th, table.tabla-estilizada td {
+    padding: 10px 12px;
+    vertical-align: middle;
+    font-size: 0.95rem;
+}
+tr.fila-edicion td {
+    padding: 0;
+    background-color: #f9f9f9;
+}
+form.form-edicion {
+    margin: 0;
+}
+.acciones-edicion {
+    display: flex;
+    gap: 6px;
+}
+#tabla-reservas .input-estilizado {
+    height: 40px;        
+    padding: 6px 8px;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    width: 100%;
+    box-sizing: border-box;
+}
+.formulario-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: 1rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+.columna-uno,
+.columna-dos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-boton {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
 }

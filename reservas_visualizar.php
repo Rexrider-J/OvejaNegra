@@ -293,23 +293,23 @@ mostrarTablaReservas($res, true, $puesto);
 ?>
 <hr>
 <form id="formBuscarHistorico" onsubmit="return buscarReservas(event)">
-  <label for="columna">Buscar por:</label>
-  <select name="columna" required>
+  <label for="columna" class="label-estilizado">Buscar por:</label>
+  <select name="columna" class="input-estilizado" required>
     <option value="dni">DNI</option>
     <option value="mail">Mail</option>
     <option value="nombre">Nombre</option>
     <option value="apellido">Apellido</option>
     <option value="fecha_reserva">Fecha</option>
   </select>
-  <input type="text" name="valor" placeholder="Ingrese valor..." required>
-  <input type="submit" value="Buscar">
+  <input type="text" name="valor" placeholder="Ingrese valor..." class="input-estilizado" required>
+  <input type="submit" class="boton-estilizado" value="Buscar">
 </form>
 <div id="resultadoBusquedaReservas"></div>
 
 <?php
 function mostrarTablaReservas($res, $conBotones, $puesto = null)
 {
-  echo "<table class='table table-bordered table-striped'>";
+  echo "<table class='tabla-estilizada tabla-scroll'>";
   echo "<thead><tr>
           <th>Cliente</th>
           <th>DNI / Mail</th>

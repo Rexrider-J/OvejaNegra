@@ -3211,7 +3211,7 @@ function cargarTabla(tabla) {
     .then(html => {
       const contenedor = document.getElementById(`tabla-${tabla}`);
       contenedor.innerHTML = `
-        <input type="button" value="volver" onclick="mostrarSeccion('botonesDeTablas', this)">
+        <input id="volverTablas" type="button" value="volver" class="boton-estilizado"onclick="mostrarSeccion('botonesDeTablas', this)">
         ${html}
       `;
       aplicarSoloLetras();
