@@ -616,11 +616,11 @@ function mostrarReservas($conexion)
                                     <select name='hora_mod_cancel'>";
 
                         // Horas cada 30 minutos para modif/cancel
-                        for ($h = 0; $h < 24; $h++) {
-                            for ($m = 0; $m < 60; $m += 30) {
-                                $hora_valor = sprintf('%02d:%02d:00', $h, $m); // hh:mm:00
-                                $hora_visible = sprintf('%02d:%02d', $h, $m);  // hh:mm
-                                $selected = ($hora_valor === ($hora_mod_cancel . ':00')) ? 'selected' : '';
+                        for ($h = 10; $h <= 20; $h++) {
+                            foreach ([0, 30] as $m) {
+                                $hora_valor = sprintf('%02d:%02d:00', $h, $m);
+                                $hora_visible = sprintf('%02d:%02d', $h, $m);
+                                $selected = ($hora_mod_cancel && $hora_valor === ($hora_mod_cancel . ':00')) ? 'selected' : '';
                                 echo "<option value='$hora_valor' $selected>$hora_visible</option>";
                             }
                         }
@@ -669,11 +669,11 @@ function mostrarReservas($conexion)
                         <select name='hora_mod_cancel' ";
 
             // Horas cada 30 minutos para modif/cancel
-            for ($h = 0; $h < 24; $h++) {
-                for ($m = 0; $m < 60; $m += 30) {
-                    $hora_valor = sprintf('%02d:%02d:00', $h, $m); // hh:mm:00
-                    $hora_visible = sprintf('%02d:%02d', $h, $m);  // hh:mm
-                    $selected = ($hora_valor === ($hora_mod_cancel . ':00')) ? 'selected' : '';
+            for ($h = 10; $h <= 20; $h++) {
+                foreach ([0, 30] as $m) {
+                    $hora_valor = sprintf('%02d:%02d:00', $h, $m);
+                    $hora_visible = sprintf('%02d:%02d', $h, $m);
+                    $selected = ($hora_mod_cancel && $hora_valor === ($hora_mod_cancel . ':00')) ? 'selected' : '';
                     echo "<option value='$hora_valor' $selected>$hora_visible</option>";
                 }
             }

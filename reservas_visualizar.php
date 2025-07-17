@@ -286,7 +286,7 @@ $stmt->execute();
 $res = $stmt->get_result();
 
 // Input de búsqueda
-echo "<input id='inputBuscarReservasEmpleado' oninput='filtrarReservas()' class='form-control mb-3' placeholder='Buscar...'>";
+echo "<input id='inputBuscarReservasEmpleado' oninput='filtrarReservas()' class='input-estilizado' placeholder='Buscar...'>";
 mostrarTablaReservas($res, true, $puesto);
 
 // Formulario de búsqueda histórica
