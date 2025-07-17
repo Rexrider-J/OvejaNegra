@@ -2485,7 +2485,14 @@ form.form-edicion {
 /*Locales*/
 #tabla-locales form[data-accion='agregar'] .input-estilizado,
 #tabla-locales form[data-accion='agregar'] input[type='submit'] {
-    width: 120px;
+    width: 160px;
+    margin-right: 8px; /* espacio entre campos */
+    margin-bottom: 8px; /* por si se apilan en pantallas pequeñas */
+}
+/*empleados funciones*/
+#tabla-empleado_funcion form[data-accion='agregar'] .input-estilizado,
+#tabla-empleado_funcion form[data-accion='agregar'] input[type='submit'] {
+    width: 160px;
     margin-right: 8px; /* espacio entre campos */
     margin-bottom: 8px; /* por si se apilan en pantallas pequeñas */
 }

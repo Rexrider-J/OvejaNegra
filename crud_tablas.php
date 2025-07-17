@@ -186,7 +186,7 @@ function mostrarEmpleadoFuncion($conexion)
   $hoy = date('Y-m-d'); // Obtener fecha de hoy
 
   echo "<h3>Empleado Funciones</h3>
-    <table class='table'>
+    <table class='tabla-estilizada tabla-scroll'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -206,48 +206,45 @@ function mostrarEmpleadoFuncion($conexion)
 
     echo "<tr>
             <td>{$row['id_empleado_funcion']}</td>
-            <td>{$fecha}</td>
-            <td>{$hora}</td>
-            <td>{$row['funcion']}</td>
-            <td>{$row['id_empleado']}</td>
+            <td><input name='fecha' type='date' value='{$fecha}' min='{$hoy}' class='input-estilizado' required></td>
             <td>
-                <form>
-                    <input name='fecha' type='date' value='{$fecha}' min='{$hoy}' required>
-                    <select name='hora' type='time' required>
-                        <option value='11:00:00' " . ($hora === '11:00:00' ? 'selected' : '') . ">11:00</option>
-                        <option value='12:00:00' " . ($hora === '12:00:00' ? 'selected' : '') . ">12:00</option>
-                        <option value='13:00:00' " . ($hora === '13:00:00' ? 'selected' : '') . ">13:00</option>
-                        <option value='14:00:00' " . ($hora === '14:00:00' ? 'selected' : '') . ">14:00</option>
-                        <option value='15:00:00' " . ($hora === '15:00:00' ? 'selected' : '') . ">15:00</option>
-                        <option value='16:00:00' " . ($hora === '16:00:00' ? 'selected' : '') . ">16:00</option>
-                        <option value='17:00:00' " . ($hora === '17:00:00' ? 'selected' : '') . ">17:00</option>
-                        <option value='18:00:00' " . ($hora === '18:00' ? 'selected' : '') . ">18:00</option>
-                        <option value='19:00:00' " . ($hora === '19:00' ? 'selected' : '') . ">19:00</option>
-                        <option value='20:00:00' " . ($hora === '20:00' ? 'selected' : '') . ">20:00</option>
-                    </select>
-
-                    <select name='funcion' required>
-                        <option value='Mozo' " . ($row['funcion'] === 'Mozo' ? 'selected' : '') . ">Mozo</option>
-                        <option value='Caja' " . ($row['funcion'] === 'Caja' ? 'selected' : '') . ">Caja</option>
-                        <option value='Limpieza' " . ($row['funcion'] === 'Limpieza' ? 'selected' : '') . ">Limpieza</option>
-                        <option value='Subgerente' " . ($row['funcion'] === 'Subgerente' ? 'selected' : '') . ">Subgerente</option>
-                        <option value='Gerente' " . ($row['funcion'] === 'Gerente' ? 'selected' : '') . ">Gerente</option>
-                    </select>
-
-                    <input name='id_empleado' type='text' maxlength='3' class='solo-numeros' value='{$row['id_empleado']}' required>
-                    <button type='button' class='btn-modificar' data-id='{$row['id_empleado_funcion']}'>Modificar</button>
-                    <button type='button' class='btn-eliminar' data-id='{$row['id_empleado_funcion']}'>Eliminar</button>
-                </form>
+                <select name='hora' type='time' class='input-estilizado' required>
+                    <option value='11:00:00' " . ($hora === '11:00:00' ? 'selected' : '') . ">11:00</option>
+                    <option value='12:00:00' " . ($hora === '12:00:00' ? 'selected' : '') . ">12:00</option>
+                    <option value='13:00:00' " . ($hora === '13:00:00' ? 'selected' : '') . ">13:00</option>
+                    <option value='14:00:00' " . ($hora === '14:00:00' ? 'selected' : '') . ">14:00</option>
+                    <option value='15:00:00' " . ($hora === '15:00:00' ? 'selected' : '') . ">15:00</option>
+                    <option value='16:00:00' " . ($hora === '16:00:00' ? 'selected' : '') . ">16:00</option>
+                    <option value='17:00:00' " . ($hora === '17:00:00' ? 'selected' : '') . ">17:00</option>
+                    <option value='18:00:00' " . ($hora === '18:00' ? 'selected' : '') . ">18:00</option>
+                    <option value='19:00:00' " . ($hora === '19:00' ? 'selected' : '') . ">19:00</option>
+                    <option value='20:00:00' " . ($hora === '20:00' ? 'selected' : '') . ">20:00</option>
+                </select>            
+            </td>
+            <td>
+                <select name='funcion' class='input-estilizado' required>
+                    <option value='Mozo' " . ($row['funcion'] === 'Mozo' ? 'selected' : '') . ">Mozo</option>
+                    <option value='Caja' " . ($row['funcion'] === 'Caja' ? 'selected' : '') . ">Caja</option>
+                    <option value='Limpieza' " . ($row['funcion'] === 'Limpieza' ? 'selected' : '') . ">Limpieza</option>
+                    <option value='Subgerente' " . ($row['funcion'] === 'Subgerente' ? 'selected' : '') . ">Subgerente</option>
+                    <option value='Gerente' " . ($row['funcion'] === 'Gerente' ? 'selected' : '') . ">Gerente</option>
+                </select>            
+            </td>
+            <td><input name='id_empleado' type='text' maxlength='3' class='solo-numeros input-estilizado' value='{$row['id_empleado']}' required></td>
+            <td>
+                <button type='button' class='btn-modificar btn btn-warning' data-id='{$row['id_empleado_funcion']}'>Modificar</button>
+                <button type='button' class='btn-eliminar btn btn-danger' data-id='{$row['id_empleado_funcion']}'>Eliminar</button>
             </td>
         </tr>";
   }
 
   echo "</tbody>
     </table>
+    <div class='separador-borde'></div>
     <h4>Agregar nueva función</h4>
     <form data-accion='agregar'>
-        <input name='fecha' type='date' min='{$hoy}' required>
-        <select name='hora' type='time' required>
+        <input name='fecha' type='date' min='{$hoy}' class='input-estilizado' required>
+        <select name='hora' type='time' class='input-estilizado' required>
             <option value='11:00:00'>11:00</option>
             <option value='12:00:00'>12:00</option>
             <option value='13:00:00'>13:00</option>
@@ -260,7 +257,7 @@ function mostrarEmpleadoFuncion($conexion)
             <option value='20:00:00'>20:00</option>
         </select>
 
-        <select name='funcion' required>
+        <select name='funcion' class='input-estilizado' required>
             <option value='Mozo'>Mozo</option>
             <option value='Caja'>Caja</option>
             <option value='Limpieza'>Limpieza</option>
@@ -268,8 +265,8 @@ function mostrarEmpleadoFuncion($conexion)
             <option value='Gerente'>Gerente</option>
         </select>
 
-        <input name='id_empleado' type='text' maxlength='11' class='solo-numeros' placeholder='ID Empleado' required>
-        <input type='submit' value='Agregar'>
+        <input name='id_empleado' type='text' maxlength='11' class='solo-numeros input-estilizado' placeholder='ID Empleado' required>
+        <input type='submit' class='btn btn-success' value='Agregar'>
     </form>";
 }
 
