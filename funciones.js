@@ -122,37 +122,37 @@ document.addEventListener("DOMContentLoaded", function () {
             <fieldset>
               <legend>Nombre/s</legend>
               <label class="form-group">
-                <input type="text" id="nombreClienteInput" name="nombreClienteInput" maxlength="50" class="solo-letras" disabled />
-                <button class="btn-editar" data-target="nombreClienteInput">Editar</button>
+                <input type="text" id="nombreClienteInput" name="nombreClienteInput" maxlength="50" class="solo-letras input-estilizado" disabled />
+                <button class="btn-editar boton-estilizado" data-target="nombreClienteInput">Editar</button>
               </label>
               <legend>Apellido/s</legend>
               <label class="form-group">
-                <input type="text" id="apellidoClienteInput" name="apellidoClienteInput" maxlength="50" class="solo-letras" disabled />
-                <button class="btn-editar" data-target="apellidoClienteInput">Editar</button>
+                <input type="text" id="apellidoClienteInput" name="apellidoClienteInput" maxlength="50" class="solo-letras input-estilizado" disabled />
+                <button class="btn-editar boton-estilizado" data-target="apellidoClienteInput">Editar</button>
               </label>
               <legend>DNI</legend> <!--FUNCION APARTE-->
               <label class="form-group">
-                <input type="text" id="dniClienteInput" name="dniClienteInput" disabled />
+                <input type="text" id="dniClienteInput" name="dniClienteInput" class="input-estilizado" disabled />
               </label>
               <legend>Email</legend>
               <label class="form-group">
-                <input type="email" id="emailClienteInput" name="emailClienteInput" maxlength="100" disabled />
-                <button class="btn-editar" data-target="emailClienteInput">Editar</button>
+                <input type="email" id="emailClienteInput" name="emailClienteInput" maxlength="100" class="input-estilizado" disabled />
+                <button class="btn-editar boton-estilizado" data-target="emailClienteInput">Editar</button>
               </label>
               <legend>Telefono</legend>
               <label class="form-group">
-                <input type="text" id="telefonoClienteInput" name="telefonoClienteInput" minlength="10" max="999999999" maxlength="20" class="solo-numeros" disabled />
-                <button class="btn-editar" data-target="telefonoClienteInput">Editar</button>
+                <input type="text" id="telefonoClienteInput" name="telefonoClienteInput" minlength="10" max="999999999" maxlength="20" class="solo-numeros input-estilizado" disabled />
+                <button class="btn-editar boton-estilizado" data-target="telefonoClienteInput">Editar</button>
               </label>
               <legend>Fecha de nacimiento</legend>
               <label class="form-group">
-                <input type="date" id="fecha_nacimientoClienteInput" name="fecha_nacimientoClienteInput" disabled />
-                <button class="btn-editar" data-target="fecha_nacimientoClienteInput">Editar</button>
+                <input type="date" id="fecha_nacimientoClienteInput" name="fecha_nacimientoClienteInput" class="input-estilizado" disabled />
+                <button class="btn-editar boton-estilizado" data-target="fecha_nacimientoClienteInput">Editar</button>
               </label>
               <legend>Contraseña</legend>
               <label class="form-group">
-                <input type="password" id="contrasenaClienteInput" name="contrasenaClienteInput" maxlength="20" disabled />
-                <button class="btn-editar" data-target="contrasenaClienteInput">Editar</button>
+                <input type="password" id="contrasenaClienteInput" name="contrasenaClienteInput" maxlength="20" class="input-estilizado" disabled />
+                <button class="btn-editar boton-estilizado" data-target="contrasenaClienteInput">Editar</button>
               </label>
             </fieldset>
           </div>
@@ -169,51 +169,53 @@ document.addEventListener("DOMContentLoaded", function () {
               <fieldset>
                 <legend>Nombre/s</legend>
                 <label class="form-group">
-                  <input type="text" id="nombreEmpleadoInput" name="nombreEmpleadoInput" maxlength="50" class="solo-letras" disabled />
-                  <button class="btn-editar" data-target="nombreEmpleadoInput">Editar</button>
+                  <input type="text" id="nombreEmpleadoInput" name="nombreEmpleadoInput" maxlength="50" class="solo-letras input-estilizado" disabled />
+                  <button class="btn-editar boton-estilizado" data-target="nombreEmpleadoInput">Editar</button>
                 </label>
                 <legend>Apellido/s</legend>
                 <label class="form-group">
-                  <input type="text" id="apellidoEmpleadoInput" name="apellidoEmpleadoInput" maxlength="50" class="solo-letras" disabled />
-                  <button class="btn-editar" data-target="apellidoEmpleadoInput">Editar</button>
+                  <input type="text" id="apellidoEmpleadoInput" name="apellidoEmpleadoInput" maxlength="50" class="solo-letras input-estilizado" disabled />
+                  <button class="btn-editar boton-estilizado" data-target="apellidoEmpleadoInput">Editar</button>
                 </label>
                 <legend>DNI</legend> 
                 <label class="form-group">
-                  <input type="text" id="dniEmpleadoInput" name="dniEmpleadoInput" disabled />
+                  <input type="text" id="dniEmpleadoInput" name="dniEmpleadoInput" class="input-estilizado" disabled />
                 </label>
                 <legend>Email</legend>
                 <label class="form-group">
-                  <input type="email" id="emailEmpleadoInput" name="emailEmpleadoInput" maxlength="100" disabled />
-                  <button class="btn-editar" data-target="emailEmpleadoInput">Editar</button>
+                  <input type="email" id="emailEmpleadoInput" name="emailEmpleadoInput" maxlength="100" class="input-estilizado" disabled />
+                  <button class="btn-editar boton-estilizado" data-target="emailEmpleadoInput">Editar</button>
                 </label>
                 <legend>Contraseña</legend>
                 <label class="form-group">
-                  <input type="password" id="contrasenaEmpleadoInput" name="contrasenaEmpleadoInput" maxlength="20" disabled />
-                  <button class="btn-editar" data-target="contrasenaEmpleadoInput">Editar</button>
+                  <input type="password" id="contrasenaEmpleadoInput" name="contrasenaEmpleadoInput" maxlength="20" class="input-estilizado" disabled />
+                  <button class="btn-editar boton-estilizado" data-target="contrasenaEmpleadoInput">Editar</button>
                 </label>
               </fieldset>
             </div>
           <div class="columna">
               <fieldset>
                 <legend>Sucursal</legend>
-                <input type="text" id="sucursalEmpleadoText" name="sucursalEmpleadoText" disabled/>
+                <input type="text" id="sucursalEmpleadoText" name="sucursalEmpleadoText" class="input-estilizado" disabled/>
                 <legend>Puesto principal</legend> 
                 <label class="form-group">
-                  <input type="text" id="puestoEmpleadoInput" name="puestoEmpleadoInput" disabled />
+                  <input type="text" id="puestoEmpleadoInput" name="puestoEmpleadoInput" class="input-estilizado" disabled />
                 </label>
                 <legend>Mis funciones</legend>
-                <table id="tablaFunciones">
-                  <thead>
-                    <tr>
-                      <th>Día</th>
-                      <th>Hora</th>
-                      <th>Función</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <!-- Acá se llenarán las filas dinámicamente -->
-                  </tbody>
-                </table>
+                <div class="tabla-scroll">
+                  <table id="tablaFunciones" class="tabla-estilizada">
+                    <thead>
+                      <tr>
+                        <th>Día</th>
+                        <th>Hora</th>
+                        <th>Función</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <!-- Acá se llenarán las filas dinámicamente -->
+                    </tbody>
+                  </table>
+                </div>
               </fieldset>
             </div>
         </div>
@@ -246,8 +248,8 @@ document.addEventListener("DOMContentLoaded", function () {
         <h2 id="puntosDelCliente">Mis puntos:</h2>
       </div>
       <h3>📅 Reservas Futuras</h3>
-      <div class="table-responsive">
-        <table id="tablaReservasFuturas" class="table table-hover table-bordered">
+      <div class="table-responsive tabla-scroll">
+        <table id="tablaReservasFuturas" class="tabla-estilizada">
           <thead>
             <tr>
               <th>Fecha</th>
@@ -275,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
         </p>
       </div>
       <h3>📖 Historial de Reservas</h3>
-      <div class="table-responsive">
+      <div class="table-responsive tabla-scroll">
         <table id="tablaReservasPasadas" class="table table-hover table-bordered">
           <thead>
             <tr>
@@ -364,19 +366,19 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
         <div id="contenidoBtnEmpleado">
           <div id="modificar" class="seccionEmpleado" style="display: none;">
-            <h3>Modificar reservas</h3>
+            <h2>Modificar reservas</h2>
             <section>
-              <h2>Buscar reservas del cliente</h2>
+              <h3>Buscar reservas del cliente</h3>
               <form id="formBusquedaCliente" class="form-busqueda" onsubmit="busquedaCliente(event,'dniModificarEmpleado','emailModificarEmpleado','formBusquedaCliente','tablaReservasVigentes','modificar')">
-                <input type="text" id="dniModificarEmpleado" name="dniModificarEmpleado" placeholder="DNI" required class="solo-numeros"/>
-                <input type="email" id="emailModificarEmpleado" name="emailModificarEmpleado" placeholder="Mail" maxlength="100" required />
-                <button type="submit">Buscar</button>
-                <button type="button" onclick="limpiarTabla('tablaReservasVigentes', 'formBusquedaCliente')">Limpiar</button>
+                <input type="text" id="dniModificarEmpleado" name="dniModificarEmpleado" placeholder="DNI" required class="solo-numeros input-estilizado"/>
+                <input type="email" id="emailModificarEmpleado" name="emailModificarEmpleado" placeholder="Mail" maxlength="100" class="input-estilizado" required />
+                <button type="submit" class="boton-estilizado">Buscar</button>
+                <button type="button" onclick="limpiarTabla('tablaReservasVigentes', 'formBusquedaCliente')" class="boton-estilizado">Limpiar</button>
               </form>
             </section>
-              <h2>Reservas del cliente</h2>
-              <div class="table-responsive">
-                <table id="tablaReservasVigentes" class="table table-hover table-bordered">
+              <h3>Reservas del cliente</h3>
+              <div class="table-responsive tabla-scroll">
+                <table id="tablaReservasVigentes" class="tabla-estilizada">
                   <thead>
                     <tr>
                       <th>Fecha</th>
@@ -411,30 +413,30 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
           </div>
           <div id="cancelar" class="seccionEmpleado" style="display: none;">
-            <h3>Cancelar reservas</h3>
-            <div id="selectorModoCancelacion" style="margin-bottom: 1rem;">
-              <button type="button" onclick="mostrarVistaCancelacion('individual')">
+            <h2>Cancelar reservas</h2>
+            <div id="selectorModoCancelacion" class="contenedor-botones-cancelacion">
+              <button type="button" onclick="mostrarVistaCancelacion('individual')" class="boton-estilizado">
                 Cancelación individual
               </button>
-              <button type="button" id="btnModoMasivo" onclick="mostrarVistaCancelacion('masiva')">
+              <button type="button" id="btnModoMasivo" onclick="mostrarVistaCancelacion('masiva')" class="boton-estilizado">
                 Cancelación masiva
               </button>
             </div>
 
             <div id="vistaCancelacionIndividual">
-              <h2>Buscar reservas del cliente</h2>
+              <h3>Buscar reservas del cliente</h3>
               <section>
                 <form id="formBusquedaClienteCancelar" class="form-busqueda" onsubmit="busquedaCliente(event, 'dniCancelarEmpleado', 'emailCancelarEmpleado', 'formBusquedaClienteCancelar', 'tablaReservasVigentesCancelar', 'cancelar')">
-                  <input type="text" id="dniCancelarEmpleado" name="dniCancelarEmpleado" placeholder="DNI" required class="solo-numeros"/>
-                  <input type="email" id="emailCancelarEmpleado" name="emailCancelarEmpleado" placeholder="Mail" maxlength="100" required />
-                  <button type="submit">Buscar</button>
-                  <button type="button" onclick="limpiarTabla('tablaReservasVigentesCancelar', 'formBusquedaClienteCancelar')">Limpiar</button>
+                  <input type="text" id="dniCancelarEmpleado" name="dniCancelarEmpleado" placeholder="DNI" required class="solo-numeros input-estilizado"/>
+                  <input type="email" id="emailCancelarEmpleado" name="emailCancelarEmpleado" placeholder="Mail" maxlength="100" class="input-estilizado" required />
+                  <button type="submit" class="boton-estilizado">Buscar</button>
+                  <button type="button" onclick="limpiarTabla('tablaReservasVigentesCancelar', 'formBusquedaClienteCancelar')" class="boton-estilizado">Limpiar</button>
                 </form>
               </section>
               <section>
-                <h2>Reservas del cliente</h2>
-                <div class="table-responsive">
-                  <table id="tablaReservasVigentesCancelar" class="table table-hover table-bordered">
+                <h3>Reservas del cliente</h3>
+                <div class="table-responsive tabla-scroll">
+                  <table id="tablaReservasVigentesCancelar" class="tabla-estilizada">
                     <thead>
                       <tr>
                         <th>Fecha</th>
@@ -456,20 +458,20 @@ document.addEventListener("DOMContentLoaded", function () {
             </div>
             <div id="vistaCancelacionMasiva" style="display: none;">
               <form id="formCancelacionMasiva" onsubmit="event.preventDefault(); cancelacionMasiva();">
-                <label>Local:</label>
-                <select id="localCancelacionMasiva" />
+                <label class="label-estilizado">Local:</label>
+                <select id="localCancelacionMasiva" class="input-estilizado"/>
                   <option value="">Seleccionar...</option>
                   <!-- Opciones dinámicas -->
                 </select>
-                <label>Fecha:</label>
-                <input type="date" id="fechaCancelacionMasiva" />
-                <label>Hora:</label>
-                <select id="horaCancelacionMasiva">
+                <label class="label-estilizado">Fecha:</label>
+                <input type="date" id="fechaCancelacionMasiva" class="input-estilizado"/>
+                <label class="label-estilizado">Hora:</label>
+                <select id="horaCancelacionMasiva" class="input-estilizado">
                   <option value="">Seleccionar...</option>
                     <!-- Opciones dinámicas -->
                 </select>
-                <label>Motivo de cancelación:</label>
-                <textarea id="motivoCancelacionMasiva" rows="3" cols="30" placeholder="Ingrese el motivo de la cancelación" maxlength="255" required></textarea>
+                <label class="label-estilizado">Motivo de cancelación:</label>
+                <textarea id="motivoCancelacionMasiva" rows="3" cols="30" placeholder="Ingrese el motivo de la cancelación" maxlength="255" class="input-estilizado" required></textarea>
                 <button type="submit" class="btn btn-danger">Confirmar cancelación masiva</button>
               </form>
             </div>

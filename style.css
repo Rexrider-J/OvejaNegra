@@ -2003,14 +2003,14 @@ input[type=number]::-webkit-outer-spin-button {
     margin-top: 10px;
 }
 
-#list-datosPersonales input {
+.input-estilizado {
     width: 100%;
     max-width: 100%;
     font-size: 1rem;
     font-weight: 400;
     padding: .375rem .75rem;
-    border: var(--bs-border-width) solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
+    border: var(--bs-border-width, 1px) solid var(--bs-border-color, #ced4da);
+    border-radius: var(--bs-border-radius, 0.375rem);
 }
 
 #list-datosPersonales legend {
@@ -2018,81 +2018,122 @@ input[type=number]::-webkit-outer-spin-button {
     font-size: 20px;
     margin: 0;
 }
+.label-estilizado{
+    text-align: start;
+    font-size: 15px;
+    margin: 0;
+}
 
-#list-datosPersonales button {
+.boton-estilizado {
     display: block;
     margin: 0;
     min-height: 2em;
     border-radius: 8px;
     color: white;
-
     font-size: 1.1rem;
     background-color: #4cbfe6;
     border-color: #4cbfe6;
+    cursor: pointer;
 }
 
-#tablaFuncionesContainer {
-    max-width: 800px;
-    margin: 30px auto;
-    padding: 20px;
-    background-color: #e9ecef;
-    /* Fondo como input disabled */
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    overflow: hidden;
+select.input-estilizado {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+    box-sizing: border-box;
+    background-color: white;
+    color: #212529;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3E%3Cpath fill='%23666' d='M2 0L0 2h4zm0 5L0 3h4z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 8px 10px;
+    cursor: pointer;
 }
 
-#tablaFunciones {
+select.input-estilizado option {
+  font-size: 1rem;
+  color: #212529;       /* Color del texto */
+  background-color: white; /* Fondo blanco */
+}
+
+textarea.input-estilizado {
+    width: 100%;
+    max-width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+    box-sizing: border-box;
+    background-color: white;
+    color: #212529;
+    resize: vertical; /* Permite cambiar alto verticalmente, no horizontal */
+    min-height: 80px; /* Altura mínima, podés ajustar */
+    font-family: inherit; /* Que tome la misma fuente que inputs */
+    line-height: 1.5;
+}
+
+.tabla-estilizada {
     width: 100%;
     border-collapse: separate;
-    /* Necesario para que border-radius funcione */
     border-spacing: 0;
     border-radius: 10px;
     overflow: hidden;
 }
 
-#tablaFunciones thead {
+.tabla-estilizada thead {
     background-color: #4cbfe6;
     color: white;
-    font-weight: bold;
 }
 
-/* Celdas */
-#tablaFunciones th,
-#tablaFunciones td {
+.tabla-estilizada th,
+.tabla-estilizada td {
     padding: 12px 15px;
     text-align: center;
     border-bottom: 1px solid #ccc;
 }
 
-/* Zebra striping */
-#tablaFunciones tbody tr:nth-child(even) {
+.tabla-estilizada tbody tr:nth-child(even) {
     background-color: #f8f9fa;
 }
 
-/* Hover opcional */
-#tablaFunciones tbody tr:hover {
+.tabla-estilizada tbody tr:hover {
     background-color: #dee2e6;
-    cursor: default;
 }
 
-/* Redondeo visual solo en esquinas */
-#tablaFunciones thead tr:first-child th:first-child {
+.tabla-estilizada thead tr:first-child th:first-child {
     border-top-left-radius: 10px;
 }
 
-#tablaFunciones thead tr:first-child th:last-child {
+.tabla-estilizada thead tr:first-child th:last-child {
     border-top-right-radius: 10px;
 }
 
-#tablaFunciones tbody tr:last-child td:first-child {
+.tabla-estilizada tbody tr:last-child td:first-child {
     border-bottom-left-radius: 10px;
 }
 
-#tablaFunciones tbody tr:last-child td:last-child {
+.tabla-estilizada tbody tr:last-child td:last-child {
     border-bottom-right-radius: 10px;
 }
 
+.tabla-scroll {
+    max-height: calc(7 * 50px); /* 7 filas de ~50px c/u */
+    overflow-y: auto;
+    border-radius: 10px;
+}
+
+/* Opcional: Asegurarte que el tbody pueda expandirse sin cortar encabezado */
+.tabla-scroll table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
 /*Responsive*/
 @media (max-width: 768px) {
     .datosModificables {
@@ -2128,7 +2169,81 @@ input[type=number]::-webkit-outer-spin-button {
         padding: 10px;
     }
 }
+/*Estilo de modificar reservas empleado*/
+#modificar h2{
+    text-align: center;
+}
+.form-busqueda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Espacio entre los elementos */
+    justify-content: center; /* Centra horizontalmente */
+    max-width: 800px; /* Ancho máximo del formulario */
+    margin: 10px auto; /* Centrado en la página */
+    padding: 10px;
+}
 
+.form-busqueda input,
+.form-busqueda button {
+    flex: 1 1 150px; /* Los elementos crecen hasta cierto punto pero tienen mínimo */
+    max-width: 200px; /* No se hacen demasiado grandes */
+}
+/*responsive*/
+/* Contenedor con scroll horizontal en pantallas chicas */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* scroll suave en iOS */
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+/* Evitar que la tabla se rompa */
+.table-responsive table {
+    min-width: 800px; /* Se ajusta si tiene muchas columnas */
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+/* Responsive extra para pantallas muy pequeñas */
+@media (max-width: 600px) {
+    .form-busqueda {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .form-busqueda input,
+    .form-busqueda button {
+        max-width: 100%;
+        width: 100%;
+    }
+
+    .tabla-scroll {
+        max-height: 300px;
+    }
+
+    .table-responsive table {
+        min-width: 600px; /* se adapta pero mantiene legibilidad */
+    }
+}
+/*Cancelar reserva empleado*/
+#cancelar h2{
+    text-align: center;
+}
+.contenedor-botones-cancelacion {
+    display: flex;
+    justify-content: center;  /* Centra horizontalmente */
+    align-items: center;      /* Centra verticalmente (si hay altura extra) */
+    gap: 20px;                /* Espacio entre botones */
+    flex-wrap: wrap;          /* Permite que se apilen si no hay espacio */
+    margin-bottom: 1rem;
+    width: 100%;
+}
+.contenedor-botones-cancelacion .boton-estilizado {
+    width: 180px;
+    max-width: 100%;
+    text-align: center;
+}
 /*Estilo de mofidicar menu*/
 .contenedor-items-del-menu {
     display: grid;
