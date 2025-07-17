@@ -262,7 +262,14 @@ function agregarRegistro($conexion, $tabla)
       }
       $stmt = $conexion->prepare("INSERT INTO empleados (nombre, apellido, dni, mail, puesto, id_local, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)");
       $stmt->bind_param("ssissis", $_POST['nombre'], $_POST['apellido'], $_POST['dni'], $_POST['mail'], $_POST['puesto'], $_POST['id_local'], $_POST['contrasena']);
-      break;
+
+      if ($stmt->execute()) {
+        echo "✅Empleado agregado correctamente.";
+      } else {
+        echo "❌Error al agregar empleado: " . $stmt->error;
+      }
+      $stmt->close();
+      return;
     case 'menu':
       if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] !== UPLOAD_ERR_OK) {
         echo "❌ Debés subir una imagen.";
@@ -403,7 +410,7 @@ function agregarRegistro($conexion, $tabla)
           return false;
       }
       break;
-  case 'reservas':
+    case 'reservas':
       date_default_timezone_set('America/Argentina/Buenos_Aires');
 
       // Obtener datos desde POST
