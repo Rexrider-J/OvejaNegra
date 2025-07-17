@@ -405,7 +405,8 @@ function agregarRegistro($conexion, $tabla)
       break;
     case 'reservas':
       date_default_timezone_set('America/Argentina/Buenos_Aires');
-      // Validaciones
+      
+      // Obtener datos desde POST
       $id_cliente = $_POST['id_cliente'];
       $id_mesa = $_POST['id_mesa'];
       $id_local = $_POST['id_local'];
@@ -413,7 +414,7 @@ function agregarRegistro($conexion, $tabla)
       $hora = $_POST['hora'];
       $fecha_reserva = "$fecha $hora";
 
-      $fechaHoraReserva = DateTime::createFromFormat('Y-m-d H:i:s', "$fecha $hora");
+      $fechaHoraReserva = DateTime::createFromFormat('Y-m-d H:i:s', $fecha_reserva);
       if (!$fechaHoraReserva) {
           echo "❌ Fecha u hora inválida.";
           return;
@@ -424,19 +425,37 @@ function agregarRegistro($conexion, $tabla)
       if ($fechaHoraReserva < $ahora && $fechaHoraReserva->format('Y-m-d') === $ahora->format('Y-m-d')) {
           echo "❌ No se puede reservar/modificar para una hora anterior a la hora actual del día de hoy.";
           return;
-      }   
+      }
 
       $observaciones = $_POST['observaciones'];
       $cant_personas = $_POST['cant_personas'];
       $id_estado = $_POST['id_estado_reserva'];
-      $fecha_mod_cancel = $_POST['fecha_mod_cancel'];
-      $hora_mod_cancel = $_POST['hora_mod_cancel'];
-      $fecha_modificacion_cancelacion = "$fecha_mod_cancel $hora_mod_cancel";
-      $mod_por = $_POST['modificado_cancelado_por'];
-      $tipo_mod = $_POST['tipo_modificado_cancelado'];
-      $motivo = $_POST['motivo_cancelacion'];
-      $cambio_mesa = $_POST['cambio_mesa'];
+      $fecha_mod_cancel = $_POST['fecha_mod_cancel'] ?? '';
+      $hora_mod_cancel = $_POST['hora_mod_cancel'] ?? '';
+      $fecha_modificacion_cancelacion = trim("$fecha_mod_cancel $hora_mod_cancel");
+      $mod_por = $_POST['modificado_cancelado_por'] ?? '';
+      $tipo_mod = $_POST['tipo_modificado_cancelado'] ?? '';
+      $motivo = $_POST['motivo_cancelacion'] ?? '';
+      $cambio_mesa = $_POST['cambio_mesa'] ?? '';
 
+      // Ignorar tipo_mod si no hay mod_por
+      if (empty($mod_por)) {
+          $tipo_mod = null;
+      }
+
+      // Validar existencia del modificador si está informado
+      if (!empty($mod_por) && !empty($tipo_mod)) {
+          if ($tipo_mod === 'cliente' && !existeEnTabla($conexion, 'clientes', 'id_cliente', $mod_por)) {
+              echo "Error: El cliente que modificó/canceló no existe.";
+              return;
+          }
+          if ($tipo_mod === 'empleado' && !existeEnTabla($conexion, 'empleados', 'id_empleado', $mod_por)) {
+              echo "Error: El empleado que modificó/canceló no existe.";
+              return;
+          }
+      }
+
+      // Validar existencia IDs principales
       if (
           !existeEnTabla($conexion, 'clientes', 'id_cliente', $id_cliente) ||
           !existeEnTabla($conexion, 'mesas', 'id_mesa', $id_mesa) ||
@@ -447,22 +466,13 @@ function agregarRegistro($conexion, $tabla)
           return;
       }
 
-      if ($tipo_mod === 'cliente' && !existeEnTabla($conexion, 'clientes', 'id_cliente', $mod_por)) {
-          echo "Error: El cliente que modificó/canceló no existe.";
-          return;
-      }
-
-      if ($tipo_mod === 'empleado' && !existeEnTabla($conexion, 'empleados', 'id_empleado', $mod_por)) {
-          echo "Error: El empleado que modificó/canceló no existe.";
-          return;
-      }
-
-      if (!existeEnTabla($conexion, 'mesas', 'id_mesa', $cambio_mesa)) {
+      // Validar mesa de cambio si está provista
+      if (!empty($cambio_mesa) && !existeEnTabla($conexion, 'mesas', 'id_mesa', $cambio_mesa)) {
           echo "Error: El ID de la mesa de cambio no existe.";
           return;
       }
 
-      // Verificar clave única
+      // Verificar clave única: no debe existir reserva con mismo local, mesa y fecha_reserva
       $stmt = $conexion->prepare("SELECT 1 FROM reservas WHERE id_local = ? AND id_mesa = ? AND fecha_reserva = ?");
       $stmt->bind_param("iis", $id_local, $id_mesa, $fecha_reserva);
       $stmt->execute();
@@ -471,6 +481,7 @@ function agregarRegistro($conexion, $tabla)
           echo "Error: Ya existe una reserva con ese local, mesa y fecha.";
           return;
       }
+      $stmt->close();
 
       // Insertar reserva
       $stmt = $conexion->prepare("INSERT INTO reservas (
@@ -490,6 +501,8 @@ function agregarRegistro($conexion, $tabla)
       } else {
           echo "❌Error al agregar reserva: " . $stmt->error;
       }
+
+      $stmt->close();
 
       break;
     default:

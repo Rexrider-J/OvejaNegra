@@ -2120,7 +2120,7 @@ if (window.location.pathname.includes("reservas.html")) {
           mesaSelect.disabled = false;
         } else {
           mesaSelect.disabled = true;
-          mesaSelect.innerHTML = "<option value=''>Seleccione primero fecha, hora y cantidad</option>";
+          mesaSelect.innerHTML = "<option value=''>Seleccione sucursal, fecha, hora y cantidad</option>";
         }
       }
 
@@ -2176,7 +2176,7 @@ if (window.location.pathname.includes("reservas.html")) {
         } else {
           mesaSelect.disabled = true;
           mesaSelect.innerHTML =
-            "<option value=''>Seleccione primero fecha, hora y cantidad</option>";
+            "<option value=''>Seleccione local, fecha, hora y cantidad</option>";
         }
       }
 
