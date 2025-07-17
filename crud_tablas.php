@@ -347,50 +347,50 @@ function mostrarLocalMenu($conexion)
 {
   $res = $conexion->query("SELECT * FROM local_menu");
   echo "<h3>Local Menu</h3>
-    <table class='table'>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>ID Menu</th>
-                <th>ID Local</th>
-                <th>Disponibilidad</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>";
+  <div class='tabla-scroll'>
+        <table class='tabla-estilizada'>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>ID Menu</th>
+                    <th>ID Local</th>
+                    <th>Disponibilidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>";
 
-  while ($row = $res->fetch_assoc()) {
-    echo "<tr>
-            <td>{$row['id_local_menu']}</td>
-            <td>{$row['id_menu']}</td>
-            <td>{$row['id_local']}</td>
-            <td>{$row['estado_disponibilidad']}</td>
-            <td>
-                <form>
-                    <input name='id_menu' class='solo-numeros' maxlength='11' value='{$row['id_menu']}' required>
-                    <input name='id_local' class='solo-numeros'maxlength='11'  value='{$row['id_local']}' required>
-                    <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
+    while ($row = $res->fetch_assoc()) {
+        echo "<tr>
+                <td>{$row['id_local_menu']}</td>
+                <td><input name='id_menu' class='solo-numeros input-estilizado' maxlength='11' value='{$row['id_menu']}' required></td>
+                <td><input name='id_local' class='solo-numeros input-estilizado' maxlength='11'  value='{$row['id_local']}' required></td>
+                <td>
+                    <select name='estado_disponibilidad' class='input-estilizado' value='{$row['estado_disponibilidad']}' required>
                         <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
                         <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
-                    </select>
-                    <button type='button' class='btn-modificar' data-id='{$row['id_local_menu']}'>Modificar</button>
-                    <button type='button' class='btn-eliminar' data-id='{$row['id_local_menu']}'>Eliminar</button>
-                </form>
-            </td>
-        </tr>";
-  }
+                    </select>            
+                </td>
+                <td>
+                    <button type='button' class='btn-modificar btn btn-warning' data-id='{$row['id_local_menu']}'>Modificar</button>
+                    <button type='button' class='btn-eliminar btn btn-danger' data-id='{$row['id_local_menu']}'>Eliminar</button>
+                </td>
+            </tr>";
+    }
 
-  echo "</tbody>
-    </table>
+    echo "</tbody>
+        </table>
+    </div>
+    <div class='separador-borde'></div>
     <h4>Agregar ítem a local</h4>
     <form data-accion='agregar'>
-        <input name='id_menu' class='solo-numeros' maxlength='11' placeholder='ID Menu' required>
-        <input name='id_local' class='solo-numeros' maxlength='11' placeholder='ID Local' required>
-        <select name='estado_disponibilidad' placeholder='Disponibilidad' required>
+        <input name='id_menu' class='solo-numeros input-estilizado' maxlength='11' placeholder='ID Menu' required>
+        <input name='id_local' class='solo-numeros input-estilizado' maxlength='11' placeholder='ID Local' required>
+        <select name='estado_disponibilidad' class='input-estilizado' placeholder='Disponibilidad' required>
             <option value='disponible'>disponible</option>
             <option value='no disponible'>no disponible</option>
         </select>
-        <input type='submit' value='Agregar'>
+        <input type='submit' class='btn btn-success' value='Agregar'>
     </form>";
 }
 

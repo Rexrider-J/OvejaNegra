@@ -1993,6 +1993,7 @@ input[type=number]::-webkit-outer-spin-button {
     max-height: 700px;
     overflow-y: auto;
     border-radius: 10px;
+    border-collapse: collapse;
 }
 
 #list-datosPersonales .form-group {
@@ -2120,13 +2121,6 @@ textarea.input-estilizado {
 .tabla-estilizada tbody tr:last-child td:last-child {
     border-bottom-right-radius: 10px;
 }
-
-/* Opcional: Asegurarte que el tbody pueda expandirse sin cortar encabezado */
-.tabla-scroll table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-}
 /*Responsive*/
 @media (max-width: 768px) {
     .datosModificables {
@@ -2186,7 +2180,7 @@ textarea.input-estilizado {
 .table-responsive {
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* scroll suave en iOS */
+    -webkit-overflow-scrolling: touch;
     margin-top: 10px;
     border-radius: 10px;
 }
@@ -2436,7 +2430,7 @@ textarea.input-estilizado {
 }
 #tabla-reservas table.tabla-estilizada {
     border-collapse: collapse;
-    width: 1500px; /* más ancho para que scrollee */
+    width: 1500px; 
 }
 table.tabla-estilizada th, table.tabla-estilizada td {
     padding: 10px 12px;
@@ -2492,6 +2486,13 @@ form.form-edicion {
 /*empleados funciones*/
 #tabla-empleado_funcion form[data-accion='agregar'] .input-estilizado,
 #tabla-empleado_funcion form[data-accion='agregar'] input[type='submit'] {
+    width: 160px;
+    margin-right: 8px; /* espacio entre campos */
+    margin-bottom: 8px; /* por si se apilan en pantallas pequeñas */
+}
+/*local menu*/
+#tabla-local_menu form[data-accion='agregar'] .input-estilizado,
+#tabla-local_menu form[data-accion='agregar'] input[type='submit'] {
     width: 160px;
     margin-right: 8px; /* espacio entre campos */
     margin-bottom: 8px; /* por si se apilan en pantallas pequeñas */
