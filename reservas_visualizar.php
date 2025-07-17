@@ -136,14 +136,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['columna'])) {
                 c.mail, 
                 m.descripcion AS mesa_desc, 
                 e.estados, 
-                l.nombre AS nombre_local
-                ,m_anterior.descripcion AS mesa_anterior
+                m_anterior.descripcion AS mesa_anterior,
+                l.nombre AS nombre_local,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.nombre
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.nombre
+                  ELSE NULL
+                END AS modificado_nombre,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.apellido
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.apellido
+                  ELSE NULL
+                END AS modificado_apellido,
+                r.tipo_modificado_cancelado
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
           LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
           JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
+          LEFT JOIN clientes cli ON r.tipo_modificado_cancelado = 'cliente' AND r.modificado_cancelado_por = cli.id_cliente
+          LEFT JOIN empleados emp ON r.tipo_modificado_cancelado = 'empleado' AND r.modificado_cancelado_por = emp.id_empleado
           WHERE $columna_sql LIKE ?
             AND m.id_local = ?
           ORDER BY r.fecha_reserva DESC";
@@ -158,14 +171,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['columna'])) {
                 c.mail, 
                 m.descripcion AS mesa_desc, 
                 e.estados, 
-                l.nombre AS nombre_local
-                ,m_anterior.descripcion AS mesa_anterior
+                m_anterior.descripcion AS mesa_anterior,
+                l.nombre AS nombre_local,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.nombre
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.nombre
+                  ELSE NULL
+                END AS modificado_nombre,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.apellido
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.apellido
+                  ELSE NULL
+                END AS modificado_apellido,
+                r.tipo_modificado_cancelado
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
           LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
           JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
+          LEFT JOIN clientes cli ON r.tipo_modificado_cancelado = 'cliente' AND r.modificado_cancelado_por = cli.id_cliente
+          LEFT JOIN empleados emp ON r.tipo_modificado_cancelado = 'empleado' AND r.modificado_cancelado_por = emp.id_empleado
           WHERE $columna_sql LIKE ?
           ORDER BY r.fecha_reserva DESC";
 
@@ -185,20 +211,33 @@ $hoy = date('Y-m-d');
 
 if ($puesto !== 'Gerente' && $puesto !== 'Subgerente') {
   $sql = "SELECT r.*, 
-                 c.nombre AS nombre_cliente, 
-                 c.apellido AS apellido_cliente, 
-                 c.dni, 
-                 c.mail, 
-                 m.descripcion AS mesa_desc, 
-                 e.estados,
-                 m_anterior.descripcion AS mesa_anterior 
-                ,l.nombre AS nombre_local
+                c.nombre AS nombre_cliente, 
+                c.apellido AS apellido_cliente, 
+                c.dni, 
+                c.mail, 
+                m.descripcion AS mesa_desc, 
+                e.estados,
+                m_anterior.descripcion AS mesa_anterior,
+                l.nombre AS nombre_local,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.nombre
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.nombre
+                  ELSE NULL
+                END AS modificado_nombre,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.apellido
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.apellido
+                  ELSE NULL
+                END AS modificado_apellido,
+                r.tipo_modificado_cancelado
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
           LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
           JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
+          LEFT JOIN clientes cli ON r.tipo_modificado_cancelado = 'cliente' AND r.modificado_cancelado_por = cli.id_cliente
+          LEFT JOIN empleados emp ON r.tipo_modificado_cancelado = 'empleado' AND r.modificado_cancelado_por = emp.id_empleado
           WHERE DATE(r.fecha_reserva) = ?
             AND e.estados = 'reservada'
             AND m.id_local = ?
@@ -208,20 +247,33 @@ if ($puesto !== 'Gerente' && $puesto !== 'Subgerente') {
   $stmt->bind_param("si", $hoy, $idLocalEmpleado);
 } else {
   $sql = "SELECT r.*, 
-                 c.nombre AS nombre_cliente, 
-                 c.apellido AS apellido_cliente, 
-                 c.dni, 
-                 c.mail, 
-                 m.descripcion AS mesa_desc, 
-                 e.estados,
-                 m_anterior.descripcion AS mesa_anterior 
-                ,l.nombre AS nombre_local
+                c.nombre AS nombre_cliente, 
+                c.apellido AS apellido_cliente, 
+                c.dni, 
+                c.mail, 
+                m.descripcion AS mesa_desc, 
+                e.estados,
+                m_anterior.descripcion AS mesa_anterior,
+                l.nombre AS nombre_local,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.nombre
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.nombre
+                  ELSE NULL
+                END AS modificado_nombre,
+                CASE 
+                  WHEN r.tipo_modificado_cancelado = 'cliente' THEN cli.apellido
+                  WHEN r.tipo_modificado_cancelado = 'empleado' THEN emp.apellido
+                  ELSE NULL
+                END AS modificado_apellido,
+                r.tipo_modificado_cancelado
           FROM reservas r
           JOIN clientes c ON r.id_cliente = c.id_cliente
           JOIN mesas m ON r.id_mesa = m.id_mesa
           LEFT JOIN mesas m_anterior ON r.cambio_mesa = m_anterior.id_mesa
           JOIN locales l ON m.id_local = l.id_local
           JOIN estado_reserva e ON r.id_estado_reserva = e.id_estado_reserva
+          LEFT JOIN clientes cli ON r.tipo_modificado_cancelado = 'cliente' AND r.modificado_cancelado_por = cli.id_cliente
+          LEFT JOIN empleados emp ON r.tipo_modificado_cancelado = 'empleado' AND r.modificado_cancelado_por = emp.id_empleado
           WHERE DATE(r.fecha_reserva) = ?
             AND e.estados = 'reservada'
           ORDER BY r.fecha_reserva ASC";
@@ -308,7 +360,10 @@ function mostrarTablaReservas($res, $conBotones, $puesto = null)
         "estado_reserva" => $row['estados'],
         "modif_canc_por" => $row['modificado_cancelado_por'] ?? '-',
         "motivo_cancelacion" => $row['motivo_cancelacion'] ?? '-',
-        "fecha_modificacion" => $row['fecha_modificacion_cancelacion'] ?? '-'
+        "fecha_modificacion" => $row['fecha_modificacion_cancelacion'] ?? '-',
+        "tipo_modificado" => $row['tipo_modificado_cancelado'] ?? null,
+        "modificado_nombre" => $row['modificado_nombre'] ?? null,
+        "modificado_apellido" => $row['modificado_apellido'] ?? null
       ];
 
       // Convertir a string JS seguro

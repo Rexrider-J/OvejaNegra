@@ -2835,8 +2835,11 @@ function verDetalleReserva(reserva, botonOrigen) {
       <li class="list-group-item"><strong>👥 Personas:</strong> ${reserva.cant_personas}</li>
       <li class="list-group-item"><strong>📝 Observaciones:</strong> ${reserva.observaciones || "-"}</li>
       <li class="list-group-item"><strong>📌 Estado:</strong> ${reserva.estado_reserva}</li>
-      <li class="list-group-item"><strong>🧑‍💼 Modificado por:</strong> ${reserva.modif_canc_por || "-"}</li>
-      <li class="list-group-item"><strong>❗ Motivo:</strong> ${reserva.motivo_cancelacion || "-"}</li>
+      <li class="list-group-item"><strong>🧑‍💼 Modificado por:</strong> ${
+        reserva.modificado_nombre && reserva.modificado_apellido && reserva.tipo_modificado
+          ? `${reserva.tipo_modificado === 'cliente' ? 'Cliente' : 'Empleado'}: ${reserva.modificado_nombre} ${reserva.modificado_apellido}`
+          : reserva.modif_canc_por || "-"
+      }</li>      <li class="list-group-item"><strong>❗ Motivo:</strong> ${reserva.motivo_cancelacion || "-"}</li>
       <li class="list-group-item"><strong>🕓 Fecha modificación:</strong> ${reserva.fecha_modificacion || "-"}</li>
     </ul>
   `;
