@@ -403,9 +403,9 @@ function agregarRegistro($conexion, $tabla)
           return false;
       }
       break;
-    case 'reservas':
+  case 'reservas':
       date_default_timezone_set('America/Argentina/Buenos_Aires');
-      
+
       // Obtener datos desde POST
       $id_cliente = $_POST['id_cliente'];
       $id_mesa = $_POST['id_mesa'];
@@ -421,14 +421,13 @@ function agregarRegistro($conexion, $tabla)
       }
 
       $ahora = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
-
       if ($fechaHoraReserva < $ahora && $fechaHoraReserva->format('Y-m-d') === $ahora->format('Y-m-d')) {
           echo "❌ No se puede reservar/modificar para una hora anterior a la hora actual del día de hoy.";
           return;
       }
 
-      $observaciones = $_POST['observaciones'];
-      $cant_personas = $_POST['cant_personas'];
+      $observaciones = $_POST['observaciones'] ?? '';
+      $cant_personas = (int)($_POST['cant_personas'] ?? 0);
       $id_estado = $_POST['id_estado_reserva'];
       $fecha_mod_cancel = $_POST['fecha_mod_cancel'] ?? '';
       $hora_mod_cancel = $_POST['hora_mod_cancel'] ?? '';
@@ -436,7 +435,7 @@ function agregarRegistro($conexion, $tabla)
       $mod_por = $_POST['modificado_cancelado_por'] ?? '';
       $tipo_mod = $_POST['tipo_modificado_cancelado'] ?? '';
       $motivo = $_POST['motivo_cancelacion'] ?? '';
-      $cambio_mesa = $_POST['cambio_mesa'] ?? '';
+      $cambio_mesa = !empty($_POST['cambio_mesa']) ? $_POST['cambio_mesa'] : null;
 
       // Ignorar tipo_mod si no hay mod_por
       if (empty($mod_por)) {
@@ -472,6 +471,44 @@ function agregarRegistro($conexion, $tabla)
           return;
       }
 
+      // Validar cupo de la mesa según cantidad de personas
+      $stmt = $conexion->prepare("SELECT cupo_maximo FROM mesas WHERE id_mesa = ?");
+      $stmt->bind_param("i", $id_mesa);
+      $stmt->execute();
+      $result = $stmt->get_result();
+
+      if ($result->num_rows === 0) {
+          echo "Error: No se encontró la mesa con ID $id_mesa.";
+          $stmt->close();
+          return;
+      }
+
+      $row = $result->fetch_assoc();
+      $cupo_maximo = (int) $row['cupo_maximo'];
+
+      $stmt->close();
+
+      // Lógica de validación de cupo:
+      // Si cant_personas es par, solo reservar mesa con cupo exacto (ej: 2 personas => mesa cupo 2)
+      // Si cant_personas es impar, solo reservar mesa con cupo mayor (ej: 3 personas => mesa cupo 4)
+      if ($cant_personas <= 0) {
+          echo "❌ Cantidad de personas inválida.";
+          return;
+      }
+      if ($cant_personas % 2 == 0) {
+          // par
+          if ($cupo_maximo != $cant_personas) {
+              echo "❌ La mesa seleccionada no tiene el cupo exacto para $cant_personas personas.";
+              return;
+          }
+      } else {
+          // impar
+          if ($cupo_maximo <= $cant_personas) {
+              echo "❌ Para $cant_personas personas la mesa debe tener cupo mayor (ejemplo: para 3 personas mesa de 4).";
+              return;
+          }
+      }
+
       // Verificar clave única: no debe existir reserva con mismo local, mesa y fecha_reserva
       $stmt = $conexion->prepare("SELECT 1 FROM reservas WHERE id_local = ? AND id_mesa = ? AND fecha_reserva = ?");
       $stmt->bind_param("iis", $id_local, $id_mesa, $fecha_reserva);
@@ -479,6 +516,7 @@ function agregarRegistro($conexion, $tabla)
       $stmt->store_result();
       if ($stmt->num_rows > 0) {
           echo "Error: Ya existe una reserva con ese local, mesa y fecha.";
+          $stmt->close();
           return;
       }
       $stmt->close();
@@ -507,7 +545,7 @@ function agregarRegistro($conexion, $tabla)
       break;
     default:
       echo "Tabla no soportada.";
-      return;
+    return;
   }
   if ($stmt->execute()) {
     echo "✅Registro agregado correctamente.";
