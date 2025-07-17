@@ -16,6 +16,7 @@ $observaciones = trim($_POST['observaciones'] ?? "");
 
 if (!$id_cliente || !$id_local || !$id_mesa || !$fecha || !$hora || !$cant_personas) {
   exit("Faltan datos para procesar la reserva.");
+  die();
 }
 
 $fecha_reserva = "$fecha $hora";
