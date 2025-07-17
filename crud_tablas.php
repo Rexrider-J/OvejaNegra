@@ -186,7 +186,7 @@ function mostrarEmpleadoFuncion($conexion)
   $hoy = date('Y-m-d'); // Obtener fecha de hoy
 
   echo "<h3>Empleado Funciones</h3>
-    <table class='tabla-estilizada tabla-scroll'>
+    <table class='table'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -206,45 +206,48 @@ function mostrarEmpleadoFuncion($conexion)
 
     echo "<tr>
             <td>{$row['id_empleado_funcion']}</td>
-            <td><input name='fecha' type='date' value='{$fecha}' min='{$hoy}' class='input-estilizado' required></td>
+            <td>{$fecha}</td>
+            <td>{$hora}</td>
+            <td>{$row['funcion']}</td>
+            <td>{$row['id_empleado']}</td>
             <td>
-                <select name='hora' type='time' class='input-estilizado' required>
-                    <option value='11:00:00' " . ($hora === '11:00:00' ? 'selected' : '') . ">11:00</option>
-                    <option value='12:00:00' " . ($hora === '12:00:00' ? 'selected' : '') . ">12:00</option>
-                    <option value='13:00:00' " . ($hora === '13:00:00' ? 'selected' : '') . ">13:00</option>
-                    <option value='14:00:00' " . ($hora === '14:00:00' ? 'selected' : '') . ">14:00</option>
-                    <option value='15:00:00' " . ($hora === '15:00:00' ? 'selected' : '') . ">15:00</option>
-                    <option value='16:00:00' " . ($hora === '16:00:00' ? 'selected' : '') . ">16:00</option>
-                    <option value='17:00:00' " . ($hora === '17:00:00' ? 'selected' : '') . ">17:00</option>
-                    <option value='18:00:00' " . ($hora === '18:00' ? 'selected' : '') . ">18:00</option>
-                    <option value='19:00:00' " . ($hora === '19:00' ? 'selected' : '') . ">19:00</option>
-                    <option value='20:00:00' " . ($hora === '20:00' ? 'selected' : '') . ">20:00</option>
-                </select>            
-            </td>
-            <td>
-                <select name='funcion' class='input-estilizado' required>
-                    <option value='Mozo' " . ($row['funcion'] === 'Mozo' ? 'selected' : '') . ">Mozo</option>
-                    <option value='Caja' " . ($row['funcion'] === 'Caja' ? 'selected' : '') . ">Caja</option>
-                    <option value='Limpieza' " . ($row['funcion'] === 'Limpieza' ? 'selected' : '') . ">Limpieza</option>
-                    <option value='Subgerente' " . ($row['funcion'] === 'Subgerente' ? 'selected' : '') . ">Subgerente</option>
-                    <option value='Gerente' " . ($row['funcion'] === 'Gerente' ? 'selected' : '') . ">Gerente</option>
-                </select>            
-            </td>
-            <td><input name='id_empleado' type='text' maxlength='3' class='solo-numeros input-estilizado' value='{$row['id_empleado']}' required></td>
-            <td>
-                <button type='button' class='btn-modificar btn btn-warning' data-id='{$row['id_empleado_funcion']}'>Modificar</button>
-                <button type='button' class='btn-eliminar btn btn-danger' data-id='{$row['id_empleado_funcion']}'>Eliminar</button>
+                <form>
+                    <input name='fecha' type='date' value='{$fecha}' min='{$hoy}' required>
+                    <select name='hora' type='time' required>
+                        <option value='11:00:00' " . ($hora === '11:00:00' ? 'selected' : '') . ">11:00</option>
+                        <option value='12:00:00' " . ($hora === '12:00:00' ? 'selected' : '') . ">12:00</option>
+                        <option value='13:00:00' " . ($hora === '13:00:00' ? 'selected' : '') . ">13:00</option>
+                        <option value='14:00:00' " . ($hora === '14:00:00' ? 'selected' : '') . ">14:00</option>
+                        <option value='15:00:00' " . ($hora === '15:00:00' ? 'selected' : '') . ">15:00</option>
+                        <option value='16:00:00' " . ($hora === '16:00:00' ? 'selected' : '') . ">16:00</option>
+                        <option value='17:00:00' " . ($hora === '17:00:00' ? 'selected' : '') . ">17:00</option>
+                        <option value='18:00:00' " . ($hora === '18:00' ? 'selected' : '') . ">18:00</option>
+                        <option value='19:00:00' " . ($hora === '19:00' ? 'selected' : '') . ">19:00</option>
+                        <option value='20:00:00' " . ($hora === '20:00' ? 'selected' : '') . ">20:00</option>
+                    </select>
+
+                    <select name='funcion' required>
+                        <option value='Mozo' " . ($row['funcion'] === 'Mozo' ? 'selected' : '') . ">Mozo</option>
+                        <option value='Caja' " . ($row['funcion'] === 'Caja' ? 'selected' : '') . ">Caja</option>
+                        <option value='Limpieza' " . ($row['funcion'] === 'Limpieza' ? 'selected' : '') . ">Limpieza</option>
+                        <option value='Subgerente' " . ($row['funcion'] === 'Subgerente' ? 'selected' : '') . ">Subgerente</option>
+                        <option value='Gerente' " . ($row['funcion'] === 'Gerente' ? 'selected' : '') . ">Gerente</option>
+                    </select>
+
+                    <input name='id_empleado' type='text' maxlength='3' class='solo-numeros' value='{$row['id_empleado']}' required>
+                    <button type='button' class='btn-modificar' data-id='{$row['id_empleado_funcion']}'>Modificar</button>
+                    <button type='button' class='btn-eliminar' data-id='{$row['id_empleado_funcion']}'>Eliminar</button>
+                </form>
             </td>
         </tr>";
   }
 
   echo "</tbody>
     </table>
-    <div class='separador-borde'></div>
     <h4>Agregar nueva función</h4>
     <form data-accion='agregar'>
-        <input name='fecha' type='date' min='{$hoy}' class='input-estilizado' required>
-        <select name='hora' type='time' class='input-estilizado' required>
+        <input name='fecha' type='date' min='{$hoy}' required>
+        <select name='hora' type='time' required>
             <option value='11:00:00'>11:00</option>
             <option value='12:00:00'>12:00</option>
             <option value='13:00:00'>13:00</option>
@@ -257,7 +260,7 @@ function mostrarEmpleadoFuncion($conexion)
             <option value='20:00:00'>20:00</option>
         </select>
 
-        <select name='funcion' class='input-estilizado' required>
+        <select name='funcion' required>
             <option value='Mozo'>Mozo</option>
             <option value='Caja'>Caja</option>
             <option value='Limpieza'>Limpieza</option>
@@ -265,8 +268,8 @@ function mostrarEmpleadoFuncion($conexion)
             <option value='Gerente'>Gerente</option>
         </select>
 
-        <input name='id_empleado' type='text' maxlength='11' class='solo-numeros input-estilizado' placeholder='ID Empleado' required>
-        <input type='submit' class='btn btn-success' value='Agregar'>
+        <input name='id_empleado' type='text' maxlength='11' class='solo-numeros' placeholder='ID Empleado' required>
+        <input type='submit' value='Agregar'>
     </form>";
 }
 
@@ -274,7 +277,7 @@ function mostrarEstadoReserva($conexion)
 {
   $res = $conexion->query("SELECT * FROM estado_reserva");
   echo "<h3>Estado Reserva</h3>
-    <table class='tabla-estilizada tabla-scroll'>
+    <table class='table'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -295,7 +298,7 @@ function mostrarLocales($conexion)
 {
   $res = $conexion->query("SELECT * FROM locales");
   echo "<h3>Locales</h3>
-    <table class='tabla-estilizada tabla-scroll'>
+    <table class='table'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -311,35 +314,38 @@ function mostrarLocales($conexion)
   while ($row = $res->fetch_assoc()) {
     echo "<tr>
             <td>{$row['id_local']}</td>
-            <td><input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras input-estilizado' value='{$row['nombre']}' required></td>
-            <td><input name='direccion' placeholder='Dirección' maxlength='255' class='input-estilizado' value='{$row['direccion']}' required></td>
-            <td><input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros input-estilizado' value='{$row['telefono']}' required></td>
+            <td>{$row['nombre']}</td>
+            <td>{$row['direccion']}</td>
+            <td>{$row['telefono']}</td>
+            <td>{$row['estado_disponibilidad']}</td>
             <td>
-                <select name='estado_disponibilidad' class='input-estilizado' value='{$row['estado_disponibilidad']}' required>
-                    <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
-                    <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
-                </select>
-            </td>
-            <td>
-                <button type='button' class='btn-modificar btn btn-warning' data-id='{$row['id_local']}'>Modificar</button>
-                <button type='button' class='btn-eliminar btn btn-danger' data-id='{$row['id_local']}'>Eliminar</button>
+                <form>
+                    <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' value='{$row['nombre']}' required>
+                    <input name='direccion' placeholder='Dirección' maxlength='255' value='{$row['direccion']}' required>
+                    <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
+                    <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
+                        <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
+                        <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
+                    </select>
+                    <button type='button' class='btn-modificar' data-id='{$row['id_local']}'>Modificar</button>
+                    <button type='button' class='btn-eliminar' data-id='{$row['id_local']}'>Eliminar</button>
+                </form>
             </td>
         </tr>";
   }
 
     echo "</tbody>
         </table>
-        <div class='separador-borde'></div>
         <h4>Agregar nuevo local</h4>
         <form data-accion='agregar'>
-            <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras input-estilizado' required>
-            <input name='direccion' placeholder='Dirección' maxlength='255'class='input-estilizado' required>
-            <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros input-estilizado' placeholder='Teléfono' required>
-            <select name='estado_disponibilidad' class='input-estilizado' required>
+            <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' required>
+            <input name='direccion' placeholder='Dirección' maxlength='255' required>
+            <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' placeholder='Teléfono' required>
+            <select name='estado_disponibilidad' required>
                 <option value='disponible'>disponible</option>
                 <option value='no disponible'>no disponible</option>
             </select>
-            <input type='submit' class='btn btn-success' value='Agregar'>
+            <input type='submit' value='Agregar'>
         </form>";
 }
 
@@ -347,50 +353,50 @@ function mostrarLocalMenu($conexion)
 {
   $res = $conexion->query("SELECT * FROM local_menu");
   echo "<h3>Local Menu</h3>
-  <div class='tabla-scroll'>
-        <table class='tabla-estilizada'>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>ID Menu</th>
-                    <th>ID Local</th>
-                    <th>Disponibilidad</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>";
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID Menu</th>
+                <th>ID Local</th>
+                <th>Disponibilidad</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>";
 
-    while ($row = $res->fetch_assoc()) {
-        echo "<tr>
-                <td>{$row['id_local_menu']}</td>
-                <td><input name='id_menu' class='solo-numeros input-estilizado' maxlength='11' value='{$row['id_menu']}' required></td>
-                <td><input name='id_local' class='solo-numeros input-estilizado' maxlength='11'  value='{$row['id_local']}' required></td>
-                <td>
-                    <select name='estado_disponibilidad' class='input-estilizado' value='{$row['estado_disponibilidad']}' required>
+  while ($row = $res->fetch_assoc()) {
+    echo "<tr>
+            <td>{$row['id_local_menu']}</td>
+            <td>{$row['id_menu']}</td>
+            <td>{$row['id_local']}</td>
+            <td>{$row['estado_disponibilidad']}</td>
+            <td>
+                <form>
+                    <input name='id_menu' class='solo-numeros' maxlength='11' value='{$row['id_menu']}' required>
+                    <input name='id_local' class='solo-numeros'maxlength='11'  value='{$row['id_local']}' required>
+                    <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
                         <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
                         <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
-                    </select>            
-                </td>
-                <td>
-                    <button type='button' class='btn-modificar btn btn-warning' data-id='{$row['id_local_menu']}'>Modificar</button>
-                    <button type='button' class='btn-eliminar btn btn-danger' data-id='{$row['id_local_menu']}'>Eliminar</button>
-                </td>
-            </tr>";
-    }
+                    </select>
+                    <button type='button' class='btn-modificar' data-id='{$row['id_local_menu']}'>Modificar</button>
+                    <button type='button' class='btn-eliminar' data-id='{$row['id_local_menu']}'>Eliminar</button>
+                </form>
+            </td>
+        </tr>";
+  }
 
-    echo "</tbody>
-        </table>
-    </div>
-    <div class='separador-borde'></div>
+  echo "</tbody>
+    </table>
     <h4>Agregar ítem a local</h4>
     <form data-accion='agregar'>
-        <input name='id_menu' class='solo-numeros input-estilizado' maxlength='11' placeholder='ID Menu' required>
-        <input name='id_local' class='solo-numeros input-estilizado' maxlength='11' placeholder='ID Local' required>
-        <select name='estado_disponibilidad' class='input-estilizado' placeholder='Disponibilidad' required>
+        <input name='id_menu' class='solo-numeros' maxlength='11' placeholder='ID Menu' required>
+        <input name='id_local' class='solo-numeros' maxlength='11' placeholder='ID Local' required>
+        <select name='estado_disponibilidad' placeholder='Disponibilidad' required>
             <option value='disponible'>disponible</option>
             <option value='no disponible'>no disponible</option>
         </select>
-        <input type='submit' class='btn btn-success' value='Agregar'>
+        <input type='submit' value='Agregar'>
     </form>";
 }
 
@@ -526,165 +532,166 @@ function mostrarMesas($conexion)
 function mostrarReservas($conexion)
 {
     $res = $conexion->query("SELECT * FROM reservas");
-    $horas_fijas = ['11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+
     $hoy = date('Y-m-d');
 
     echo "<h3>Reservas</h3>
-    <div class='contenedor-scroll-horizontal tabla-scroll'>
-        <table class='tabla-estilizada'>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>ID Cliente</th>
-                    <th>ID Mesa</th>
-                    <th>ID Local</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Observaciones</th>
-                    <th>Cant. Personas</th>
-                    <th>Estado</th>
-                    <th>Fecha mod/cancel</th>
-                    <th>Hora mod/cancel</th>
-                    <th>Modificado por</th>
-                    <th>Tipo mod/cancel</th>
-                    <th>Motivo</th>
-                    <th>Cambio mesa</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>";
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>ID Cliente</th>
+                <th>ID Mesa</th>
+                <th>ID Local</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Observaciones</th>
+                <th>Cant. Personas</th>
+                <th>Estado</th>
+                <th>Fecha modifi/cancel</th>
+                <th>Hora modifi/cancel</th>
+                <th>Modificado por</th>
+                <th>Tipo modif/cancel</th>
+                <th>Motivo</th>
+                <th>Cambio mesa</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>";
 
     while ($row = $res->fetch_assoc()) {
         $fechaHora = new DateTime($row['fecha_reserva']);
         $fecha = $fechaHora->format('Y-m-d');
         $hora = $fechaHora->format('H:i');
-        $fecha_mod_cancel = $hora_mod_cancel = '';
 
+        $fecha_mod_cancel = null;
+        $hora_mod_cancel = null;
         if (!empty($row['fecha_modificacion_cancelacion'])) {
-            $fh = new DateTime($row['fecha_modificacion_cancelacion']);
-            $fecha_mod_cancel = $fh->format('Y-m-d');
-            $hora_mod_cancel = $fh->format('H:i');
+            $fechaHora_mod_cancel = new DateTime($row['fecha_modificacion_cancelacion']);
+            $fecha_mod_cancel = $fechaHora_mod_cancel->format('Y-m-d');
+            $hora_mod_cancel = $fechaHora_mod_cancel->format('H:i');
         }
-
-        $tipo = $row['tipo_modificado_cancelado'];
 
         echo "<tr>
             <td>{$row['id_reserva']}</td>
-            <td><input name='id_cliente' class='solo-numeros input-estilizado' value='{$row['id_cliente']}' required></td>
-            <td><input name='id_mesa' class='solo-numeros input-estilizado' value='{$row['id_mesa']}' required></td>
-            <td><input name='id_local' class='solo-numeros input-estilizado' value='{$row['id_local']}' required></td>
-            <td><input name='fecha' type='date' class='input-estilizado' value='{$fecha}' min='{$hoy}' required></td>
+            <td>{$row['id_cliente']}</td>
+            <td>{$row['id_mesa']}</td>
+            <td>{$row['id_local']}</td>
+            <td>{$fecha}</td>
+            <td>{$hora}</td>
+            <td>{$row['observaciones']}</td>
+            <td>{$row['cant_personas']}</td>
+            <td>{$row['id_estado_reserva']}</td>
+            <td>" . ($fecha_mod_cancel ?? '') . "</td>
+            <td>" . ($hora_mod_cancel ?? '') . "</td>
+            <td>{$row['modificado_cancelado_por']}</td>
+            <td>{$row['tipo_modificado_cancelado']}</td>
+            <td>{$row['motivo_cancelacion']}</td>
+            <td>{$row['cambio_mesa']}</td>
             <td>
-                <select name='hora' class='input-estilizado'>";
-                    foreach ($horas_fijas as $h_fija) {
-                        $selected_hora = ($h_fija === $hora) ? 'selected' : '';
-                        echo "<option value='{$h_fija}:00' $selected_hora>$h_fija</option>";
-                    }
-        echo "  </select>
-            </td>
-            <td><input name='observaciones' class='input-estilizado' value='{$row['observaciones']}' maxlength='255' required></td>
-            <td>
-                <select name='cant_personas' class='input-estilizado'>";
-                    for ($i = 1; $i <= 8; $i++) {
-                        $selected = ((int)$row['cant_personas'] === $i) ? 'selected' : '';
-                        echo "<option value='$i' $selected>$i</option>";
-                    }
-        echo "  </select>
-            </td>
-            <td><input name='id_estado_reserva' class='solo-numeros input-estilizado' value='{$row['id_estado_reserva']}' required></td>
-            <td><input name='fecha_mod_cancel' type='date' class='input-estilizado' value='{$fecha_mod_cancel}' min='{$hoy}'></td>
-            <td>
-                <select name='hora_mod_cancel' class='input-estilizado'>
-                    <option value=''>--</option>";
-                    for ($h = 10; $h <= 20; $h++) {
-                        foreach ([0, 30] as $m) {
-                            $h_valor = sprintf('%02d:%02d:00', $h, $m);
-                            $h_visible = sprintf('%02d:%02d', $h, $m);
-                            $selected = ($hora_mod_cancel && $h_valor === $hora_mod_cancel . ":00") ? 'selected' : '';
-                            echo "<option value='$h_valor' $selected>$h_visible</option>";
-                        }
-                    }
-        echo "  </select>
-            </td>
-            <td><input name='modificado_cancelado_por' class='solo-numeros input-estilizado' value='{$row['modificado_cancelado_por']}'></td>
-            <td>
-                <select name='tipo_modificado_cancelado' class='input-estilizado'>
-                    <option value=''>--</option>
-                    <option value='cliente'" . ($tipo === 'cliente' ? ' selected' : '') . ">cliente</option>
-                    <option value='empleado'" . ($tipo === 'empleado' ? ' selected' : '') . ">empleado</option>
-                </select>
-            </td>
-            <td><input name='motivo_cancelacion' class='input-estilizado' value='{$row['motivo_cancelacion']}' maxlength='255'></td>
-            <td><input name='cambio_mesa' class='solo-numeros input-estilizado' value='{$row['cambio_mesa']}'></td>
-            <td>
-                <button type='button' class='btn-modificar btn btn-warning' data-id='{$row['id_reserva']}'>Modificar</button>
-                <button type='button' class='btn-eliminar btn btn-danger' data-id='{$row['id_reserva']}'>Eliminar</button>
+                <form>
+                    <input name='id_cliente' class='solo-numeros' maxlength='11' value='{$row['id_cliente']}' required>
+                    <input name='id_mesa' class='solo-numeros' maxlength='11' value='{$row['id_mesa']}' required>
+                    <input name='id_local' class='solo-numeros' maxlength='11' value='{$row['id_local']}' required>
+                    <input name='fecha' type='date' value='{$fecha}' min='{$hoy}' required>
+
+                    <select name='hora' required>";
+
+        $horas_fijas = ['11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+        foreach ($horas_fijas as $h_fija) {
+            $valor_hora = $h_fija . ":00";
+            $selected_hora = ($h_fija === $hora) ? 'selected' : '';
+            echo "<option value='$valor_hora' $selected_hora>$h_fija</option>";
+        }
+
+        echo "</select>
+                    <input name='observaciones' maxlength='255' value='{$row['observaciones']}' required>
+                    <select name='cant_personas' required>";
+
+        for ($i = 1; $i <= 8; $i++) {
+            $selected_cant = ((int)$row['cant_personas'] === $i) ? 'selected' : '';
+            echo "<option value='$i' $selected_cant>$i</option>";
+        }
+
+        echo "</select>
+                    <input name='id_estado_reserva' class='solo-numeros' maxlength='11' value='{$row['id_estado_reserva']}' required>
+                    <input name='fecha_mod_cancel' type='date' value='" . ($fecha_mod_cancel ?? '') . "' min='{$hoy}'>
+                    <select name='hora_mod_cancel'>
+                        <option value=''>-- Seleccione --</option>";
+
+        for ($h = 10; $h <= 20; $h++) {
+            foreach ([0, 30] as $m) {
+                $hora_valor = sprintf('%02d:%02d:00', $h, $m);
+                $hora_visible = sprintf('%02d:%02d', $h, $m);
+                $selected = ($hora_mod_cancel && $hora_valor === ($hora_mod_cancel . ':00')) ? 'selected' : '';
+                echo "<option value='$hora_valor' $selected>$hora_visible</option>";
+            }
+        }
+
+        $tipo = $row['tipo_modificado_cancelado'];
+        echo "</select>
+                    <input name='modificado_cancelado_por' class='solo-numeros' maxlength='11' value='{$row['modificado_cancelado_por']}'>
+                    <select name='tipo_modificado_cancelado'>
+                        <option value=''>-- Seleccione --</option>
+                        <option value='cliente'" . ($tipo === 'cliente' ? ' selected' : '') . ">cliente</option>
+                        <option value='empleado'" . ($tipo === 'empleado' ? ' selected' : '') . ">empleado</option>
+                    </select>
+                    <input name='motivo_cancelacion' maxlength='255' value='{$row['motivo_cancelacion']}'>
+                    <input name='cambio_mesa' class='solo-numeros' maxlength='11' value='{$row['cambio_mesa']}'>
+                    <button type='button' class='btn-modificar' data-id='{$row['id_reserva']}'>Modificar</button>
+                    <button type='button' class='btn-eliminar' data-id='{$row['id_reserva']}'>Eliminar</button>
+                </form>
             </td>
         </tr>";
     }
 
     echo "</tbody>
-        </table>
-    </div>    
-<div class='separador-borde'></div>
-<h3>Agregar nueva reserva</h3>
+    </table>
+    <h4>Agregar nueva reserva</h4>
+    <form data-accion='agregar'>
+        <input name='id_cliente' class='solo-numeros' maxlength='11' placeholder='id cliente' required>
+        <input name='id_mesa' class='solo-numeros' maxlength='11' placeholder='id mesa' required>
+        <input name='id_local' class='solo-numeros' maxlength='11' placeholder='id local' required>
+        <input name='fecha' type='date' min='{$hoy}' required>
+        <select name='hora' required>";
 
-<form data-accion='agregar' class='formulario-grid'>
-    <div class='columna-uno'>
-        <h4>Datos requeridos</h4>
-        <input name='id_cliente' class='solo-numeros input-estilizado' maxlength='11' placeholder='id cliente' required>
-        <input name='id_mesa' class='solo-numeros input-estilizado' maxlength='11' placeholder='id mesa' required>
-        <input name='id_local' class='solo-numeros input-estilizado' maxlength='11' placeholder='id local' required>
-        <input name='fecha' type='date' min='{$hoy}' class='input-estilizado' required>
+    foreach ($horas_fijas as $h_fija) {
+        $valor_hora = $h_fija . ":00";
+        echo "<option value='$valor_hora'>$h_fija</option>";
+    }
 
-        <select name='hora' class='input-estilizado' required>";
-            foreach ($horas_fijas as $h_fija) {
-                $valor_hora = $h_fija . ":00";
-                echo "<option value='$valor_hora'>$h_fija</option>";
-            }
-echo "  </select>
+    echo "</select>
+        <input name='observaciones' maxlength='255' placeholder='observaciones'>
+        <select name='cant_personas' required>";
 
-        <input name='observaciones' maxlength='255' placeholder='observaciones' class='input-estilizado' required>
+    for ($i = 1; $i <= 8; $i++) {
+        echo "<option value='$i'>$i</option>";
+    }
 
-        <select name='cant_personas' class='input-estilizado' required>";
-            for ($i = 1; $i <= 8; $i++) {
-                echo "<option value='$i'>$i</option>";
-            }
-echo "  </select>
-
-        <input name='id_estado_reserva' class='solo-numeros input-estilizado' maxlength='11' placeholder='id estado reserva' required>
-    </div>
-
-    <div class='columna-dos'>
-        <h4>Datos opcionales</h4>
-        <input name='fecha_mod_cancel' type='date' min='{$hoy}' class='input-estilizado'>
-
-        <select name='hora_mod_cancel' class='input-estilizado'>
+    echo "</select>
+        <input name='id_estado_reserva' class='solo-numeros' maxlength='11' placeholder='id estado reserva' required>
+        <input name='fecha_mod_cancel' type='date' min='{$hoy}'>
+        <select name='hora_mod_cancel'>
             <option value=''>-- Seleccione --</option>";
-            for ($h = 10; $h <= 20; $h++) {
-                foreach ([0, 30] as $m) {
-                    $hora_valor = sprintf('%02d:%02d:00', $h, $m);
-                    $hora_visible = sprintf('%02d:%02d', $h, $m);
-                    echo "<option value='$hora_valor'>$hora_visible</option>";
-                }
-            }
-echo "  </select>
 
-        <input name='modificado_cancelado_por' class='solo-numeros input-estilizado' maxlength='11' placeholder='id cliente/empleado'>
+    for ($h = 10; $h <= 20; $h++) {
+        foreach ([0, 30] as $m) {
+            $hora_valor = sprintf('%02d:%02d:00', $h, $m);
+            $hora_visible = sprintf('%02d:%02d', $h, $m);
+            echo "<option value='$hora_valor'>$hora_visible</option>";
+        }
+    }
 
-        <select name='tipo_modificado_cancelado' class='input-estilizado'>
+    echo "</select>
+        <input name='modificado_cancelado_por' class='solo-numeros' maxlength='11' placeholder='id cliente/empleado'>
+        <select name='tipo_modificado_cancelado'>
             <option value=''>-- Seleccione --</option>
             <option value='cliente'>cliente</option>
             <option value='empleado'>empleado</option>
         </select>
-
-        <input name='motivo_cancelacion' maxlength='255' class='input-estilizado' placeholder='motivo modif/cancel'>
-        <input name='cambio_mesa' class='solo-numeros input-estilizado' maxlength='11' placeholder='id mesa del cambio'>
-    </div>
-
-    <div class='form-boton'>
-        <input type='submit' class='btn btn-success' value='Agregar'>
-    </div>
-</form>";
+        <input name='motivo_cancelacion' maxlength='255' placeholder='motivo modif/cancel'>
+        <input name='cambio_mesa' class='solo-numeros' maxlength='11' placeholder='id mesa del cambio'>
+        <input type='submit' value='Agregar'>
+    </form>";
 }
 ?>
