@@ -353,40 +353,58 @@ function agregarRegistro($conexion, $tabla)
       break;
     case 'empleado_funcion':
       if (isset($_POST['fecha'], $_POST['hora'])) {
-        $_POST['dia_hora'] = $_POST['fecha'] . ' ' . $_POST['hora'];
+          $_POST['dia_hora'] = $_POST['fecha'] . ' ' . $_POST['hora'];
       }
       $dia_hora = $_POST['dia_hora'];
       $funcion = $_POST['funcion'];
       $id_empleado = (int)$_POST['id_empleado'];
 
-      /*Validar si es lunes*/
       $fecha = new DateTime($dia_hora);
+      $ahora = new DateTime();
+
+      // Validar que no sea lunes
       if ($fecha->format('N') == 1) { // 1 = lunes
-        echo "<script>alert('Los lunes el local se encuentra cerrado.');</script>";
-        return false;
+          echo "<script>alert('Los lunes el local se encuentra cerrado.');</script>";
+          return false;
       }
 
-      /*Verificar que el empleado exista*/
+      // Validar que no sea fecha y hora pasada
+      if ($fecha < $ahora) {
+          echo "<script>alert('No se puede asignar una función en fecha y hora pasada.');</script>";
+          return false;
+      }
+
+      // Verificar que el empleado exista
       if (!existeEnTabla($conexion, 'empleados', 'id_empleado', $id_empleado)) {
-        echo "❌El ID del empleado no existe.";
-        return false;
+          echo "<script>alert('El ID del empleado no existe.');</script>";
+          return false;
       }
 
-      /*Valida combinación única id_empleado + dia_hora*/
+      // Validar combinación única id_empleado + dia_hora
       $stmtCheck = $conexion->prepare("SELECT 1 FROM empleado_funcion WHERE id_empleado = ? AND dia_hora = ? LIMIT 1");
       $stmtCheck->bind_param("is", $id_empleado, $dia_hora);
       $stmtCheck->execute();
       $resCheck = $stmtCheck->get_result();
       if ($resCheck->num_rows > 0) {
-        echo "<script>alert('Este empleado ya tiene una función asignada en esa fecha y hora.');</script>";
-        return false;
+          echo "<script>alert('Este empleado ya tiene una función asignada en esa fecha y hora.');</script>";
+          return false;
       }
 
-      /*Si todo OK, preparar el insert*/
+      // Insertar registro
       $stmt = $conexion->prepare("INSERT INTO empleado_funcion (dia_hora, funcion, id_empleado) VALUES (?, ?, ?)");
       $stmt->bind_param("ssi", $dia_hora, $funcion, $id_empleado);
+      $stmt->execute();
+
+      if ($stmt->affected_rows > 0) {
+          echo "<script>alert('Función asignada correctamente.');</script>";
+          return true;
+      } else {
+          echo "<script>alert('Error al asignar función.');</script>";
+          return false;
+      }
       break;
     case 'reservas':
+      date_default_timezone_set('America/Argentina/Buenos_Aires');
       // Validaciones
       $id_cliente = $_POST['id_cliente'];
       $id_mesa = $_POST['id_mesa'];
@@ -394,6 +412,20 @@ function agregarRegistro($conexion, $tabla)
       $fecha = $_POST['fecha'];
       $hora = $_POST['hora'];
       $fecha_reserva = "$fecha $hora";
+
+      $fechaHoraReserva = DateTime::createFromFormat('Y-m-d H:i:s', "$fecha $hora");
+      if (!$fechaHoraReserva) {
+          echo "❌ Fecha u hora inválida.";
+          return;
+      }
+
+      $ahora = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+
+      if ($fechaHoraReserva < $ahora && $fechaHoraReserva->format('Y-m-d') === $ahora->format('Y-m-d')) {
+          echo "❌ No se puede reservar/modificar para una hora anterior a la hora actual del día de hoy.";
+          return;
+      }   
+
       $observaciones = $_POST['observaciones'];
       $cant_personas = $_POST['cant_personas'];
       $id_estado = $_POST['id_estado_reserva'];
@@ -646,41 +678,59 @@ function modificarRegistro($conexion, $tabla, $id)
       break;
     case 'empleado_funcion':
       if (isset($_POST['fecha'], $_POST['hora'])) {
-        $_POST['dia_hora'] = $_POST['fecha'] . ' ' . $_POST['hora'];
+          $_POST['dia_hora'] = $_POST['fecha'] . ' ' . $_POST['hora'];
       }
       $dia_hora = $_POST['dia_hora'];
       $funcion = $_POST['funcion'];
       $id_empleado = (int)$_POST['id_empleado'];
 
-      /*Validar si es lunes*/
       $fecha = new DateTime($dia_hora);
-      if ($fecha->format('N') == 1) { // 1 = lunes
-        echo "❌Los lunes el local se encuentra cerrado.";
-        return false;
+      $ahora = new DateTime();
+
+      // Validar que no sea lunes
+      if ($fecha->format('N') == 1) {
+          echo "<script>alert('Los lunes el local se encuentra cerrado.');</script>";
+          return false;
       }
 
-      /*Verifica que el empleado exista*/
+      // Validar que no sea fecha y hora pasada
+      if ($fecha < $ahora) {
+          echo "<script>alert('No se puede asignar una función en fecha y hora pasada.');</script>";
+          return false;
+      }
+
+      // Verificar que el empleado exista
       if (!existeEnTabla($conexion, 'empleados', 'id_empleado', $id_empleado)) {
-        echo "❌El ID del empleado no existe.";
-        return false;
+          echo "<script>alert('El ID del empleado no existe.');</script>";
+          return false;
       }
 
-      /*Validar que no exista otro registro con misma combinación id_empleado + dia_hora*/
+      // Validar que no exista otro registro con misma combinación id_empleado + dia_hora
       $stmtCheck = $conexion->prepare("SELECT 1 FROM empleado_funcion WHERE id_empleado = ? AND dia_hora = ? AND id_empleado_funcion != ? LIMIT 1");
       $stmtCheck->bind_param("isi", $id_empleado, $dia_hora, $id);
       $stmtCheck->execute();
       $resCheck = $stmtCheck->get_result();
       if ($resCheck->num_rows > 0) {
-        echo "❌Este empleado ya tiene una función asignada en esa fecha y hora.";
-        return false;
+          echo "<script>alert('Este empleado ya tiene una función asignada en esa fecha y hora.');</script>";
+          return false;
       }
 
-      /*Si todo OK, preparar update*/
-      $sql = "UPDATE empleado_funcion SET dia_hora=?, funcion=?, id_empleado=? WHERE id_empleado_funcion=?";
-      $tipos = "ssii";
-      $valores = [$dia_hora, $funcion, $id_empleado, $id];
+      // Actualizar registro
+      $stmt = $conexion->prepare("UPDATE empleado_funcion SET dia_hora = ?, funcion = ?, id_empleado = ? WHERE id_empleado_funcion = ?");
+      $stmt->bind_param("ssii", $dia_hora, $funcion, $id_empleado, $id);
+      $stmt->execute();
+
+      if ($stmt->affected_rows > 0) {
+          echo "<script>alert('Función modificada correctamente.');</script>";
+          return true;
+      } else {
+          echo "<script>alert('No se realizó ningún cambio o hubo un error.');</script>";
+          return false;
+      }
       break;
     case 'reservas':
+      date_default_timezone_set('America/Argentina/Buenos_Aires');
+
       $id = $_POST['id']; // ID de la reserva a modificar
       $id_cliente = $_POST['id_cliente'];
       $id_mesa = $_POST['id_mesa'];
@@ -688,6 +738,20 @@ function modificarRegistro($conexion, $tabla, $id)
       $fecha = $_POST['fecha'];
       $hora = $_POST['hora'];
       $fecha_reserva = "$fecha $hora";
+
+      $fechaHoraReserva = DateTime::createFromFormat('Y-m-d H:i:s', "$fecha $hora");
+      if (!$fechaHoraReserva) {
+          echo "Error: Fecha u hora inválida.";
+          return;
+      }
+
+      $ahora = new DateTime('now', new DateTimeZone('America/Argentina/Buenos_Aires'));
+
+      if ($fechaHoraReserva < $ahora && $fechaHoraReserva->format('Y-m-d') === $ahora->format('Y-m-d')) {
+          echo "Error: No se puede reservar/modificar para una hora anterior a la hora actual del día de hoy.";
+          return;
+      }
+
       $observaciones = $_POST['observaciones'];
       $cant_personas = $_POST['cant_personas'];
       $id_estado = $_POST['id_estado_reserva'];
