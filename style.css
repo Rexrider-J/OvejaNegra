@@ -2407,7 +2407,7 @@ textarea.input-estilizado {
 }
 .separador-borde {
   width: 100%;
-  border-bottom: 2px solid #898989;
+  border-bottom: 2px solid #a8a8a8;
   margin: 20px 0;
 }
 /*BASE DE DATOS*/
@@ -2481,4 +2481,11 @@ form.form-edicion {
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
+}
+/*Locales*/
+#tabla-locales form[data-accion='agregar'] .input-estilizado,
+#tabla-locales form[data-accion='agregar'] input[type='submit'] {
+    width: 120px;
+    margin-right: 8px; /* espacio entre campos */
+    margin-bottom: 8px; /* por si se apilan en pantallas pequeñas */
 }

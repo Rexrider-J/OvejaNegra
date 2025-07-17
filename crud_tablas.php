@@ -277,7 +277,7 @@ function mostrarEstadoReserva($conexion)
 {
   $res = $conexion->query("SELECT * FROM estado_reserva");
   echo "<h3>Estado Reserva</h3>
-    <table class='table'>
+    <table class='tabla-estilizada tabla-scroll'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -298,7 +298,7 @@ function mostrarLocales($conexion)
 {
   $res = $conexion->query("SELECT * FROM locales");
   echo "<h3>Locales</h3>
-    <table class='table'>
+    <table class='tabla-estilizada tabla-scroll'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -314,38 +314,35 @@ function mostrarLocales($conexion)
   while ($row = $res->fetch_assoc()) {
     echo "<tr>
             <td>{$row['id_local']}</td>
-            <td>{$row['nombre']}</td>
-            <td>{$row['direccion']}</td>
-            <td>{$row['telefono']}</td>
-            <td>{$row['estado_disponibilidad']}</td>
+            <td><input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras input-estilizado' value='{$row['nombre']}' required></td>
+            <td><input name='direccion' placeholder='Dirección' maxlength='255' class='input-estilizado' value='{$row['direccion']}' required></td>
+            <td><input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros input-estilizado' value='{$row['telefono']}' required></td>
             <td>
-                <form>
-                    <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' value='{$row['nombre']}' required>
-                    <input name='direccion' placeholder='Dirección' maxlength='255' value='{$row['direccion']}' required>
-                    <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' value='{$row['telefono']}' required>
-                    <select name='estado_disponibilidad' value='{$row['estado_disponibilidad']}' required>
-                        <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
-                        <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
-                    </select>
-                    <button type='button' class='btn-modificar' data-id='{$row['id_local']}'>Modificar</button>
-                    <button type='button' class='btn-eliminar' data-id='{$row['id_local']}'>Eliminar</button>
-                </form>
+                <select name='estado_disponibilidad' class='input-estilizado' value='{$row['estado_disponibilidad']}' required>
+                    <option value='disponible' " . ($row['estado_disponibilidad'] === 'disponible' ? 'selected' : '') . ">disponible</option>
+                    <option value='no disponible' " . ($row['estado_disponibilidad'] === 'no disponible' ? 'selected' : '') . ">no disponible</option>
+                </select>
+            </td>
+            <td>
+                <button type='button' class='btn-modificar btn btn-warning' data-id='{$row['id_local']}'>Modificar</button>
+                <button type='button' class='btn-eliminar btn btn-danger' data-id='{$row['id_local']}'>Eliminar</button>
             </td>
         </tr>";
   }
 
     echo "</tbody>
         </table>
+        <div class='separador-borde'></div>
         <h4>Agregar nuevo local</h4>
         <form data-accion='agregar'>
-            <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras' required>
-            <input name='direccion' placeholder='Dirección' maxlength='255' required>
-            <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros' placeholder='Teléfono' required>
-            <select name='estado_disponibilidad' required>
+            <input name='nombre' placeholder='Nombre' type='text' maxlength='100' class='solo-letras input-estilizado' required>
+            <input name='direccion' placeholder='Dirección' maxlength='255'class='input-estilizado' required>
+            <input name='telefono' type='tel' pattern='[0-9]{10,20}' minlength='10' maxlength='20' class='solo-numeros input-estilizado' placeholder='Teléfono' required>
+            <select name='estado_disponibilidad' class='input-estilizado' required>
                 <option value='disponible'>disponible</option>
                 <option value='no disponible'>no disponible</option>
             </select>
-            <input type='submit' value='Agregar'>
+            <input type='submit' class='btn btn-success' value='Agregar'>
         </form>";
 }
 
