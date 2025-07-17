@@ -426,15 +426,21 @@ function agregarRegistro($conexion, $tabla)
           return;
       }
 
-      $observaciones = $_POST['observaciones'] ?? '';
+      $observaciones = $_POST['observaciones'] ?? null;
       $cant_personas = (int)($_POST['cant_personas'] ?? 0);
       $id_estado = $_POST['id_estado_reserva'];
-      $fecha_mod_cancel = $_POST['fecha_mod_cancel'] ?? '';
-      $hora_mod_cancel = $_POST['hora_mod_cancel'] ?? '';
+      $fecha_mod_cancel = $_POST['fecha_mod_cancel'] ?? null;
+      $hora_mod_cancel = $_POST['hora_mod_cancel'] ?? null;
       $fecha_modificacion_cancelacion = trim("$fecha_mod_cancel $hora_mod_cancel");
-      $mod_por = $_POST['modificado_cancelado_por'] ?? '';
-      $tipo_mod = $_POST['tipo_modificado_cancelado'] ?? '';
-      $motivo = $_POST['motivo_cancelacion'] ?? '';
+      if (empty($fecha_modificacion_cancelacion)) {
+        $fecha_modificacion_cancelacion = null;
+      }
+      $mod_por = $_POST['modificado_cancelado_por'];
+      if ($mod_por === '' || is_null($mod_por)) {
+        $mod_por = null;
+      }
+      $tipo_mod = $_POST['tipo_modificado_cancelado'] ?? null;
+      $motivo = $_POST['motivo_cancelacion'] ?? null;
       $cambio_mesa = !empty($_POST['cambio_mesa']) ? $_POST['cambio_mesa'] : null;
 
       // Ignorar tipo_mod si no hay mod_por
@@ -535,7 +541,7 @@ function agregarRegistro($conexion, $tabla)
       );
 
       if ($stmt->execute()) {
-          echo "Reserva agregada correctamente.";
+          echo "✅Reserva agregada correctamente.";
       } else {
           echo "❌Error al agregar reserva: " . $stmt->error;
       }
@@ -547,12 +553,7 @@ function agregarRegistro($conexion, $tabla)
       echo "Tabla no soportada.";
     return;
   }
-  if ($stmt->execute()) {
-    echo "✅Registro agregado correctamente.";
-  } else {
-    echo "❌Error al agregar: " . $conexion->error;
-  }
-  $stmt->close();
+  
 }
 
 function modificarRegistro($conexion, $tabla, $id)

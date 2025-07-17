@@ -661,7 +661,7 @@ function mostrarReservas($conexion)
     }
 
     echo "</select>
-        <input name='observaciones' maxlength='255' placeholder='observaciones' required>
+        <input name='observaciones' maxlength='255' placeholder='observaciones'>
         <select name='cant_personas' required>";
 
     for ($i = 1; $i <= 8; $i++) {
